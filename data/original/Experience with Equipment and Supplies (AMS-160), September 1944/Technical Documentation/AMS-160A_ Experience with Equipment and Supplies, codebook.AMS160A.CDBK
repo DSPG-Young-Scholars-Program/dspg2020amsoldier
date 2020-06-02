@@ -1,0 +1,593 @@
+1                                                                                
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE   1                    
+0                                                                                
+0                SURVEY IDENTIFICATION                                           
+0                1. PROJECT:             THE AMERICAN SOLDIER IN WORLD WAR II    
+0                2. TITLE:               EXPERIENCE WITH EQUIPMENT AND SUPPLIES  
+0                3. DATE:                SEPTEMBER 1944                          
+0                4. SURVEY NUMBER:       S-160A                                  
+0                5. PROJECT DIRECTOR:    DR. SAMUEL A. STOUFFER                  
+0                6. PROJECT SPONSOR:     RESEARCH BRANCH                         
+                                         INFORMATION AND EDUCATION DIVISION      
+                                         WAR DEPARTMENT                          
+0                7. PUBLICATION:                                                 
+                    STUDIES IN SOCIAL PSYCHOLOGY IN WORLD WAR II: VOLUMES I-IV   
+                       (PRINCETON UNIVERSITY PRESS)                              
+                    VOL. I (1949): THE AMERICAN SOLDIER: ADJUSTMENT DURING ARMY  
+                       LIFE.  SAMUEL A. STOUFFER, EDWARD A. SUCHMAN, LELAND C.   
+                       DEVINNEY, SHIRLEY A. STAR, ROBIN M. WILLIAMS, JR.         
+                    VOL. II (1949): THE AMERICAN SOLDIER: COMBAT AND ITS         
+                       AFTERMATH. SAMUEL A. STOUFFER, ARTHUR A. LUMSDAINE,       
+                       MARION HARPER LUMSDAINE, ROBIN M. WILLIAMS, JR.           
+                       M. BREWSTER SMITH, IRVING L. JANIS. SHIRLEY A. STAR,      
+                       LEONARD S. COTTRELL, JR.                                  
+                    VOL. III (1949): EXPERIMENTS ON MASS COMMUNICATION.          
+                       CARL I. HOVLAND, ARTHUR A. LUMSDAINE, FRED D. SHEFFIELD.  
+                    VOL. IV (1950): MEASUREMENT AND PREDICTION. SAMUEL A.        
+                       STOUFFER, LOUIS GUTTMAN, EDWARD A. SUCHMAN, PAUL F.       
+                       LAZARSFELD, SHIRLEY STAR, JOHN A. CLAUSEN.                
+0                8. DUPLICATES AVAILABLE FROM:                                   
+                               THE ROPER PUBLIC OPINION RESEARCH CENTER          
+                               P.O. BOX 624                                      
+                               WILLIAMSTOWN, MASSACHUSETTS 01267                 
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE   2                    
+0                                                                                
+0                SAMPLE INFORMATION                                              
+0                1. POPULATION UNIVERSE: BLACK AND WHITE ENLISTED MEN IN THE     
+                                         EUROPEAN THEATER OF OPERATIONS.         
+0                2. SAMPLE SIZE:         403                                     
+0                METHOD OF SAMPLING AND DATA COLLECTION                          
+                    FOR THE GENERAL CASE, SAMPLING WAS A TWO-STEP PROCESS.       
+                    FIRST, THERE WAS SAMPLING OF ORGANIZATIONS WHICH CAN BE      
+                    DESCRIBED AS PURPOSIVE OR QUOTA SAMPLING.  SECOND,           
+                    WITHIN AN ORGANIZATION THERE WAS SAMPLING OF INDIVIDUALS     
+                    INVOLVING PROCEDURES WHICH MIGHT BE CALLED PROBABILITY       
+                    SAMPLING.                                                    
+0                1. SELECTION OF ORGANIZATIONS TO BE INCLUDED IN A STUDY: THE    
+                    SELECTION OF UNITS INVOLVED PURPOSIVE RATHER THAN STRICTLY   
+                    RANDOM SAMPLING.  IF A CROSS-SECTION OF ENLISTED MEN IN      
+                    THE UNITED STATES OR A THEATER WAS REQUIRED, THE STANDARD    
+                    PROCEDURE WAS TO SELECT THE UNITS SUCH THAT EACH BRANCH OF   
+                    SERVICE WAS REPRESENTED IN AS NEARLY AS POSSIBLE THE CORRECT 
+                    PROPORTIONS.  THE RESEARCH BRANCH HAD ACCESS TO THE LATEST   
+                    SECRET DATA ON TROOP STRENGTH AND LOCATION OF UNITS.         
+                    WITHIN A GIVEN BRANCH OF SERVICE, EFFORT WAS MADE TO GET     
+                    UNITS IN VARIOUS STAGES OF TRAINING OR WITH VARIOUS TYPES    
+                    OF ARMY EXPERIENCE IN CORRECT PROPORTIONS, IN SO FAR AS THIS 
+                    COULD BE INFERRED FROM AVAILABLE DATA.  HAVING STRATIFIED    
+                    THE UNIVERSE BY BRANCH AND TYPE OF UNIT, ONE OR MORE UNITS   
+                    FROM EACH SUBCELL OF THIS STRATIFIED UNIVERSE WERE DRAWN.    
+                    PRACTICAL CONSIDERATIONS OF TIME AND PERSONNEL USUALLY       
+                    PREVENTED A STRICTLY RANDOM SELECTION OF UNITS WITHIN THE    
+                    SUBCELL; IT WAS MUCH FASTER TO GET A VARIETY OF UNITS AT A   
+                    FEW POSTS THAN ONE UNIT AT MANY POSTS.  PRESELECTION OF UNITS
+                    WAS DONE IN WASHINGTON FOR TROOPS IN THE UNITED STATES OR AT 
+                    THEATER HEADQUARTERS FOR TROOPS OVERSEAS.                    
+0                2. SAMPLING OF INDIVIDUALS WITHIN A UNIT: THE STANDARD PROCEDURE
+                    WAS TO DRAW THE NAMES OF EVERY NTH MAN FROM A DUTY ROSTER.   
+                    OR, IF THE STUDY DESIGN CALLED FOR CERTAIN NUMBERS AT A      
+                    GIVEN RANK OR A GIVEN AGE, THE RESEARCH TEAM HAD ACCESS TO   
+                    THE SOLDIER,S FORM 20 CARDS CONTAINING ALL SUCH INFORMATION. 
+                    FOR ANY DESIRED CATEGORY OF MEN THESE CARDS COULD BE SAMPLED 
+                    AT RANDOM AND THE MEN WHOSE NAMES WERE DRAWN COULD BE        
+                    ORDERED TO APPEAR AT A DESIGNATED TIME AND PLACE.            
+0                3. QUESTIONNAIRE ADMINISTRATION: NORMALLY A SAMPLE OF ABOUT     
+                    FIFTY ENLISTED MEN WERE ASSEMBLED BY ORDER OF THEIR UNIT     
+                    COMMANDER AT A PLACE CONVENIENT FOR WRITING.  THE CLASS      
+                    LEADER WAS ALMOST ALWAYS AN ENLISTED MAN TRAINED FOR THE     
+                    PURPOSE.  THE QUESTIONNAIRES WERE FILLED OUT ANONYMOUSLY BY  
+                    THE MEN, IT HAVING BEEN ESTABLISHED THAT NO SIGNIFICANT      
+                    DIFFERENCES OCCURRED IN RESPONSES WITH PERSONAL INTERVIEWS.  
+                    MEN WITH LITTLE EDUCATION OR WHO WERE HAVING DIFFICULTY      
+                    READING THE QUESTIONNAIRE WERE INTERVIEWED INDIVIDUALLY      
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE   3                    
+0                   (PERSONALLY INTERVIEWED NEGRO TROOPS HAD NEGRO               
+                    INTERVIEWERS).                                               
+0                4. CHECKING THE ADEQUACY OF THE SAMPLE AFTER IT WAS TAKEN:      
+                    AFTER EACH SURVEY THE SAMPLING EXPERTS CHECKED THE RETURNS   
+                    TO SEE WHETHER LARGE BIASES HAD OCCURRED ON VARIABLES FOR    
+                    WHICH DATA WERE AVAILABLE FOR THE UNIVERSE - SUCH AS RANK,   
+                    LENGTH OF TIME IN THE ARMY, AGE, ETC.  IN A FEW INSTANCES,   
+                    THE SAMPLE REVEALED A BIAS; WHEN FEASIBLE A CORRECTIVE SAMPLE
+                    WAS DRAWN IMMEDIATELY.  IT WAS FELT THAT BIASES INTRODUCED   
+                    BY SAMPLING DESIGNS AND THEIR FIELD EXECUTION WERE VERY      
+                    SMALL AS COMPARED WITH THOSE ATTRIBUTABLE TO THE WORDING OF  
+                    QUESTIONS.  MUCH EFFORT WAS PUT INTO IMPROVING METHODS OF    
+                    QUESTION DESIGN.                                             
+0                RESPONSE DATA:  RPORC RESPONSE DATA FILE IS IN BCD FORMAT ON    
+                                 TAPE.  DATA HAVE BEEN CLEANED AND THE FINAL CODE
+                                 IS NUMERIC (0-9).  STRAY PUNCHES HAVE BEEN      
+                                 RECODED AS THE "NO CODE OR NO DATA" RESPONSE.   
+                                 TAPES MAY BE ORDERED ACCORDING TO THE FOLLOWING 
+                                 OPTIONS:                                        
+                                    A. 7 TRACK - 200, 556, OR 800 BPI            
+                                    B. 9 TRACK - 800 BPI                         
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE   4                    
+0                                                                                
+0                ROPER CENTER CODEBOOK EXPLANATION                               
+0                QUESTIONS AND RELATED INFORMATION                               
+                     Q.        QUESTION                                          
+                     N.        DATA PROVIDED BY INTERVIEWER WITHOUT VERBAL       
+                               INTERACTION                                       
+                     V.        VARIABLE - INTRODUCED BY PRIMARY RESEARCH         
+                               ORGANIZATION                                      
+                     F.        FILTER QUESTION INFORMATION                       
+                     CARD.     CARD NUMBER INDICATOR                             
+                     DECK.     SURVEY NUMBER INDICATOR                           
+                     BALLOT.   RESPONDENT ID NUMBER INDICATOR                    
+                     WEIGHT.   CODE INDICATOR FOR DUPLICATE CARDS IN WEIGHTED    
+                               SAMPLES                                           
+                     SPLIT.    CODE INDICATOR IN SPLIT-BALLOT (SPLIT-FORM)       
+                               SURVEY                                            
+                     SEC.      SPECIAL CODING INTRODUCED IN SECONDARY RESEARCH - 
+                               NOT USED IN THE ORIGINAL CODEBOOK                 
+0                RESPONSES AND RELATED INFORMATION                               
+                     R.        RESPONDENT CHOICE IN CLOSED QUESTIONS             
+                     A.        RESPONDENT CHOICE IN SELF-ADMINISTERED QUESTIONS  
+                     C.        RESPONDENT CHOICE CODED BY CODER (OPEN QUESTIONS) 
+                               OR INTERVIEWER CHOICE WITH N. ITEMS               
+                     J.        RESPONDENT CHOICE CODED BY SECONDARY CODER        
+                     U.        CODING METHOD UNKNOWN                             
+                     Y.        DATA INSERTED BY RPORC                            
+                     ANP       ACTUAL NUMBER PUNCHED                             
+0                OTHER INFORMATION                                               
+                     S.        GENERAL SURVEY DESCRIPTION (SUMMARY)              
+                     E.        SURVEY ORGANIZATION EXPLANATORY MATERIAL          
+                     P.        PROLOGUE OR PREAMBLE (PRECEDES ACTUAL QUESTION)   
+                     I.        INSTRUCTIONS TO INTERVIEWER                       
+                     READ.     SIGNALS USE OF MATERIAL (CARD, PHOTOGRAPHS, ETC.) 
+                               HANDED TO RESPONDENT BY INTERVIEWER               
+                     Z.        INSTRUCTIONS TO CODER                             
+                     X.        RPORC COMMENTS                                    
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE   5                    
+0                                                                                
+0                CARD 1                                                          
+0                CARD.                                                           
+0                C. COL. 1.                                                      
+0           403   1. CARD ONE                                                    
+0                DECK.                                                           
+0                Y. COLS. 2-4.                                                   
+0         160. SURVEY NUMBER                                                     
+0                BALLOT.                                                         
+0                Y. COLS. 5-7.                                                   
+0                X. BALLOT NUMBER GENERATED BY ROPER CENTER.                     
+0                FORM.                                                           
+0                Y. COL. 8.                                                      
+0           403   1. S-160A                                                      
+              0   2. S-160B                                                      
+0                Q.1. WHAT IS YOUR RANK OR GRADE*                                
+0                R. COL. 9.                                                      
+0           127   1. PRIVATE                                                     
+             89   2. PRIVATE FIRST CLASS                                         
+             85   3. CORPORAL OR TECH 5                                          
+             44   4. SERGEANT OR TECH 4                                          
+             32   5. STAFF SERGEANT OR TECH 3                                    
+             11   6. TECHNICAL SERGEANT, MASTER SERGEANT, OR FIRST SERGEANT      
+             15   0. NO ANSWER                                                   
+0                Q.2. WHAT BRANCH OF THE ARMY ARE YOU IN NOW*                    
+0                R. COLS. 10-11.                                                 
+             46   01. ENGINEERS                                                  
+             26   02. FIELD ARTILLERY                                            
+             66   03. QUARTERMASTER CORPS                                        
+             95   04. INFANTRY                                                   
+             31   05. MEDICAL CORPS                                              
+             12   06. ARMORED COMMAND                                            
+             33   07. SIGNAL CORPS                                               
+              2   08. COAST ARTILLERY AND ANTI-AIRCRAFT                          
+              0   09. AIR CORPS                                                  
+0            40   10. TRANSPORTATION CORPS                                       
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE   6                    
+0            25   11. ORDNANCE DEPARTMENT                                        
+0             0   12. CHEMICAL WARFARE SERVICE                                   
+0            12   13. MILITARY POLICE                                            
+0             2   14. OTHER                                                      
+             13   00. NO ANSWER                                                  
+0                Q.3. WHAT IS YOUR MAIN ARMY JOB AT THE PRESENT TIME*  (TELL     
+                      EXACTLY WHAT IT IS, AS "SQUAD LEADER IN RIFLE COMPANY",    
+                      "DRIVER IN HEAVY TRUCKING COMPANY", "TANK COMMANDER        
+                      (MEDIUM TANKS)", "COOK IN REGIMENTAL MESS", "CLERK IN      
+                      DIVISION CP", OR WHATEVER YOUR JOB IS.)                    
+0                R. COL. 12.                                                     
+0            79   1. LINE JOB IN INFANTRY CO.                                    
+             15   2. NON-LINE JOB IN INFANTRY CO.                                
+              1   3. INFANTRY JOB - NOT IN LINE CO.                              
+              9   4. ARMORED COMMAND LINE JOB                                    
+              4   5. TANK DESTROYERS JOB                                         
+             25   6. FIELD ARTILLERY JOB                                         
+            231   7. SOS JOB                                                     
+              1   8. UNCLASSIFIED                                                
+             38   0. NO ANSWER                                                   
+0                Q.4. HOW LONG HAVE YOU BEEN OVERSEAS*                           
+0                R. COL. 13.                                                     
+0            58   1. LESS THAN 3 MONTHS                                          
+             49   2. 3 MONTHS TO 6 MONTHS                                        
+            121   3. 6 MONTHS TO 1 YEAR                                          
+            130   4. 1 YEAR TO 2 YEARS                                           
+             33   5. OVER 2 YEARS                                                
+             12   0. NO ANSWER                                                   
+0                Q.5A. HOW LONG HAVE YOU HAD YOUR FIELD JACKET*                  
+0                R. COLS. 14-15.                                                 
+             23   01. ONE MONTH                                                  
+             51   02. TWO MONTHS                                                 
+             63   03. THREE MONTHS                                               
+             53   04. FOUR MONTHS                                                
+             28   05. FIVE MONTHS                                                
+             55   06. SIX MONTHS                                                 
+             55   07. SEVEN TO EIGHT MONTHS                                      
+             18   08. NINE TO TEN MONTHS                                         
+             13   09. ELEVEN TO TWELVE MONTHS                                    
+0            13   10. THIRTEEN TO EIGHTEEN MONTHS                                
+0             8   11. OVER EIGHTEEN MONTHS                                       
+             23   00. NO ANSWER                                                  
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE   7                    
+0                Q.5B. WHAT KIND OF CONDITION WOULD YOU SAY IT IS IN NOW*        
+0                R. COL. 16.                                                     
+0            42   1. VERY GOOD                                                   
+            102   2. GOOD                                                        
+            177   3. FAIR                                                        
+             41   4. POOR                                                        
+             20   5. VERY POOR                                                   
+              1   6. DO NOT HAVE A FIELD JACKET                                  
+             20   0. NO ANSWER                                                   
+0                Q.5C. ABOUT HOW MUCH LONGER DO YOU EXPECT IT WILL WEAR*         
+0                R. COLS. 17-18.                                                 
+             56   01. ONE MONTH                                                  
+             85   02. TWO MONTHS                                                 
+             52   03. THREE MONTHS                                               
+             34   04. FOUR MONTHS                                                
+             50   05. FIVE OR SIX MONTHS                                         
+             14   06. SEVEN OR EIGHT MONTHS                                      
+             10   07. NINE OR TEN MONTHS                                         
+             18   08. 11 MONTHS OR MORE                                          
+              5   09. DON,T KNOW                                                 
+0            26   10. INDEFINTE PERIOD INDICATING A "SHORT TIME"                 
+0             7   11. INDEFINITE PERIOD INDICATING A "LONG TIME"                 
+             46   00. NO ANSWER                                                  
+0                Q.6A. IF YOU HAD YOUR CHOICE, WHICH OF THE FOLLOWING WOULD YOU  
+                       RATHER HAVE*                                              
+0                R. COL. 19.                                                     
+0            62   1. FIELD JACKET                                                
+             11   2. "NEW" FIELD JACKET (LONG TYPE)                              
+            295   3. COMBAT JACKET                                               
+             25   4. SOME OTHER KIND OF FIELD JACKET OR COAT                     
+             10   0. NO ANSWER                                                   
+0                X. QUESTION 6B NOT CODED.                                       
+0                Q.6B. WHAT ARE THE REASONS FOR YOUR ANSWER*                     
+0                Q.7. DO YOU THINK THE PRESENT FIELD JACKET IS THE RIGHT COLOR*  
+                      IF NO, WHAT COLOR WOULD YOU RECOMMEND*                     
+0                R. COL. 20.                                                     
+0           276   1. YES                                                         
+             11   2. NO, AND NO COLOR MENTIONED                                  
+            104   3. NO, AND SOME COLOR MENTIONED                                
+             12   0. NO ANSWER                                                   
+0                Q.8. HAVE YOU SEEN A GERMAN GARMENT USED FOR THE SAME PURPOSE   
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE   8                    
+0                     AS OUR FIELD JACKET THAT YOU THINK IS BETTER THAN OURS*    
+                      IF YES, DESCRIBE IT BRIEFLY.                               
+0                R. COL. 21.                                                     
+0           353   1. NO                                                          
+              4   2. YES, AND NOTHING DESCRIBED                                  
+             21   3. YES, AND SOMETHING DESCRIBED                                
+             25   0. NO ANSWER                                                   
+0                Q.9A. THINK OF THE WEATHER YOU HAVE HAD DURING THE PAST MONTH.  
+                       WHICH OF THE FOLLOWING HAVE YOU USUALLY WORN DURING THE   
+                       COLDER PERIODS*                                           
+0                Q.9A1. FIELD JACKET*                                            
+0                R. COL. 22.                                                     
+0           291   1. ITEM CHECKED                                                
+            112   2. ITEM NOT CHECKED                                            
+0                Q.9A2. COMBAT JACKET*                                           
+0                R. COL. 23.                                                     
+0            66   1. ITEM CHECKED                                                
+            337   2. ITEM NOT CHECKED                                            
+0                Q.9A3. MACKINAW*                                                
+0                R. COL. 24.                                                     
+0            59   1. ITEM CHECKED                                                
+            344   2. ITEM NOT CHECKED                                            
+0                Q.9A4. SWEATER*                                                 
+0                R. COL. 25.                                                     
+0            83   1. ITEM CHECKED                                                
+            320   2. ITEM NOT CHECKED                                            
+0                Q.9A5. LIGHT UNDERWEAR TOP*                                     
+0                R. COL. 26.                                                     
+0            89   1. ITEM CHECKED                                                
+            314   2. ITEM NOT CHECKED                                            
+0                Q.9A6. HEAVY UNDERWEAR TOP*                                     
+0                R. COL. 27.                                                     
+0           257   1. ITEM CHECKED                                                
+            146   2. ITEM NOT CHECKED                                            
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE   9                    
+0                Q.9A7. EXTRA LINER FOR FIELD JACKET*                            
+0                R. COL. 28.                                                     
+0             7   1. ITEM CHECKED                                                
+            396   2. ITEM NOT CHECKED                                            
+0                Q.9A8. OVERCOAT*                                                
+0                R. COL. 29.                                                     
+0            95   1. ITEM CHECKED                                                
+            308   2. ITEM NOT CHECKED                                            
+0                Q.9B. WOULD YOU HAVE WORN OTHER PIECES OF CLOTHING IF YOU       
+                       COULD HAVE GOTTEN THEM*  IF YES, WHAT ARTICLES OF         
+                       CLOTHING WERE NEEDED*                                     
+0                R. COL. 30.                                                     
+0           167   1. NO, THIS WAS ENOUGH                                         
+              8   2. YES, NOTHING SPECIFIED                                      
+            204   3. YES, SOMETHING SPECIFIED                                    
+             24   0. NO ANSWER                                                   
+0                Q.10A. HOW LONG HAVE YOU HAD YOUR RAINCOAT*                     
+0                R. COLS. 31-32.                                                 
+             22   01. ONE MONTH                                                  
+             35   02. TWO MONTHS                                                 
+             59   03. THREE MONTHS                                               
+             40   04. FOUR MONTHS                                                
+             18   05. FIVE MONTHS                                                
+             39   06. SIX MONTHS                                                 
+             81   07. SEVEN TO TWELVE MONTHS                                     
+             86   08. THIRTEEN MONTHS AND OVER                                   
+              0   09. DON,T KNOW                                                 
+0             1   10. INDEFINITE PERIOD INDICATING "SHORT TIME"                  
+0             1   11. INDEFINITE PERIOD INDICATING "LONG TIME"                   
+             21   00. NO ANSWER                                                  
+0                Q.10B. WHAT KIND OF CONDITION WOULD YOU SAY IT IS IN NOW*       
+0                R. COL. 33.                                                     
+0            67   1. VERY GOOD                                                   
+            101   2. GOOD                                                        
+            107   3. FAIR                                                        
+             71   4. POOR                                                        
+             37   5. VERY POOR                                                   
+              5   6. DO NOT HAVE A RAINCOAT                                      
+             15   0. NO ANSWER                                                   
+0                Q.10C. ABOUT HOW MUCH LONGER DO YOU EXPECT IT WILL WEAR*        
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE  10                    
+0                R. COLS. 34-35.                                                 
+             34   01. ONE MONTH                                                  
+             37   02. TWO MONTHS                                                 
+             30   03. THREE MONTHS                                               
+             28   04. FOUR MONTHS                                                
+              4   05. FIVE MONTHS                                                
+             61   06. SIX MONTHS                                                 
+             52   07. SEVEN TO TWELVE MONTHS                                     
+             14   08. THIRTEEN MONTHS AND OVER                                   
+              0   09. DON,T KNOW                                                 
+0            45   10. INDEFINITE PERIOD INDICATING "SHORT TIME"                  
+0            51   11. INDEFINITE PERIOD INDICATING "LONG TIME"                   
+             47   00. NO ANSWER                                                  
+0                X. QUESTIONS 11A, 11B AND 11C NOT CODED.                        
+0                Q.11A. WHAT ARE THE BEST FEATURES, OR THE THINGS YOU LIKE MOST, 
+                        ABOUT THIS RAINCOAT*                                     
+0                Q.11B. WHAT ARE THE MAIN DISADVANTAGES, OR THINGS YOU DON,T     
+                        LIKE ABOUT THE RAINCOAT*                                 
+0                Q.11C. WHAT IMPROVEMENTS, IF ANY, DO YOU THINK SHOULD BE MADE*  
+0                Q.12A. HAVE YOU SEEN A GERMAN GARMENT THAT YOU THINK IS BETTER  
+                        THAN OUR GI RAINCOAT*  IF YES, DESCRIBE IT BRIEFLY.      
+0                R. COL. 36.                                                     
+0           305   1. NO                                                          
+              2   2. YES, NOTHING DESCRIBED                                      
+             37   3. YES, SOMETHING DESCRIBED                                    
+             59   0. NO ANSWER                                                   
+0                P. IN ANSWERING THE NEXT QUESTIONS ABOUT THE GI OVERCOAT, IF    
+                    YOU DO NOT NOW HAVE AN OVERCOAT, ANSWER IN TERMS OF THE LAST 
+                    ONE YOU HAD.                                                 
+0                Q.13. WHICH WOULD YOU RATHER WEAR IN VERY COLD WEATHER - AN     
+                       ISSUE OVERCOAT OR A MACKINAW*                             
+0                R. COL. 37.                                                     
+0           166   1. WOULD RATHER WEAR THE MACKINAW                              
+            220   2. WOULD RATHER WEAR THE OVERCOAT                              
+             17   0. NO ANSWER                                                   
+0                Q.14A. IS YOUR GI OVERCOAT WARM ENOUGH FOR VERY COLD WEATHER*   
+0                R. COL. 38.                                                     
+0           191   1. YES, ALMOST ALWAYS                                          
+            175   2. YES, USUALLY                                                
+             22   3. NO, OFTEN NOT WARM ENOUGH                                   
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE  11                    
+0            15   0. NO ANSWER                                                   
+0                Q.14B. WHICH OF THE FOLLOWING WOULD YOU SAY BEST TELLS ABOUT    
+                        THE LENGTH OF THE COAT*                                  
+0                R. COL. 39.                                                     
+0            66   1. IT IS TOO LONG                                              
+              0   2. IT IS TOO LONG, QUALIFIED BY COMMENT                        
+            299   3. IT IS JUST ABOUT THE RIGHT LENGTH                           
+              2   4. IT IS JUST ABOUT THE RIGHT LENGTH, QUALIFIED BY COMMENT     
+             19   5. IT IS TOO SHORT                                             
+              0   6. IT IS TOO SHORT, QUALIFIED BY COMMENT                       
+             17   0. NO ANSWER                                                   
+0                X. QUESTION 15 NOT CODED.                                       
+0                Q.15. WHAT IMPROVEMENTS IN THE MATERIAL OR DESIGN OF THE        
+                       OVERCOAT WOULD YOU SUGGEST*                               
+0                Q.16. WHICH ONE OF THE FOLLOWING WOULD YOU RATHER HAVE FOR      
+                       GENERAL ALL-ROUND WINTER WEAR*                            
+0                R. COL. 40.                                                     
+0           104   1. GI OVERCOAT                                                 
+              3   2. GI OVERCOAT, QUALIFIED BY COMMENT                           
+            122   3. MACKINAW                                                    
+              2   4. MACKINAW, QUALIFIED BY COMMENT                              
+            153   5. TRENCHCOAT WITH DETACHABLE LINER                            
+              0   6. TRENCHCOAT WITH DETACHABLE LINER, QUALIFIED BY COMMENT      
+             19   0. NO ANSWER                                                   
+0                Q.17A. ARE YOU NOW WEARING LONG WOOLEN UNDERWEAR*               
+0                R. COL. 41.                                                     
+0            87   1. WEARING BOTH TOP AND BOTTOM PARTS                           
+            234   2. WEARING TOP PART ONLY                                       
+              7   3. WEARING BOTTOM PART ONLY                                    
+             63   4. AM NOT WEARING EITHER PART                                  
+             12   0. NO ANSWER                                                   
+0                Q.17B. IF YOU ARE NOT WEARING THIS UNDERWEAR, WHAT IS THE       
+                        REASON*                                                  
+0                R. COL. 42.                                                     
+0           132   1. BECAUSE I DON,T WANT IT                                     
+             41   2. BECAUSE I CAN,T GET IT                                      
+            230   0. NO ANSWER                                                   
+0                Q.18A. HOW MANY BLANKETS DO YOU ORDINARILY USE AT PRESENT*      
+0                R. COL. 43.                                                     
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE  12                    
+0             1   1. ONE                                                         
+            107   2. TWO                                                         
+            156   3. THREE                                                       
+            129   4. FOUR                                                        
+             10   0. NO ANSWER                                                   
+0                Q.18B. IS THIS ENOUGH TO KEEP YOU WARM*                         
+0                R. COL. 44.                                                     
+0           173   1. YES                                                         
+            214   2. NO                                                          
+             16   0. NO ANSWER                                                   
+0                Q.19. HOW DO YOU USUALLY CARRY YOUR BLANKETS*                   
+0                R. COL. 45.                                                     
+0           102   1. FOLDED INTO DUFFLE BAG OR SIMILAR CONTAINER                 
+            177   2. WRAPPED IN SHELTER HALF AND ROLLED                          
+             44   3. IN A PACK                                                   
+              0   4. FOLDED OVER CANTEEN BELT                                    
+              1   5. SOME OTHER WAY, BUT NOTHING WRITTEN IN                      
+             19   6. SOME OTHER WAY, AND SOMETHING WRITTEN IN                    
+              9   7. CHECKED 2 AND 3                                             
+             16   8. CHECKED 1 AND 3                                             
+             24   9. ALL OTHER COMBINATIONS                                      
+             11   0. NO ANSWER                                                   
+0                X. QUESTION 20 NOT CODED.                                       
+0                Q.20. WHAT IMPROVEMENTS, IF ANY, WOULD YOU SUGGEST IN THE       
+                       MATERIAL OR DESIGN OF THE BLANKETS*                       
+0                Q.21A. DO YOU HAVE AN INFANTRY FIELD PACK (HAVERSACK)*          
+0                R. COL. 46.                                                     
+0           295   1. YES                                                         
+             91   2. NO                                                          
+             17   0. NO ANSWER                                                   
+0                Q.21B. DO YOU NEED ONE*                                         
+0                R. COL. 47.                                                     
+0            47   1. YES                                                         
+            251   2. NO                                                          
+             32   3. UNDECIDED                                                   
+             73   0. NO ANSWER                                                   
+0                P. IF YOU USE AN INFANTRY FIELD PACK (HAVERSACK), ANSWER THE    
+                    FOLLOWING QUESTIONS (QUESTIONS 22, 23, AND 24).  IF YOU DO   
+                    NOT USE AN INFANTRY PACK, GO ON TO QUESTION 25.              
+0                X. QESTIONS 22A AND 22B NOT CODED.                              
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE  13                    
+0                Q.22A. WHAT ARE THE BEST FEATURES, OR THINGS YOU LIKE BEST,     
+                        ABOUT THE HAVERSACK*                                     
+0                Q.22B. WHAT ARE THE MAIN DISADVANTAGES, OR THINGS YOU DON,T     
+                        LIKE, ABOUT THE HAVERSACK*                               
+0                Q.23. DO WE HAVE SOME OTHER PACK OR CARRYING BAG THAT YOU       
+                       THINK IS BETTER THAN THE INFANTRY PACK*  IF YES, WHAT     
+                       IS IT*                                                    
+0                R. COL. 48.                                                     
+0           136   1. NO                                                          
+             63   2. YES, MUSETTE BAG                                            
+             20   3. YES, SOMETHING ELSE SPECIFIED                               
+              2   4. YES, NOTHING ELSE SPECIFIED                                 
+            182   9. INAPPLICABLE, NO ANSWER                                     
+0                Q.24A. HAVE YOU SEEN A GERMAN PACK OR CARRYING BAG THAT YOU     
+                        THINK IS BETTER THAN OUR INFANTRY PACK*  IF YES, DESCRIBE
+                        IT BRIEFLY.                                              
+0                R. COL. 49.                                                     
+0           214   1. NO                                                          
+              4   2. YES, NOTHING SPECIFIED                                      
+              7   3. YES, SOMETHING SPECIFIED                                    
+            178   9. INAPPLICABLE, NO ANSWER                                     
+0                X. QUESTION 24C NOT CODED.                                      
+0                Q.24C. WHAT ARE ITS MAIN ADVANTAGES*                            
+0                Q.25A. DO YOU HAVE A MUSETTE BAG ("BAG, CANVAS, FIELD")*        
+0                R. COL. 50.                                                     
+0           104   1. YES                                                         
+            241   2. NO                                                          
+             58   0. NO ANSWER                                                   
+0                Q.25B. DO YOU NEED ONE*                                         
+0                R. COL. 51.                                                     
+0           102   1. YES                                                         
+            148   2. NO                                                          
+             53   3. UNDECIDED                                                   
+            100   0. NO ANSWER                                                   
+0                P. IF YOU HAVE A MUSETTE BAG ("BAG, CANVAS, FIELD"), ANSWER     
+                    THE FOLLOWING QUESTIONS (QUESTIONS 26, 27, AND 28).  IF YOU  
+                    DO NOT USE A MUSETTE BAG, GO ON TO QUESTION 29.              
+0                X. QUESTIONS 26A AND 26B NOT CODED.                             
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE  14                    
+0                Q.26A. WHAT ARE THE BEST FEATURES, OR THINGS YOU LIKE BEST,     
+                        ABOUT THE MUSETTE BAG*                                   
+0                Q.26B. WHAT ARE THE MAIN DISADVANTAGES, OR THINGS YOU DON,T     
+                        LIKE, ABOUT THE MUSETTE BAG*                             
+0                Q.27. DO WE HAVE SOME OTHER CARRYING BAG OR PACK THAT YOU       
+                       THINK IS BETTER THAN THE MUSETTE BAG*  IF YES, WHAT*      
+0                R. COL. 52.                                                     
+0            81   1. NO                                                          
+              6   2. YES, NOTHING SPECIFIED                                      
+              3   3. YES, SOMETHING SPECIFIED                                    
+            313   9. INAPPLICABLE, NO ANSWER                                     
+0                Q.28A. HAVE YOU SEEN A GERMAN CARRYING BAG OR PACK THAT YOU     
+                        THINK IS BETTER THAN THE MUSETTE BAG*  IF YES, DESCRIBE  
+                        IT BRIEFLY.                                              
+0                R. COL. 53.                                                     
+0           101   1. NO                                                          
+              1   2. YES, NOTHING SPECIFIED                                      
+              1   3. YES, SOMETHING SPECIFIED                                    
+            300   9. INAPPLICABLE, NO ANSWER                                     
+0                X. Q.28C NOT CODED.                                             
+0                Q.28C. WHAT ARE ITS MAIN ADVANTAGES*                            
+0                Q.29. WITH YOUR PRESENT PACK OR CARRYING BAG, DO YOU HAVE ENOUGH
+                       POCKETS IN YOUR CLOTHES FOR CARRYING THINGS*              
+0                R. COL. 54.                                                     
+0           279   1. YES, HAVE ENOUGH POCKETS                                    
+             97   2. NO, NEED MORE POCKETS                                       
+             27   0. NO ANSWER                                                   
+0                Q.30. IF AN ADDITIONAL POCKET, OR POCKETS, WERE TO BE           
+                       INCLUDED IN THE UNIFORM, WHERE DO YOU THINK THE POCKET    
+                       OR POCKETS SHOULD BE PUT*  (CHECK THE STATEMENT THAT      
+                       BEST TELLS WHAT YOU WOULD RECOMMEND.)                     
+0                R. COL. 55.                                                     
+0           214   1. I THINK THERE ARE ENOUGH POCKETS NOW                        
+             12   2. ONE LARGE OUTSIDE CARGO POCKET ON THE LEFT SIDE OF THE PANTS
+              6   3. ONE LARGE OUTSIDE CARGO POCKET ON THE RIGHT SIDE OF THE     
+                     PANTS                                                       
+             24   4. TWO OUTSIDE CARGO POCKETS, ONE ON EACH SIDE OF THE PANTS    
+             56   5. AN EXTRA POCKET ON THE FIELD JACKET, PLACE SPECIFIED        
+              3   6. AN EXTRA POCKET ON THE FIELD JACKET, PLACE NOT SPECIFIED    
+             10   7. SOME OTHER IDEA                                             
+             78   0. NO ANSWER                                                   
+1                                                                                
+0        ROPER CENTER - AMS160A                      PAGE  15                    
+0                Q.31. THE SPACE BELOW IS FOR ANY OTHER COMMENTS OR SUGGESTIONS  
+                       YOU WANT TO MAKE ABOUT QUARTERMASTER SUPPLIES OR          
+                       EQUIPMENT.                                                
+0                C. COL. 56.                                                     
+0           200   1. SOME COMMENT                                                
+            203   0. NO COMMENT                                                  
+0                Q.32. AT THE PRESENT WHERE DO YOU KEEP YOUR GAS MASK*           
+0                R. COL. 57.                                                     
+0            55   1. USUALLY CARRY IT ON ME                                      
+             54   2. USUALLY LEAVE IT IN A CONVENIENT VEHICLE                    
+             64   3. HAVE IT IN STORAGE WITH THE SERVICE COMPANY                 
+            163   4. SOMEWHERE ELSE, PLACE SPECIFIED                             
+             36   5. SOMEWHERE ELSE, PLACE NOT SPECIFIED                         
+              5   6. I DO NOT HAVE A GAS MASK                                    
+             26   0. NO ANSWER                                                   
+0                Q.33A. HAVE YOU EVER KNOWN ANYONE TO THROW AWAY OR DISCARD      
+                        THEIR GAS MASK*                                          
+0                R. COL. 58.                                                     
+0           330   1. NO                                                          
+             40   2. YES                                                         
+             33   0. NO ANSWER                                                   
+0                Q.33B. HAVE YOU YOURSELF EVER THROWN AWAY OR DISCARDED YOUR     
+                        GAS MASK*                                                
+0                R. COL. 59.                                                     
+0           365   1. NO                                                          
+              7   2. YES                                                         
+             31   0. NO ANSWER                                                   
+0                X. Q.33C NOT CODED.                                             
+0                Q.33C. IF YOU HAVE ANY COMMENTS, WRITE THEM HERE:               
+0                V.34. CAMP AND OUTFIT IDENTIFICATION:                           
+0                X. CODES NOT PROVIDED BY SURVEY ORGANIZATION.  DATA TRANSFERRED 
+                    AS IS.                                                       
+0                U. COLS. 60-62. ANP                                             
+0                X. COLS. 63-80 NOT USED.                                        
+1                                                                                

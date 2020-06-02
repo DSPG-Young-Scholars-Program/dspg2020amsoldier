@@ -1,0 +1,941 @@
+1                                                                                
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE   1                    
+0                                                                                
+0                SURVEY IDENTIFICATION                                           
+0                1. PROJECT:             THE AMERICAN SOLDIER IN WORLD WAR II    
+0                2. TITLE:               ATTITUDES IN FIGHTER COMMAND            
+0                3. DATE:                DECEMBER, 1943 - MARCH, 1944            
+0                4. SURVEY NUMBER:       S-113                                   
+0                5. PROJECT DIRECTOR:    DR. SAMUEL A. STOUFFER                  
+0                6. PROJECT SPONSOR:     RESEARCH BRANCH                         
+                                         INFORMATION AND EDUCATION DIVISION      
+                                         WAR DEPARTMENT                          
+0                7. PUBLICATION:                                                 
+                    STUDIES IN SOCIAL PSYCHOLOGY IN WORLD WAR II: VOLUMES I-IV   
+                       (PRINCETON UNIVERSITY PRESS)                              
+                    VOL. I (1949): THE AMERICAN SOLDIER: ADJUSTMENT DURING ARMY  
+                       LIFE.  SAMUEL A. STOUFFER, EDWARD A. SUCHMAN, LELAND C.   
+                       DEVINNEY, SHIRLEY A. STAR, ROBIN M. WILLIAMS, JR.         
+                    VOL. II (1949): THE AMERICAN SOLDIER: COMBAT AND ITS         
+                       AFTERMATH. SAMUEL A. STOUFFER, ARTHUR A. LUMSDAINE,       
+                       MARION HARPER LUMSDAINE, ROBIN M. WILLIAMS, JR.           
+                       M. BREWSTER SMITH, IRVING L. JANIS. SHIRLEY A. STAR,      
+                       LEONARD S. COTTRELL, JR.                                  
+                    VOL. III (1949): EXPERIMENTS ON MASS COMMUNICATION.          
+                       CARL I. HOVLAND, ARTHUR A. LUMSDAINE, FRED D. SHEFFIELD.  
+                    VOL. IV (1950): MEASUREMENT AND PREDICTION. SAMUEL A.        
+                       STOUFFER, LOUIS GUTTMAN, EDWARD A. SUCHMAN, PAUL F.       
+                       LAZARSFELD, SHIRLEY STAR, JOHN A. CLAUSEN.                
+0                8. DUPLICATES AVAILABLE FROM:                                   
+                               THE ROPER PUBLIC OPINION RESEARCH CENTER          
+                               P.O. BOX 624                                      
+                               WILLIAMSTOWN, MASSACHUSETTS 01267                 
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE   2                    
+0                                                                                
+0                SAMPLE INFORMATION                                              
+0                1. POPULATION UNIVERSE: FIGHTER COMMAND GROUPS                  
+                                         EUROPEAN THEATER OF OPERATIONS.         
+                                         (DOCUMENTATION DOES NOT SPECIFY RACE.)  
+0                2. SAMPLE SIZE:         2985 (2 CARDS PER RESPONDENT)           
+0                METHOD OF SAMPLING AND DATA COLLECTION                          
+                    FOR THE GENERAL CASE, SAMPLING WAS A TWO-STEP PROCESS.       
+                    FIRST, THERE WAS SAMPLING OF ORGANIZATIONS WHICH CAN BE      
+                    DESCRIBED AS PURPOSIVE OR QUOTA SAMPLING.  SECOND,           
+                    WITHIN AN ORGANIZATION THERE WAS SAMPLING OF INDIVIDUALS     
+                    INVOLVING PROCEDURES WHICH MIGHT BE CALLED PROBABILITY       
+                    SAMPLING.                                                    
+0                1. SELECTION OF ORGANIZATIONS TO BE INCLUDED IN A STUDY: THE    
+                    SELECTION OF UNITS INVOLVED PURPOSIVE RATHER THAN STRICTLY   
+                    RANDOM SAMPLING.  IF A CROSS-SECTION OF ENLISTED MEN IN      
+                    THE UNITED STATES OR A THEATER WAS REQUIRED, THE STANDARD    
+                    PROCEDURE WAS TO SELECT THE UNITS SUCH THAT EACH BRANCH OF   
+                    SERVICE WAS REPRESENTED IN AS NEARLY AS POSSIBLE THE CORRECT 
+                    PROPORTIONS.  THE RESEARCH BRANCH HAD ACCESS TO THE LATEST   
+                    SECRET DATA ON TROOP STRENGTH AND LOCATION OF UNITS.         
+                    WITHIN A GIVEN BRANCH OF SERVICE, EFFORT WAS MADE TO GET     
+                    UNITS IN VARIOUS STAGES OF TRAINING OR WITH VARIOUS TYPES    
+                    OF ARMY EXPERIENCE IN CORRECT PROPORTIONS, IN SO FAR AS THIS 
+                    COULD BE INFERRED FROM AVAILABLE DATA.  HAVING STRATIFIED    
+                    THE UNIVERSE BY BRANCH AND TYPE OF UNIT, ONE OR MORE UNITS   
+                    FROM EACH SUBCELL OF THIS STRATIFIED UNIVERSE WERE DRAWN.    
+                    PRACTICAL CONSIDERATIONS OF TIME AND PERSONNEL USUALLY       
+                    PREVENTED A STRICTLY RANDOM SELECTION OF UNITS WITHIN THE    
+                    SUBCELL; IT WAS MUCH FASTER TO GET A VARIETY OF UNITS AT A   
+                    FEW POSTS THAN ONE UNIT AT MANY POSTS.  PRESELECTION OF UNITS
+                    WAS DONE IN WASHINGTON FOR TROOPS IN THE UNITED STATES OR AT 
+                    THEATER HEADQUARTERS FOR TROOPS OVERSEAS.                    
+0                2. SAMPLING OF INDIVIDUALS WITHIN A UNIT: THE STANDARD PROCEDURE
+                    WAS TO DRAW THE NAMES OF EVERY NTH MAN FROM A DUTY ROSTER.   
+                    OR, IF THE STUDY DESIGN CALLED FOR CERTAIN NUMBERS AT A      
+                    GIVEN RANK OR A GIVEN AGE, THE RESEARCH TEAM HAD ACCESS TO   
+                    THE SOLDIER,S FORM 20 CARDS CONTAINING ALL SUCH INFORMATION. 
+                    FOR ANY DESIRED CATEGORY OF MEN THESE CARDS COULD BE SAMPLED 
+                    AT RANDOM AND THE MEN WHOSE NAMES WERE DRAWN COULD BE        
+                    ORDERED TO APPEAR AT A DESIGNATED TIME AND PLACE.            
+0                3. QUESTIONNAIRE ADMINISTRATION: NORMALLY A SAMPLE OF ABOUT     
+                    FIFTY ENLISTED MEN WERE ASSEMBLED BY ORDER OF THEIR UNIT     
+                    COMMANDER AT A PLACE CONVENIENT FOR WRITING.  THE CLASS      
+                    LEADER WAS ALMOST ALWAYS AN ENLISTED MAN TRAINED FOR THE     
+                    PURPOSE.  THE QUESTIONNAIRES WERE FILLED OUT ANONYMOUSLY BY  
+                    THE MEN, IT HAVING BEEN ESTABLISHED THAT NO SIGNIFICANT      
+                    DIFFERENCES OCCURRED IN RESPONSES WITH PERSONAL INTERVIEWS.  
+                    MEN WITH LITTLE EDUCATION OR WHO WERE HAVING DIFFICULTY      
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE   3                    
+0                   READING THE QUESTIONNAIRE WERE INTERVIEWED INDIVIDUALLY      
+                    (PERSONALLY INTERVIEWED NEGRO TROOPS HAD NEGRO               
+                    INTERVIEWERS).                                               
+0                4. CHECKING THE ADEQUACY OF THE SAMPLE AFTER IT WAS TAKEN:      
+                    AFTER EACH SURVEY THE SAMPLING EXPERTS CHECKED THE RETURNS   
+                    TO SEE WHETHER LARGE BIASES HAD OCCURRED ON VARIABLES FOR    
+                    WHICH DATA WERE AVAILABLE FOR THE UNIVERSE - SUCH AS RANK,   
+                    LENGTH OF TIME IN THE ARMY, AGE, ETC.  IN A FEW INSTANCES,   
+                    THE SAMPLE REVEALED A BIAS; WHEN FEASIBLE A CORRECTIVE SAMPLE
+                    WAS DRAWN IMMEDIATELY.  IT WAS FELT THAT BIASES INTRODUCED   
+                    BY SAMPLING DESIGNS AND THEIR FIELD EXECUTION WERE VERY      
+                    SMALL AS COMPARED WITH THOSE ATTRIBUTABLE TO THE WORDING OF  
+                    QUESTIONS.  MUCH EFFORT WAS PUT INTO IMPROVING METHODS OF    
+                    QUESTION DESIGN.                                             
+0                RESPONSE DATA:  RPORC RESPONSE DATA FILE IS IN BCD FORMAT ON    
+                                 TAPE.  DATA HAVE BEEN CLEANED AND THE FINAL CODE
+                                 IS NUMERIC (0-9).  STRAY PUNCHES HAVE BEEN      
+                                 RECODED AS THE "NO CODE OR NO DATA" RESPONSE.   
+                                 TAPES MAY BE ORDERED ACCORDING TO THE FOLLOWING 
+                                 OPTIONS:                                        
+                                    A. 7 TRACK - 200, 556, OR 800 BPI            
+                                    B. 9 TRACK - 800 BPI                         
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE   4                    
+0                                                                                
+0                ROPER CENTER CODEBOOK EXPLANATION                               
+0                QUESTIONS AND RELATED INFORMATION                               
+                     Q.        QUESTION                                          
+                     N.        DATA PROVIDED BY INTERVIEWER WITHOUT VERBAL       
+                               INTERACTION                                       
+                     V.        VARIABLE - INTRODUCED BY PRIMARY RESEARCH         
+                               ORGANIZATION                                      
+                     F.        FILTER QUESTION INFORMATION                       
+                     CARD.     CARD NUMBER INDICATOR                             
+                     DECK.     SURVEY NUMBER INDICATOR                           
+                     BALLOT.   RESPONDENT ID NUMBER INDICATOR                    
+                     WEIGHT.   CODE INDICATOR FOR DUPLICATE CARDS IN WEIGHTED    
+                               SAMPLES                                           
+                     SPLIT.    CODE INDICATOR IN SPLIT-BALLOT (SPLIT-FORM)       
+                               SURVEY                                            
+                     SEC.      SPECIAL CODING INTRODUCED IN SECONDARY RESEARCH - 
+                               NOT USED IN THE ORIGINAL CODEBOOK                 
+0                RESPONSES AND RELATED INFORMATION                               
+                     R.        RESPONDENT CHOICE IN CLOSED QUESTIONS             
+                     A.        RESPONDENT CHOICE IN SELF-ADMINISTERED QUESTIONS  
+                     C.        RESPONDENT CHOICE CODED BY CODER (OPEN QUESTIONS) 
+                               OR INTERVIEWER CHOICE WITH N. ITEMS               
+                     J.        RESPONDENT CHOICE CODED BY SECONDARY CODER        
+                     U.        CODING METHOD UNKNOWN                             
+                     Y.        DATA INSERTED BY RPORC                            
+                     ANP       ACTUAL NUMBER PUNCHED                             
+0                OTHER INFORMATION                                               
+                     S.        GENERAL SURVEY DESCRIPTION (SUMMARY)              
+                     E.        SURVEY ORGANIZATION EXPLANATORY MATERIAL          
+                     P.        PROLOGUE OR PREAMBLE (PRECEDES ACTUAL QUESTION)   
+                     I.        INSTRUCTIONS TO INTERVIEWER                       
+                     READ.     SIGNALS USE OF MATERIAL (CARD, PHOTOGRAPHS, ETC.) 
+                               HANDED TO RESPONDENT BY INTERVIEWER               
+                     Z.        INSTRUCTIONS TO CODER                             
+                     X.        RPORC COMMENTS                                    
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE   5                    
+0                                                                                
+0                CARD 1                                                          
+0                CARD.                                                           
+0                C. COL. 1.                                                      
+0          2985   1. CARD ONE                                                    
+0                DECK.                                                           
+0                Y. COLS. 2-4.                                                   
+0         113. SURVEY NUMBER                                                     
+0                BALLOT.                                                         
+0                Y. COLS. 5-8.                                                   
+0                X. BALLOT NUMBER GENERATED BY ROPER CENTER.                     
+0                Q.1. WHAT IS YOUR RANK OR GRADE*                                
+0                R. COL. 9.                                                      
+0           365   1. PRIVATE OR PRIVATE FIRST CLASS                              
+            831   2. CORPORAL OR TECHNICIAN 5TH GRADE                            
+            797   3. SERGEANT OR TECHNICIAN 4TH GRADE                            
+            704   4. STAFF SERGEANT OR TECHNICIAN 3RD GRADE                      
+            275   5. TECHNICAL SERGEANT, MASTER SERGEANT OR FIRST SERGEANT       
+             13   0. NO ANSWER                                                   
+0                Q.2. HOW OLD WERE YOU ON YOUR LAST BIRTHDAY*                    
+0                R. COL. 10.                                                     
+0          1477   1. 24 YEARS OR LESS                                            
+            863   2. 25 TO 29 YEARS                                              
+            389   3. 30 TO 34 YEARS                                              
+            240   4. 35 YEARS OR MORE                                            
+             16   0. NO ANSWER                                                   
+0                Q.3. ARE YOU:                                                   
+0                R. COL. 11.                                                     
+0          2058   1. SINGLE                                                      
+            429   2. MARRIED BEFORE JOINING ARMY                                 
+            412   3. MARRIED AFTER JOINING ARMY                                  
+             72   4. WIDOWED, DIVORCED, OR SEPARATED                             
+             14   0. NO ANSWER                                                   
+0                Q.4. CHECK THE ANSWER THAT TELLS BEST HOW FAR YOU WENT IN       
+                      SCHOOL:                                                    
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE   6                    
+0                R. COL. 12.                                                     
+0            98   1. DID NOT FINISH GRADE SCHOOL                                 
+            245   2. FINISHED GRADE SCHOOL                                       
+            789   3. HAD SOME HIGH SCHOOL, BUT DID NOT GRADUATE                  
+           1247   4. GRADUATED FROM HIGH SCHOOL                                  
+            477   5. HAD SOME COLLEGE, BUT DID NOT GRADUATE                      
+             98   6. GRADUATED FROM COLLEGE                                      
+             31   0. NO ANSWER                                                   
+0                Q.5. ABOUT HOW LONG HAVE YOU BEEN IN THE ARMY*                  
+0                R. COL. 13.                                                     
+0             4   1. LESS THAN SIX MONTHS                                        
+            144   2. SIX MONTHS TO ONE YEAR                                      
+           1224   3. ONE YEAR TO EIGHTEEN MONTHS                                 
+            966   4. EIGHTEEN MONTHS TO TWO YEARS                                
+            635   5. OVER TWO YEARS                                              
+             12   0. NO ANSWER                                                   
+0                Q.6. ABOUT HOW LONG HAVE YOU BEEN IN THE BRITISH ISLES*         
+0                R. COL. 14.                                                     
+0           959   1. THREE MONTHS OR LESS                                        
+           1025   2. OVER THREE MONTHS BUT NOT OVER SIX MONTHS                   
+            492   3. SIX MONTHS TO ONE YEAR                                      
+            470   4. ONE YEAR TO EIGHTEEN MONTHS                                 
+             24   5. OVER EIGHTEEN MONTHS                                        
+             15   0. NO ANSWER                                                   
+0                Q.7. IN WHAT STAGE OF TRAINING WAS YOUR SQUADRON WHEN YOU FIRST 
+                      JOINED IT*                                                 
+0                R. COL. 15.                                                     
+0          1844   1. IT WAS JUST BEGINNING TRAINING IN THE U.S.                  
+            307   2. IT WAS ABOUT HALF THROUGH TRAINING IN THE U.S.              
+            456   3. IT HAD FINISHED, OR NEARLY FINISHED, TRAINING IN THE U.S.   
+            151   4. I JOINED THE SQUADRON IN EUROPEAN THEATER OF OPERATIONS     
+                     BEFORE IT WENT ON OPERATIONS                                
+            200   5. I JOINED IN EUROPEAN THEATER OF OPERATIONS AFTER IT WENT    
+                     ON OPERATIONS                                               
+             25   6. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.8. WHICH DEPARTMENT OR SECTION OF THE SQUADRON ARE YOU IN*    
+0                R. COL. 16.                                                     
+0           742   1. ARMAMENT OR ORDNANCE                                        
+            426   2. COMMUNICATIONS (RADIO)                                      
+           1183   3. ENGINEERING                                                 
+            138   4. OPERATIONS, INTELLIGENCE, SQUADRON HEADQUARTERS,            
+                     OR PERSONNEL                                                
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE   7                    
+0           371   5. SUPPLY, MESS, MEDICAL, TRANSPORTATION, OR CHEMICAL WARFARE  
+             80   6. ANY OTHER                                                   
+             43   7. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.9. IF YOU WORK WITH THE AIRPLANES OR THEIR EQUIPMENT, IS      
+                      YOURS A "LINE" JOB OR A "MAINTENANCE" JOB*                 
+0                R. COL. 17.                                                     
+0           861   1. MINE IS A "LINE" JOB                                        
+            432   2. MINE IS A "MAINTENANCE" JOB                                 
+           1024   3. BOTH "LINE" AND "MAINTENANCE" JOB                           
+            427   4. I DO NOT WORK WITH THE PLANES OR EQUIPMENT                  
+             38   5. DON,T KNOW                                                  
+            203   0. NO ANSWER                                                   
+0                Q.10. ON THE WHOLE HOW DO YOU FEEL ABOUT THE ARMY*              
+0                R. COL. 18.                                                     
+0           272   1. I LIKE THE ARMY VERY MUCH                                   
+           1629   2. I LIKE IT FAIRLY WELL                                       
+            709   3. I RATHER DISLIKE IT                                         
+            321   4. I DISLIKE THE ARMY VERY MUCH                                
+             54   0. NO ANSWER                                                   
+0                Q.11. DO YOU THINK YOU MIGHT WANT TO STAY IN THE ARMY AFTER     
+                       THE WAR*                                                  
+0                R. COL. 19.                                                     
+0           109   1. YES, I WOULD WANT TO VERY MUCH                              
+            345   2. YES, I MIGHT WANT TO, BUT I,M NOT SURE                      
+            837   3. NO, I DON,T THINK I WOULD WANT TO                           
+           1421   4. NO, I WOULD NOT WANT TO AT ALL                              
+            255   5. UNDECIDED                                                   
+             18   0. NO ANSWER                                                   
+0                Q.12. ON THE WHOLE, DO YOU THINK THE ARMY IS GIVING YOU A CHANCE
+                       TO SHOW WHAT YOU CAN DO*                                  
+0                R. COL. 20.                                                     
+0           410   1. A VERY GOOD CHANCE                                          
+           1250   2. A FAIRLY GOOD CHANCE                                        
+            800   3. NOT MUCH OF A CHANCE                                        
+            390   4. NO CHANCE AT ALL                                            
+            116   5. UNDECIDED                                                   
+             19   0. NO ANSWER                                                   
+0                Q.13. DO YOU FEEL PROUD OF YOUR SQUADRON*                       
+0                R. COL. 21.                                                     
+0          1619   1. YES, VERY PROUD                                             
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE   8                    
+0           825   2. YES, FAIRLY PROUD                                           
+            377   3. NO, NOT VERY PROUD                                          
+            153   4. UNDECIDED                                                   
+             11   0. NO ANSWER                                                   
+0                Q.14. HOW WELL HAVE YOU BEEN ABLE TO FIT YOURSELF INTO ARMY     
+                       LIFE*                                                     
+0                R. COL. 22.                                                     
+0           984   1. VERY WELL ON THE WHOLE                                      
+           1356   2. PRETTY WELL ON THE WHOLE                                    
+            405   3. FIT IN MORE OR LESS                                         
+            136   4. NOT WELL ON THE WHOLE                                       
+             75   5. HAVEN,T BEEN ABLE TO FIT INTO ARMY LIFE AT ALL              
+             29   0. NO ANSWER                                                   
+0                Q.15. WHEN YOU ARE ON YOUR JOB, HOW ENTHUSIASTIC DO YOU         
+                       USUALLY FEEL ABOUT WHAT YOU ARE DOING*                    
+0                R. COL. 23.                                                     
+0          1263   1. VERY ENTHUSIASTIC                                           
+           1199   2. FAIRLY ENTHUSIASTIC                                         
+            352   3. NOT VERY ENTHUSIASTIC                                       
+            127   4. HAVE NO ENTHUSIASM AT ALL                                   
+             44   0. NO ANSWER                                                   
+0                Q.16. WHICH OF THE FOLLOWING WOULD YOU SAY BEST APPLIES TO      
+                       YOUR JOB*                                                 
+0                R. COL. 24.                                                     
+0           614   1. TIME ALWAYS PASSES QUICKLY                                  
+           1124   2. TIME PASSES QUICKLY MOST OF THE TIME                        
+            937   3. ENJOY WORKING PART OF THE TIME, BUT IT DRAGS AT OTHER TIMES 
+            200   4. TIME DRAGS MOST OF THE TIME                                 
+             71   5. TIME ALWAYS DRAGS                                           
+             38   6. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.17. ON THE WHOLE, HOW IS THE MORALE OF THE MEN IN YOUR        
+                       SQUADRON*                                                 
+0                R. COL. 25.                                                     
+0           442   1. VERY HIGH                                                   
+           1133   2. FAIRLY HIGH                                                 
+            880   3. JUST SO-SO                                                  
+            251   4. FAIRLY LOW                                                  
+            235   5. VERY LOW                                                    
+             44   0. NO ANSWER                                                   
+0                Q.18. ABOUT HOW MUCH OF THE TIME DO YOU HAVE WORK ENOUGH TO     
+                       KEEP YOU BUSY*                                            
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE   9                    
+0                R. COL. 26.                                                     
+0           758   1. WE ARE ALWAYS BUSY                                          
+           1494   2. WE ARE BUSY MOST OF THE TIME, BUT NOT ALWAYS                
+            486   3. BUSY ABOUT HALF THE TIME                                    
+            146   4. BUSY LESS THAN HALF THE TIME                                
+             60   5. RARELY EVERY BUSY                                           
+             41   0. NO ANSWER                                                   
+0                Q.19. IN GENERAL, HOW WOULD YOU SAY YOU FEEL MOST OF THE TIME,  
+                       IN GOOD SPIRITS OR IN LOW SPIRITS*                        
+0                R. COL. 27.                                                     
+0          1368   1. I AM USUALLY IN GOOD SPIRITS                                
+           1449   2. I AM IN GOOD SPIRITS SOME OF THE TIME AND IN LOW SPIRITS    
+                     SOME OF THE TIME                                            
+            133   3. I AM USUALLY IN LOW SPIRITS                                 
+             35   0. NO ANSWER                                                   
+0                Q.20. IN GENERAL HOW DO YOU FEEL YOUR SQUADRON COMPARES WITH    
+                       OTHER SQUADRONS THAT YOU KNOW ABOUT OR HAVE HEARD ABOUT*  
+0                R. COL. 28.                                                     
+0          1138   1. ONE OF THE VERY BEST                                        
+            702   2. BETTER THAN MOST OTHERS                                     
+            847   3. AS GOOD AS MOST OTHERS                                      
+            196   4. POORER THAN MOST OTHERS                                     
+             65   5. ONE OF THE WORST                                            
+             37   0. NO ANSWER                                                   
+0                Q.21. DO YOU FEEL THAT YOU REALLY BELONG IN YOUR SQUADRON AND   
+                       ARE AN IMPORTANT PART OF IT*                              
+0                R. COL. 29.                                                     
+0           963   1. VERY MUCH SO                                                
+           1276   2. FAIRLY MUCH SO                                              
+            512   3. NOT VERY MUCH                                               
+            196   4. NOT AT ALL                                                  
+             38   0. NO ANSWER                                                   
+0                Q.22. WHAT SORT OF TEAMWORK AND CO-OPERATION DO THE MEN IN YOUR 
+                       DEPARTMENT HAVE ON THE JOB*                               
+0                R. COL. 30.                                                     
+0          1203   1. VERY GOOD                                                   
+           1202   2. FAIRLY GOOD                                                 
+            390   3. NOT VERY GOOD                                               
+            163   4. NOT GOOD AT ALL                                             
+             27   0. NO ANSWER                                                   
+0                Q.23. WHAT SORT OF CO-OPERATION IS THERE IN THE SQUADRON        
+                       BETWEEN THE PILOTS AND THE MEN WHO WORK ON THE PLANES     
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  10                    
+0                      AND EQUIPMENT*                                            
+0                R. COL. 31.                                                     
+0          1497   1. VERY GOOD                                                   
+            737   2. GOOD                                                        
+            411   3. FAIR                                                        
+            120   4. POOR                                                        
+            180   5. DON,T KNOW                                                  
+             40   0. NO ANSWER                                                   
+0                Q.24. DO YOU THINK MOST OF THE PILOTS KNOW HOW MUCH WORK THE    
+                       MEN ON THE LINE AND IN THE SHOPS HAVE TO DO TO KEEP THE   
+                       PLANES READY TO FLY*                                      
+0                R. COL. 32.                                                     
+0          1522   1. MOST OF THEM DO                                             
+            795   2. ABOUT HALF OF THEM DO                                       
+            569   3. MOST OF THEM DO NOT                                         
+             97   4. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.25. IF YOU ARE ORDERED TO DO SOMETHING AND NOT TOLD THE       
+                       REASON WHY HOW DO YOU FEEL*                               
+0                R. COL. 33.                                                     
+0           636   1. I OBEY CHEERFULLY ALWAYS                                    
+            541   2. I OBEY BUT NEVER LIKE IT                                    
+           1720   3. I OBEY CHEERFULLY, PROVIDED I FEEL THERE IS A GOOD PURPOSE  
+                     IN NOT TELLING THE REASON WHY, - OTHERWISE I OBEY BUT DON,T 
+                     LIKE IT                                                     
+             53   4. I TRY TO GET OUT OF DOING IT IF I CAN                       
+             35   0. NO ANSWER                                                   
+0                Q.26. HOW IMPORTANT A PART DO YOU THINK YOUR SQUADRON WILL PLAY 
+                       IN WINNING THE WAR*                                       
+0                R. COL. 34.                                                     
+0          1548   1. A VERY IMPORTANT PART                                       
+           1167   2. A FAIRLY IMPORTANT PART                                     
+            181   3. NOT A VERY IMPORTANT PART                                   
+             33   4. NOT IMPORTANT AT ALL                                        
+             56   0. NO ANSWER                                                   
+0                Q.27. HOW SUCCESSFUL IS THE OFFICER IN CHARGE OF YOUR WORK IN   
+                       GETTING WILLING AND WHOLE-HEARTED CO-OPERATION FROM THE   
+                       MEN*                                                      
+0                R. COL. 35.                                                     
+0          1034   1. VERY SUCCESSFUL                                             
+           1081   2. FAIRLY SUCCESSFUL                                           
+            457   3. NOT VERY SUCCESSFUL                                         
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  11                    
+0           271   4. UNSUCCESSFUL                                                
+             99   5. NOT SURE                                                    
+             43   0. NO ANSWER                                                   
+0                Q.28. HOW SUCCESSFUL IS THE NON-COM IN CHARGE OF YOUR WORK IN   
+                       GETTING WILLING AND WHOLE-HEARTED CO-OPERATION FROM THE   
+                       MEN*                                                      
+0                R. COL. 36.                                                     
+0          1133   1. VERY SUCCESSFUL                                             
+           1077   2. FAIRLY SUCCESSFUL                                           
+            408   3. NOT VERY SUCCESSFUL                                         
+            268   4. UNSUCCESSFUL                                                
+             43   5. NOT SURE                                                    
+             56   0. NO ANSWER                                                   
+0                Q.29. DO YOU USUALLY FEEL THAT WHAT YOU ARE DOING IN THE ARMY   
+                       IS WORTHWHILE OR NOT*                                     
+0                R. COL. 37.                                                     
+0          2213   1. I USUALLY FEEL IT IS WORTHWHILE                             
+            350   2. I USUALLY FEEL IT IS NOT WORTHWHILE                         
+            385   3. UNDECIDED                                                   
+             34   4. NO ANSWER                                                   
+              3   0. NO CODE OR NO DATA                                          
+0                Q.30. DO YOU EVER FEEL THAT YOU ARE NOT AS GOOD A SOLDIER AS    
+                       MOST OF THE OTHER MEN IN YOUR OUTFIT*                     
+0                R. COL. 38.                                                     
+0           222   1. I FEEL THAT WAY NEARLY ALL OF THE TIME                      
+            266   2. I FEEL THAT WAY FAIRLY OFTEN                                
+            716   3. I FEEL THAT WAY ONLY ONCE IN A WHILE                        
+           1731   4. I ALMOST NEVER FEEL THAT WAY                                
+             50   0. NO ANSWER                                                   
+0                Q.31. WHICH COMES CLOSEST TO YOUR IDEA OF HOW HARD IT IS GOING  
+                       TO BE TO BEAT THE GERMANS*                                
+0                R. COL. 39.                                                     
+0          1227   1. IT WILL BE A TOUGH JOB BUT OUR LOSSES WON,T BE TOO          
+                     HEAVY                                                       
+           1513   2. IT WILL BE A TOUGH JOB, WITH HEAVY LOSSES OF                
+                     MEN AND EQUIPMENT                                           
+            180   3. IT WILL NOT BE VERY HARD                                    
+             63   4. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.32. DO YOU THINK THE EQUIPMENT OF THE AMERICAN ARMY IS BETTER 
+                       OR WORSE THAN THE EQUIPMENT OF THE GERMAN ARMY*           
+0                R. COL. 40.                                                     
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  12                    
+0           875   1. ALL OF OUR EQUIPMENT IS BETTER                              
+           1616   2. MOST OF OUR EQUIPMENT IS BETTER                             
+            195   3. OUR EQUIPMENT IS ABOUT THE SAME AS THAT OF THE GERMANY ARMY 
+             16   4. MOST OF OUR EQUIPMENT IS WORSE                              
+              1   5. ALL OF OUR EQUIPMENT IS WORSE                               
+            245   6. DON,T KNOW                                                  
+             37   0. NO ANSWER                                                   
+0                Q.33. HOW MUCH DO THE THINGS THAT THIS WAR IS BEING FOUGHT      
+                       OVER MEAN TO YOU PERSONALLY*                              
+0                R. COL. 41.                                                     
+0          1680   1. THEY MEAN EVERYTHING TO ME                                  
+            970   2. THEY MEAN QUITE A BIT TO ME                                 
+            125   3. THEY DON,T MEAN VERY MUCH TO ME                             
+            158   4. NOT SURE WHETHER THEY MEAN ANYTHING TO ME OR NOT            
+             50   5. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.34. HOW MUCH CHANCE DO YOU FEEL THERE IS THAT AFTER THE WAR   
+                       THINGS WILL BE WORKED OUT PRETTY MUCH TO THE BEST         
+                       INTERESTS OF THE MOST PEOPLE*                             
+0                R. COL. 42.                                                     
+0           805   1. A VERY GOOD CHANCE                                          
+           1612   2. A FAIRLY GOOD CHANCE                                        
+            486   3. NOT A VERY GOOD CHANCE                                      
+             51   4. NO CHANCE AT ALL                                            
+             31   0. NO ANSWER                                                   
+0                Q.35. IN GENERAL, HOW WELL DO YOU LIKE WORKING IN YOUR PRESENT  
+                       ARMY JOB*                                                 
+0                R. COL. 43.                                                     
+0           976   1. I REALLY ENJOY MY WORK VERY MUCH                            
+           1368   2. I LIKE IT FAIRLY WELL                                       
+            375   3. I DISLIKE IT A LITTLE                                       
+            245   4. I DISLIKE IT VERY MUCH                                      
+             19   5. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.36. WOULD YOU SAY THAT MOST OF THE MEN IN YOUR DEPARTMENT     
+                       USUALLY PUT ALL THAT THEY HAVE INTO THEIR REGULAR DUTIES, 
+                       OR DO THEY USUALLY WORK JUST HARD ENOUGH TO GET BY*       
+0                R. COL. 44.                                                     
+0          1024   1. MOST OF THE MEN USUALLY PUT ALL THAT THEY HAVE INTO IT      
+            723   2. MOST OF THE MEN USUALLY PUT A BIT MORE INTO IT THAN THEY    
+                     HAVE TO                                                     
+           1063   3. MOST OF THE MEN USUALLY WORK JUST HARD ENOUGH TO GET BY     
+            148   4. UNDECIDED                                                   
+             25   5. NO ANSWER                                                   
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  13                    
+0             2   0. NO CODE OR NO DATA                                          
+0                Q.37. HOW ABOUT YOURSELF - WOULD YOU HONESTLY SAY THAT YOU      
+                       USUALLY PUT ALL YOU HAVE INTO YOUR REGULAR DUTIES, OR     
+                       DO YOU USUALLY WORK JUST HARD ENOUGH TO GET BY*           
+0                R. COL. 45.                                                     
+0          1276   1. I USUALLY PUT ALL I HAVE INTO IT                            
+            939   2. I USUALLY PUT A BIT MORE INTO IT THEN I HAVE TO             
+            628   3. I USUALLY WORK JUST HARD ENOUGH TO GET BY                   
+            109   4. UNDECIDED                                                   
+             33   0. NO ANSWER                                                   
+0                Q.38. HOW MUCH PRIDE DO MOST OF THE MEN IN YOUR DEPARTMENT TAKE 
+                       IN THE KIND OF A JOB THEY TURN OUT*                       
+0                R. COL. 46.                                                     
+0          1171   1. A GREAT DEAL OF PRIDE                                       
+           1325   2. QUITE A BIT                                                 
+            401   3. NOT VERY MUCH                                               
+             59   4. ALMOST NO PRIDE AT ALL                                      
+             29   0. NO ANSWER                                                   
+0                Q.39. HOW SATISFIED ARE YOU ABOUT BEING IN YOUR PRESENT ARMY    
+                       JOB INSTEAD OF SOME OTHER ARMY JOB*                       
+0                R. COL. 47.                                                     
+0           943   1. VERY SATISFIED                                              
+           1065   2. SATISFIED                                                   
+            195   3. IT DOES NOT MAKE ANY DIFFERENCE TO ME                       
+            484   4. SOMEWHAT DISSATISFIED                                       
+            277   5. VERY MUCH DISSATISFIED                                      
+             18   6. NO ANSWER                                                   
+              3   0. NO CODE OR NO DATA                                          
+0                Q.40. HOW MUCH EFFORT DO YOU FEEL HAS BEEN MADE TO PLACE YOU IN 
+                       THE KIND OF ARMY JOB WHERE YOU CAN FIT IN BEST AND BE OF  
+                       MOST VALUE*                                               
+0                R. COL. 48.                                                     
+0           508   1. EVERY POSSIBLE EFFORT WAS MADE                              
+           1167   2. A REASONABLE EFFORT WAS MADE                                
+            772   3. SOME EFFORT, BUT NOT MUCH                                   
+            505   4. NO EFFORT WAS MADE AT ALL                                   
+             33   0. NO ANSWER                                                   
+0                Q.41. DO YOU FEEL YOUR OFFICERS KNOW WHAT YOUR ABILITIES ARE    
+                       AND WHAT YOU ARE ABLE TO DO*                              
+0                R. COL. 49.                                                     
+0           849   1. THEY HAVE A GOOD IDEA                                       
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  14                    
+0          1215   2. THEY HAVE A FAIR IDEA                                       
+            891   3. THEY KNOW LITTLE OR NOTHING ABOUT MY ABILITIES              
+             30   0. NO ANSWER                                                   
+0                Q.42. DO YOU FEEL THAT YOUR NON-COMS KNOW WHAT YOUR ABILITIES   
+                       ARE AND WHAT YOU ARE ABLE TO DO*                          
+0                R. COL. 50.                                                     
+0          1318   1. THEY HAVE A GOOD IDEA                                       
+           1190   2. THEY HAVE A FAIR IDEA                                       
+            427   3. THEY KNOW LITTLE OR NOTHING ABOUT MY ABILITIES              
+             46   4. NO ANSWER                                                   
+              4   0. NO CODE OR NO DATA                                          
+0                Q.43. DO YOU THINK THAT MOST OF THE MEN IN YOUR DEPARTMENT      
+                       WOULD "GO TO BAT" FOR THE N.C.O. IN CHARGE OF YOUR        
+                       WORK*                                                     
+0                R. COL. 51.                                                     
+0          1030   1. YES, THEY WOULD DO MOST ANYTHING FOR HIM                    
+           1116   2. YES, THEY WOULD PROBABLY "GO TO BAT" FOR HIM                
+            514   3. I DOUBT IF THEY WOULD                                       
+            266   4. I AM PRETTY SURE THEY WOULD NOT                             
+             59   0. NO ANSWER                                                   
+0                Q.44. DO YOU THINK THAT MOST OF THE MEN IN YOUR DEPARTMENT      
+                       WOULD "GO TO BAT" FOR THE OFFICER IN CHARGE OF YOUR       
+                       WORK*                                                     
+0                R. COL. 52.                                                     
+0           972   1. YES, THEY WOULD DO MOST ANYTHING FOR HIM                    
+           1109   2. YES, THEY WOULD PROBABLY "GO TO BAT" FOR HIM                
+            539   3. I DOUBT IF THEY WOULD                                       
+            301   4. I AM PRETTY SURE THEY WOULD NOT                             
+             64   0. NO ANSWER                                                   
+0                Q.45. DO YOU THINK THAT MOST OF THE MEN IN YOUR DEPARTMENT      
+                       WOULD "GO TO BAT" FOR YOUR SQUADRON COMMANDER*            
+0                R. COL. 53.                                                     
+0          1473   1. YES, THEY WOULD DO MOST ANYTHING FOR HIM                    
+           1025   2. YES, THEY WOULD PROBABLY "GO TO BAT" FOR HIM                
+            301   3. I DOUBT IF THEY WOULD                                       
+            116   4. I AM PRETTY SURE THEY WOULD NOT                             
+             70   0. NO ANSWER                                                   
+0                Q.46. DO YOU THINK YOUR GROUND OFFICERS ARE INTERESTED IN WHAT  
+                       YOU THINK AND HOW YOU FEEL ABOUT THINGS*                  
+0                R. COL. 54.                                                     
+0           373   1. VERY MUCH INTERESTED                                        
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  15                    
+0           905   2. FAIRLY INTERESTED                                           
+            742   3. SLIGHTLY INTERESTED                                         
+            905   4. THEY DON,T SEEM TO CARE ONE WAY OR ANOTHER                  
+             60   0. NO ANSWER                                                   
+0                Q.47. DO YOU THINK YOUR NON-COMS ARE INTERESTED IN WHAT YOU     
+                       THINK AND HOW YOU FEEL ABOUT THINGS*                      
+0                R. COL. 55.                                                     
+0           517   1. VERY MUCH INTERESTED                                        
+           1165   2. FAIRLY INTERESTED                                           
+            676   3. SLIGHTLY INTERESTED                                         
+            592   4. THEY DON,T SEEM TO CARE ONE WAY OR ANOTHER                  
+             35   0. NO ANSWER                                                   
+0                Q.48. DO YOU FEEL THE MOST DESERVING MEN USUALLY GET THE BEST   
+                       "BREAKS" IN YOUR OUTFIT*                                  
+0                R. COL. 56.                                                     
+0            99   1. ALWAYS                                                      
+            857   2. USUALLY                                                     
+           1101   3. ABOUT HALF THE TIME                                         
+            692   4. RARELY                                                      
+            203   5. NEVER                                                       
+             33   0. NO ANSWER                                                   
+0                Q.49. WHEN YOU ARE GIVEN A JOB TO DO, ARE YOU TOLD ENOUGH ABOUT 
+                       IT SO THAT YOU CAN DO A GOOD JOB*                         
+0                R. COL. 57.                                                     
+0           635   1. ALWAYS TOLD ENOUGH                                          
+           1624   2. USUALLY TOLD ENOUGH                                         
+            559   3. OFTEN NOT TOLD ENOUGH                                       
+            124   4. ALMOST NEVER TOLD ENOUGH                                    
+             43   0. NO ANSWER                                                   
+0                Q.50. DOES THE OFFICER IN CHARGE OF YOUR DEPARTMENT GET AROUND  
+                       ENOUGH TO KNOW WHAT IS GOING ON AND HOW THE WORK IS       
+                       BEING DONE*                                               
+0                R. COL. 58.                                                     
+0          1950   1. YES                                                         
+            927   2. NO                                                          
+             83   3. NO ANSWER                                                   
+             25   0. NO CODE OR NO DATA                                          
+0                Q.51. HOW WELL DO YOU THINK THE NON-COM IN CHARGE OF YOUR       
+                       WORK KNOWS HIS STUFF*                                     
+0                R. COL. 59.                                                     
+0          1312   1. VERY WELL                                                   
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  16                    
+0          1111   2. FAIRLY WELL                                                 
+            339   3. NOT SO WELL                                                 
+            169   4. NOT WELL AT ALL                                             
+             39   5. NO ANSWER                                                   
+             15   0. NO CODE OR NO DATA                                          
+0                Q.52. HOW WELL DO YOU THINK THE OFFICER IN CHARGE OF YOUR WORK  
+                       KNOWS HIS STUFF*                                          
+0                R. COL. 60.                                                     
+0           962   1. VERY WELL                                                   
+           1204   2. FAIRLY WELL                                                 
+            515   3. NOT SO WELL                                                 
+            248   4. NOT WELL AT ALL                                             
+             54   5. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.53. ARE YOU USUALLY TOLD WHY THE THINGS YOU DO AND THE THINGS 
+                       THAT ARE DONE IN YOUR OUTFIT ARE NECESSARY*               
+0                R. COL. 61.                                                     
+0           531   1. ALMOST ALWAYS                                               
+           1229   2. USUALLY                                                     
+            694   3. ABOUT HALF THE TIME                                         
+            479   4. USUALLY NOT                                                 
+             49   5. NO ANSWER                                                   
+              3   0. NO CODE OR NO DATA                                          
+0                Q.54. HOW EASY DO YOU FEEL IT IS TO GET YOUR SUGGESTIONS FOR    
+                       DOING A JOB BETTER OR EASIER BROUGHT TO THE ATTENTION     
+                       OF THOSE IN YOUR SQUADRON WHO COULD PUT THEM TO USE*      
+0                R. COL. 62.                                                     
+0           323   1. VERY EASY                                                   
+           1142   2. QUITE EASY                                                  
+            854   3. NOT VERY EASY                                               
+            327   4. VERY DIFFICULT                                              
+            183   5. DON,T KNOW                                                  
+            156   0. NO ANSWER                                                   
+0                Q.55. WHEN YOU DO A PARTICULARLY GOOD JOB DO YOU USUALLY GET    
+                       RECOGNITION OR PRAISE FOR IT*                             
+0                R. COL. 63.                                                     
+0           150   1. ALWAYS                                                      
+           1132   2. USUALLY                                                     
+           1210   3. RARELY                                                      
+            410   4. NEVER                                                       
+             83   0. NO ANSWER                                                   
+0                Q.56. WHEN A MAN IN YOUR OUTFIT MAKES A GOOD SUGGESTION FOR A   
+                       NEW OR BETTER WAY OF DOING A JOB, DOES HE USUALLY GET     
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  17                    
+0                      THE CREDIT HE DESERVES*                                   
+0                R. COL. 64.                                                     
+0           179   1. ALWAYS                                                      
+            875   2. MOST OF THE TIME                                            
+            721   3. ABOUT HALF THE TIME                                         
+            889   4. SELDOM                                                      
+            223   5. NEVER                                                       
+             98   0. NO ANSWER                                                   
+0                Q.57. DO TOO MANY OF THE THINGS YOU HAVE TO DO SEEM UNNECESSARY 
+                       FOR MAKING YOUR OUTFIT OR THE ARMY RUN BETTER*            
+0                R. COL. 65.                                                     
+0           463   1. ALMOST ALL OF THEM SEEM NECESSARY                           
+           1400   2. SOME, BUT NOT TOO MANY, SEEM UNNECESSARY                    
+            746   3. TOO MANY SEEM UNNECESSARY                                   
+            304   4. FAR TOO MANY SEEM UNNECESSARY                               
+             72   0. NO ANSWER                                                   
+0                Q.58. DO YOU GET AS MUCH INFORMATION AS YOU WANT ABOUT WHAT     
+                       HAPPENS WHEN THE PLANES GO ON MISSIONS* (INFORMATION      
+                       SUCH AS THE KIND OF MISSION, WHETHER THERE WAS MUCH       
+                       ACTION, AND WHAT THE RESULTS WERE.)                       
+0                R. COL. 66.                                                     
+0          1218   1. I GET ALL THAT I WANT                                       
+            917   2. I GET SOME, BUT NOT AS MUCH AS I WANT                       
+            517   3. I GET MUCH LESS THAN I WANT                                 
+            331   4. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.59. DO YOU FEEL THAT OPERATIONAL MISSIONS ARE WELL-PLANNED    
+                       AND COORDINATED*                                          
+0                R. COL. 67.                                                     
+0           907   1. ALL OF THEM ARE                                             
+           1020   2. NEARLY ALL OF THEM ARE                                      
+            474   3. MOST OF THEM ARE                                            
+            123   4. QUITE A FEW ARE NOT                                         
+            461   0. NO ANSWER                                                   
+0                Q.60. HOW GOOD A JOB DO YOU THINK YOUR SQUADRON DOES IN KEEPING 
+                       THE GREATEST POSSIBLE NUMBER OF PLANES READY TO FLY*      
+0                R. COL. 68.                                                     
+0          2213   1. VERY GOOD                                                   
+            642   2. FAIRLY GOOD                                                 
+             52   3. NOT VERY GOOD                                               
+              7   4. NOT GOOD AT ALL                                             
+             71   0. NO ANSWER                                                   
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  18                    
+0                X. QUESTION 61 NOT CODED.                                       
+0                Q.61. CAN YOU SUGGEST ANYTHING THAT MIGHT BE DONE TO KEEP       
+                       MORE PLANES READY TO FLY*  MENTION ANYTHING THAT YOU      
+                       THINK WOULD HELP.                                         
+0                Q.62. WHEN PROMOTIONS ARE MADE IN THE SQUADRON, HOW OFTEN DO    
+                       THEY GO TO THE MEN WHO DESERVE THEM MOST*                 
+0                R. COL. 69.                                                     
+0           212   1. RARELY OR NEVER                                             
+            757   2. SOMETIMES                                                   
+            867   3. ABOUT HALF THE TIME                                         
+           1004   4. USUALLY                                                     
+             66   5. ALWAYS                                                      
+             79   0. NO ANSWER                                                   
+0                Q.63. DO YOU THINK THOSE WHO RECOMMEND AND DECIDE ON PROMOTIONS 
+                       IN YOUR DEPARTMENT REALLY KNOW WHICH MEN ARE BEST         
+                       QUALIFIED FOR PROMOTION*                                  
+0                R. COL. 70.                                                     
+0           585   1. THEY KNOW VERY LITTLE ABOUT IT                              
+           1044   2. THEY HAVE A FAIRLY GOOD IDEA                                
+            593   3. THEY HAVE A PRETTY GOOD IDEA                                
+            654   4. THEY KNOW PRETTY WELL                                       
+            109   0. NO ANSWER                                                   
+0                Q.64. WHICH OF THE FOLLOWING DO YOU THINK WOULD BE THE BIGGEST  
+                       HELP IN GETTING A PROMOTION IN YOUR OUTFIT*               
+0                R. COL. 71.                                                     
+0           841   1. ABILITY ON THE JOB                                          
+            131   2. TIME IN THE ARMY                                            
+           1337   3. HAVING AN "IN" WITH THE RIGHT PEOPLE                        
+             25   4. EDUCATION                                                   
+            426   5. BEING A CONSCIENTIOUS, HARD WORKER                          
+            222   6. NO ANSWER                                                   
+              3   0. NO CODE OR NO DATA                                          
+0                Q.65. IN YOUR OUTFIT WHEN A MAN BREAKS A RULE OR DISOBEYS AN    
+                       ORDER DOES HE USUALLY GET WHAT HE HAS COMING TO HIM*      
+0                R. COL. 72.                                                     
+0           222   1. HE GETS MUCH MORE THAN HE SHOULD                            
+            269   2. HE GETS SOMEWHAT MORE THAN HE SHOULD                        
+           1504   3. HE GETS ABOUT WHAT HE SHOULD                                
+            292   4. HE GETS SOMEWHAT LESS THAN HE SHOULD                        
+            229   5. HE GETS AWAY WITH MUCH LESS THAN HE SHOULD                  
+            321   6. UNDECIDED                                                   
+            148   0. NO ANSWER                                                   
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  19                    
+0                Q.66. HOW OFTEN DO YOU FEEL TIRED AND WORN OUT*                 
+0                R. COL. 73.                                                     
+0           118   1. NEVER                                                       
+           1483   2. ONCE IN A GREAT WHILE                                       
+            983   3. FAIRLY OFTEN                                                
+            281   4. MOST OF THE TIME                                            
+             66   5. ALL OF THE TIME                                             
+             52   6. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.67. DO YOU THINK YOUR GROUND OFFICERS ARE INTERESTED IN       
+                       YOUR PERSONAL WELFARE*                                    
+0                R. COL. 74.                                                     
+0           265   1. VERY MUCH INTERESTED                                        
+            918   2. FAIRLY INTERESTED                                           
+            853   3. SLIGHTLY INTERESTED                                         
+            884   4. THEY DON,T SEEM TO CARE ONE WAY OR ANOTHER                  
+             65   0. NO ANSWER                                                   
+0                Q.68. DO YOU THINK THAT YOUR NON-COMS ARE INTERESTED IN YOUR    
+                       PERSONAL WELFARE*                                         
+0                R. COL. 75.                                                     
+0           369   1. VERY MUCH INTERESTED                                        
+           1078   2. FAIRLY INTERESTED                                           
+            725   3. SLIGHTLY INTERESTED                                         
+            747   4. THEY DON,T SEEM TO CARE ONE WAY OR ANOTHER                  
+             64   5. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                X. QUESTION 69 NOT CODED.                                       
+0                Q.69. SUPPOSE YOU WERE SQUADRON COMMANDER AND HAD FULL AUTHORITY
+                       TO DO ANYTHING YOU THOUGHT WOULD MAKE THE SQUADRON        
+                       BETTER AND MORE EFFICIENT.  WHAT CHANGES, IF ANY, WOULD   
+                       YOU MAKE*                                                 
+0                Q.70. WHAT SORT OF OPINION DO YOU HAVE OF THE ENGLISH PEOPLE*   
+0                R. COL. 76.                                                     
+0           439   1. VERY FAVORABLE                                              
+           1628   2. FAIRLY FAVORABLE                                            
+            592   3. RATHER UNFAVORABLE                                          
+            241   4. VERY UNFAVORABLE                                            
+             85   0. NO ANSWER                                                   
+0                Q.71. AFTER THE WAR DO YOU THINK THAT YOU WILL BE VERY MUCH     
+                       CONCERNED ABOUT THE MAJOR PROBLEMS THAT FACE GROUPS OF    
+                       PEOPLE OUTSIDE THE CIRCLE OF YOUR OWN FAMILY AND FRIENDS* 
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  20                    
+0                R. COL. 77.                                                     
+0           444   1. I AM NOT ESPECIALLY CONCERNED ABOUT SUCH PROBLEMS           
+           1357   2. I WILL PROBABLY HAVE SOME CONCERN ABOUT SUCH PROBLEMS       
+            819   3. I AM SURE I WILL BE GREATLY CONCERNED ABOUT SUCH PROBLEMS   
+            280   4. UNDECIDED                                                   
+             85   0. NO ANSWER                                                   
+0                Q.72. CAN YOU THINK OF ANY GROUP OF PEOPLE IN THE U.S.          
+                       (WHETHER OCCUPATIONAL, RACIAL, RELIGIOUS, ETC.) FOR WHOM  
+                       YOU FEEL A PARTICULAR DISLIKE*  IF YES, WHAT GROUP OR     
+                       GROUPS*                                                   
+0                C. COLS. 78-79.                                                 
+            322   01. YES, NEGRO                                                 
+            221   02. YES, JEWS                                                  
+             40   03. YES, POLITICIANS                                           
+            123   04. YES, C.I.O.                                                
+             29   05. YES, RADICALS                                              
+              9   06. YES, FRIENDLY NATIONS                                      
+             83   07. YES, ENEMY NATIONS                                         
+             48   08. YES, STRIKERS                                              
+             23   09. YES, CONSCIENTIOUS OBJECTORS                               
+0           191   10. YES, NO ANSWER                                             
+0          1674   11. NO                                                         
+0           222   12. NO ANSWER                                                  
+0                X. COL. 80 NOT USED.                                            
+0                CARD 2                                                          
+0                CARD.                                                           
+0                C. COL. 1.                                                      
+           2985   2. CARD TWO                                                    
+0                DECK.                                                           
+0                Y. COLS. 2-4.                                                   
+0         113. SURVEY NUMBER                                                     
+0                BALLOT.                                                         
+0                Y. COLS. 5-8.                                                   
+0                X. BALLOT NUMBER GENERATED BY ROPER CENTER.                     
+0                Q.73. ARE YOUR MESS FACILITIES AND FOOD ABOUT AS GOOD AS THEY   
+                       COULD BE UNDER PRESENT CIRCUMSTANCES*                     
+0                R. COL. 9.                                                      
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  21                    
+0          1010   1. ABOUT AS GOOD AS THEY COULD BE                              
+            933   2. COULD BE A BIT BETTER                                       
+            965   3. COULD BE A LOT BETTER                                       
+             69   4. NO ANSWER                                                   
+              8   0. NO CODE OR NO DATA                                          
+0                Q.74. ARE YOUR HOUSING AND SANITARY CONDITIONS ABOUT AS GOOD AS 
+                       THEY COULD BE UNDER PRESENT CIRCUMSTANCES*                
+0                R. COL. 10.                                                     
+0          1246   1. ABOUT AS GOOD AS THEY COULD BE                              
+            788   2. COULD BE A BIT BETTER                                       
+            842   3. COULD BE A LOT BETTER                                       
+            109   0. NO ANSWER                                                   
+0                Q.75. IS YOUR MEDICAL SERVICE ABOUT AS GOOD AS IT COULD BE      
+                       UNDER THE CIRCUMSTANCES*                                  
+0                R. COL. 11.                                                     
+0          1686   1. ABOUT AS GOOD AS COULD BE                                   
+            649   2. COULD BE A BIT BETTER                                       
+            558   3. COULD BE A LOT BETTER                                       
+             82   4. NO ANSWER                                                   
+             10   0. NO CODE OR NO DATA                                          
+0                Q.76. IS YOUR DENTAL SERVICE ABOUT AS GOOD AS IT COULD BE UNDER 
+                       THE CIRCUMSTANCES*                                        
+0                R. COL. 12.                                                     
+0          1906   1. ABOUT AS GOOD AS COULD BE                                   
+            495   2. COULD BE A BIT BETTER                                       
+            400   3. COULD BE A LOT BETTER                                       
+            184   0. NO ANSWER                                                   
+0                Q.77. ARE YOU GETTING ABOUT AS MUCH TIME OFF (FURLOUGH AND      
+                       PASSES) AS YOU SHOULD HAVE UNDER PRESENT CIRCUMSTANCES*   
+0                R. COL. 13.                                                     
+0          2113   1. ABOUT AS MUCH AS WE SHOULD HAVE                             
+            561   2. SHOULD HAVE A BIT MORE                                      
+            224   3. SHOULD HAVE A LOT MORE                                      
+             81   4. NO ANSWER                                                   
+              6   0. NO CODE OR NO DATA                                          
+0                Q.78. IS THE TRANSPORTATION PROVIDED FROM YOUR CAMP TO TOWN     
+                       ABOUT AS GOOD AS IT SHOULD BE UNDER PRESENT CIRCUMSTANCES*
+0                R. COL. 14.                                                     
+0          1538   1. ABOUT AS GOOD AS COULD BE                                   
+            668   2. COULD BE A BIT BETTER                                       
+            708   3. COULD BE A LOT BETTER                                       
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  22                    
+0            71   0. NO ANSWER                                                   
+0                Q.79. ARE YOUR RECREATION AND ENTERTAINMENT NEEDS ABOUT AS      
+                       WELL TAKEN CARE OF AS THEY COULD BE UNDER PRESENT         
+                       CIRCUMSTANCES*                                            
+0                R. COL. 15.                                                     
+0          1509   1. ABOUT AS GOOD AS THEY COULD BE                              
+            759   2. COULD BE A BIT BETTER                                       
+            667   3. COULD BE A LOT BETTER                                       
+             50   4. NO ANSWER                                                   
+0                V.80. IDENTIFICATION OF FIGHTER GROUP AND SQUADRONS WITHIN      
+                       GROUP.                                                    
+0                E. GROUPS A, E AND G, HAD NOT ENGAGED IN OPERATIONAL MISSIONS   
+                    PRIOR TO BEING SURVEYED.                                     
+0                C. COLS. 16-17.                                                 
+            101   01. FIGHTER GROUP A - SQUADRON A                               
+             86   02. FIGHTER GROUP A - SQUADRON B                               
+             87   03. FIGHTER GROUP A - SQUADRON C                               
+             70   04. FIGHTER GROUP B - SQUADRON A                               
+             94   05. FIGHTER GROUP B - SQUADRON B                               
+             73   06. FIGHTER GROUP B - SQUADRON C                               
+             55   07. FIGHTER GROUP C - SQUADRON A                               
+             93   08. FIGHTER GROUP C - SQUADRON B                               
+             92   09. FIGHTER GROUP C - SQUADRON C                               
+0            50   10. FIGHTER GROUP D - SQUADRON A                               
+0            78   11. FIGHTER GROUP D - SQUADRON B                               
+0           106   12. FIGHTER GROUP D - SQUADRON C                               
+0            84   13. FIGHTER GROUP E - SQUADRON A                               
+0            98   14. FIGHTER GROUP E - SQUADRON B                               
+0           109   15. FIGHTER GROUP E - SQUADRON C                               
+0            72   16. FIGHTER GROUP F - SQUADRON A                               
+0            66   17. FIGHTER GROUP F - SQUADRON B                               
+0            70   18. FIGHTER GROUP F - SQUADRON C                               
+0            59   19. FIGHTER GROUP G - SQUADRON A                               
+             78   20. FIGHTER GROUP G - SQUADRON B                               
+             60   21. FIGHTER GROUP G - SQUADRON C                               
+             90   22. FIGHTER GROUP H - SQUADRON A                               
+             94   23. FIGHTER GROUP H - SQUADRON B                               
+             76   24. FIGHTER GROUP H - SQUADRON C                               
+             94   25. FIGHTER GROUP I - SQUADRON A                               
+             99   26. FIGHTER GROUP I - SQUADRON B                               
+1                                                                                
+0        ROPER CENTER - AMS0113                      PAGE  23                    
+0            86   27. FIGHTER GROUP I - SQUADRON C                               
+             79   28. FIGHTER GROUP J - SQUADRON A                               
+             86   29. FIGHTER GROUP J - SQUADRON B                               
+             85   30. FIGHTER GROUP J - SQUADRON C                               
+             94   31. FIGHTER GROUP K - SQUADRON A                               
+            108   32. FIGHTER GROUP K - SQUADRON B                               
+             84   33. FIGHTER GROUP K - SQUADRON C                               
+             86   34. FIGHTER GROUP L - SQUADRON A                               
+             73   35. FIGHTER GROUP L - SQUADRON B                               
+             70   36. FIGHTER GROUP L - SQUADRON C                               
+0                V.81. UNIDENTIFIED GROUPS:                                      
+0                C. COL. 18.                                                     
+0           385   1. GROUP A                                                     
+            397   2. GROUP B                                                     
+           2203   0. NO CODE OR NO DATA                                          
+0                X. COLS. 19-20 NOT USED.                                        
+1                                                                                

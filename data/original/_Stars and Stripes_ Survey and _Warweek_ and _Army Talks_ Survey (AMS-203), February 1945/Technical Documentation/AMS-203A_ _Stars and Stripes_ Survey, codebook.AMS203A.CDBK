@@ -1,0 +1,937 @@
+1                                                                                
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE   1                    
+0                                                                                
+0                SURVEY IDENTIFICATION                                           
+0                1. PROJECT:             THE AMERICAN SOLDIER IN WORLD WAR II    
+0                2. TITLE:               STARS AND STRIPES SURVEY                
+0                3. DATE:                FEBRUARY, 1945                          
+0                4. SURVEY NUMBER:       S-203A                                  
+0                5. PROJECT DIRECTOR:    DR. SAMUEL A. STOUFFER                  
+0                6. PROJECT SPONSOR:     RESEARCH BRANCH                         
+                                         INFORMATION AND EDUCATION DIVISION      
+                                         WAR DEPARTMENT                          
+0                7. PUBLICATION:                                                 
+                    STUDIES IN SOCIAL PSYCHOLOGY IN WORLD WAR II: VOLUMES I-IV   
+                       (PRINCETON UNIVERSITY PRESS)                              
+                    VOL. I (1949): THE AMERICAN SOLDIER: ADJUSTMENT DURING ARMY  
+                       LIFE.  SAMUEL A. STOUFFER, EDWARD A. SUCHMAN, LELAND C.   
+                       DEVINNEY, SHIRLEY A. STAR, ROBIN M. WILLIAMS, JR.         
+                    VOL. II (1949): THE AMERICAN SOLDIER: COMBAT AND ITS         
+                       AFTERMATH. SAMUEL A. STOUFFER, ARTHUR A. LUMSDAINE,       
+                       MARION HARPER LUMSDAINE, ROBIN M. WILLIAMS, JR.           
+                       M. BREWSTER SMITH, IRVING L. JANIS. SHIRLEY A. STAR,      
+                       LEONARD S. COTTRELL, JR.                                  
+                    VOL. III (1949): EXPERIMENTS ON MASS COMMUNICATION.          
+                       CARL I. HOVLAND, ARTHUR A. LUMSDAINE, FRED D. SHEFFIELD.  
+                    VOL. IV (1950): MEASUREMENT AND PREDICTION. SAMUEL A.        
+                       STOUFFER, LOUIS GUTTMAN, EDWARD A. SUCHMAN, PAUL F.       
+                       LAZARSFELD, SHIRLEY STAR, JOHN A. CLAUSEN.                
+0                8. DUPLICATES AVAILABLE FROM:                                   
+                               THE ROPER PUBLIC OPINION RESEARCH CENTER          
+                               P.O. BOX 624                                      
+                               WILLIAMSTOWN, MASSACHUSETTS 01267                 
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE   2                    
+0                                                                                
+0                SAMPLE INFORMATION                                              
+0                1. POPULATION UNIVERSE: ENLISTED MEN IN THE EUROPEAN THEATER    
+                                         OF OPERATIONS. (DOCUMENTATION DOES NOT  
+                                         SPECIFY RACE)                           
+0                2. SAMPLE SIZE:         1229 (2 CARDS PER RESPONDENT)           
+0                METHOD OF SAMPLING AND DATA COLLECTION                          
+                    FOR THE GENERAL CASE, SAMPLING WAS A TWO-STEP PROCESS.       
+                    FIRST, THERE WAS SAMPLING OF ORGANIZATIONS WHICH CAN BE      
+                    DESCRIBED AS PURPOSIVE OR QUOTA SAMPLING.  SECOND,           
+                    WITHIN AN ORGANIZATION THERE WAS SAMPLING OF INDIVIDUALS     
+                    INVOLVING PROCEDURES WHICH MIGHT BE CALLED PROBABILITY       
+                    SAMPLING.                                                    
+0                1. SELECTION OF ORGANIZATIONS TO BE INCLUDED IN A STUDY: THE    
+                    SELECTION OF UNITS INVOLVED PURPOSIVE RATHER THAN STRICTLY   
+                    RANDOM SAMPLING.  IF A CROSS-SECTION OF ENLISTED MEN IN      
+                    THE UNITED STATES OR A THEATER WAS REQUIRED, THE STANDARD    
+                    PROCEDURE WAS TO SELECT THE UNITS SUCH THAT EACH BRANCH OF   
+                    SERVICE WAS REPRESENTED IN AS NEARLY AS POSSIBLE THE CORRECT 
+                    PROPORTIONS.  THE RESEARCH BRANCH HAD ACCESS TO THE LATEST   
+                    SECRET DATA ON TROOP STRENGTH AND LOCATION OF UNITS.         
+                    WITHIN A GIVEN BRANCH OF SERVICE, EFFORT WAS MADE TO GET     
+                    UNITS IN VARIOUS STAGES OF TRAINING OR WITH VARIOUS TYPES    
+                    OF ARMY EXPERIENCE IN CORRECT PROPORTIONS, IN SO FAR AS THIS 
+                    COULD BE INFERRED FROM AVAILABLE DATA.  HAVING STRATIFIED    
+                    THE UNIVERSE BY BRANCH AND TYPE OF UNIT, ONE OR MORE UNITS   
+                    FROM EACH SUBCELL OF THIS STRATIFIED UNIVERSE WERE DRAWN.    
+                    PRACTICAL CONSIDERATIONS OF TIME AND PERSONNEL USUALLY       
+                    PREVENTED A STRICTLY RANDOM SELECTION OF UNITS WITHIN THE    
+                    SUBCELL; IT WAS MUCH FASTER TO GET A VARIETY OF UNITS AT A   
+                    FEW POSTS THAN ONE UNIT AT MANY POSTS.  PRESELECTION OF UNITS
+                    WAS DONE IN WASHINGTON FOR TROOPS IN THE UNITED STATES OR AT 
+                    THEATER HEADQUARTERS FOR TROOPS OVERSEAS.                    
+0                2. SAMPLING OF INDIVIDUALS WITHIN A UNIT: THE STANDARD PROCEDURE
+                    WAS TO DRAW THE NAMES OF EVERY NTH MAN FROM A DUTY ROSTER.   
+                    OR, IF THE STUDY DESIGN CALLED FOR CERTAIN NUMBERS AT A      
+                    GIVEN RANK OR A GIVEN AGE, THE RESEARCH TEAM HAD ACCESS TO   
+                    THE SOLDIER,S FORM 20 CARDS CONTAINING ALL SUCH INFORMATION. 
+                    FOR ANY DESIRED CATEGORY OF MEN THESE CARDS COULD BE SAMPLED 
+                    AT RANDOM AND THE MEN WHOSE NAMES WERE DRAWN COULD BE        
+                    ORDERED TO APPEAR AT A DESIGNATED TIME AND PLACE.            
+0                3. QUESTIONNAIRE ADMINISTRATION: NORMALLY A SAMPLE OF ABOUT     
+                    FIFTY ENLISTED MEN WERE ASSEMBLED BY ORDER OF THEIR UNIT     
+                    COMMANDER AT A PLACE CONVENIENT FOR WRITING.  THE CLASS      
+                    LEADER WAS ALMOST ALWAYS AN ENLISTED MAN TRAINED FOR THE     
+                    PURPOSE.  THE QUESTIONNAIRES WERE FILLED OUT ANONYMOUSLY BY  
+                    THE MEN, IT HAVING BEEN ESTABLISHED THAT NO SIGNIFICANT      
+                    DIFFERENCES OCCURRED IN RESPONSES WITH PERSONAL INTERVIEWS.  
+                    MEN WITH LITTLE EDUCATION OR WHO WERE HAVING DIFFICULTY      
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE   3                    
+0                   READING THE QUESTIONNAIRE WERE INTERVIEWED INDIVIDUALLY      
+                    (PERSONALLY INTERVIEWED NEGRO TROOPS HAD NEGRO               
+                    INTERVIEWERS).                                               
+0                4. CHECKING THE ADEQUACY OF THE SAMPLE AFTER IT WAS TAKEN:      
+                    AFTER EACH SURVEY THE SAMPLING EXPERTS CHECKED THE RETURNS   
+                    TO SEE WHETHER LARGE BIASES HAD OCCURRED ON VARIABLES FOR    
+                    WHICH DATA WERE AVAILABLE FOR THE UNIVERSE - SUCH AS RANK,   
+                    LENGTH OF TIME IN THE ARMY, AGE, ETC.  IN A FEW INSTANCES,   
+                    THE SAMPLE REVEALED A BIAS; WHEN FEASIBLE A CORRECTIVE SAMPLE
+                    WAS DRAWN IMMEDIATELY.  IT WAS FELT THAT BIASES INTRODUCED   
+                    BY SAMPLING DESIGNS AND THEIR FIELD EXECUTION WERE VERY      
+                    SMALL AS COMPARED WITH THOSE ATTRIBUTABLE TO THE WORDING OF  
+                    QUESTIONS.  MUCH EFFORT WAS PUT INTO IMPROVING METHODS OF    
+                    QUESTION DESIGN.                                             
+0                RESPONSE DATA:  RPORC RESPONSE DATA FILE IS IN BCD FORMAT ON    
+                                 TAPE.  DATA HAVE BEEN CLEANED AND THE FINAL CODE
+                                 IS NUMERIC (0-9).  STRAY PUNCHES HAVE BEEN      
+                                 RECODED AS THE "NO CODE OR NO DATA" RESPONSE.   
+                                 TAPES MAY BE ORDERED ACCORDING TO THE FOLLOWING 
+                                 OPTIONS:                                        
+                                    A. 7 TRACK - 200, 556, OR 800 BPI            
+                                    B. 9 TRACK - 800 BPI                         
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE   4                    
+0                                                                                
+0                ROPER CENTER CODEBOOK EXPLANATION                               
+0                QUESTIONS AND RELATED INFORMATION                               
+                     Q.        QUESTION                                          
+                     N.        DATA PROVIDED BY INTERVIEWER WITHOUT VERBAL       
+                               INTERACTION                                       
+                     V.        VARIABLE - INTRODUCED BY PRIMARY RESEARCH         
+                               ORGANIZATION                                      
+                     F.        FILTER QUESTION INFORMATION                       
+                     CARD.     CARD NUMBER INDICATOR                             
+                     DECK.     SURVEY NUMBER INDICATOR                           
+                     BALLOT.   RESPONDENT ID NUMBER INDICATOR                    
+                     WEIGHT.   CODE INDICATOR FOR DUPLICATE CARDS IN WEIGHTED    
+                               SAMPLES                                           
+                     SPLIT.    CODE INDICATOR IN SPLIT-BALLOT (SPLIT-FORM)       
+                               SURVEY                                            
+                     SEC.      SPECIAL CODING INTRODUCED IN SECONDARY RESEARCH - 
+                               NOT USED IN THE ORIGINAL CODEBOOK                 
+0                RESPONSES AND RELATED INFORMATION                               
+                     R.        RESPONDENT CHOICE IN CLOSED QUESTIONS             
+                     A.        RESPONDENT CHOICE IN SELF-ADMINISTERED QUESTIONS  
+                     C.        RESPONDENT CHOICE CODED BY CODER (OPEN QUESTIONS) 
+                               OR INTERVIEWER CHOICE WITH N. ITEMS               
+                     J.        RESPONDENT CHOICE CODED BY SECONDARY CODER        
+                     U.        CODING METHOD UNKNOWN                             
+                     Y.        DATA INSERTED BY RPORC                            
+                     ANP       ACTUAL NUMBER PUNCHED                             
+0                OTHER INFORMATION                                               
+                     S.        GENERAL SURVEY DESCRIPTION (SUMMARY)              
+                     E.        SURVEY ORGANIZATION EXPLANATORY MATERIAL          
+                     P.        PROLOGUE OR PREAMBLE (PRECEDES ACTUAL QUESTION)   
+                     I.        INSTRUCTIONS TO INTERVIEWER                       
+                     READ.     SIGNALS USE OF MATERIAL (CARD, PHOTOGRAPHS, ETC.) 
+                               HANDED TO RESPONDENT BY INTERVIEWER               
+                     Z.        INSTRUCTIONS TO CODER                             
+                     X.        RPORC COMMENTS                                    
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE   5                    
+0                                                                                
+0                CARD 1                                                          
+0                CARD.                                                           
+0                C. COL. 1.                                                      
+0          1229   1. CARD ONE                                                    
+0                DECK.                                                           
+0                Y. COLS. 2-4.                                                   
+          203. SURVEY NUMBER                                                     
+0                BALLOT.                                                         
+0                Y. COLS. 5-8.                                                   
+0                X. BALLOT NUMBER GENERATED BY ROPER CENTER.                     
+0                FORM:                                                           
+0                Y. COL. 9.                                                      
+0          1229   1. 203A                                                        
+              0   2. 203B                                                        
+0                Q.1. WHAT IS YOUR ARMY RANK OR GRADE*                           
+0                R. COL. 10.                                                     
+0           602   1. PRIVATE OR PRIVATE FIRST CLASS                              
+            187   2. CORPORAL OR TECHNICIAN 5TH GRADE                            
+            221   3. SERGEANT OR TECHNICIAN 4TH GRADE                            
+            143   4. STAFF SERGEANT OR TECHNICIAN 3RD GRADE                      
+             66   5. TECHNICAL SERGEANT, MASTER SERGEANT, OR 1ST SERGEANT        
+              3   6. NO ANSWER                                                   
+              7   0. NO CODE OR NO DATA                                          
+0                Q.2. HOW LONG HAVE YOU BEEN OVERSEAS*                           
+0                R. COL. 11.                                                     
+0           103   1. 3 MONTHS OR LESS                                            
+            295   2. OVER 3 MONTHS UP TO 6 MONTHS                                
+            315   3. OVER 6 MONTHS UP TO 1 YEAR                                  
+            286   4. OVER 1 YEAR UP TO 18 MONTHS                                 
+             94   5. OVER 18 MONTHS UP TO 2 YEARS                                
+            130   6. OVER 2 YEARS                                                
+              5   7. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.3. HOW OLD WERE YOU ON YOUR LAST BIRTHDAY*                    
+0                R. COLS. 12-13.                                                 
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE   6                    
+0            21   01. 18 YEARS OR YOUNGER                                        
+             96   02. 19                                                         
+            125   03. 20                                                         
+            120   04. 21                                                         
+            119   05. 22                                                         
+             90   06. 23                                                         
+             87   07. 24                                                         
+             82   08. 25                                                         
+            222   09. 26-29                                                      
+0           182   10. 30-34                                                      
+0            71   11. 35 AND OVER                                                
+0            13   12. NO ANSWER                                                  
+              1   00. NO CODE OR NO DATA                                         
+0                Q.4. HOW FAR DID YOU GO IN SCHOOL*                              
+0                R. COL. 14.                                                     
+0            22   1. LESS THAN 6TH GRADE                                         
+             32   2. FINISHED 6TH GRADE                                          
+             55   3. FINISHED 7TH GRADE                                          
+            138   4. FINISHED 8TH GRADE                                          
+            348   5. SOME HIGH SCHOOL BUT DID NOT FINISH                         
+            391   6. GRADUATED FROM HIGH SCHOOL                                  
+            200   7. SOME COLLEGE BUT DID NOT FINISH                             
+             37   8. GRADUATED FROM COLLEGE                                      
+              5   9. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.5. DURING THE LAST FEW WEEKS ABOUT HOW OFTEN DID YOU GET TO   
+                      READ THE DAILY ISSUE OF "THE STARS AND STRIPES"*           
+0                R. COL. 15.                                                     
+0           899   1. USUALLY EVERY DAY                                           
+            234   2. ABOUT 3 OR 4 TIMES A WEEK                                   
+             78   3. ABOUT 1 OR 2 TIMES A WEEK                                   
+              9   4. SELDOM OR NEVER                                             
+              6   5. NO ANSWER                                                   
+              3   0. NO CODE OR NO DATA                                          
+0                Q.6A. THE CARTOON IN "THE STARS AND STRIPES" THAT I LIKE BEST   
+                       IS:                                                       
+0                R. COL. 16.                                                     
+0           239   1. HUBERT                                                      
+            713   2. UP FRONT WITH MAULDIN                                       
+            227   3. PRIVATE BREGER                                              
+             50   0. NO ANSWER                                                   
+0                Q.6B. THE CARTOON THAT I LIKE LEAST IS:                         
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE   7                    
+0                R. COL. 17.                                                     
+0           428   1. HUBERT                                                      
+            187   2. UP FRONT WITH MAULDIN                                       
+            430   3. PRIVATE BREGER                                              
+            183   4. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.7A. WHICH ONE OF THESE TWO FEATURES DO YOU LIKE BETTER*       
+0                R. COL. 18.                                                     
+0           803   1. "THE ,B, BAG - BLOW IT OUT HERE"                            
+            375   2. THE PICTURE EDITORIAL                                       
+             48   3. NO ANSWER                                                   
+              3   0. NO CODE OR NO DATA                                          
+0                Q.7B. WHICH ONE OF THE FOLLOWING TWO FEATURES DO YOU LIKE       
+                       BETTER*                                                   
+0                R. COL. 19.                                                     
+0           471   1. THE PICTURE EDITORIAL                                       
+            696   2. "SOMEWHERE IN EUROPE"                                       
+             61   3. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.7C. WHICH ONE OF THE FOLLOWING TWO FEATURES DO YOU LIKE       
+                       BETTER*                                                   
+0                R. COL. 20.                                                     
+0           451   1. "SOMEWHERE IN EUROPE"                                       
+            710   2. "THE ,B, BAG - BLOW IT OUT HERE"                            
+             67   3. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.8. ABOUT HOW OFTEN, WHEN YOU DO READ "THE STARS AND STRIPES", 
+                      DO YOU READ THE PICTURE EDITORIALS*                        
+0                R. COL. 21.                                                     
+0           559   1. READ IT EVERY TIME I READ THE PAPER                         
+            326   2. READ IT MOST OF THE TIMES I READ THE PAPER                  
+            140   3. READ IT ABOUT HALF OF THE TIME                              
+            161   4. JUST READ IT ONCE IN A WHILE                                
+             17   5. SELDOM OR NEVER READ IT                                     
+             26   0. NO ANSWER                                                   
+0                P. THE SPACE AVAILABLE IN "THE STARS AND STRIPES" IS STRICTLY   
+                    LIMITED.  IN ANSWERING THE FOLLOWING QUESTIONS YOU SHOULD    
+                    BEAR IN MIND THAT IF MORE SPACE IS GIVEN TO SOME THINGS,     
+                    OTHERS WILL HAVE TO GET LESS SPACE THAN THEY DO NOW.         
+0                Q.9A. CONSIDERING THIS, DO YOU FEEL THAT AT PRESENT EACH OF THE 
+                       FOLLOWING ITEMS GETS TOO MUCH SPACE, TOO LITTLE SPACE, OR 
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE   8                    
+0                      ABOUT THE RIGHT AMOUNT OF SPACE IN "THE STARS AND         
+                       STRIPES"*                                                 
+0                Q.9A1. WAR NEWS: PACIFIC*                                       
+0                R. COL. 22.                                                     
+0            69   1. GETS TOO MUCH SPACE NOW                                     
+            765   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            253   3. SHOULD GET MORE SPACE                                       
+             73   4. UNDECIDED                                                   
+             68   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.9A2. WAR NEWS: THE RUSSIAN FRONT*                             
+0                R. COL. 23.                                                     
+0            36   1. GETS TOO MUCH SPACE NOW                                     
+            807   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            278   3. SHOULD GET MORE SPACE                                       
+             49   4. UNDECIDED                                                   
+             59   0. NO ANSWER                                                   
+0                Q.9A3. WAR NEWS: ETO FRONT*                                     
+0                R. COL. 24.                                                     
+0            71   1. GETS TOO MUCH SPACE NOW                                     
+            765   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            262   3. SHOULD GET MORE SPACE                                       
+             42   4. UNDECIDED                                                   
+             88   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.9A4. NEWS ABOUT PARTICULAR OUTFITS IN ETO*                    
+0                R. COL. 25.                                                     
+0           249   1. GETS TOO MUCH SPACE NOW                                     
+            420   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            375   3. SHOULD GET MORE SPACE                                       
+             99   4. UNDECIDED                                                   
+             86   0. NO ANSWER                                                   
+0                Q.9A5. SPECIAL STORIES ABOUT THINGS THAT HAPPEN IN THE ETO*     
+0                R. COL. 26.                                                     
+0           226   1. GETS TOO MUCH SPACE NOW                                     
+            583   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            216   3. SHOULD GET MORE SPACE                                       
+            113   4. UNDECIDED                                                   
+             90   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE   9                    
+0                Q.9A6. U.S. NEWS: THE HOME FRONT*                               
+0                R. COL. 27.                                                     
+0            71   1. GETS TOO MUCH SPACE NOW                                     
+            428   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            601   3. SHOULD GET MORE SPACE                                       
+             54   4. UNDECIDED                                                   
+             75   0. NO ANSWER                                                   
+0                Q.9A7. SPORTS NEWS*                                             
+0                R. COL. 28.                                                     
+0           393   1. GETS TOO MUCH SPACE NOW                                     
+            548   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            132   3. SHOULD GET MORE SPACE                                       
+             70   4. UNDECIDED                                                   
+             84   5. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.9A8. NEWS OF OTHER COUNTRIES*                                 
+0                R. COL. 29.                                                     
+0           239   1. GETS TOO MUCH SPACE NOW                                     
+            624   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+             91   3. SHOULD GET MORE SPACE                                       
+            176   4. UNDECIDED                                                   
+             98   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.9A9. COMIC STRIPS*                                            
+0                R. COL. 30.                                                     
+0            96   1. GETS TOO MUCH SPACE NOW                                     
+            744   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            278   3. SHOULD GET MORE SPACE                                       
+             29   4. UNDECIDED                                                   
+             81   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.9A10. CARTOONS (BREGER, MAULDIN, HUBERT, ETC.)*               
+0                R. COL. 31.                                                     
+0            46   1. GETS TOO MUCH SPACE NOW                                     
+            811   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            259   3. SHOULD GET MORE SPACE                                       
+             32   4. UNDECIDED                                                   
+             80   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.9B. ARE THERE ANY OTHER THINGS THAT YOU THINK SHOULD GET      
+                       MORE SPACE THAN THEY GET AT PRESENT IN "THE STARS AND     
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  10                    
+0                      STRIPES"*                                                 
+0                R. COL. 32.                                                     
+0           920   1. NO, I CAN,T THINK OF ANY                                    
+            172   2. YES, SOMETHING WRITTEN IN                                   
+              5   3. YES, NOTHING WRITTEN IN                                     
+            130   4. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.10A. WHICH TWO OF THE FOLLOWING COMIC STRIPS IN "THE STARS    
+                        AND STRIPES" DO YOU LIKE BEST*                           
+0                C. COL. 33.                                                     
+0           592   1. BLONDIE                                                     
+            637   2. NOT CHOSEN                                                  
+0                C. COL. 34.                                                     
+0           114   1. ABBIE AND SLATS                                             
+           1115   2. NOT CHOSEN                                                  
+0                C. COL. 35.                                                     
+0           656   1. LI,L ABNER                                                  
+            573   2. NOT CHOSEN                                                  
+0                C. COL. 36.                                                     
+0           129   1. JANE                                                        
+           1100   2. NOT CHOSEN                                                  
+0                C. COL. 37.                                                     
+0           306   1. DICK TRACY                                                  
+            923   2. NOT CHOSEN                                                  
+0                C. COL. 38.                                                     
+0           476   1. TERRY AND THE PIRATES                                       
+            753   2. NOT CHOSEN                                                  
+0                C. COL. 39.                                                     
+0           135   1. SECOND CODE IF ONLY ONE IS CHECKED                          
+           1094   2. NOT CHOSEN                                                  
+0                C. COL. 40.                                                     
+0            23   1. NO ANSWER                                                   
+           1206   2. NOT CHOSEN                                                  
+0                Q.10B. IF TWO OF THESE COMIC STRIPS HAD TO BE DROPPED FROM      
+                        "THE STARS AND STRIPES", WHICH TWO WOULD YOU LEAVE OUT*  
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  11                    
+0                C. COL. 41.                                                     
+0           328   1. TERRY AND THE PIRATES                                       
+            901   2. NOT CHOSEN                                                  
+0                C. COL. 42.                                                     
+0           311   1. DICK TRACY                                                  
+            918   2. NOT CHOSEN                                                  
+0                C. COL. 43.                                                     
+0           723   1. JANE                                                        
+            506   2. NOT CHOSEN                                                  
+0                C. COL. 44.                                                     
+0           139   1. LI,L ABNER                                                  
+           1090   2. NOT CHOSEN                                                  
+0                C. COL. 45.                                                     
+0           698   1. ABBIE AND SLATS                                             
+            531   2. NOT CHOSEN                                                  
+0                C. COL. 46.                                                     
+0           168   1. BLONDIE                                                     
+           1061   2. NOT CHOSEN                                                  
+0                C. COL. 47.                                                     
+0            34   1. SECOND CODE IF ONLY ONE IS CHECKED                          
+           1195   2. NOT CHOSEN                                                  
+0                C. COL. 48.                                                     
+0            26   1. NO ANSWER                                                   
+           1203   2. NOT CHOSEN                                                  
+0                Q.10C. ARE THERE ANY OTHER COMIC STRIPS YOU WOULD LIKE TO HAVE  
+                        IN "THE STARS AND STRIPES" EVEN IF IT MEANT LEAVING      
+                        OUT SOME OF THE ONES THAT NOW APPEAR*                    
+0                R. COL. 49.                                                     
+0           891   1. NO, NONE                                                    
+            254   2. YES, SOMETHING WRITTEN IN                                   
+              5   3. YES, NOTHING WRITTEN IN                                     
+             74   4. NO ANSWER                                                   
+              5   0. NO CODE OR NO DATA                                          
+0                Q.11. HOW WELL DOES "THE STARS AND STRIPES" COVER THE SPORTS    
+                       NEWS YOU PERSONALLY ARE INTERESTED IN*                    
+0                R. COL. 50.                                                     
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  12                    
+0           475   1. IT COVERS IT VERY WELL                                      
+            438   2. IT COVERS IT FAIRLY WELL                                    
+             59   3. IT DOES NOT COVER IT AT ALL WELL                            
+            246   4. I AM NOT ESPECIALLY INTERESTED IN SPORTS                    
+             11   0. NO ANSWER                                                   
+0                Q.12A. IN YOUR OPINION, WHAT IS THE MAIN PURPOSE OF "THE        
+                        STARS AND STRIPES"*                                      
+0                R. COL. 51.                                                     
+0           201   1. TO FURNISH SOLDIERS WITH ENTERTAINING READING MATTER        
+            872   2. TO GIVE SOLDIERS THE NEWS AS IT HAPPENS                     
+            119   3. TO TRY TO GET SOLDIERS TO BELIEVE THINGS THE ARMY WANTS     
+                     THEM TO BELIEVE                                             
+             22   4. SOMETHING ELSE                                              
+             15   0. NO ANSWER                                                   
+0                Q.12B. DO YOU THINK "THE STARS AND STRIPES" HAS ANY OTHER       
+                        PURPOSE IN ADDITION TO THE ONE YOU CHECKED AS THE MAIN   
+                        PURPOSE*                                                 
+0                R. COL. 52.                                                     
+0           738   1. NO                                                          
+            311   2. YES, SOMETHING WRITTEN IN                                   
+             16   3. YES, NOTHING WRITTEN IN                                     
+            158   4. NO ANSWER                                                   
+              6   0. NO CODE OR NO DATA                                          
+0                Q.13. IN GENERAL, WHEN YOU READ THE PICTURE EDITORIAL IN "THE   
+                       STARS AND STRIPES", DO YOU READ ALL THE WAY THROUGH IT    
+                       OR DO YOU JUST SKIP THROUGH AND READ PART OF IT*          
+0                R. COL. 53.                                                     
+0            76   1. I SELDOM OR NEVER READ THE PICTURE EDITORIAL AT ALL         
+            641   2. I USUALLY READ ALL THE WAY THROUGH IT                       
+            300   3. I USUALLY READ MOST OF IT                                   
+            198   4. I USUALLY JUST SKIP THROUGH IT                              
+             14   0. NO ANSWER                                                   
+0                Q.14A. IN GENERAL, WHAT DO YOU THINK OF THE PICTURE EDITORIALS* 
+0                R. COL. 54.                                                     
+0           432   1. I LIKE ALMOST ALL OF THEM                                   
+            416   2. I LIKE MOST OF THEM, BUT ALSO DISLIKE SOME                  
+            151   3. I LIKE ABOUT HALF OF THEM AND DISLIKE ABOUT HALF            
+             55   4. I DISLIKE MOST OF THEM, BUT LIKE SOME OF THEM               
+             55   5. I DISLIKE ALMOST ALL OF THEM                                
+             79   6. I DON,T HAVE ANY PARTICULAR FEELING ABOUT THEM ONE WAY OR   
+                     THE OTHER                                                   
+             40   7. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  13                    
+0                Q.14B. DO YOU REMEMBER ANY OF THE PICTURE EDITORIALS YOU        
+                        PARTICULARLY LIKED*                                      
+0                R. COL. 55.                                                     
+0           807   1. NO, NONE I LIKED PARTICULARLY                               
+            190   2. YES, SOMETHING WRITTEN IN                                   
+             22   3. YES, NOTHING WRITTEN IN                                     
+            203   4. NO ANSWER                                                   
+              7   0. NO CODE OR NO DATA                                          
+0                Q.14C. DO YOU REMEMBER ANY OF THE PICTURE EDITORIALS YOU        
+                        PARTICULARLY DISLIKED*                                   
+0                R. COL. 56.                                                     
+0           980   1. NO, NONE I DISLIKED PARTICULARLY                            
+             52   2. YES, SOMETHING WRITTEN IN                                   
+             12   3. YES, NOTHING WRITTEN IN                                     
+            179   4. NO ANSWER                                                   
+              6   0. NO CODE OR NO DATA                                          
+0                Q.15. HOW INTERESTING TO YOU ARE THE KINDS OF THINGS THEY       
+                       WRITE ABOUT IN THE PICTURE EDITORIALS*                    
+0                R. COL. 57.                                                     
+0            91   1. I SELDOM OR NEVER READ THE PICTURE EDITORIALS               
+            295   2. THE KINDS OF THINGS THEY WRITE ABOUT ARE VERY INTERESTING   
+                     TO ME                                                       
+            654   3. THEY ARE FAIRLY INTERESTING TO ME                           
+            103   4. THEY ARE NOT VERY INTERESTING TO ME                         
+             21   5. THEY DON,T INTEREST ME AT ALL                               
+             65   0. NO ANSWER                                                   
+0                Q.16. DO YOU DISCUSS THE DAILY PICTURE EDITORIALS WITH OTHER    
+                       SOLDIERS*                                                 
+0                R. COL. 58.                                                     
+0           196   1. WE VERY OFTEN TALK THEM OVER                                
+            226   2. WE TALK THEM OVER FAIRLY OFTEN                              
+            471   3. WE OCCASIONALLY TALK THEM OVER                              
+            277   4. WE ALMOST NEVER TALK THEM OVER                              
+             58   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.17A. HAVE YOU CUT OUT ANY OF THE PICTURE EDITORIALS TO SEND   
+                        HOME*                                                    
+0                R. COL. 59.                                                     
+0           138   1. YES, I HAVE CUT OUT SEVERAL TO SEND HOME                    
+            148   2. YES, I HAVE CUT OUT ONE OR TWO                              
+            889   3. NO, I HAVE NOT CUT OUT ANY                                  
+             52   4. NO ANSWER                                                   
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  14                    
+0             2   0. NO CODE OR NO DATA                                          
+0                Q.17B. HAVE YOU SENT HOME ANY COPIES OF "THE STARS AND STRIPES"*
+0                R. COL. 60.                                                     
+0            23   1. I HAVE SENT HOME PRACTICALLY EVERY ISSUE                    
+            112   2. I HAVE SENT HOME QUITE A FEW ISSUES                         
+            300   3. I HAVE SENT HOME ONE OCCASIONALLY                           
+            744   4. I HAVE NEVER SENT ANY ISSUES HOME                           
+             50   0. NO ANSWER                                                   
+0                Q.18. IN YOUR OPINION, HOW IMPORTANT ARE THE KINDS OF THINGS    
+                       THEY WRITE ABOUT IN THE PICTURE EDITORIALS*               
+0                R. COL. 61.                                                     
+0            96   1. I SELDOM OR NEVER READ THE PICTURE EDITORIALS               
+            290   2. THEY ARE USUALLY VERY IMPORTANT                             
+            613   3. THEY ARE USUALLY FAIRLY IMPORTANT                           
+            133   4. THEY ARE USUALLY NOT VERY IMPORTANT                         
+             39   5. THEY ARE USUALLY NOT IMPORTANT AT ALL                       
+             57   6. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.19. IN YOUR OPINION, SHOULD "THE STARS AND STRIPES" CARRY     
+                       EDITORIALS*                                               
+0                R. COL. 62.                                                     
+0           777   1. YES, "THE STARS AND STRIPES" SHOULD CARRY EDITORIALS        
+            103   2. NO, "THE STARS AND STRIPES" SHOULD NOT CARRY EDITORIALS     
+            299   3. IT DOESN,T MAKE ANY DIFFERENCE TO ME WHETHER THEY CARRY     
+                     EDITORIALS OR NOT                                           
+             49   4. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.20. WOULD YOU RATHER HAVE ANOTHER CARTOON IN "THE STARS AND   
+                       STRIPES" INSTEAD OF THE PICTURE EDITORIAL*                
+0                R. COL. 63.                                                     
+0           794   1. I WOULD RATHER HAVE THE PICTURE EDITORIAL                   
+            333   2. I WOULD RATHER HAVE ANOTHER CARTOON                         
+            101   3. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.21. HOW DO YOU FEEL ABOUT THE STYLE OR WAY IN WHICH THE       
+                       PICTURE EDITORIALS ARE WRITTEN*                           
+0                R. COL. 64.                                                     
+0           271   1. I HAVEN,T READ THE PICTURE EDITORIALS ENOUGH TO SAY         
+            720   2. I LIKE THE MAN-TO-MAN WAY IN WHICH THEY ARE WRITTEN         
+             82   3. I DISLIKE THE WAY IN WHICH THEY WRITE DOWN TO MEN           
+             65   4. SOME OTHER IDEA                                             
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  15                    
+0            91   0. NO ANSWER                                                   
+0                Q.22. EVERYTHING CONSIDERED, HOW WOULD YOU RATE "THE STARS      
+                       AND STRIPES"*                                             
+0                R. COL. 65.                                                     
+0           391   1. EXCELLENT                                                   
+            574   2. GOOD                                                        
+            212   3. FAIR                                                        
+             12   4. NO SO GOOD                                                  
+              8   5. QUITE POOR                                                  
+             32   0. NO ANSWER                                                   
+0                Q.23A. IN YOUR OPINION, DOES "THE STARS AND STRIPES" MAKE       
+                        MISTAKES IN TELLING ABOUT WAR NEWS*                      
+0                R. COL. 66.                                                     
+0           175   1. IT OFTEN MAKES MISTAKES                                     
+            599   2. IT MAKES MISTAKES ONCE IN A WHILE                           
+            155   3. IT ALMOST NEVER MAKES MISTAKES                              
+            256   4. DON,T KNOW WHETHER IT MAKES MISTAKES OR NOT                 
+             44   0. NO ANSWER                                                   
+0                X. QUESTION 23B NOT CODED.                                      
+0                Q.23B. IF YOU ANSWERED THAT IT MAKES MISTAKES, DO YOU REMEMBER  
+                        SOME THAT IT MADE*                                       
+0                Q.24. WHAT KIND OF A PICTURE DO YOU THINK "THE STARS AND        
+                       STRIPES" GIVES ON HOW THE WAR IS GOING*                   
+0                R. COL. 67.                                                     
+0           397   1. IT GIVES THE IDEA THAT THE WAR IS GOING BETTER THAN IT      
+                     REALLY IS                                                   
+             23   2. IT GIVES THE IDEA THAT THE WAR IS GOING WORSE THAN IT       
+                     REALLY IS                                                   
+            745   3. IT GIVES ABOUT THE RIGHT IDEA OF HOW THE WAR IS GOING       
+             63   4. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                P. THE FOLLOWING QUESTIONS ARE ABOUT A PARTICULAR EDITORIAL     
+                    WHICH APPEARED IN "STARS AND STRIPES" ON DECEMBER 14, 1944   
+                    UNDER THE TITLE "LET,S LOOK AT THE RECORD".                  
+0                Q.1. DID YOU READ THIS EDITORIAL WHEN IT APPEARED IN            
+                      "THE STARS AND STRIPES"*                                   
+0                R. COL. 68.                                                     
+0           233   1. NOT SURE WHETHER I READ IT OR NOT                           
+            636   2. YES, I READ IT                                              
+            315   3. NO, I DID NOT READ IT                                       
+             43   4. NO ANSWER                                                   
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  16                    
+0             2   0. NO CODE OR NO DATA                                          
+0                Q.2. DO YOU REMEMBER HEARING ANY OF THE MEN IN YOUR OUTFIT      
+                      TALKING ABOUT THIS EDITORIAL OR DISCUSSING WHAT IT SAID*   
+0                R. COL. 69.                                                     
+0           111   1. I HEARD A LOT OF DISCUSSION ABOUT IT                        
+            342   2. I HEARD SOME TALK ABOUT IT                                  
+            127   3. THERE WAS HARDLY ANY DISCUSSION ABOUT IT                    
+            598   4. I DON,T REMEMBER HEARING IT DISCUSSED AT ALL                
+             51   0. NO ANSWER                                                   
+0                Q.3A. IN GENERAL, DO YOU LIKE OR DISLIKE THIS EDITORIAL*        
+0                R. COL. 70.                                                     
+0           341   1. LIKE IT VERY MUCH                                           
+            453   2. LIKE IT FAIRLY WELL                                         
+            323   3. DON,T PARTICULARLY LIKE IT OR DISLIKE IT                    
+             39   4. DISLIKE IT PRETTY MUCH                                      
+             27   5. DISLIKE IT VERY MUCH                                        
+             46   0. NO ANSWER                                                   
+0                Q.3B. ARE THERE ANY PARTICULAR THINGS ABOUT IT OR THE WAY IT IS 
+                       PRESENTED THAT YOU LIKE*                                  
+0                R. COL. 71.                                                     
+0           758   1. NO                                                          
+            313   2. YES, SOMETHING WRITTEN IN                                   
+             28   3. YES, NOTHING WRITTEN IN                                     
+            128   4. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.3C. ARE THERE ANY PARTICULAR THINGS ABOUT IT OR THE WAY IT IS 
+                       PRESENTED THAT YOU DISLIKE*                               
+0                R. COL. 72.                                                     
+0           975   1. NO                                                          
+            115   2. YES, SOMETHING WRITTEN IN                                   
+             11   3. YES, NOTHING WRITTEN IN                                     
+            127   4. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.4. IN GENERAL, DO YOU AGREE, OR DISAGREE, WITH WHAT THE       
+                      WRITER SAYS IN THIS EDITORIAL*                             
+0                R. COL. 73.                                                     
+0           343   1. AGREE WITH ALL OF WHAT HE SAYS                              
+            495   2. AGREE WITH MOST OF WHAT HE SAYS                             
+            257   3. AGREE WITH SOME AND DISAGREE WITH SOME, ABOUT FIFTY-FIFTY   
+             36   4. DISAGREE WITH MOST OF WHAT HE SAYS                          
+              6   5. DISAGREE WITH ALL OF WHAT HE SAYS                           
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  17                    
+0            92   0. NO ANSWER                                                   
+0                P. THE FOLLOWING QUESTIONS ARE ABOUT "TOMORROW".  ("TOMORROW"   
+                    IS THE 4-PAGE FEATURE SECTION WHICH HAS BEEN APPEARING       
+                    ABOUT ONCE A WEEK IN "THE STARS AND STRIPES".)               
+0                Q.1. WHAT IS THE DATE ON YOUR COPY OF "TOMORROW"*               
+0                R. COL. 74.                                                     
+0           179   1. DECEMBER 20, 1944                                           
+            149   2. DECEMBER 27, 1944                                           
+            159   3. JANUARY 3, 1945                                             
+            125   4. JANUARY 10, 1945                                            
+            151   5. JANUARY 24, 1945                                            
+            133   6. JANUARY 31, 1945                                            
+             79   7. FEBRUARY 7, 1945                                            
+            254   0. NO ANSWER                                                   
+0                Q.2. DO YOU REMEMBER HAVING SEEN "TOMORROW" BEFORE*             
+0                R. COL. 75.                                                     
+0           180   1. DON,T REMEMBER WHETHER I HAVE SEEN IT BEFORE OR NOT         
+            711   2. YES, I HAVE SEEN IT BEFORE                                  
+            221   3. NO, I HAVE NOT SEEN IT BEFORE                               
+            116   4. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.3. DURING THE LAST FEW WEEKS, HOW OFTEN HAVE YOU READ PART    
+                      OR ALL OF "TOMORROW"*                                      
+0                R. COL. 76.                                                     
+0           379   1. HAVE READ SOMETHING IN IT EVERY WEEK                        
+            229   2. HAVE READ SOMETHING IN IT SEVERAL TIMES                     
+            189   3. HAVE READ SOMETHING IN IT ONCE OR TWICE                     
+            202   4. HAVE NEVER READ ANYTHING IN IT                              
+             94   5. UNCERTAIN                                                   
+            136   0. NO ANSWER                                                   
+0                Q.4. WHEN YOU SEE A COPY OF "TOMORROW", DO YOU USUALLY LOOK AT  
+                      EVERYTHING IN IT, OR DO YOU SKIP THROUGH IT AND JUST LOOK  
+                      AT SOME PARTS OF IT*                                       
+0                R. COL. 77.                                                     
+0           351   1. I USUALLY SKIP THROUGH AND JUST LOOK AT SOME PARTS OF IT    
+            330   2. I USUALLY LOOK AT NEARLY EVERYTHING, BUT I DON,T READ IT ALL
+            169   3. I USUALLY READ NEARLY ALL OF IT                             
+            226   4. I HAVEN,T SEEN "TOMORROW" OFTEN ENOUGH TO SAY               
+            151   5. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.5. HOW INTERESTING DO YOU PERSONALLY FIND MOST OF THE THINGS  
+                      YOU SEE IN "TOMORROW"*                                     
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  18                    
+0                R. COL. 78.                                                     
+0           227   1. MOST OF THEM ARE VERY INTERESTING TO ME                     
+            527   2. MOST OF THEM ARE FAIRLY INTERESTING TO ME                   
+             75   3. MOST OF THEM DO NOT INTEREST ME AT ALL                      
+            246   4. I HAVEN,T SEEN "TOMORROW" ENOUGH TO SAY                     
+            152   5. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.6. HOW IMPORTANT TO YOU PERSONALLY DO YOU FEEL MOST OF THE    
+                      THINGS IN "TOMORROW" ARE*                                  
+0                R. COL. 79.                                                     
+0           148   1. MOST OF THEM ARE VERY IMPORTANT TO ME                       
+            481   2. MOST OF THEM ARE FAIRLY IMPORTANT TO ME                     
+            154   3. MOST OF THEM ARE NOT VERY IMPORTANT TO ME                   
+             41   4. MOST OF THEM ARE NOT AT ALL IMPORTANT TO ME                 
+            246   5. I HAVEN,T SEEN "TOMORROW" ENOUGH TO SAY                     
+            159   0. NO ANSWER                                                   
+0                X. COL. 80 NOT USED.                                            
+0                CARD 2                                                          
+0                CARD.                                                           
+0                C. COL. 1.                                                      
+           1229   2. CARD TWO                                                    
+0                DECK.                                                           
+0                Y. COLS. 2-4.                                                   
+          203. SURVEY NUMBER                                                     
+0                BALLOT.                                                         
+0                Y. COLS. 5-8.                                                   
+0                X. BALLOT NUMBER GENERATED BY ROPER CENTER.                     
+0                FORM:                                                           
+0                Y. COL. 9.                                                      
+0          1229   1. 203A                                                        
+              0   2. 203B                                                        
+0                Q.7. HAVE YOU EVER SENT HOME ANY ISSUES OF "TOMORROW" OR PARTS  
+                      OF THEM*                                                   
+0                R. COL. 10.                                                     
+0            43   1. YES, I HAVE SENT SEVERAL ISSUES OF "TOMORROW" (OR CLIPPINGS)
+                     HOME                                                        
+             60   2. YES, I HAVE SENT ONE OR TWO HOME                            
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  19                    
+0           970   3. NO, I HAVE NOT SENT ANY HOME                                
+            155   4. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.8. DO YOU REMEMBER HEARING ANY OF THE MEN IN YOUR OUTFIT      
+                      TALKING ABOUT ARTICLES IN "TOMORROW" OR DISCUSSING WHAT    
+                      THE ARTICLES SAID*                                         
+0                R. COL. 11.                                                     
+0            56   1. YES, I HEARD A LOT OF DISCUSSION ABOUT ARTICLES IN          
+                     "TOMORROW"                                                  
+            339   2. YES, I HEARD SOME DISCUSSION ABOUT "TOMORROW" ARTICLES      
+            136   3. NO, THERE WAS HARDLY ANY DISCUSSION ON "TOMORROW" ARTICLES  
+            539   4. NO, I DON,T REMEMBER HEARING ANY DISCUSSION AT ALL ABOUT    
+                     "TOMORROW" ARTICLES                                         
+            159   0. NO ANSWER                                                   
+0                Q.9. CAN YOU REMEMBER READING ANY PARTICULAR ARTICLE IN         
+                      "TOMORROW" THAT SEEMED ESPECIALLY INTERESTING TO YOU       
+                      PERSONALLY*  (IF YES, WHAT WAS THE ARTICLE*)               
+0                R. COL. 12.                                                     
+0           132   1. YES, SOMETHING NAMED                                        
+             33   2. YES, I DO REMEMBER ONE, BUT DOESN,T NAME IT                 
+            835   3. NO, I DON,T REMEMBER ANY THAT INTERESTED ME GREATLY         
+            220   4. NO ANSWER                                                   
+              9   0. NO CODE NO DATA                                             
+0                Q.10. IS THERE SOME PARTICULAR THING IN "TOMORROW" YOU DISLIKE* 
+0                R. COL. 13.                                                     
+0            46   1. YES, SOMETHING WRITTEN IN                                   
+             11   2. YES, NOTHING WRITTEN IN                                     
+            797   3. NO                                                          
+            361   4. NO ANSWER                                                   
+             14   0. NO CODE OR NO DATA                                          
+0                Q.11A. THE AMOUNT OF SPACE THAT CAN BE GIVEN TO "TOMORROW" IS   
+                        STRICTLY LIMITED.  CONSIDERING THIS, HOW DO YOU FEEL     
+                        ABOUT THE AMOUNT OF SPACE THAT IS NOW BEING GIVEN TO     
+                        EACH ONE OF THE FOLLOWING FEATURES*                      
+0                Q.11A1. "TOMORROW THE WORLD" (CARTOONS)*                        
+0                R. COL. 14.                                                     
+0            96   1. GETS TOO MUCH SPACE NOW                                     
+            555   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            146   3. SHOULD GET MORE SPACE                                       
+            112   4. UNDECIDED                                                   
+            319   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  20                    
+0                Q.11A2. "GI HUDDLE"*                                            
+0                R. COL. 15.                                                     
+0           105   1. GETS TOO MUCH SPACE NOW                                     
+            583   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            113   3. SHOULD GET MORE SPACE                                       
+            106   4. UNDECIDED                                                   
+            321   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.11A3. "HEPCATS AND BOOKWORMS"*                                
+0                R. COL. 16.                                                     
+0           316   1. GETS TOO MUCH SPACE NOW                                     
+            370   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+             60   3. SHOULD GET MORE SPACE                                       
+            150   4. UNDECIDED                                                   
+            332   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.11A4. "MAIN STREET"*                                          
+0                R. COL. 17.                                                     
+0           107   1. GETS TOO MUCH SPACE NOW                                     
+            507   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            117   3. SHOULD GET MORE SPACE                                       
+            145   4. UNDECIDED                                                   
+            352   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.11A5. ARTICLES ABOUT NEW DEVELOPMENTS IN INDUSTRY*            
+0                R. COL. 18.                                                     
+0           121   1. GETS TOO MUCH SPACE NOW                                     
+            446   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            211   3. SHOULD GET MORE SPACE                                       
+            126   4. UNDECIDED                                                   
+            323   5. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.11A6. ARTICLES ABOUT FARMING*                                 
+0                R. COL. 19.                                                     
+0           218   1. GETS TOO MUCH SPACE NOW                                     
+            409   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            101   3. SHOULD GET MORE SPACE                                       
+            168   4. UNDECIDED                                                   
+            333   0. NO ANSWER                                                   
+0                Q.11A7. ARTICLES ABOUT WHAT PEOPLE ARE DOING ON THE HOME FRONT* 
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  21                    
+0                R. COL. 20.                                                     
+0            91   1. GETS TOO MUCH SPACE NOW                                     
+            456   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            263   3. SHOULD GET MORE SPACE                                       
+             98   4. UNDECIDED                                                   
+            321   0. NO ANSWER                                                   
+0                Q.11A8. ARTICLES ABOUT POST-WAR JOBS*                           
+0                R. COL. 21.                                                     
+0           121   1. GETS TOO MUCH SPACE NOW                                     
+            348   2. GETS ABOUT THE RIGHT AMOUNT OF SPACE NOW                    
+            337   3. SHOULD GET MORE SPACE                                       
+            106   4. UNDECIDED                                                   
+            317   0. NO ANSWER                                                   
+0                Q.11B. ARE THERE ANY OTHER THINGS THAT YOU THINK SHOULD GET     
+                        MORE SPACE THAN THEY GET AT PRESENT IN "TOMORROW"*       
+0                R. COL. 22.                                                     
+0           807   1. NO, I CAN,T THINK OF ANY                                    
+             57   2. YES, SOMETHING WRITTEN IN                                   
+              3   3. YES, NOTHING WRITTEN IN                                     
+            361   4. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.11C. HOW ABOUT PICTURES - WOULD YOU LIKE "TOMORROW" TO        
+                        CARRY MORE PICTURES IF IT MEANT CUTTING DOWN ON THE      
+                        AMOUNT OF READING MATTER*                                
+0                R. COL. 23.                                                     
+0           268   1. YES, THE MORE PICTURES THE BETTER                           
+            269   2. YES, A FEW MORE PICTURES, BUT THERE STILL SHOULD BE PLENTY  
+                     OF READING MATTER                                           
+            370   3. NO, IT HAS ABOUT THE RIGHT AMOUNT OF PICTURES NOW           
+             66   4. NO, IT SHOULD HAVE FEWER PICTURES AND MORE READING MATTER   
+            255   5. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.12. EVERYTHING CONSIDERED, HOW WOULD YOU RATE "TOMORROW"*     
+0                R. COL. 24.                                                     
+0           131   1. EXCELLENT                                                   
+            417   2. GOOD                                                        
+            271   3. FAIR                                                        
+             41   4. NOT SO GOOD                                                 
+             16   5. QUITE POOR                                                  
+            159   6. HAVEN,T READ IT ENOUGH TO SAY                               
+            194   0. NO ANSWER                                                   
+0                Q.13A. IN YOUR OPINION WHAT IS THE MAIN PURPOSE OF "TOMORROW"*  
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  22                    
+0                R. COL. 25.                                                     
+0           183   1. HAVEN,T ANY IDEA                                            
+            561   2. TO FURNISH SOLDIERS WITH USEFUL AND IMPORTANT               
+                     INFORMATION                                                 
+             52   3. TO TRY TO GET SOLDIERS TO BELIEVE THINGS THE ARMY           
+                     WANTS THEM TO BELIEVE                                       
+            172   4. TO FURNISH SOLDIERS WITH ENTERTAINING READING MATTER        
+             30   5. SOMETHING ELSE                                              
+            231   0. NO ANSWER                                                   
+0                Q.13B. DO YOU THINK "TOMORROW" HAS ANY OTHER PURPOSE IN ADDITION
+                        TO THE ONE YOU CHECKED AS THE MAIN PURPOSE*              
+0                R. COL. 26.                                                     
+0           393   1. HAVEN,T ANY IDEA                                            
+            477   2. NO                                                          
+             83   3. YES, SOMETHING WRITTEN IN                                   
+              2   4. YES, NOTHING WRITTEN IN                                     
+            270   5. NO ANSWER                                                   
+              4   0. NO CODE OR NO DATA                                          
+0                Q.14. HAVE YOU BEEN IN ACTUAL COMBAT IN THIS WAR*               
+0                R. COL. 27.                                                     
+0           705   1. YES                                                         
+            377   2. NO                                                          
+            143   3. NO ANSWER                                                   
+              4   0. NO CODE OR NO DATA                                          
+0                Q.15. WHAT BRANCH OF THE ARMY ARE YOU IN NOW*                   
+0                R. COLS. 28-29.                                                 
+            108   01. ENGINEERS                                                  
+             20   02. FIELD ARTILLERY                                            
+             58   03. QUARTERMASTER CORPS                                        
+            549   04. INFANTRY                                                   
+             54   05. MEDICAL DEPARTMENT                                         
+             31   06. ARMORED FORCE                                              
+             10   07. COAST ARTILLERY AND ANTI-AIRCRAFT                          
+              1   08. TRANSPORTATION CORPS                                       
+             53   09. ORDNANCE DEPARTMENT                                        
+0             1   10. CHEMICAL WARFARE SERVICE                                   
+0            29   11. MILITARY POLICE                                            
+0            28   12. SIGNAL CORPS                                               
+0           198   13. AIR CORPS                                                  
+0            40   14. OTHER                                                      
+             49   00. NO ANSWER                                                  
+1                                                                                
+0        ROPER CENTER - AMS203A                      PAGE  23                    
+0                V.16. LIST OF EDITORIALS SENT TO THE FIELD:                     
+0                C. COL. 30.                                                     
+0           159   1. THOSE NAZI WELCOMES, NOVEMBER 2; A WORD TO THE WORLD,       
+                     JANUARY 12                                                  
+            152   2. THE MAN ON THE STREET, NOVEMBER 10; CHECK LIST FOR          
+                     OFFICERS, JANUARY 13                                        
+            154   3. WE ARE MONGRELS, NOVEMBER 17; NOTES ON TRENCH FOOT TYPE II, 
+                     JANUARY 19                                                  
+            154   4. NO PURPLE HEART FOR PURPLE FEET, DECEMBER 6; HOME FOLKS     
+                     KNOW A WAR IS ON, JANUARY 22                                
+            157   5. STRETCH THAT RUBBER, DECEMBER 8; SUBJECT: YOUR INTEGRITY,   
+                     JANUARY 27                                                  
+            163   6. LETS LOOK AT THE RECORD, DECEMBER 14; BREAD, BULLETS AND    
+                     BELIEF, JANUARY 29                                          
+            153   7. HOME SWEET HOME, DECEMBER 17; AMEN, JANUARY 29              
+             66   8. GREEK PAPERS PLEASE COPY, DECEMBER 28                       
+             70   9. A TOOT ON THE BRASS, JANUARY 6                              
+              1   0. NO CODE OR NO DATA                                          
+0                V.17. UNIT IDENTIFICATION:                                      
+0                X. CODES NOT PROVIDED BY SURVEY ORGANIZATION.  DATA TRANSFERRED 
+                    AS IS.                                                       
+0                U. COLS. 31-32. ANP                                             
+          00. NO CODE OR NO DATA                                                 
+0                V.18. SCHEDULE NUMBER:                                          
+0                X. CODES NOT PROVIDED BY SURVEY ORGANIZATION.  DATA TRANSFERRED 
+                    AS IS.                                                       
+0                U. COLS. 33-35. ANP                                             
+          000. NO CODE OR NO DATA                                                
+0                X. COLS. 36-80 NOT USED.                                        
+1                                                                                

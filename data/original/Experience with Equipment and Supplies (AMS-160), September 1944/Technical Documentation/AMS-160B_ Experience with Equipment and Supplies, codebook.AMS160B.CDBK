@@ -1,0 +1,976 @@
+1                                                                                
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE   1                    
+0                                                                                
+0                SURVEY IDENTIFICATION                                           
+0                1. PROJECT:             THE AMERICAN SOLDIER IN WORLD WAR II    
+0                2. TITLE:               EXPERIENCE WITH EQUIPMENT AND SUPPLIES  
+0                3. DATE:                SEPTEMBER, 1944                         
+0                4. SURVEY NUMBER:       S-160B                                  
+0                5. PROJECT DIRECTOR:    DR. SAMUEL A. STOUFFER                  
+0                6. PROJECT SPONSOR:     RESEARCH BRANCH                         
+                                         INFORMATION AND EDUCATION DIVISION      
+                                         WAR DEPARTMENT                          
+0                7. PUBLICATION:                                                 
+                    STUDIES IN SOCIAL PSYCHOLOGY IN WORLD WAR II: VOLUMES I-IV   
+                       (PRINCETON UNIVERSITY PRESS)                              
+                    VOL. I (1949): THE AMERICAN SOLDIER: ADJUSTMENT DURING ARMY  
+                       LIFE.  SAMUEL A. STOUFFER, EDWARD A. SUCHMAN, LELAND C.   
+                       DEVINNEY, SHIRLEY A. STAR, ROBIN M. WILLIAMS, JR.         
+                    VOL. II (1949): THE AMERICAN SOLDIER: COMBAT AND ITS         
+                       AFTERMATH. SAMUEL A. STOUFFER, ARTHUR A. LUMSDAINE,       
+                       MARION HARPER LUMSDAINE, ROBIN M. WILLIAMS, JR.           
+                       M. BREWSTER SMITH, IRVING L. JANIS. SHIRLEY A. STAR,      
+                       LEONARD S. COTTRELL, JR.                                  
+                    VOL. III (1949): EXPERIMENTS ON MASS COMMUNICATION.          
+                       CARL I. HOVLAND, ARTHUR A. LUMSDAINE, FRED D. SHEFFIELD.  
+                    VOL. IV (1950): MEASUREMENT AND PREDICTION. SAMUEL A.        
+                       STOUFFER, LOUIS GUTTMAN, EDWARD A. SUCHMAN, PAUL F.       
+                       LAZARSFELD, SHIRLEY STAR, JOHN A. CLAUSEN.                
+0                8. DUPLICATES AVAILABLE FROM:                                   
+                               THE ROPER PUBLIC OPINION RESEARCH CENTER          
+                               P.O. BOX 624                                      
+                               WILLIAMSTOWN, MASSACHUSETTS 01267                 
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE   2                    
+0                                                                                
+0                SAMPLE INFORMATION                                              
+0                1. POPULATION UNIVERSE: BLACK AND WHITE ENLISTED MEN IN THE     
+                                         EUROPEAN THEATER OF OPERATIONS.         
+0                2. SAMPLE SIZE:         402 (3 CARDS PER RESPONDENT)            
+0                METHOD OF SAMPLING AND DATA COLLECTION                          
+                    FOR THE GENERAL CASE, SAMPLING WAS A TWO-STEP PROCESS.       
+                    FIRST, THERE WAS SAMPLING OF ORGANIZATIONS WHICH CAN BE      
+                    DESCRIBED AS PURPOSIVE OR QUOTA SAMPLING.  SECOND,           
+                    WITHIN AN ORGANIZATION THERE WAS SAMPLING OF INDIVIDUALS     
+                    INVOLVING PROCEDURES WHICH MIGHT BE CALLED PROBABILITY       
+                    SAMPLING.                                                    
+0                1. SELECTION OF ORGANIZATIONS TO BE INCLUDED IN A STUDY: THE    
+                    SELECTION OF UNITS INVOLVED PURPOSIVE RATHER THAN STRICTLY   
+                    RANDOM SAMPLING.  IF A CROSS-SECTION OF ENLISTED MEN IN      
+                    THE UNITED STATES OR A THEATER WAS REQUIRED, THE STANDARD    
+                    PROCEDURE WAS TO SELECT THE UNITS SUCH THAT EACH BRANCH OF   
+                    SERVICE WAS REPRESENTED IN AS NEARLY AS POSSIBLE THE CORRECT 
+                    PROPORTIONS.  THE RESEARCH BRANCH HAD ACCESS TO THE LATEST   
+                    SECRET DATA ON TROOP STRENGTH AND LOCATION OF UNITS.         
+                    WITHIN A GIVEN BRANCH OF SERVICE, EFFORT WAS MADE TO GET     
+                    UNITS IN VARIOUS STAGES OF TRAINING OR WITH VARIOUS TYPES    
+                    OF ARMY EXPERIENCE IN CORRECT PROPORTIONS, IN SO FAR AS THIS 
+                    COULD BE INFERRED FROM AVAILABLE DATA.  HAVING STRATIFIED    
+                    THE UNIVERSE BY BRANCH AND TYPE OF UNIT, ONE OR MORE UNITS   
+                    FROM EACH SUBCELL OF THIS STRATIFIED UNIVERSE WERE DRAWN.    
+                    PRACTICAL CONSIDERATIONS OF TIME AND PERSONNEL USUALLY       
+                    PREVENTED A STRICTLY RANDOM SELECTION OF UNITS WITHIN THE    
+                    SUBCELL; IT WAS MUCH FASTER TO GET A VARIETY OF UNITS AT A   
+                    FEW POSTS THAN ONE UNIT AT MANY POSTS.  PRESELECTION OF UNITS
+                    WAS DONE IN WASHINGTON FOR TROOPS IN THE UNITED STATES OR AT 
+                    THEATER HEADQUARTERS FOR TROOPS OVERSEAS.                    
+0                2. SAMPLING OF INDIVIDUALS WITHIN A UNIT: THE STANDARD PROCEDURE
+                    WAS TO DRAW THE NAMES OF EVERY NTH MAN FROM A DUTY ROSTER.   
+                    OR, IF THE STUDY DESIGN CALLED FOR CERTAIN NUMBERS AT A      
+                    GIVEN RANK OR A GIVEN AGE, THE RESEARCH TEAM HAD ACCESS TO   
+                    THE SOLDIER,S FORM 20 CARDS CONTAINING ALL SUCH INFORMATION. 
+                    FOR ANY DESIRED CATEGORY OF MEN THESE CARDS COULD BE SAMPLED 
+                    AT RANDOM AND THE MEN WHOSE NAMES WERE DRAWN COULD BE        
+                    ORDERED TO APPEAR AT A DESIGNATED TIME AND PLACE.            
+0                3. QUESTIONNAIRE ADMINISTRATION: NORMALLY A SAMPLE OF ABOUT     
+                    FIFTY ENLISTED MEN WERE ASSEMBLED BY ORDER OF THEIR UNIT     
+                    COMMANDER AT A PLACE CONVENIENT FOR WRITING.  THE CLASS      
+                    LEADER WAS ALMOST ALWAYS AN ENLISTED MAN TRAINED FOR THE     
+                    PURPOSE.  THE QUESTIONNAIRES WERE FILLED OUT ANONYMOUSLY BY  
+                    THE MEN, IT HAVING BEEN ESTABLISHED THAT NO SIGNIFICANT      
+                    DIFFERENCES OCCURRED IN RESPONSES WITH PERSONAL INTERVIEWS.  
+                    MEN WITH LITTLE EDUCATION OR WHO WERE HAVING DIFFICULTY      
+                    READING THE QUESTIONNAIRE WERE INTERVIEWED INDIVIDUALLY      
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE   3                    
+0                   (PERSONALLY INTERVIEWED NEGRO TROOPS HAD NEGRO               
+                    INTERVIEWERS).                                               
+0                4. CHECKING THE ADEQUACY OF THE SAMPLE AFTER IT WAS TAKEN:      
+                    AFTER EACH SURVEY THE SAMPLING EXPERTS CHECKED THE RETURNS   
+                    TO SEE WHETHER LARGE BIASES HAD OCCURRED ON VARIABLES FOR    
+                    WHICH DATA WERE AVAILABLE FOR THE UNIVERSE - SUCH AS RANK,   
+                    LENGTH OF TIME IN THE ARMY, AGE, ETC.  IN A FEW INSTANCES,   
+                    THE SAMPLE REVEALED A BIAS; WHEN FEASIBLE A CORRECTIVE SAMPLE
+                    WAS DRAWN IMMEDIATELY.  IT WAS FELT THAT BIASES INTRODUCED   
+                    BY SAMPLING DESIGNS AND THEIR FIELD EXECUTION WERE VERY      
+                    SMALL AS COMPARED WITH THOSE ATTRIBUTABLE TO THE WORDING OF  
+                    QUESTIONS.  MUCH EFFORT WAS PUT INTO IMPROVING METHODS OF    
+                    QUESTION DESIGN.                                             
+0                RESPONSE DATA:  RPORC RESPONSE DATA FILE IS IN BCD FORMAT ON    
+                                 TAPE.  DATA HAVE BEEN CLEANED AND THE FINAL CODE
+                                 IS NUMERIC (0-9).  STRAY PUNCHES HAVE BEEN      
+                                 RECODED AS THE "NO CODE OR NO DATA" RESPONSE.   
+                                 TAPES MAY BE ORDERED ACCORDING TO THE FOLLOWING 
+                                 OPTIONS:                                        
+                                    A. 7 TRACK - 200, 556, OR 800 BPI            
+                                    B. 9 TRACK - 800 BPI                         
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE   4                    
+0                                                                                
+0                ROPER CENTER CODEBOOK EXPLANATION                               
+0                QUESTIONS AND RELATED INFORMATION                               
+                     Q.        QUESTION                                          
+                     N.        DATA PROVIDED BY INTERVIEWER WITHOUT VERBAL       
+                               INTERACTION                                       
+                     V.        VARIABLE - INTRODUCED BY PRIMARY RESEARCH         
+                               ORGANIZATION                                      
+                     F.        FILTER QUESTION INFORMATION                       
+                     CARD.     CARD NUMBER INDICATOR                             
+                     DECK.     SURVEY NUMBER INDICATOR                           
+                     BALLOT.   RESPONDENT ID NUMBER INDICATOR                    
+                     WEIGHT.   CODE INDICATOR FOR DUPLICATE CARDS IN WEIGHTED    
+                               SAMPLES                                           
+                     SPLIT.    CODE INDICATOR IN SPLIT-BALLOT (SPLIT-FORM)       
+                               SURVEY                                            
+                     SEC.      SPECIAL CODING INTRODUCED IN SECONDARY RESEARCH - 
+                               NOT USED IN THE ORIGINAL CODEBOOK                 
+0                RESPONSES AND RELATED INFORMATION                               
+                     R.        RESPONDENT CHOICE IN CLOSED QUESTIONS             
+                     A.        RESPONDENT CHOICE IN SELF-ADMINISTERED QUESTIONS  
+                     C.        RESPONDENT CHOICE CODED BY CODER (OPEN QUESTIONS) 
+                               OR INTERVIEWER CHOICE WITH N. ITEMS               
+                     J.        RESPONDENT CHOICE CODED BY SECONDARY CODER        
+                     U.        CODING METHOD UNKNOWN                             
+                     Y.        DATA INSERTED BY RPORC                            
+                     ANP       ACTUAL NUMBER PUNCHED                             
+0                OTHER INFORMATION                                               
+                     S.        GENERAL SURVEY DESCRIPTION (SUMMARY)              
+                     E.        SURVEY ORGANIZATION EXPLANATORY MATERIAL          
+                     P.        PROLOGUE OR PREAMBLE (PRECEDES ACTUAL QUESTION)   
+                     I.        INSTRUCTIONS TO INTERVIEWER                       
+                     READ.     SIGNALS USE OF MATERIAL (CARD, PHOTOGRAPHS, ETC.) 
+                               HANDED TO RESPONDENT BY INTERVIEWER               
+                     Z.        INSTRUCTIONS TO CODER                             
+                     X.        RPORC COMMENTS                                    
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE   5                    
+0                                                                                
+0                CARD 1                                                          
+0                CARD.                                                           
+0                C. COL. 1.                                                      
+0           402   1. CARD ONE                                                    
+0                DECK.                                                           
+0                Y. COLS. 2-4.                                                   
+0         160. SURVEY NUMBER                                                     
+0                BALLOT.                                                         
+0                Y. COLS. 5-7.                                                   
+0                X. BALLOT NUMBER GENERATED BY ROPER CENTER.                     
+0                FORM:                                                           
+0                Y. COL. 8.                                                      
+0             0   1. S-160A                                                      
+            402   2. S-160X                                                      
+0                Q.1. WHAT IS YOUR RANK OR GRADE*                                
+0                R. COL. 9.                                                      
+0           119   1. PRIVATE                                                     
+             97   2. PRIVATE FIRST CLASS                                         
+             88   3. CORPORAL OR TECH 5                                          
+             50   4. SERGEANT OR TECH 4                                          
+             30   5. STAFF SERGEANT OR TECH 3                                    
+             10   6. TECHNICAL SERGEANT, MASTER SERGEANT, OR FIRST SERGEANT      
+              8   0. NO ANSWER                                                   
+0                Q.2. WHAT BRANCH OF THE ARMY ARE YOU IN NOW*                    
+0                R. COLS. 10-11.                                                 
+             52   01. ENGINEERS                                                  
+             21   02. FIELD ARTILLERY                                            
+             69   03. QUARTERMASTER CORPS                                        
+            102   04. INFANTRY                                                   
+             29   05. MEDICAL CORPS                                              
+             10   06. ARMORED COMMAND                                            
+             27   07. SIGNAL CORPS                                               
+              1   08. COAST ARTILLERY AND ANTI-AIRCRAFT                          
+              0   09. AIR CORPS                                                  
+0            50   10. TRANSPORTATION CORPS                                       
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE   6                    
+0            23   11. ORDNANCE DEPARTMENT                                        
+0             0   12. CHEMICAL WARFARE SERVICE                                   
+0             8   13. MILITARY POLICE                                            
+0             4   14. OTHER                                                      
+0             5   15. NO ANSWER                                                  
+              1   00. NO CODE OR NO DATA                                         
+0                Q.3. WHAT IS YOUR MAIN ARMY JOB AT THE PRESENT TIME*  (TELL     
+                      EXACTLY WHAT IT IS, AS "SQUAD LEADER IN RIFLE COMPANY",    
+                      "DRIVER IN HEAVY TRUCKING COMPANY", "TANK COMMANDER        
+                      (MEDIUM TANKS)", "COOK IN REGIMENTAL MESS", "CLERK IN      
+                      DIVISION CP", OR WHATEVER YOUR JOB IS.)                    
+0                R. COL. 12.                                                     
+0            87   1. LINE JOB IN INFANTRY CO.                                    
+             21   2. NON-LINE JOB IN INFANTRY CO.                                
+              4   3. INFANTRY JOB - NOT IN LINE CO.                              
+             11   4. ARMORED COMMAND JOB                                         
+              3   5. TANK DESTROYERS JOB                                         
+             20   6. FIELD ARTILLERY JOB                                         
+            237   7. SOS JOB                                                     
+              1   8. UNCLASSIFIED                                                
+             18   0. NO ANSWER                                                   
+0                Q.4. HOW LONG HAVE YOU BEEN OVERSEAS*                           
+0                R. COL. 13.                                                     
+0            59   1. LESS THAN 3 MONTHS                                          
+             49   2. 3 MONTHS TO 6 MONTHS                                        
+            119   3. 6 MONTHS TO 1 YEAR                                          
+            130   4. 1 YEAR TO 2 YEARS                                           
+             41   5. OVER 2 YEARS                                                
+              4   0. NO ANSWER                                                   
+0                P. THE NEXT FEW QUESTIONS ASK ABOUT FIELD RATIONS:              
+0                Q.5. WHEN YOU USE K RATIONS DO YOU FIND THAT ONE UNIT AT EACH   
+                      MEAL IS FILLING ENOUGH*                                    
+0                R. COL. 14.                                                     
+0            42   1. YES, ALWAYS ENOUGH                                          
+            199   2. YES, USUALLY ENOUGH                                         
+            147   3. NO, USUALLY NOT ENOUGH                                      
+             13   4. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                Q.6. ON THE WHOLE, WHICH ONE OF THE K RATION UNITS DO YOU LIKE  
+                      BEST*                                                      
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE   7                    
+0                R. COL. 15.                                                     
+0           174   1. BREAKFAST                                                   
+            167   2. DINNER                                                      
+             54   3. SUPPER                                                      
+              7   0. NO ANSWER                                                   
+0                Q.7A. WHICH PARTS OF ANY OF THE K RATIONS DO YOU LIKE BEST*     
+0                C. COL. 16.                                                     
+0           114   1. CHOPPED HAM AND EGGS                                        
+            288   2. NOT CHOSEN                                                  
+0                C. COL. 17.                                                     
+0           124   1. CHEESE                                                      
+            278   2. NOT CHOSEN                                                  
+0                C. COL. 18.                                                     
+0            10   1. CHEESE AND BACON                                            
+            392   2. NOT CHOSEN                                                  
+0                C. COL. 19.                                                     
+0            42   1. BEEF AND PORK LOAF, MEAT                                    
+            360   2. NOT CHOSEN                                                  
+0                C. COL. 20.                                                     
+0            10   1. PORK AND EGG YOLK                                           
+            392   2. NOT CHOSEN                                                  
+0                C. COL. 21.                                                     
+0             9   1. PORK LOAF - WITH CARROTS AND APPLE FLAKES                   
+            393   2. NOT CHOSEN                                                  
+0                C. COL. 22.                                                     
+0            29   1. CRACKERS, BISCUITS                                          
+            373   2. NOT CHOSEN                                                  
+0                C. COL. 23.                                                     
+0             5   1. CHEWING GUM                                                 
+            397   2. NOT CHOSEN                                                  
+0                C. COL. 24.                                                     
+0             6   1. SUGAR                                                       
+            396   2. NOT CHOSEN                                                  
+0                C. COL. 25.                                                     
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE   8                    
+0            12   1. MISCELLANEOUS                                               
+            390   2. NOT CHOSEN                                                  
+0                C. COL. 26.                                                     
+0             2   1. CANNED STUFF                                                
+            400   2. NOT CHOSEN                                                  
+0                C. COL. 27.                                                     
+0            60   1. COFFEE                                                      
+            342   2. NOT CHOSEN                                                  
+0                C. COL. 28.                                                     
+0             9   1. LEMON JUICE                                                 
+            393   2. NOT CHOSEN                                                  
+0                C. COL. 29.                                                     
+0             4   1. ORANGE JUICE                                                
+            398   2. NOT CHOSEN                                                  
+0                C. COL. 30.                                                     
+0             6   1. BOUILLON                                                    
+            396   2. NOT CHOSEN                                                  
+0                C. COL. 31.                                                     
+0            15   1. CARAMELS                                                    
+            387   2. NOT CHOSEN                                                  
+0                C. COL. 32.                                                     
+0            42   1. D-RATION CHOCOLATE BAR                                      
+            360   2. NOT CHOSEN                                                  
+0                C. COL. 33.                                                     
+0            22   1. SWEET CHOCOLATE BAR                                         
+            380   2. NOT CHOSEN                                                  
+0                C. COL. 34.                                                     
+0             1   1. MALT-DEXTROSE TABLETS                                       
+            401   2. NOT CHOSEN                                                  
+0                C. COL. 35.                                                     
+0            15   1. OTHER CANDY                                                 
+            387   2. NOT CHOSEN                                                  
+0                C. COL. 36.                                                     
+0            21   1. OTHER ITEMS                                                 
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE   9                    
+0           381   2. NOT CHOSEN                                                  
+0                C. COL. 37.                                                     
+0            21   1. FRUIT BAR                                                   
+            381   2. NOT CHOSEN                                                  
+0                C. COL. 38.                                                     
+0            58   1. NO ANSWER                                                   
+            344   2. NOT CHOSEN                                                  
+0                Q.7B. WHICH PARTS OF ANY OF THE K RATIONS DO YOU LIKE LEAST*    
+0                C. COL. 39.                                                     
+0            28   1. CHOPPED HAM AND EGGS                                        
+            374   2. NOT CHOSEN                                                  
+0                C. COL. 40.                                                     
+0            75   1. CHEESE                                                      
+            327   2. NOT CHOSEN                                                  
+0                C. COL. 41.                                                     
+0             0   1. CHEESE AND BACON                                            
+            402   2. NOT CHOSEN                                                  
+0                C. COL. 42.                                                     
+0            29   1. BEEF AND PORK LOAF, MEAT                                    
+            373   2. NOT CHOSEN                                                  
+0                C. COL. 43.                                                     
+0            11   1. PORK AND EGG YOLK                                           
+            391   2. NOT CHOSEN                                                  
+0                C. COL. 44.                                                     
+0            26   1. PORK LOAF - WITH CARROTS AND APPLE FLAKES                   
+            376   2. NOT CHOSEN                                                  
+0                C. COL. 45.                                                     
+0            98   1. CRACKERS, BISCUITS                                          
+            304   2. NOT CHOSEN                                                  
+0                C. COL. 46.                                                     
+0             2   1. CHEWING GUM                                                 
+            400   2. NOT CHOSEN                                                  
+0                C. COL. 47.                                                     
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  10                    
+0             0   1. SUGAR                                                       
+            402   2. NOT CHOSEN                                                  
+0                C. COL. 48.                                                     
+0            10   1. MISCELLANEOUS                                               
+            392   2. NOT CHOSEN                                                  
+0                C. COL. 49.                                                     
+0             1   1. CANNED STUFF                                                
+            401   2. NOT CHOSEN                                                  
+0                C. COL. 50.                                                     
+0             3   1. COFFEE                                                      
+            399   2. NOT CHOSEN                                                  
+0                C. COL. 51.                                                     
+0            82   1. LEMON JUICE                                                 
+            320   2. NOT CHOSEN                                                  
+0                C. COL. 52.                                                     
+0             8   1. ORANGE JUICE                                                
+            394   2. NOT CHOSEN                                                  
+0                C. COL. 53.                                                     
+0            30   1. BOUILLON                                                    
+            372   2. NOT CHOSEN                                                  
+0                C. COL. 54.                                                     
+0             1   1. CARAMELS                                                    
+            401   2. NOT CHOSEN                                                  
+0                C. COL. 55.                                                     
+0             4   1. D-RATION CHOCOLATE BAR                                      
+            398   2. NOT CHOSEN                                                  
+0                C. COL. 56.                                                     
+0             7   1. SWEET CHOCOLATE BAR                                         
+            395   2. NOT CHOSEN                                                  
+0                C. COL. 57.                                                     
+0            50   1. MALT-DEXTROSE TABLETS                                       
+            352   2. NOT CHOSEN                                                  
+0                C. COL. 58.                                                     
+0             6   1. OTHER CANDY                                                 
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  11                    
+0           396   2. NOT CHOSEN                                                  
+0                C. COL. 59.                                                     
+0            12   1. OTHER ITEMS                                                 
+            390   2. NOT CHOSEN                                                  
+0                C. COL. 60.                                                     
+0            13   1. FRUIT BAR                                                   
+            389   2. NOT CHOSEN                                                  
+0                C. COL. 61.                                                     
+0            60   1. NO ANSWER                                                   
+            342   2. NOT CHOSEN                                                  
+0                Q.7C. CONSIDERING THAT THE K RATION PACKAGE HAS TO BE KEPT AT   
+                        ABOUT ITS PRESENT SIZE, ARE THERE ANY FOOD ITEMS NOT     
+                        NOW INCLUDED THAT YOU THINK SHOULD BE ADDED*  IF SO,     
+                        LIST THEM HERE:                                          
+0                C. COL. 62.                                                     
+0            13   1. MORE COFFEE                                                 
+            389   2. NOT CHOSEN                                                  
+0                C. COL. 63.                                                     
+0            15   1. COCOA OR CHOCOLATE                                          
+            387   2. NOT CHOSEN                                                  
+0                C. COL. 64.                                                     
+0            14   1. MORE AND/OR BETTER CRACKERS OR COOKIES                      
+            388   2. NOT CHOSEN                                                  
+0                C. COL. 65.                                                     
+0             5   1. JAM, BUTTER, SPREADS, ETC.                                  
+            397   2. NOT CHOSEN                                                  
+0                C. COL. 66.                                                     
+0             1   1. SMALL HEATING UNIT OR SELF-HEATING FOODS                    
+            401   2. NOT CHOSEN                                                  
+0                C. COL. 67.                                                     
+0             3   1. FRUIT                                                       
+            399   2. NOT CHOSEN                                                  
+0                C. COL. 68.                                                     
+0            30   1. OTHER MEATS                                                 
+            372   2. NOT CHOSEN                                                  
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  12                    
+0                C. COL. 69.                                                     
+0            44   1. OTHER MISCELLANEOUS, NOT NOW IN THE RATION                  
+            358   2. NOT CHOSEN                                                  
+0                C. COL. 70.                                                     
+0            26   1. OTHER ITEMS, NOW IN THE RATION                              
+            376   2. NOT CHOSEN                                                  
+0                C. COL. 71.                                                     
+0           280   1. NO ANSWER                                                   
+            122   2. NOT CHOSEN                                                  
+0                Q.8. FOR EACH MEAL, ONE POWDER FOR MAKING DRINKS CAN BE         
+                      INCLUDED IN THE K RATIONS.  WHICH OF THE FOLLOWING WOULD   
+                      YOU RATHER HAVE*                                           
+0                Q.8A. FOR BREAKFAST...*                                         
+0                R. COL. 72.                                                     
+0            84   1. COCOA                                                       
+              5   2. BOUILLON                                                    
+            307   3. COFFEE                                                      
+              0   4. SOMETING ELSE, NOTHING SPECIFIED                            
+              2   5. SOMETHING ELSE, SOMETHING SPECIFIED                         
+              4   0. NO ANSWER                                                   
+0                Q.8B. FOR DINNER...*                                            
+0                R. COL. 73.                                                     
+0           129   1. COCOA                                                       
+             16   2. BOUILLON                                                    
+            142   3. COFFEE                                                      
+             25   4. LEMON JUICE                                                 
+             82   5. ORANGE JUICE                                                
+              2   6. SOMETHING ELSE                                              
+              6   0. NO ANSWER                                                   
+0                Q.8C. FOR SUPPER...*                                            
+0                R. COL. 74.                                                     
+0            92   1. COCOA                                                       
+             29   2. BOUILLON                                                    
+            237   3. COFFEE                                                      
+              9   4. LEMON JUICE                                                 
+             29   5. ORANGE JUICE                                                
+              0   6. SOMETHING ELSE                                              
+              6   0. NO ANSWER                                                   
+0                Q.9. THE FOLLOWING LIST SHOWS ALL THE FOOD ITEMS IN THE K       
+                      RATIONS.  SHOW BY A CHECK BESIDE EACH ITEM HOW OFTEN YOU   
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  13                    
+0                     USE THAT PARTICULAR THING WHEN EATING K RATIONS:           
+0                Q.9A. BREAKFAST ITEMS:                                          
+0                Q.9A1. BISCUITS (CRACKERS)*                                     
+0                R. COL. 75.                                                     
+0           169   1. USE ALL OF IT                                               
+            183   2. USE ONLY PART OF IT                                         
+             23   3. DO NOT USE ANY OF IT                                        
+             27   0. NO ANSWER                                                   
+0                Q.9A2. CHOPPED HAM AND EGGS*                                    
+0                R. COL. 76.                                                     
+0           316   1. USE ALL OF IT                                               
+             46   2. USE ONLY PART OF IT                                         
+             15   3. DO NOT USE ANY OF IT                                        
+             25   0. NO ANSWER                                                   
+0                Q.9A3. FRUIT BAR*                                               
+0                R. COL. 77.                                                     
+0           266   1. USE ALL OF IT                                               
+             47   2. USE ONLY PART OF IT                                         
+             59   3. DO NOT USE ANY OF IT                                        
+             30   0. NO ANSWER                                                   
+0                Q.9A4. SOLUBLE COFFEE*                                          
+0                R. COL. 78.                                                     
+0           321   1. USE ALL OF IT                                               
+             30   2. USE ONLY PART OF IT                                         
+             28   3. DO NOT USE ANY OF IT                                        
+             23   0. NO ANSWER                                                   
+0                Q.9A5. SUGAR TABLETS*                                           
+0                R. COL. 79.                                                     
+0           308   1. USE ALL OF IT                                               
+             32   2. USE ONLY PART OF IT                                         
+             30   3. DO NOT USE ANY OF IT                                        
+             32   0. NO ANSWER                                                   
+0                CARD 2                                                          
+0                CARD.                                                           
+0                C. COL. 1.                                                      
+            402   2. CARD TWO                                                    
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  14                    
+0                DECK.                                                           
+0                Y. COLS. 2-4.                                                   
+0         160. SURVEY NUMBER                                                     
+0                BALLOT.                                                         
+0                Y. COLS. 5-7.                                                   
+0                X. BALLOT NUMBER GENERATED BY ROPER CENTER.                     
+0                FORM:                                                           
+0                Y. COL. 8.                                                      
+0             0   1. S-160A                                                      
+            402   2. S-160X                                                      
+0                Q.9B. DINNER ITEMS:                                             
+0                Q.9B1. BISCUITS (CRACKERS)*                                     
+0                R. COL. 9.                                                      
+0           189   1. USE ALL OF IT                                               
+            165   2. USE ONLY PART OF IT                                         
+             22   3. DO NOT USE ANY OF IT                                        
+             26   0. NO ANSWER                                                   
+0                Q.9B2. CHEESE*                                                  
+0                R. COL. 10.                                                     
+0           241   1. USE ALL OF IT                                               
+             98   2. USE ONLY PART OF IT                                         
+             29   3. DO NOT USE ANY OF IT                                        
+             34   0. NO ANSWER                                                   
+0                Q.9B3. CHEESE AND BACON*                                        
+0                R. COL. 11.                                                     
+0           237   1. USE ALL OF IT                                               
+             87   2. USE ONLY PART OF IT                                         
+             26   3. DO NOT USE ANY OF IT                                        
+             52   0. NO ANSWER                                                   
+0                Q.9B4. ORANGE POWDER*                                           
+0                R. COL. 12.                                                     
+0           177   1. USE ALL OF IT                                               
+             76   2. USE ONLY PART OF IT                                         
+            102   3. DO NOT USE ANY OF IT                                        
+             47   0. NO ANSWER                                                   
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  15                    
+0                Q.9B5. GRANULATED SUGAR*                                        
+0                R. COL. 13.                                                     
+0           304   1. USE ALL OF IT                                               
+             42   2. USE ONLY PART OF IT                                         
+             15   3. DO NOT USE ANY OF IT                                        
+             41   0. NO ANSWER                                                   
+0                Q.9B6. VANILLA CARAMELS*                                        
+0                R. COL. 14.                                                     
+0           327   1. USE ALL OF IT                                               
+             27   2. USE ONLY PART OF IT                                         
+             16   3. DO NOT USE ANY OF IT                                        
+             32   0. NO ANSWER                                                   
+0                Q.9B7. CHOCOLATE CANDY*                                         
+0                R. COL. 15.                                                     
+0           310   1. USE ALL OF IT                                               
+             42   2. USE ONLY PART OF IT                                         
+             21   3. DO NOT USE ANY OF IT                                        
+             29   0. NO ANSWER                                                   
+0                Q.9C. SUPPER ITEMS:                                             
+0                Q.9C1. BISCUITS (CRACKERS)*                                     
+0                R. COL. 16.                                                     
+0           180   1. USE ALL OF IT                                               
+            173   2. USE ONLY PART OF IT                                         
+             22   3. DO NOT USE ANY OF IT                                        
+             27   0. NO ANSWER                                                   
+0                Q.9C2. MEAT PRODUCTS*                                           
+0                R. COL. 17.                                                     
+0           261   1. USE ALL OF IT                                               
+             83   2. USE ONLY PART OF IT                                         
+             31   3. DO NOT USE ANY OF IT                                        
+             27   0. NO ANSWER                                                   
+0                Q.9C3. BOUILLON POWDER*                                         
+0                R. COL. 18.                                                     
+0            81   1. USE ALL OF IT                                               
+             69   2. USE ONLY PART OF IT                                         
+            198   3. DO NOT USE ANY OF IT                                        
+             54   0. NO ANSWER                                                   
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  16                    
+0                Q.9C4. CHOCOLATE BAR*                                           
+0                R. COL. 19.                                                     
+0           304   1. USE ALL OF IT                                               
+             45   2. USE ONLY PART OF IT                                         
+             29   3. DO NOT USE ANY OF IT                                        
+             22   4. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.10. IF THERE ARE ANY PARTS OF THE K RATIONS THAT YOU OFTEN    
+                       DO NOT USE, IS THERE ANYTHING YOU THINK SHOULD BE PUT IN  
+                       ITS PLACE*                                                
+0                C. COL. 20.                                                     
+0           179   1. ANY COMMENT                                                 
+            221   2. NO ANSWER                                                   
+              2   0. NO CODE OR NO DATA                                          
+0                Q.11A. HOW ABOUT THE C RATIONS - WHAT PART OR PARTS DO YOU LIKE 
+                        LEAST*                                                   
+0                C. COL. 21.                                                     
+0            79   1. STEW                                                        
+            323   2. NOT CHOSEN                                                  
+0                C. COL. 22.                                                     
+0           159   1. HASH                                                        
+            243   2. NOT CHOSEN                                                  
+0                C. COL. 23.                                                     
+0            37   1. MEAT                                                        
+            365   2. NOT CHOSEN                                                  
+0                C. COL. 24.                                                     
+0             5   1. CORNED BEEF                                                 
+            397   2. NOT CHOSEN                                                  
+0                C. COL. 25.                                                     
+0            38   1. BISCUITS                                                    
+            364   2. NOT CHOSEN                                                  
+0                C. COL. 26.                                                     
+0            19   1. BEANS                                                       
+            383   2. NOT CHOSEN                                                  
+0                C. COL. 27.                                                     
+0            19   1. ALL OF IT                                                   
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  17                    
+0           383   2. NOT CHOSEN                                                  
+0                C. COL. 28.                                                     
+0            18   1. NONE OF IT                                                  
+            384   2. NOT CHOSEN                                                  
+0                C. COL. 29.                                                     
+0            40   1. MISCELLANEOUS                                               
+            362   2. NOT CHOSEN                                                  
+0                C. COL. 30.                                                     
+0            77   1. NO ANSWER                                                   
+            325   2. NOT CHOSEN                                                  
+0                Q.11B. WHAT PART, OR PARTS, OF THE C RATIONS DO YOU LIKE BEST*  
+0                C. COL. 31.                                                     
+0           207   1. MEAT AND BEANS                                              
+            195   2. NOT CHOSEN                                                  
+0                C. COL. 32.                                                     
+0            47   1. SPAGHETTI AND MEAT                                          
+            355   2. NOT CHOSEN                                                  
+0                C. COL. 33.                                                     
+0            23   1. BEEF STEW                                                   
+            379   2. NOT CHOSEN                                                  
+0                C. COL. 34.                                                     
+0            18   1. CHOCOLATE                                                   
+            384   2. NOT CHOSEN                                                  
+0                C. COL. 35.                                                     
+0            18   1. COFFEE                                                      
+            384   2. NOT CHOSEN                                                  
+0                C. COL. 36.                                                     
+0             7   1. HAM AND EGGS                                                
+            395   2. NOT CHOSEN                                                  
+0                C. COL. 37.                                                     
+0            17   1. HASH                                                        
+            385   2. NOT CHOSEN                                                  
+0                C. COL. 38.                                                     
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  18                    
+0            20   1. NONE OF IT                                                  
+            382   2. NOT CHOSEN                                                  
+0                C. COL. 39.                                                     
+0            52   1. MISCELLANEOUS                                               
+            350   2. NOT CHOSEN                                                  
+0                C. COL. 40.                                                     
+0            91   1. NO ANSWER                                                   
+            311   2. NOT CHOSEN                                                  
+0                X. QUESTION 11C NOT CODED.                                      
+0                Q.11C. CONSIDERING THAT C RATIONS HAVE TO BE KEPT AT ABOUT      
+                        THEIR PRESENT SIZE OR BULK, ARE THERE ANY FOOD ITEMS     
+                        NOT NOW INCLUDED THAT YOU THINK SHOULD BE ADDED*         
+0                Q.11D. ARE THERE ANY PARTS OF C RATIONS THAT YOU OFTEN DO NOT   
+                        USE*                                                     
+0                R. COL. 41.                                                     
+0           125   1. NO                                                          
+             25   2. YES, NOTHING SPECIFIED                                      
+            180   3. YES, SOMETHING SPECIFIED                                    
+             71   4. NO ANSWER                                                   
+              1   0. NO CODE OR NO DATA                                          
+0                X. QUESTION 11E NOT CODED.                                      
+0                Q.11E. USE THIS SPACE FOR ANY OTHER COMMENTS YOU WISH TO MAKE   
+                        ABOUT THE C RATIONS:                                     
+0                Q.12. HERE ARE SOME QUESTIONS ABOUT THE 10-IN-1 RATIONS.        
+0                Q.12A. WHICH PART, OR PARTS, DO YOU LIKE LEAST*                 
+0                C. COL. 42.                                                     
+0            24   1. CORNED BEEF                                                 
+            378   2. NOT CHOSEN                                                  
+0                C. COL. 43.                                                     
+0             8   1. MEAT                                                        
+            394   2. NOT CHOSEN                                                  
+0                C. COL. 44.                                                     
+0            20   1. BEANS                                                       
+            382   2. NOT CHOSEN                                                  
+0                C. COL. 45.                                                     
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  19                    
+0             0   1. CANDY                                                       
+            402   2. NOT CHOSEN                                                  
+0                C. COL. 46.                                                     
+0            26   1. HASH                                                        
+            376   2. NOT CHOSEN                                                  
+0                C. COL. 47.                                                     
+0            26   1. BISCUITS                                                    
+            376   2. NOT CHOSEN                                                  
+0                C. COL. 48.                                                     
+0            11   1. CHEESE                                                      
+            391   2. NOT CHOSEN                                                  
+0                C. COL. 49.                                                     
+0             1   1. CIGARETTES                                                  
+            401   2. NOT CHOSEN                                                  
+0                C. COL. 50.                                                     
+0             5   1. FRUIT BARS                                                  
+            397   2. NOT CHOSEN                                                  
+0                C. COL. 51.                                                     
+0            25   1. STEW                                                        
+            377   2. NOT CHOSEN                                                  
+0                C. COL. 52.                                                     
+0            51   1. OTHER MISCELLANEOUS                                         
+            351   2. NOT CHOSEN                                                  
+0                C. COL. 53.                                                     
+0           252   1. NO ANSWER                                                   
+            150   2. NOT CHOSEN                                                  
+0                Q.12B. WHICH PART, OR PARTS, DO YOU LIKE BEST*                  
+0                C. COL. 54.                                                     
+0            70   1. BACON, SAUSAGE, PORK, HAM, HAMBURGER                        
+            332   2. NOT CHOSEN                                                  
+0                C. COL. 55.                                                     
+0            11   1. CANNED FRUITS, PINEAPPLE                                    
+            391   2. NOT CHOSEN                                                  
+0                C. COL. 56.                                                     
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  20                    
+0             4   1. CANNED CHICKEN                                              
+            398   2. NOT CHOSEN                                                  
+0                C. COL. 57.                                                     
+0            17   1. ROAST BEEF                                                  
+            385   2. NOT CHOSEN                                                  
+0                C. COL. 58.                                                     
+0            29   1. EGGS, HAM AND EGGS OR PORK AND EGGS                         
+            373   2. NOT CHOSEN                                                  
+0                C. COL. 59.                                                     
+0            21   1. RICE PUDDING                                                
+            381   2. NOT CHOSEN                                                  
+0                C. COL. 60.                                                     
+0            23   1. COFFEE, BEVERAGE, CHOCOLATE                                 
+            379   2. NOT CHOSEN                                                  
+0                C. COL. 61.                                                     
+0            30   1. CANDY, JAM, PRESERVES, JELLY, DESSERTS                      
+            372   2. NOT CHOSEN                                                  
+0                C. COL. 62.                                                     
+0            19   1. VEGETABLES, BEANS, TOMATOES, CORN, CANNED STUFF             
+            383   2. NOT CHOSEN                                                  
+0                C. COL. 63.                                                     
+0            45   1. ALL O.K. (GOOD), SATISFACTORY                               
+            357   2. NOT CHOSEN                                                  
+0                C. COL. 64.                                                     
+0            70   1. HOT SOUP, CORNED BEEF (HASH), BREAKFAST CEREAL,             
+                     STEW, CIGARETTES, CHEESE, JUICE, BUTTER, PEANUTS, MEAT      
+                     BALLS, CRACKERS, MEAT, BISCUITS, BEEF STEW, PORK AND BEANS, 
+                     MILK, OTHER MISCELLANEOUS                                   
+            332   2. NOT CHOSEN                                                  
+0                C. COL. 65.                                                     
+0           189   1. NO ANSWER                                                   
+            213   2. NOT CHOSEN                                                  
+0                X. QUESTIONS 12C AND 12D NOT CODED.                             
+0                Q.12C. CONSIDERING THAT THESE RATIONS CAN,T BE TOO BULKY, ARE   
+                        THERE ANY FOOD ITEMS NOT NOW INCLUDED THAT YOU THINK     
+                        SHOULD BE ADDED*                                         
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  21                    
+0                Q.12D. IF YOU HAVE ANY OTHER COMMENTS ABOUT 10-IN-1 RATIONS,    
+                        WRITE THEM HERE:                                         
+0                Q.13A. SINCE BEING IN EUROPE HAVE YOU EVER DRUNK WATER FROM     
+                        AN OPEN WELL OR STREAM WITHOUT USING HALAZONE TABLETS    
+                        IN IT*                                                   
+0                R. COL. 66.                                                     
+0            96   1. YES                                                         
+            291   2. NO                                                          
+             15   0. NO ANSWER                                                   
+0                Q.13B. HOW WELL DO YOU THINK THE HALAZONE TABLETS WORK AS A     
+                        WAY OF PURIFYING WATER*                                  
+0                R. COL. 67.                                                     
+0           186   1. I THINK THEY MAKE IMPURE WATER COMPLETELY SAFE FOR          
+                     DRINKING                                                    
+            146   2. I THINK THEY ARE OK EXCEPT WITH VERY IMPURE OR STAGNANT     
+                     WATER SUPPLY                                                
+             16   3. I DON,T HAVE MUCH FAITH IN THEM                             
+             54   0. NO ANSWER                                                   
+0                Q.14. ARE YOU USUALLY ABLE TO GET THE HALAZONE TABLETS FOR      
+                       PURIFYING WATER, IF YOU WANT THEM*                        
+0                R. COL. 68.                                                     
+0           245   1. YES, ALWAYS                                                 
+            123   2. YES, USUALLY                                                
+              8   3. NO, OFTEN CANNOT GET THEM                                   
+             26   0. NO ANSWER                                                   
+0                P. THE FOLLOWING QUESTIONS ARE ABOUT SOLDIERS, EQUIPMENT AND    
+                    SUPPLIES.                                                    
+0                Q.15A. HOW SATISFACTORY DO YOU FIND YOUR CANTEEN FOR THE USES   
+                        YOU HAVE GIVEN IT*                                       
+0                R. COL. 69.                                                     
+0           350   1. IT HAS BEEN O.K.                                            
+              1   2. IT HAS GIVEN SOME TROUBLE, NOTHING WRITTEN IN               
+             34   3. IT HAS GIVEN SOME TROUBLE, SOMETHING WRITTEN IN             
+             17   0. NO ANSWER                                                   
+0                Q.15B. WHERE, OR WHAT PART SEEMS TO GIVE THE MOST TROUBLE OR    
+                        WEAR OUT OR BREAK FIRST*                                 
+0                C. COL. 70.                                                     
+0            19   1. CHAIN                                                       
+            383   2. NOT CHOSEN                                                  
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  22                    
+0                C. COL. 71.                                                     
+0            58   1. CAP                                                         
+            344   2. NOT CHOSEN                                                  
+0                C. COL. 72.                                                     
+0            30   1. CORK                                                        
+            372   2. NOT CHOSEN                                                  
+0                C. COL. 73.                                                     
+0             6   1. RUST AND CORROSION ON MOUTH OF FLASK                        
+            396   2. NOT CHOSEN                                                  
+0                C. COL. 74.                                                     
+0            11   1. CUP                                                         
+            391   2. NOT CHOSEN                                                  
+0                C. COL. 75.                                                     
+0            18   1. COVER                                                       
+            384   2. NOT CHOSEN                                                  
+0                C. COL. 76.                                                     
+0            16   1. PART THAT HOOKS ON BELT                                     
+            386   2. NOT CHOSEN                                                  
+0                C. COL. 77.                                                     
+0             9   1. OTHER MISCELLANEOUS                                         
+            393   2. NOT CHOSEN                                                  
+0                C. COL. 78.                                                     
+0           249   1. NO ANSWER                                                   
+            153   2. NOT CHOSEN                                                  
+0                X. COLS. 79-80 NOT USED.                                        
+0                CARD 3                                                          
+0                CARD.                                                           
+0                C. COL. 1.                                                      
+            402   3. CARD THREE                                                  
+0                DECK.                                                           
+0                Y. COLS. 2-4.                                                   
+0         160. SURVEY NUMBER                                                     
+0                BALLOT.                                                         
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  23                    
+0                Y. COLS. 5-7.                                                   
+0                X. BALLOT NUMBER GENERATED BY ROPER CENTER.                     
+0                FORM:                                                           
+0                Y. COL. 8.                                                      
+0             0   1. S-160A                                                      
+            402   2. S-160X                                                      
+0                X. QUESTION 15C NOT CODED.                                      
+0                Q.15C. IF THERE ARE ANY SUGGESTIONS WHICH YOU HAVE FOR          
+                        IMPROVING THE CANTEEN FLASK, CAP, OR CUP, PLEASE WRITE   
+                        THEM HERE:                                               
+0                Q.16. HAVE YOU SEEN A GERMAN WATER CONTAINER FOR THE USE OF THE 
+                       INDIVIDUAL SOLDIER THAT SEEMS TO BE BETTER THAN OUR       
+                       CANTEEN*  IF YES, DESCRIBE IT BRIEFLY.                    
+0                R. COL. 9.                                                      
+0           332   1. NO                                                          
+              7   2. YES, NOTHING WRITTEN IN                                     
+             26   3. YES, SOMETHING WRITTEN IN                                   
+             37   0. NO ANSWER                                                   
+0                Q.17. IF YOU HAD YOUR FREE CHOICE, WHICH OF THE FOLLOWING       
+                       WOULD YOU RATHER WEAR IN DOING YOUR PRESENT ARMY DUTIES*  
+0                R. COL. 10.                                                     
+0            17   1. ISSUE SHOES AND LEGGINS                                     
+             38   2. ISSUE SHOES, WITHOUT LEGGINS                                
+            319   3. LOW LEATHER BOOT ("COMBAT BOOT")                            
+             15   4. SOMETHING ELSE                                              
+             13   0. NO ANSWER                                                   
+0                Q.18A. IN CARRYING OUT YOUR DUTIES, HOW MUCH NEED DO YOU THINK  
+                        THERE IS FOR YOU TO WEAR LEGGINS*                        
+0                R. COL. 11.                                                     
+0            61   1. IT IS ABSOLUTELY NECESSARY TO WEAR THEM                     
+            179   2. THERE IS SOME NEED FOR THEM, BUT I COULD DO WITHOUT THEM    
+                     PRETTY WELL                                                 
+            128   3. THERE IS NO REAL NEED FOR WEARING THEM                      
+             34   0. NO ANSWER                                                   
+0                X. QUESTION 18B NOT CODED.                                      
+0                Q.18B. WHAT DISADVANTAGES, IF ANY, HAVE YOU FOUND IN THE        
+                        PRESENT LEGGINS*                                         
+0                Q.19A. HOW SATISFACTORY HAVE YOU FOUND YOUR GI SHOES*           
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  24                    
+0                R. COL. 12.                                                     
+0           189   1. VERY SATISFACOTRY                                           
+            157   2. FAIRLY SATISFACTORY                                         
+             26   3. NOT VERY SATISFACTORY                                       
+             13   4. NOT SATISFACTORY AT ALL                                     
+              1   5. DO NOT HAVE ISSUE SHOES                                     
+             16   0. NO ANSWER                                                   
+0                Q.19B. HOW LONG HAVE YOU HAD THE SHOES YOU ARE NOW WEARING*     
+0                R. COLS. 13-14.                                                 
+             25   01. ONE MONTH                                                  
+             51   02. TWO MONTHS                                                 
+             89   03. THREE MONTHS                                               
+             61   04. FOUR MONTHS                                                
+             27   05. FIVE MONTHS                                                
+             62   06. SIX MONTHS                                                 
+             15   07. SEVEN OR EIGHT MONTHS                                      
+             25   08. NINE OR TEN MONTHS                                         
+             18   09. ELEVEN OR TWELVE MONTHS                                    
+0            14   10. OVER TWELVE MONTHS                                         
+             15   00. NO ANSWER                                                  
+0                Q.19C. ABOUT HOW MUCH LONGER DO YOU EXPECT THEM TO WEAR*        
+0                R. COLS. 15-16.                                                 
+             65   01. ONE MONTH                                                  
+             61   02. TWO MONTHS                                                 
+             65   03. THREE MONTHS                                               
+             42   04. FOUR MONTHS                                                
+             18   05. FIVE MONTHS                                                
+             55   06. SIX MONTHS                                                 
+             14   07. SEVEN-TWELVE MONTHS                                        
+              7   08. OVER 12 MONTHS                                             
+             27   09. INDEFINITE PERIOD INDICATING "SHORT TIME"                  
+0            16   10. INDEFINITE PERIOD INDICATING "LONG TIME"                   
+0            11   11. DON,T KNOW                                                 
+             21   00. NO ANSWER                                                  
+0                X. QUESTION 19D NOT CODED.                                      
+0                Q.19D. WHAT IMPROVEMENTS, IF ANY, DO YOU THINK SHOULD BE MADE   
+                        IN THE ISSUE SHOE*                                       
+0                Q.20A. HAVE YOU EVER USED DUBBIN ON YOUR SHOES OR BOOTS*        
+0                R. COL. 17.                                                     
+0           201   1. YES, SEVERAL TIMES                                          
+            125   2. YES, A FEW TIMES                                            
+             62   3. NO, NEVER                                                   
+             14   0. NO ANSWER                                                   
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  25                    
+0                Q.20B. HOW WELL DOES THE DUBBIN WORK IN SOFTENING AND           
+                        WATERPROOFING THE LEATHER*                               
+0                R. COL. 18.                                                     
+0            84   1. IT IS VERY GOOD                                             
+            193   2. IT IS FAIR                                                  
+             64   3. IT IS POOR                                                  
+             61   0. NO ANSWER                                                   
+0                X. QUESTION 20C NOT CODED.                                      
+0                Q.20C. IF YOU HAVE FOUND A PARTICULARLY GOOD WAY OF PUTTING     
+                        DUBBIN ON LEATHER, PLEASE TELL ABOUT IT HERE:            
+0                Q.21A. HOW SATISFACTORY DO YOU FIND YOUR HELMET FOR THE USES    
+                        YOU HAVE GIVEN IT*                                       
+0                R. COL. 19.                                                     
+0           338   1. IT IS O.K.                                                  
+              4   2. IT HAS GIVEN SOME TROUBLE, NOTHING WRITTEN IN               
+             44   3. IT HAS GIVEN SOME TROUBLE, SOMETHING WRITTEN IN             
+             16   0. NO ANSWER                                                   
+0                X. QUESTION 21B NOT CODED.                                      
+0                Q.21B. IF THERE ARE ANY IMPROVEMENTS THAT YOU THINK COULD BE    
+                        MADE, WRITE THEM HERE:                                   
+0                Q.22. HOW OFTEN DO YOU WEAR THE HELMET WITH THE WEBBING STRAP   
+                       FASTENED UNDER YOUR CHIN*                                 
+0                R. COL. 20.                                                     
+0            16   1. ALMOST ALWAYS                                               
+             15   2. USUALLY                                                     
+             80   3. NOT VERY OFTEN                                              
+            270   4. ALMOST NEVER                                                
+             21   0. NO ANSWER                                                   
+0                Q.23. HAVE YOU HAD ANY TROUBLE IN TRYING TO MAKE THE HELMET     
+                       COMFORTABLE BY ADJUSTING THE STRAP INSIDE THE LINER*      
+0                R. COL. 21.                                                     
+0           276   1. NO                                                          
+             98   2. YES                                                         
+             28   0. NO ANSWER                                                   
+0                Q.24. THE SPACE BELOW IS FOR ANY COMMENTS OR SUGGESTIONS YOU    
+                       WANT TO MAKE ABOUT QUARTERMASTER SUPPLIES OR EQUIPMENT:   
+0                C. COL. 22.                                                     
+0           173   1. ANY COMMENT                                                 
+1                                                                                
+0        ROPER CENTER - AMS160B                      PAGE  26                    
+0           229   0. NO COMMENT                                                  
+0                Q.25. AT THE PRESENT WHERE DO YOU KEEP YOUR GAS MASK*           
+0                R. COL. 23.                                                     
+0            48   1. USUALLY CARRY IT ON ME                                      
+             49   2. USUALLY LEAVE IT IN A CONVENIENT VEHICLE                    
+             70   3. HAVE IT IN STORAGE WITH THE SERVICE COMPANY                 
+            176   4. SOMEWHERE ELSE, PLACE SPECIFIED                             
+              2   5. SOMEWHERE ELSE, PLACE NOT SPECIFIED                         
+              7   6. I DO NOT HAVE A GAS MASK                                    
+             50   0. NO ANSWER                                                   
+0                Q.26A. HAVE YOU EVER KNOWN ANYONE TO THROW AWAY OR DISCARD      
+                        THEIR GAS MASK*                                          
+0                R. COL. 24.                                                     
+0           318   1. NO                                                          
+             39   2. YES                                                         
+             45   0. NO ANSWER                                                   
+0                Q.26B. HAVE YOU YOURSELF EVER THROWN AWAY OR DISCARDED YOUR GAS 
+                        MASK*                                                    
+0                R. COL. 25.                                                     
+0           346   1. NO                                                          
+             10   2. YES                                                         
+             46   0. NO ANSWER                                                   
+0                V.27. CAMP AND OUTFIT IDENTIFICATION:                           
+0                X. CODES NOT PROVIDED BY SURVEY ORGANIZATION.  DATA TRANSFERRED 
+                    AS IS.                                                       
+0                U. COLS. 26-28. ANP                                             
+0                X. COLS. 29-80 NOT USED.                                        
+1                                                                                
