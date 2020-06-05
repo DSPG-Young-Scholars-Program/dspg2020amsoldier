@@ -6,4 +6,3 @@ library(timelineS)
 # first column: event names
 # second column: dates of date class
 
-
