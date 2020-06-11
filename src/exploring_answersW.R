@@ -1,9 +1,12 @@
 library(readxl)
 library(tidyverse)
 library(data.table)
+library(stringi)
+
 
 ans = read_xlsx("AMS032W_answers.xlsx")
-nrow(ans)
+cat("There are", nrow(ans), "responses to this survey.")
+
 ans$age= factor(ans$`Q.1.`,
                              levels = c(1, 2, 3,4,5,6,7,0),
                 labels = c("19-", "20", "21-24","25-27","28-29","30-34","35+","NA"))
@@ -33,4 +36,12 @@ enlist_by_Age_barplot = ggplot(ans, aes(x=enlist)) +geom_bar(aes(y = ..prop.., g
 enlist_by_Age_barplot
 
 age_barplot+facet_wrap(~edu)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
-edu_barplot+facet_wrap(~age)
+#edu_barplot+facet_wrap(~age) not really helpful
+
+
+
+#first need to conver q13 column into characters and then factor because R treats 00 as 0, 01 as 1,, etc.
+string ="1. NEW ENGLAND 2. MIDDLE ATLANTIC 3. EAST NORTH CENTRAL 4. WEST NORTH CENTRAL 5. SOUTH ATLANTIC 6. EAST SOUTH CENTRAL 7. WEST SOUTH CENTRAL 8. MOUNTAIN 9. PACIFIC 0. OTHER  01. U.S. (STATE NOT SPECIFIED) 02. FOREIGN COUNTRY (ALLY) 11. MAINE 12. NEW HAMPSHIRE 13. VERMONT 14. MASSACHUSETTS 15. RHODE ISLAND 16. CONNECTICUT 21. NEW YORK 22. NEW JERSEY 23. PENNSYLVANIA 31. OHIO 32. INDIANA 33. ILLINOIS 34. MICHIGAN 35. WISCONSIN 41. MINNESOTA 42. IOWA 43. MISSOURI 44. NORTH DAKOTA 45. SOUTH DAKOTA 46. NEBRASKA 47. KANSAS 51. DELAWARE 52. MARYLAND 53. DISTRICT OF COLUMBIA 54. VIRGINIA 55. WEST VIRGINIA 56. NORTH CAROLINA 57. SOUTH CAROLINA 58. GEORGIA 59. FLORIDA 61. KENTUCKY 62. TENNESSEE 63. ALABAMA 64. MISSISSIPPI 71. ARKANSAS 72. LOUISIANA 73. OKLAHOMA 74. TEXAS 81. MONTANA 82. IDAHO 83. WYOMING 84. COLORADO 85. NEW MEXICO 86. ARIZONA 87. UTAH 88. NEVADA 91. WASHINGTON 92. OREGON 93. CALIFORNIA 00. NA"
+
+strsplit(string,split = "\i ")
+stri_extract_all_regex(string, "[:alpha:]+")
