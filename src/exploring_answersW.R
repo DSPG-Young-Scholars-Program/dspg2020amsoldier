@@ -19,9 +19,12 @@ ans$edu = factor(ans$`Q.2.`,
                             "7TH GRADE", "8TH GRADE", "SOME HIGH/TRADE SCHOOL",
                             "HIGH SCHOOL", "SOME COLLEGE",
                             "COLLEGE", "NA"))
-edu_barplot = ggplot(ans, aes(x=edu, fill = age)) +geom_bar(position='fill') +ggtitle('Barplot of Education Buckets')+
+edu_barplot = ggplot(ans, aes(x=edu)) +geom_bar() +ggtitle('Barplot of Education Buckets')+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 edu_barplot
+edu_barplot2 = ggplot(ans, aes(x=edu, fill = age)) +geom_bar(position='fill') +ggtitle('Barplot of Education Buckets')+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+edu_barplot2
 
 ans$enlist = factor(ans$`Q.3.`,
                  levels = c(1,2,3,0),
