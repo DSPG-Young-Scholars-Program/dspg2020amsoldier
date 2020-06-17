@@ -63,4 +63,8 @@ ans$outfits = factor(ans$R135,
                                "Seperated", "NA"))
 outfit_barplot = ggplot(ans, aes(x=outfits)) +geom_bar(aes(y = ..prop.., group = 1)) +
   ggtitle("Barplot of Black Soldiers' Opinions on Outfits")
-outfit_barplot
+outfit_barplot+facet_grid(~age)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+outfit_barplot+facet_grid(~edu)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+outfit_barplot+facet_grid(~enlist)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
