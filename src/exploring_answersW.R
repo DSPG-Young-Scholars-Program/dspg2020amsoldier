@@ -61,3 +61,20 @@ string ="01. U.S. (STATE NOT SPECIFIED) 02. FOREIGN COUNTRY (ALLY) 11. MAINE 12.
 strsplit(string,split = "\i ")
 stri_extract_all_regex(string, "[:alpha:]+")
 
+#Q.63.A. is a finer breakdown of reasons why
+ans$outfits = factor(ans$Q.63.,
+                     levels = c( 0, 1:5),
+                     labels = c("NA" , "Seperated", "Together",
+                                "Doesn't Matter", "Undecided", "NA"))
+outfit_barplot = ggplot(ans, aes(x=outfits)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  ggtitle("Barplot of White Soldiers' Opinions on Outfits")
+outfit_barplot
+outfit_barplot+facet_grid(~age)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+outfit_barplot+facet_grid(~edu)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+outfit_barplot+facet_grid(~enlist)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+ggplot(ans, aes(x=outfits, fill=edu)) +geom_bar(position="fill") +
+  ggtitle("Barplot of White Soldiers' Opinions on Outfits")

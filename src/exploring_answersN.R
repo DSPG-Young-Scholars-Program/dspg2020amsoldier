@@ -56,13 +56,22 @@ enlist_age_prop_barplot = ggplot(ans, aes(x=enlist, fill = age)) +geom_bar(posit
 enlist_age_prop_barplot
 
 #age_barplot+facet_wrap(.~edu)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
-ans$outfits = factor(ans$R135,
-                    levels = c( 0, 11:14, 21:24, 31:36, 41:44, 51,52),
-                    labels = c("NA" , rep("Seperated", 4), rep("Together",4),
-                               rep("Doesn't Matter",6), rep("Undecided",4),
-                               "Seperated", "NA"))
+
+# R135 is a finer breakdown of reasons why
+# ans$outfits = factor(ans$R135,
+#                     levels = c( 0, 11:14, 21:24, 31:36, 41:44, 51,52),
+#                     labels = c("NA" , rep("Seperated", 4), rep("Together",4),
+#                                rep("Doesn't Matter",6), rep("Undecided",4),
+#                                "Seperated", "NA"))
+
+ans$outfits = factor(ans$R134,
+                     levels = c( 0, 1:5),
+                     labels = c("NA" , "Seperated", "Together",
+                                "Doesn't Matter", "Undecided", "NA"))
 outfit_barplot = ggplot(ans, aes(x=outfits)) +geom_bar(aes(y = ..prop.., group = 1)) +
   ggtitle("Barplot of Black Soldiers' Opinions on Outfits")
+outfit_barplot
+
 outfit_barplot+facet_grid(~age)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 outfit_barplot+facet_grid(~edu)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
