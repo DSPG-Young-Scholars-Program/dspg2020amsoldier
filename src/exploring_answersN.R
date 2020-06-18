@@ -11,7 +11,11 @@ ans_n$age= factor(ans_n$R11,
                 levels = c(1, 2, 3,4,5,6,7,0),
                 labels = c("<=19", "20", "21-24","25-27","28-29","30-34","35+",NA))
 
+<<<<<<< Updated upstream
 age_barplot = ggplot(ans_n, aes(x=age)) +geom_bar() +ggtitle('Barplot of Age Buckets Black Soldiers')
+=======
+age_barplot = ggplot(ans, aes(x=age)) +geom_bar() +ggtitle('Barplot of Age Buckets')
+>>>>>>> Stashed changes
 age_barplot
 
 
@@ -56,6 +60,7 @@ enlist_age_prop_barplot = ggplot(ans_n, aes(x=enlist, fill = age)) +geom_bar(pos
 enlist_age_prop_barplot
 
 #age_barplot+facet_wrap(.~edu)+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+<<<<<<< Updated upstream
 
 # R135 is a finer breakdown of reasons why
 # ans$outfits = factor(ans$R135,
@@ -94,3 +99,13 @@ ans_n$community = factor(ans_n$R48,
 ans_n %>% count(state, sort =T) %>% na.omit() %>%
   ggplot() + geom_bar(aes(reorder(state,-n),n), stat = 'identity')+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+=======
+ans$outfits = factor(ans$R135,
+                    levels = c( 0, 11:14, 21:24, 31:36, 41:44, 51,52),
+                    labels = c("NA" , rep("Seperated", 4), rep("Together",4),
+                               rep("Doesn't Matter",6), rep("Undecided",4),
+                               "Seperated", "NA"))
+outfit_barplot = ggplot(ans, aes(x=outfits)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  ggtitle("Barplot of Black Soldiers' Opinions on Outfits")
+outfit_barplot
+>>>>>>> Stashed changes
