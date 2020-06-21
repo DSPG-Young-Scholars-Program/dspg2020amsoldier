@@ -15,7 +15,9 @@ library(data.table)
 library(stringi)
 library(urbnmapr)
 library(usmap)
+
 library(viridis)
+
 ```
 
 ```{r functions include = F}
@@ -87,6 +89,7 @@ ans = w_ans[, (ncol(w_ans)-6):ncol(w_ans)] %>% full_join(b_ans[, (ncol(b_ans)-6)
 ```
 
 Survey 32 was given out to soldiers in March of 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits.  
+
 ```{r}
 sample_n(ans,10)
 ```
