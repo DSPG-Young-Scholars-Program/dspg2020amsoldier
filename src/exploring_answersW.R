@@ -69,7 +69,8 @@ outfit_barplot+facet_wrap(~state)+theme(axis.text.x = element_text(angle = 45, h
 
 
 ggplot(ans, aes(x=outfits, fill=edu)) +geom_bar(position="fill") +
-  ggtitle("Barplot of White Soldiers' Opinions on Outfits")
+  ggtitle("Barplot of White Soldiers' Opinions on Outfits")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 

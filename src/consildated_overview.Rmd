@@ -13,8 +13,7 @@ library(readxl)
 library(tidyverse)
 library(data.table)
 library(stringi)
-library(urbnmapr)
-library(usmap)
+library(RColorBrewer)
 ```
 
 ```{r functions include = F}
@@ -74,14 +73,6 @@ add_demographic_factors = function(df){
                        labels = c(NA,"Farm", "Small Town", "Town" ,"City", "Large City"))
   }
   return(df)
-}
-
-enumerate_attribute = function(df=w_ans,df2=b_ans, att, att2){
-  df %>% 
-  count(att, sort =T) %>% 
-  na.omit() %>% 
-  left_join(df2 %>% count(att, sort =T) %>% na.omit(),by = att2) %>%
-  melt(id.vars= att2) 
 }
 ```
 
@@ -301,9 +292,17 @@ ans %>% group_by(race) %>% count(community) %>% na.omit() %>%
     labs(title='Community Type of Soldiers', x="Community", y = "Count")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1), strip.text.y = element_blank())+
   scale_fill_discrete(name = "Race", labels = c("Black", "White"))
-
 ```
- 
+
+### Integrating Outfits
+Our key variable of interest from this survey is the soldiers opinions on integrating their outfits. Expectedly, we see the vast majority of white soldiers are against integrating however the black soldeirs seem to be divided on whether they want integration or not. They are rougly evenly split on keeping outfits seperated and integrating them and a good amount are also undecided or indifferent. 
+```{r outfits}
+ans %>% filter(outfits!="NA") %>%
+ggplot(aes(x=outfits, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle("Soldiers' Opinions on Outfits")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 ## Deeper relationships 
 Of course, we are interested in seeing how these variables intearct with one another to underdstand and reveal any deeper inticracies in the data. 
 
@@ -312,12 +311,12 @@ When we overlay the distribution of education levels with age ranges, we see tha
 ```{r, fig.width =8, fig.height= 6}
 w_ans %>%
 ggplot( aes(x=edu, fill = age)) +geom_bar() +
-  labs(title="Age Distribution over Education Levels of White Soldiers", x="State", y = "Count")+
+  labs(title="Age Distribution over Education Levels of White Soldiers", x="Education Level", y = "Count")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_brewer(palette="YlGnBu")
 b_ans %>%
 ggplot( aes(x=edu, fill = age)) +geom_bar() +
-  labs(title="Age Distribution over Education Levels of Black Soldiers", x="State", y = "Count")+
+  labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Count")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_brewer(palette="YlGnBu")
 
@@ -325,7 +324,7 @@ ggplot( aes(x=edu, fill = age)) +geom_bar() +
 ans %>%
 ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
   facet_grid(rows = vars(race), scales="free_y")+
-  labs(title="Age Distribution over Education Levels of Black Soldiers", x="State", y = "Proportion")+
+  labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_brewer(palette="YlGnBu")
 
@@ -345,7 +344,24 @@ ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
 #   scale_fill_brewer(palette="YlGnBu")
 ```
 
-### Enlistment by Age 
+We see that larger portions of soldiers who are more educated come from communities whihc are larger in population.
+```{r}
+ans %>%
+ggplot( aes(x=edu, fill = community)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_brewer(palette="YlGnBu")
+
+ans %>%
+ggplot( aes(x=community, fill = edu)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = mycolors)
+```
+
+### Breaking Down Enlistment 
 Due to the sample only having black soldiers no older than 20 we can't discern if race may have an impact on  how different age groups enlist. For the most part, age makes no difference among the white soldiers in this regard with the exception that those 19 and younger enlisted through the draft and volunteering at similar rates. Of course, we should keep in mind that there were not that many soldiers within this group to begin with. 
 ```{r, fig.width =8, fig.height= 6}
 w_ans %>%
@@ -379,6 +395,61 @@ ggplot(aes(x=enlist, fill = age)) +geom_bar(position = "fill") +
   labs(title='Black Soldiers Enlistment Proportion by Age', x="Enlistment", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
     scale_fill_brewer(palette="YlGnBu")
+```
+
+### Breaking Down Outfits Opinion
+If we look at the proportion of ages who elected for each category we see that the proportions are relatively stable across all opinions towards integration.
+```{r outfits breaking }
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = age)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Age Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_brewer(palette="YlGnBu")
+
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=age, fill = outfits)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Distribution of Integration Opinions over Ages", x="Ages", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_brewer(palette="YlGnBu")
+
+```
+Now if we are to overlay the education distribution over the integration opinions we see something more interesting. It appears that the white soldiers that voted for the outfits to be together skew towards being more educated. In fact, over 50% of the soldiers who did vote for integrated units have atleast finished high school. This is not the case for any of the other responses. 
+
+```{r}
+mycolors <- colorRampPalette(brewer.pal(9, "YlGnBu"))(11)
+
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = edu)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Education Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = mycolors)
+```
+Across both races we also see that of those who choose integration a greater portion were from large cities and soldiers who came from more populated voted for sepration less proportionally. 
+
+```{r}
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = community)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Education Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = mycolors)
+
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=community, fill = outfits)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Education Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = mycolors)
+
+w_ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=community, fill = outfits)) +geom_bar(position= "fill") +
+  # facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Education Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = mycolors)
 ```
 
 
