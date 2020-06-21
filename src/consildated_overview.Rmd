@@ -75,6 +75,14 @@ add_demographic_factors = function(df){
   }
   return(df)
 }
+
+enumerate_attribute = function(df=w_ans,df2=b_ans, att, att2){
+  df %>% 
+  count(att, sort =T) %>% 
+  na.omit() %>% 
+  left_join(df2 %>% count(att, sort =T) %>% na.omit(),by = att2) %>%
+  melt(id.vars= att2) 
+}
 ```
 
 ```{r reading, include= F}
@@ -85,12 +93,13 @@ w_ans$race = "White"; b_ans$race = "Black"
 ans = w_ans[, (ncol(w_ans)-6):ncol(w_ans)] %>% full_join(b_ans[, (ncol(b_ans)-6):ncol(b_ans)])
 ```
 
+
+## Who Are the Soldiers?
 Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits.  
+
 ```{r}
 sample_n(ans,10)
 ```
-
-## Overview of Basic Demographic Variables
 
 ### How Old Are the Soldiers
 Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24. 
@@ -109,6 +118,19 @@ ans %>%
 ggplot(aes(x=age,fill=race)) +
   geom_bar(position = "dodge") +
   labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count")
+
+
+w_ans %>% 
+  count(age, sort =T) %>% 
+  na.omit() %>% 
+  left_join(b_ans %>% count(age, sort =T) %>% na.omit(),by = "age") %>%
+  melt(id.vars= "age") %>%
+    ggplot(aes(fill=variable)) +
+    geom_bar(aes(reorder(age,value),value), stat='identity', position='dodge')+
+    labs(title='Age Groups of Soldiers', x="Age Groups", y = "Count")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_discrete(name = "Race", labels = c("White", "Black"))
+  
 ```
 
 ### How Far in School Were They?
@@ -142,6 +164,29 @@ ggplot(aes(x=edu,fill=race)) +
   labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count")+
       labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+w_ans %>% 
+  count(edu, sort =T) %>% 
+  na.omit() %>% 
+  left_join(b_ans %>% count(edu, sort =T) %>% na.omit(),by = "edu") %>%
+  melt(id.vars= "edu") %>%
+  ggplot(aes(fill=variable)) +
+    geom_bar(aes(reorder(edu,value),value), stat='identity', position='dodge')+
+    labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_discrete(name = "Race", labels = c("White", "Black"))
+
+w_ans %>% 
+  count(edu, sort =T) %>% 
+  na.omit() %>% 
+  left_join(b_ans %>% count(edu, sort =T) %>% na.omit(),by = "edu") %>%
+  melt(id.vars= "edu") %>%
+  ggplot() +
+    geom_bar(aes(reorder(edu,value),value, fill = variable), stat='identity', position='dodge')+
+    facet_grid(rows = vars(variable))+
+    labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), strip.text.y = element_blank())+
+  scale_fill_discrete(name = "Race", labels = c("White", "Black"))
 ```
 
 ### How Did They End Up in the  Military
@@ -158,14 +203,39 @@ ggplot(aes(x=enlist)) +
   labs(title='How Black Soldiers were Enlisted', x="Enlistment Type", y = "Count") 
 
 w_ans %>% 
-  count(edu, sort =T) %>% 
+  count(enlist, sort =T) %>% 
   na.omit() %>% 
-  left_join(b_ans %>% count(edu, sort =T) %>% na.omit(),by = "edu") %>%
-  melt(id.vars= "edu") %>%
+  left_join(b_ans %>% count(enlist, sort =T) %>% na.omit(),by = "enlist") %>%
+  melt(id.vars= "enlist") %>%
   ggplot(aes(fill=variable)) +
-    geom_bar(aes(reorder(edu,value),value), stat='identity', position='dodge')+
-    labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    geom_bar(aes(reorder(enlist,value),value), stat='identity', position='dodge')+
+    labs(title='How Soldiers were Enlisted', x="Enlistment", y = "Count")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_discrete(name = "Race", labels = c("White", "Black"))
+
+#uggo
+# ans %>% group_by(race) %>% count(enlist) %>% na.omit() %>%
+#   ggplot() +
+#     geom_bar(aes(reorder(enlist,n),n, fill = race), stat='identity', position='dodge')+
+#     facet_grid(rows = vars(race))+
+#     labs(title='Community Type of Soldiers', x="Community", y = "Count")+
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1), strip.text.y = element_blank())+
+#   scale_fill_discrete(name = "Race", labels = c("Black", "White"))
+#this one is uggo 
+# w_ans %>% 
+#   count(enlist, sort =T) %>% 
+#   na.omit() %>% 
+#   left_join(b_ans %>% count(enlist, sort =T) %>% na.omit(),by = "enlist") %>%
+#   melt(id.vars= "enlist") %>%
+#   ggplot(aes(fill=variable)) +
+#     geom_bar(aes(reorder(enlist,value),value), stat='identity', position='dodge')+
+#     facet_grid(rows = vars(variable))+
+#     labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1), strip.text.y = element_blank())+
+#   scale_fill_discrete(name = "Race", labels = c("White", "Black"))
+
+
+
 ```
 
 ### Where Are the Soldiers From?
@@ -183,17 +253,21 @@ ggplot() +
   labs(title="Where the Black Soldiers are from", x="State", y = "Count") +
   coord_flip()
 
-w_ans %>% 
+b_ans %>% 
   count(state, sort =T) %>% 
   na.omit() %>% 
-  left_join(b_ans %>% count(state, sort =T) %>% na.omit(),by = "state") %>%
+  left_join(w_ans %>% count(state, sort =T) %>% na.omit(),by = "state") %>%
   melt(id.vars= "state") %>%
-  ggplot(aes(fill=variable)) +
-    geom_bar(aes(reorder(state,value),value), stat='identity', position='dodge')+
+  ggplot() +
+    geom_bar(aes(reorder(state,value),value, fill = variable), stat='identity', position='dodge')+
+    facet_grid(cols = vars(variable))+
+    scale_fill_discrete(name = "Race", labels = c("Black", "White"))+
     labs(title="Where are the Soldiers from", x="State", y = "Count") +
-    coord_flip()
+    coord_flip()+
+     theme(strip.text.x = element_blank())
 ```
- ### What sort of places did they live in?
+
+### What sort of places did they live in?
  
 As expected, most soldiers whose home communities are large cities had the most representation across both groups. White soldiers saw roughly equal representation from soldiers who came from a farm, town, or city with actually slightly less people from cities. On the otherhand, the next community with the largest representation for black soldiers was a city followed by farms and towns which had approximately similar contributions. 
 
@@ -207,12 +281,34 @@ b_ans %>%
 ggplot(aes(x=community)) +
   geom_bar(fill = 'darkslategray4') +
   labs(title="Black Soldiers' Communities", x="Community", y = "Count") 
+
+# w_ans %>% 
+#   count(community, sort =T) %>% 
+#   na.omit() %>% 
+#   left_join(b_ans %>% count(community, sort =T) %>% na.omit(),by = "community") %>%
+#   melt(id.vars= "community") %>%
+#   ggplot() +
+#     geom_bar(aes(reorder(community,value),value, fill = variable), stat='identity', position='dodge')+
+#     facet_grid(rows = vars(variable))+
+#     labs(title='Community Type of Soldiers', x="Community", y = "Count")+
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1), strip.text.y = element_blank())+
+#   scale_fill_discrete(name = "Race", labels = c("White", "Black"))
+
+ans %>% group_by(race) %>% count(community) %>% na.omit() %>%
+  ggplot() +
+    geom_bar(aes(reorder(community,n),n, fill = race), stat='identity', position='dodge')+
+    facet_grid(rows = vars(race))+
+    labs(title='Community Type of Soldiers', x="Community", y = "Count")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), strip.text.y = element_blank())+
+  scale_fill_discrete(name = "Race", labels = c("Black", "White"))
+
 ```
  
 ## Deeper relationships 
 Of course, we are interested in seeing how these variables intearct with one another to underdstand and reveal any deeper inticracies in the data. 
 
-
+### Breaking down Education
+When we overlay the distribution of education levels with age ranges, we see that older white soldiers made up a larger porportion of white soldiers with less education compared to soldiers with some high school. As a contingent, it appears that soldiers between 21 and 24 with a high school education make up the largest contingent of white white soldiers when grouped by education and age. 
 ```{r, fig.width =8, fig.height= 6}
 w_ans %>%
 ggplot( aes(x=edu, fill = age)) +geom_bar() +
@@ -224,21 +320,33 @@ ggplot( aes(x=edu, fill = age)) +geom_bar() +
   labs(title="Age Distribution over Education Levels of Black Soldiers", x="State", y = "Count")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_brewer(palette="YlGnBu")
+
+# not informative maybe
+ans %>%
+ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Age Distribution over Education Levels of Black Soldiers", x="State", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_brewer(palette="YlGnBu")
+
 ```
 
 ```{r, fig.width =8, fig.height= 6}
-w_ans %>%
-ggplot( aes(x=edu, fill = age)) +geom_bar(position="fill") +
-  labs(title="Age Distribution over Education Levels of White Soldiers", x="State", y = "Proportion")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_fill_brewer(palette="YlGnBu")
-b_ans %>%
-ggplot( aes(x=edu, fill = age)) +geom_bar(position="fill") +
-  labs(title="Age Distribution over Education Levels of White Soldiers", x="Education", y = "Proportion")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_fill_brewer(palette="YlGnBu")
+# redundant
+# w_ans %>%
+# ggplot( aes(x=edu, fill = age)) +geom_bar(position="fill") +
+#   labs(title="Age Distribution over Education Levels of White Soldiers", x="State", y = "Proportion")+
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+#   scale_fill_brewer(palette="YlGnBu")
+# b_ans %>%
+# ggplot( aes(x=edu, fill = age)) +geom_bar(position="fill") +
+#   labs(title="Age Distribution over Education Levels of White Soldiers", x="Education", y = "Proportion")+
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+#   scale_fill_brewer(palette="YlGnBu")
 ```
 
+### Enlistment by Age 
+Due to the sample only having black soldiers no older than 20 we can't discern if race may have an impact on  how different age groups enlist. For the most part, age makes no difference among the white soldiers in this regard with the exception that those 19 and younger enlisted through the draft and volunteering at similar rates. Of course, we should keep in mind that there were not that many soldiers within this group to begin with. 
 ```{r, fig.width =8, fig.height= 6}
 w_ans %>%
 ggplot(aes(x=enlist)) +geom_bar(aes(y = ..prop.., group = 1), fill= 'darkslategray4')+
@@ -250,21 +358,27 @@ ggplot(aes(x=enlist)) +geom_bar(aes(y = ..prop.., group = 1), fill= 'darkslategr
   facet_wrap(~age)+
   labs(title='Black Soldiers Enlistment by Age', x="Enlistment", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ans %>% filter(!is.na(enlist)) %>%
+ggplot(aes(x=enlist)) +geom_bar(aes(y = ..prop.., group = 1), fill= 'darkslategray4')+
+  facet_wrap(race~age)+
+  labs(title='Enlistment by Age and Race', x="Enlistment", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
+Not to interesting, white volunteered soldiers appear to be slighly younger. 
 ```{r, fig.width =8, fig.height= 6}
 w_ans %>%
 ggplot(aes(x=enlist, fill = age)) +geom_bar(position = "fill") +
-  labs(title='White Soldiers Enlistment by Age', x="Enlistment", y = "Proportion")+
+  labs(title='White Soldiers Enlistment Proportion by Age', x="Enlistment", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
     scale_fill_brewer(palette="YlGnBu")
 
 b_ans %>%
 ggplot(aes(x=enlist, fill = age)) +geom_bar(position = "fill") +
-  labs(title='White Soldiers Enlistment by Age', x="Enlistment", y = "Proportion")+
+  labs(title='Black Soldiers Enlistment Proportion by Age', x="Enlistment", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
     scale_fill_brewer(palette="YlGnBu")
 ```
-
 
 
