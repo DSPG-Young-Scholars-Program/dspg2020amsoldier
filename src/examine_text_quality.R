@@ -1,4 +1,4 @@
-library(dplyr);library(ggplot2);library(data.table);library(tidyr)
+library(dplyr);library(ggplot2);library(data.table);library(tidyr);library(stringr)
 library(tidytext);library(textstem);library(SnowballC)
 
 ##### READ DATA FROM DATABASE #############
@@ -24,3 +24,14 @@ dbDisconnect(conn)
 data <- data0 %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE)
 long <- data$long
 outfit <- na.omit(data$outfits_comment)
+
+##### Look for all [unclear][/unclear] #####
+#Other metadata tags are deletion, insertion, circle and underline
+#str_extract_all(long[1:10], "\\[unclear\\]\\[\\/unclear\\]") returns metadata tags with no word in between
+str_extract_all(long, "\\[unclear\\].*\\[\\/unclear\\]") #returns any use of metadata tags | drawback: if multiple of this tag are used, also returns all text in between sets of metadata tags.
+#how to exclude character(0) from the results?
+
+#find better way to summarize results
+
+#### Which words underlined? #####
+str_extract_all(long, "\\[underline\\].*\\[\\/underline\\]")
