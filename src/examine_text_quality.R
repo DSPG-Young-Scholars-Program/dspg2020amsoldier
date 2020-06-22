@@ -22,16 +22,37 @@ dbDisconnect(conn)
 ######### Get each question into single string of text #######################
 #first unite the long response and it's continued text
 data <- data0 %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE)
-long <- data$long
+
+#as character
+long <- data$long;long <- long[long != ""]
 outfit <- na.omit(data$outfits_comment)
+
+#as data.frame
+#long <- select(data, long)
+#outfit <- na.omit(select(data, outfits_comment))
 
 ##### Look for all [unclear][/unclear] #####
 #Other metadata tags are deletion, insertion, circle and underline
 #str_extract_all(long[1:10], "\\[unclear\\]\\[\\/unclear\\]") returns metadata tags with no word in between
-str_extract_all(long, "\\[unclear\\].*\\[\\/unclear\\]") #returns any use of metadata tags | drawback: if multiple of this tag are used, also returns all text in between sets of metadata tags.
+long.unclear <- unlist(str_extract_all(long, "\\[unclear\\].*\\[\\/unclear\\]"))
+out.unclear <- unlist(str_extract_all(outfit, "\\[unclear\\].*\\[\\/unclear\\]"))
+#returns any use of metadata tags | drawback: if multiple of this tag are used, also returns all text in between sets of metadata tags.
+
+#if data.frame
+#long <- mutate(long, unclear = str_extract_all(long, "\\[unclear\\].*\\[\\/unclear\\]"))
+
 #how to exclude character(0) from the results?
 
+long.unclear <- long.unclear[long.unclear != "character(0)"]
+out.unclear <- out.unclear[out.unclear != "character(0)"]
+#long$unclear[long$unclear == "character(0)"] <- NA #make character(0) NA..... this might help?
 #find better way to summarize results
 
+
+
 #### Which words underlined? #####
-str_extract_all(long, "\\[underline\\].*\\[\\/underline\\]")
+long.underline <- unlist(str_extract_all(long, "\\[underline\\].*\\[\\/underline\\]"))
+out.underline <- unlist(str_extract_all(outfit, "\\[underline\\].*\\[\\/underline\\]"))
+
+long.underline <- long.underline[long.underline != "character(0)"]
+out.underline <- out.underline[out.underline != "character(0)"]
