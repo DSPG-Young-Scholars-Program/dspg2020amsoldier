@@ -134,6 +134,23 @@ topics_terms_n %>%
 
 
 # euclidean distances to compare white and black - mo -------------------------
+# comapre with 78 and n
+exposure_78 <- posterior(lda_78,dtm_78)
+apply(exposure_78$topics,1,sum)
+exposure_n <- posterior(lda_n,dtm_n)
+apply(exposure_n $topics,1,sum)
 
+euclidean_distances <- c()
+max_exposure <- matrix(F,nrow(exposure_n$topics),num_clusters)
+for(i in 1:nrow(exposure_n$topics)){
+  euclidean_distances[i] <- sqrt(sum((exposure_n$topics[i,] - exposure_78$topics[i,])^2))
+  # which text was exposed to (full v summary)
+  max_exposure[i,which.max(exposure_n$topics[i,])] <- T
+  max_exposure[i,which.max(exposure_78$topics[i,])] <- T
+}
+print(sum(apply(max_exposure,1,sum) == 1)/nrow(exposure_n$topics))
+# 0.1220998 - what does this mean though? is this close or far?
 
-# naming categories - mo ------------------------------------------------------
+# sentiment analysis - mo -------------------------
+
+# naming categories (the hard way) - mo ------------------------------------------------------
