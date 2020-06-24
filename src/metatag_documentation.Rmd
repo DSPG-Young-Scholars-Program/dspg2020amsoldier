@@ -1,0 +1,86 @@
+---
+title: "Metatag Documentation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr);library(ggplot2);library(data.table);library(tidyr);library(stringr)
+library(tidytext);library(textstem);library(SnowballC)
+```
+
+```{r}
+library("RPostgreSQL")
+# connect to postgresql to get data (in rivanna)
+conn <- dbConnect(drv = PostgreSQL(), 
+                  dbname = "sdad", 
+                  host = "10.250.124.195", 
+                  port = 5432, 
+                  user = Sys.getenv("db_userid"), 
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data  
+data0 <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_cont, racial_group  
+                                 FROM american_soldier.survey_32_combined")
+# disconnect from postgresql
+dbDisconnect(conn)
+#combine continuation of long question into one column
+data <- data0 %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE)
+```
+
+
+#Examine metadata tag use over entire collection of text
+```{r}
+long <- data$long;long <- long[long != ""] #all text for long questions
+outfit <- na.omit(data$outfits_comment) #all text for outfits question
+text<- c(long, outfit) #entirety of text
+```
+
+Function to extract all use cases of metadata tags
+```{r}
+extract_tag <- function(data, metatag){
+  if (metatag == "bracket"){
+    data.bracket <- unlist(str_extract_all(data, "(?=\\[).*?(?<=\\])"))
+    remove <- c("[unclear]","[/unclear]","[paragraph]", "[Paragraph]","[insertion]","[/insertion]", "", "[deletion]", "[/deletion]", "[underline]", "[/underline]", "[circle]", "[/circle]")
+    for(i in 1:13){data.bracket <- data.bracket[data.bracket!= remove[i]]}
+    data.bracket <- gsub("\\[", "", data.bracket);data.bracket <- gsub("\\]", "", data.bracket)
+    data.bracket <- as.data.table(table(data.bracket))[order(-N),]
+    return(data.bracket)
+  }
+  else{
+  #create regex pattern that matches the metadata tag
+  rx <- paste("(?=\\[", metatag, "\\]).*?(?<=\\[\\/", metatag, "\\])", sep="")
+  #extract all cases of use for that tag
+  data.metatag <- unlist(str_extract_all(data, rx))
+  #Remove missing data and store in data.frame.
+  data.metatag <- data.metatag[data.metatag != ""]
+  data.metatag <- as.data.table(table(data.metatag))[order(-N),]
+  return(data.metatag)
+  }
+}
+unclear <- extract_tag(text, "unclear")
+underline <- extract_tag(text, "underline")
+insert <- extract_tag(text, "insertion")
+delete <- extract_tag(text, "deletion")
+circle <- extract_tag(text, "circle")
+bracket <- extract_tag(text, "bracket")
+```
+
+### unclear
+
+Zooniverse instructions for metatag use: 
+The "unclear" metatags are used for words that are illegible. If a word is completely illegible, you should include [unclear][/unclear] without anything appearing between the opening and ending metatags. If you think you know the word but are not sure, you can put your guess inside the "unclear" metatags, such as [unclear]Utopia[/unclear]. Each set of unclear metatags [unclear][/unclear] should represent one unclear word, so if you see multiple illegible words in a row, you should use multiple sets, one for each unclear word. For example, if you see two consecutive words that are illegible, you should put [unclear][/unclear] [unclear][/unclear]. You will use this basic approach to metatags for the following metatags.
+```{r}
+nrow(unclear)
+head(unclear, 10)
+```
+
+Overall, there are 802 unique uses of this tag. This tells us that the use of the tag does not have an overarching pattern throughout the responses. Rather each use of the tag is a case by case instance unique to the needs of the individual response. Majority of cases of use for this metatag is to indicate a word that is completely illegible.
+
+### Underline
+
+```{r}
+nrow(underline)
+head(underline, 10)
+```
+
+There are 95 unique cases of soldiers transcribing thier work
