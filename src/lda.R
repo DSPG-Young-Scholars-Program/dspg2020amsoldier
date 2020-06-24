@@ -6,22 +6,40 @@ library(textstem)
 library(SnowballC)
 library(readxl)
 library(rvest)
-library(tidytext)
-library(dplyr)
 library(tm)
 library(topicmodels)
-library(ggplot2)
+
+
+
+
 
 #load in your data as data tables
-S32W <- as.data.table(read_excel("~/Downloads/Survey_32N and 32W consolidated.xlsx", sheet = 1, col_names = TRUE))
-S32N <- as.data.table(read_excel("~/Downloads/Survey_32N and 32W consolidated.xlsx", sheet = 2, col_names=TRUE))
-head(S32N)
-# text mining - mo --------------------------------------------------------
+library("RPostgreSQL")
+# connect to postgresql to get data (in rivanna)
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+S32 <- dbGetQuery(conn, "SELECT *
+                  FROM american_soldier.survey_32_combined")
+# disconnect from postgresql
+dbDisconnect(conn)
 
+S32N = S32 %>% filter(racial_group == "black")
+S32W = S32 %>% filter(racial_group == "white")
+
+head(S32N)
+
+
+# text mining - mo --------------------------------------------------------
+#T5 = long_comment, T3 = outfits_comment, T4 = long_comment
 # this will create data frames out out of text
-text77_df <- tibble(row = 1:nrow(S32W), text = S32W$T3) #Written response to "should soldiers be in separate outfits?"
-text78_df <- tibble(row = 1:nrow(S32W), text = S32W$T4) #Written response on overall thoughts on the survey
-textn_df <- tibble(row = 1:nrow(S32N), text = S32N$T5) #Written response to "should soldiers be in separate outfits?"
+text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment) #Written response to "should soldiers be in separate outfits?"
+text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long_comment) #Written response on overall thoughts on the survey
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long_comment) #Written response to "should soldiers be in separate outfits?"
 
 # laod in stop words: words without any true meaning
 data(stop_words)
@@ -33,10 +51,35 @@ data(stop_words)
 # I think we should include more stemming and cleaning. What I did was very basic
 # compared to what mary completed
 
-n_words <- text77_df %>%
+num_words77 <- text77_df %>%
   unnest_tokens(word, text) %>%
   count(row, sort = T)
-summary(n_words$n)
+summary(num_words77$n)
+# looking at responses with only 1 word
+text77_df %>%
+  filter(row %in% num_words77$row[which(num_words77$n==1)]) %>%
+  na.omit()%>%
+  View()
+
+num_words78 <- text78_df %>%
+  unnest_tokens(word, text) %>%
+  count(row, sort = T)
+summary(num_words78$n)
+# looking at responses with only 1 word
+text78_df %>%
+  filter(row %in% num_words78$row[which(num_words78$n==1)]) %>%
+  na.omit()%>%
+  View()
+
+num_wordsn <- textn_df %>%
+  unnest_tokens(word, text) %>%
+  count(row, sort = T)
+summary(num_wordsn$n)
+# looking at responses with only 1 word
+textn_df %>%
+  filter(row %in% num_wordsn$row[which(num_wordsn$n==1)]) %>%
+  na.omit()%>%
+  View()
 
 tidy_77 <- text77_df %>%
   unnest_tokens(word, text) %>%
@@ -67,7 +110,7 @@ tidy_n <- na.omit(tidy_n)
 # dtm - mo ---------------------------------------------------------------
 
 # cast_dtm creates dtm so that we can complete lda
-# a document term matrix is one row per document, one column per word, 
+# a document term matrix is one row per document, one column per word,
 # each value is a count
 
 dtm_77 <- cast_dtm(tidy_77, term = word, document = row, value = n)
