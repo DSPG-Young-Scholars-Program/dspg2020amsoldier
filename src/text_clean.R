@@ -20,8 +20,12 @@ data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = 
 
 
 
-## change no answer fillers to NA ##
+## change any answer that indicates no response to NA ##
+#ex: "none", "[None]", "0" some of this filtering has been done in the LDA.R file on Master branch
+
+
 
 ## Remove the following metatags: [paragraph], [insertion][/insertion], [circle][/circle], [underline][/underline] ##
-
+#Regex expression for [underline]: \\[underline\\]
+#Regex expression for [\underline]: \\[\\/underline\\] 
 
