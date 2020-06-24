@@ -32,8 +32,11 @@ dbDisconnect(conn)
 S32N = S32 %>% filter(racial_group == "black")
 S32W = S32 %>% filter(racial_group == "white")
 
+<<<<<<< HEAD:src/initial_analysis.R
 head(S32W)
 
+=======
+>>>>>>> 373e5e268347a4de1036c3a9689650141a557148:src/lda.R
 
 # text mining - mo --------------------------------------------------------
 #T5 = long_comment, T3 = outfits_comment, T4 = long_comment
@@ -51,38 +54,39 @@ data(stop_words)
 
 # I think we should include more stemming and cleaning. What I did was very basic
 # compared to what mary completed
+# looking at responses with only 1 word
+# Bunch of useless one word responses
+useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]","gujfujuj", "None.", "I", NA)
 
 num_words77 <- text77_df %>%
   unnest_tokens(word, text) %>%
   count(row, sort = T)
 summary(num_words77$n)
-# looking at responses with only 1 word
 text77_df %>%
   filter(row %in% num_words77$row[which(num_words77$n==1)]) %>%
-  na.omit()%>%
+  filter(!text %in% useless_responses) %>%
   View()
 
 num_words78 <- text78_df %>%
   unnest_tokens(word, text) %>%
   count(row, sort = T)
 summary(num_words78$n)
-# looking at responses with only 1 word
 text78_df %>%
   filter(row %in% num_words78$row[which(num_words78$n==1)]) %>%
-  na.omit()%>%
+  filter(!text %in% useless_responses) %>%
   View()
 
 num_wordsn <- textn_df %>%
   unnest_tokens(word, text) %>%
   count(row, sort = T)
 summary(num_wordsn$n)
-# looking at responses with only 1 word
 textn_df %>%
   filter(row %in% num_wordsn$row[which(num_wordsn$n==1)]) %>%
-  na.omit()%>%
+  filter(!text %in% useless_responses) %>%
   View()
 
 tidy_77 <- text77_df %>%
+  filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
   unnest_tokens(word, text) %>%
   anti_join(stop_words) %>%
   mutate(word = wordStem(word)) %>%
@@ -90,6 +94,7 @@ tidy_77 <- text77_df %>%
   count(word, sort = T)
 
 tidy_78 <- text78_df %>%
+  filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
   unnest_tokens(word, text) %>%
   anti_join(stop_words) %>%
   mutate(word = wordStem(word)) %>%
@@ -97,16 +102,13 @@ tidy_78 <- text78_df %>%
   count(word, sort = T)
 
 tidy_n <- textn_df %>%
+  filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
   unnest_tokens(word, text) %>%
   anti_join(stop_words) %>%
   mutate(word = wordStem(word)) %>%
   group_by(row) %>%
   count(word, sort = T)
 
-# omit NAs that have somehow gotten in
-tidy_77 <- na.omit(tidy_77)
-tidy_78 <- na.omit(tidy_78)
-tidy_n <- na.omit(tidy_n)
 
 # dtm - mo ---------------------------------------------------------------
 
