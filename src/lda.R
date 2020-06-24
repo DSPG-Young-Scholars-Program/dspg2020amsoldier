@@ -33,11 +33,16 @@ S32N = S32 %>% filter(racial_group == "black")
 S32W = S32 %>% filter(racial_group == "white")
 
 <<<<<<< HEAD:src/initial_analysis.R
+<<<<<<< HEAD:src/initial_analysis.R
 head(S32W)
 
 =======
 >>>>>>> 373e5e268347a4de1036c3a9689650141a557148:src/lda.R
 
+=======
+head(S32W)
+
+>>>>>>> aa35dc5c599028fa9ca906f3b175c532ed99b888:src/lda.R
 # text mining - mo --------------------------------------------------------
 #T5 = long_comment, T3 = outfits_comment, T4 = long_comment
 # this will create data frames out out of text
