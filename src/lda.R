@@ -32,17 +32,7 @@ dbDisconnect(conn)
 S32N = S32 %>% filter(racial_group == "black")
 S32W = S32 %>% filter(racial_group == "white")
 
-<<<<<<< HEAD:src/initial_analysis.R
-<<<<<<< HEAD:src/initial_analysis.R
-head(S32W)
 
-=======
->>>>>>> 373e5e268347a4de1036c3a9689650141a557148:src/lda.R
-
-=======
-head(S32W)
-
->>>>>>> aa35dc5c599028fa9ca906f3b175c532ed99b888:src/lda.R
 # text mining - mo --------------------------------------------------------
 #T5 = long_comment, T3 = outfits_comment, T4 = long_comment
 # this will create data frames out out of text
@@ -200,12 +190,12 @@ for(i in 1:nrow(exposure_n$topics)){
   max_exposure[i,which.max(exposure_78$topics[i,])] <- T
 }
 print(sum(apply(max_exposure,1,sum) == 1)/nrow(exposure_n$topics))
-# 0.1055684- what does this mean though: distance between both groups
+# 0.1157193 - what does this mean though: distance of topics between both groups
 
 # naming categories (the hard way) - mo ------------------------------------------------------
 # here, soon, will lie code for naming categories without us having to name them
 
-# sentiment analysis - mo -------------------------
+# sentiment analysis by word - mo -------------------------
 
 nrc <- get_sentiments("nrc")
 bing <- get_sentiments("bing")
@@ -221,10 +211,42 @@ bing_n <- tidy_n %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative)
 
-# ggplot(bing_n, aes(row, sentiment)) +
-#   geom_col(show.legend = FALSE)
-
 afinn_n <- tidy_n %>%
+  inner_join(afinn) %>%
+  count(word, value, sort = TRUE) %>%
+  group_by(word) %>%
+  summarise(sentiment = sum(value), row) %>%
+  mutate(method = "AFINN")
+
+
+nrc_77 <- tidy_77 %>%
+  inner_join(nrc) %>%
+  count(word, sentiment, sort = TRUE)
+
+bing_77 <- tidy_77 %>%
+  inner_join(bing) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+afinn_77 <- tidy_77 %>%
+  inner_join(afinn) %>%
+  count(word, value, sort = TRUE) %>%
+  group_by(word) %>%
+  summarise(sentiment = sum(value), row) %>%
+  mutate(method = "AFINN")
+
+nrc_78 <- tidy_78 %>%
+  inner_join(nrc) %>%
+  count(word, sentiment, sort = TRUE)
+
+bing_78 <- tidy_78 %>%
+  inner_join(bing) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+afinn_78 <- tidy_78 %>%
   inner_join(afinn) %>%
   count(word, value, sort = TRUE) %>%
   group_by(word) %>%
@@ -233,6 +255,7 @@ afinn_n <- tidy_n %>%
 
 # differences in sentiments -------------------------------------------------------
 
+# black - long response
 bing_and_nrc <- bind_rows(tidy_n %>%
                             inner_join(bing) %>%
                             mutate(method = "Bing et al."),
@@ -249,18 +272,89 @@ bind_rows(afinn_n,
   geom_col(show.legend = FALSE) +
   facet_wrap(~method, ncol = 1, scales = "free_y")
 
-# sentiment words counts -------------------------------------------------------
+# white - short response
+bing_and_nrc_77 <- bind_rows(tidy_77 %>%
+                            inner_join(bing) %>%
+                            mutate(method = "Bing et al."),
+                          tidy_77 %>%
+                            inner_join(nrc) %>%
+                            mutate(method = "NRC")) %>%
+  count(method, index = row %/% 80, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
 
+bind_rows(afinn_77,
+          bing_and_nrc_77) %>%
+  ggplot(aes(row, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~method, ncol = 1, scales = "free_y")
+
+# white - long response
+bing_and_nrc_78 <- bind_rows(tidy_78 %>%
+                               inner_join(bing) %>%
+                               mutate(method = "Bing et al."),
+                             tidy_78 %>%
+                               inner_join(nrc) %>%
+                               mutate(method = "NRC")) %>%
+  count(method, index = row %/% 80, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+bind_rows(afinn_78,
+          bing_and_nrc_78) %>%
+  ggplot(aes(row, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~method, ncol = 1, scales = "free_y")
+
+# sentiment words counts -------------------------------------------------------
+custom_stop_words <- bind_rows(tibble(word = c("unclear", "underline"), 
+                                      lexicon = c("custom")), 
+                               stop_words)
+
+# these graphs fully just show whatever number of words they want as oppsed to 10 because ties
 bing_counts_n <- tidy_n %>%
   inner_join(bing) %>%
+  anti_join(custom_stop_words) %>%
   count(word, sentiment, sort = TRUE) %>%
   ungroup()
-bing_counts_n
 
-# this word count plot looks awful
 bing_counts_n %>%
   group_by(sentiment) %>%
-  top_n(10) %>%
+  slice_head(n = 10) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Contribution to sentiment",
+       x = NULL) +
+  coord_flip()
+
+bing_counts_77 <- tidy_77 %>%
+  inner_join(bing) %>%
+  anti_join(custom_stop_words) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+
+bing_counts_77 %>%
+  group_by(sentiment) %>%
+  slice_head(n = 10) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Contribution to sentiment",
+       x = NULL) +
+  coord_flip()
+
+bing_counts_78 <- tidy_78 %>%
+  inner_join(bing) %>%
+  anti_join(custom_stop_words) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+
+bing_counts_78 %>%
+  group_by(sentiment) %>%
+  slice_head(n = 10) %>%
   ungroup() %>%
   mutate(word = reorder(word, n)) %>%
   ggplot(aes(word, n, fill = sentiment)) +
@@ -272,12 +366,14 @@ bing_counts_n %>%
 
 # word clouds ----------------------------------------------------------------------
 
-# remove unclear as a word LOL
-custom_stop_words <- bind_rows(tibble(word = c("unclear", "underline"), 
-                                      lexicon = c("custom")), 
-                               stop_words)
+bing_counts_n %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
 
-tidy_n %>%
-  anti_join(custom_stop_words) %>%
+bing_counts_77 %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
+
+bing_counts_78 %>%
   count(word) %>%
   with(wordcloud(word, n, max.words = 100))
