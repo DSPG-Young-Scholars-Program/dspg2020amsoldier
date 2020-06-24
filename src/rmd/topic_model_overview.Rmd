@@ -23,8 +23,21 @@ library(ggplot2)
 ```
 
 ```{r data, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
-S32W <- as.data.table(read_excel("~/Downloads/Survey_32N and 32W consolidated.xlsx", sheet = 1, col_names = TRUE))
-S32N <- as.data.table(read_excel("~/Downloads/Survey_32N and 32W consolidated.xlsx", sheet = 2, col_names=TRUE))
+library(RPostgreSQL)
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+S32 <- dbGetQuery(conn, "SELECT *
+                  FROM american_soldier.survey_32_combined")
+# disconnect from postgresql
+dbDisconnect(conn)
+
+S32N = S32 %>% filter(racial_group == "black")
+S32W = S32 %>% filter(racial_group == "white")
 
 text77_df <- tibble(row = 1:nrow(S32W), text = S32W$T3) #Written response to "should soldiers be in separate outfits?"
 text78_df <- tibble(row = 1:nrow(S32W), text = S32W$T4) #Written response on overall thoughts on the survey
