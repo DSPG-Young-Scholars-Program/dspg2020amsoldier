@@ -8,9 +8,10 @@ library(readxl)
 library(rvest)
 library(tm)
 library(topicmodels)
-
-
-
+library(tidyr)
+library(textdata)
+library(wordcloud)
+library(RColorBrewer)
 
 
 #load in your data as data tables
@@ -31,7 +32,7 @@ dbDisconnect(conn)
 S32N = S32 %>% filter(racial_group == "black")
 S32W = S32 %>% filter(racial_group == "white")
 
-head(S32N)
+head(S32W)
 
 
 # text mining - mo --------------------------------------------------------
@@ -192,8 +193,84 @@ for(i in 1:nrow(exposure_n$topics)){
   max_exposure[i,which.max(exposure_78$topics[i,])] <- T
 }
 print(sum(apply(max_exposure,1,sum) == 1)/nrow(exposure_n$topics))
-# 0.1084687 - what does this mean though? is this close or far?
+# 0.1055684- what does this mean though: distance between both groups
+
+# naming categories (the hard way) - mo ------------------------------------------------------
+# here, soon, will lie code for naming categories without us having to name them
 
 # sentiment analysis - mo -------------------------
 
-# naming categories (the hard way) - mo ------------------------------------------------------
+nrc <- get_sentiments("nrc")
+bing <- get_sentiments("bing")
+afinn <- get_sentiments("afinn")
+
+nrc_n <- tidy_n %>%
+  inner_join(nrc) %>%
+  count(word, sentiment, sort = TRUE)
+
+bing_n <- tidy_n %>%
+  inner_join(bing) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+# ggplot(bing_n, aes(row, sentiment)) +
+#   geom_col(show.legend = FALSE)
+
+afinn_n <- tidy_n %>%
+  inner_join(afinn) %>%
+  count(word, value, sort = TRUE) %>%
+  group_by(word) %>%
+  summarise(sentiment = sum(value), row) %>%
+  mutate(method = "AFINN")
+
+# differences in sentiments -------------------------------------------------------
+
+bing_and_nrc <- bind_rows(tidy_n %>%
+                            inner_join(bing) %>%
+                            mutate(method = "Bing et al."),
+                          tidy_n %>%
+                            inner_join(nrc) %>%
+                            mutate(method = "NRC")) %>%
+  count(method, index = row %/% 80, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+bind_rows(afinn_n,
+          bing_and_nrc) %>%
+  ggplot(aes(row, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~method, ncol = 1, scales = "free_y")
+
+# sentiment words counts -------------------------------------------------------
+
+bing_counts_n <- tidy_n %>%
+  inner_join(bing) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+bing_counts_n
+
+# this word count plot looks awful
+bing_counts_n %>%
+  group_by(sentiment) %>%
+  top_n(10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Contribution to sentiment",
+       x = NULL) +
+  coord_flip()
+
+# word clouds ----------------------------------------------------------------------
+
+# remove unclear as a word LOL
+custom_stop_words <- bind_rows(tibble(word = c("unclear", "underline"), 
+                                      lexicon = c("custom")), 
+                               stop_words)
+
+tidy_n %>%
+  anti_join(custom_stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
