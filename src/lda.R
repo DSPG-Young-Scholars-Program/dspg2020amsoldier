@@ -184,12 +184,12 @@ euclidean_distances <- c()
 max_exposure <- matrix(F,nrow(exposure_n$topics),num_clusters)
 for(i in 1:nrow(exposure_n$topics)){
   euclidean_distances[i] <- sqrt(sum((exposure_n$topics[i,] - exposure_78$topics[i,])^2))
-  # which text was exposed to (full v summary)
+  # which text was exposed to (black v white)
   max_exposure[i,which.max(exposure_n$topics[i,])] <- T
   max_exposure[i,which.max(exposure_78$topics[i,])] <- T
 }
 print(sum(apply(max_exposure,1,sum) == 1)/nrow(exposure_n$topics))
-# 0.1220998 - what does this mean though? is this close or far?
+# 0.1084687 - what does this mean though? is this close or far?
 
 # sentiment analysis - mo -------------------------
 
