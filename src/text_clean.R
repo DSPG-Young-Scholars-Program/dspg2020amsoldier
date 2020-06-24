@@ -27,5 +27,5 @@ data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = 
 
 ## Remove the following metatags: [paragraph], [insertion][/insertion], [circle][/circle], [underline][/underline] ##
 #Regex expression for [underline]: \\[underline\\]
-#Regex expression for [\underline]: \\[\\/underline\\] 
+#Regex expression for [/underline]: \\[\\/underline\\] 
 
