@@ -53,32 +53,32 @@ data(stop_words)
 # Bunch of useless one word responses
 useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]","gujfujuj", "None.", "I", NA)
 
-num_words77 <- text77_df %>%
-  unnest_tokens(word, text) %>%
-  count(row, sort = T)
-summary(num_words77$n)
-text77_df %>%
-  filter(row %in% num_words77$row[which(num_words77$n==1)]) %>%
-  filter(!text %in% useless_responses) %>%
-  View()
+# num_words77 <- text77_df %>%
+#   unnest_tokens(word, text) %>%
+#   count(row, sort = T)
+# summary(num_words77$n)
+# text77_df %>%
+#   filter(row %in% num_words77$row[which(num_words77$n==1)]) %>%
+#   filter(!text %in% useless_responses) %>%
+#   View()
 
-num_words78 <- text78_df %>%
-  unnest_tokens(word, text) %>%
-  count(row, sort = T)
-summary(num_words78$n)
-text78_df %>%
-  filter(row %in% num_words78$row[which(num_words78$n==1)]) %>%
-  filter(!text %in% useless_responses) %>%
-  View()
-
-num_wordsn <- textn_df %>%
-  unnest_tokens(word, text) %>%
-  count(row, sort = T)
-summary(num_wordsn$n)
-textn_df %>%
-  filter(row %in% num_wordsn$row[which(num_wordsn$n==1)]) %>%
-  filter(!text %in% useless_responses) %>%
-  View()
+# num_words78 <- text78_df %>%
+#   unnest_tokens(word, text) %>%
+#   count(row, sort = T)
+# summary(num_words78$n)
+# text78_df %>%
+#   filter(row %in% num_words78$row[which(num_words78$n==1)]) %>%
+#   filter(!text %in% useless_responses) %>%
+#   View()
+# 
+# num_wordsn <- textn_df %>%
+#   unnest_tokens(word, text) %>%
+#   count(row, sort = T)
+# summary(num_wordsn$n)
+# textn_df %>%
+#   filter(row %in% num_wordsn$row[which(num_wordsn$n==1)]) %>%
+#   filter(!text %in% useless_responses) %>%
+#   View()
 
 tidy_77 <- text77_df %>%
   filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
