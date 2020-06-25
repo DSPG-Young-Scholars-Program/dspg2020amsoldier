@@ -11,12 +11,12 @@ conn <- dbConnect(drv = PostgreSQL(),
                   user = Sys.getenv("db_userid"), 
                   password = Sys.getenv("db_pwd"))
 # query the bipartite edgelist data from github data  
-data0 <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_cont, racial_group  
+data <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_cont, racial_group  
                                  FROM american_soldier.survey_32_combined")
 # disconnect from postgresql
 dbDisconnect(conn)
 #first unite the long response and it's continued text
-data <- data0 %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE)
+data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE)
 
 ######### Get each question into single string of text #######################
 
@@ -105,25 +105,45 @@ um <- str_extract_all(data$long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])")
 
 
 ### Investiate tags per row of short and long responses ###
+#VERDICT. The return of "" represents a consecutive metatag
+#counting each correct use of of metatags as 2 words.
 #create data table for long and outfit questions
-long <- data %>% select(long, racial_group) %>% 
+#a tag is any bracketed entity
+long <- data %>% select(long, racial_group) %>% filter(racial_group=="white", !is.na(long)) %>%
   mutate(unclear= str_extract_all(long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"),
          underline = str_extract_all(long,"(?=\\[underline\\]).*?(?<=\\[\\/underline\\])"),
          insert = str_extract_all(long,"(?=\\[insertion\\]).*?(?<=\\[\\/insertion\\])"),
          delete = str_extract_all(long,"(?=\\[deletion\\]).*?(?<=\\[\\/deletion\\])"),
          circle = str_extract_all(long,"(?=\\[circle\\]).*?(?<=\\[\\/circle\\])"),
-         nwords=sapply(strsplit(str_replace_all(long, "[^[:alnum:]]", " "), " "), length),
-         nunclear = lengths(unclear),
+         nwords=sapply(strsplit(gsub("\\]"," ",long), " "), length),
          tags = str_extract_all(long, "(?=\\[).*?(?<=\\])|(?=\\[\\/).*?(?<=\\])"),
-         ntags = lengths(unclear) + lengths(insert)+ lengths(delete) + lengths(circle),
-         prop.tags = lengths(tags)/nwords)
-#need to remove "" 
-outfit <- data %>% select(outfits_comment, racial_group) %>% filter(racial_group=="white") %>%
-  mutate(unclear=str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"),
+         #ntags = lengths(unclear) + lengths(insert)+ lengths(delete) + lengths(circle),
+         prop.tags = lengths(tags)/nwords,
+         prop.unclear = lengths(unclear)*2/nwords)
+ 
+
+outfits <- data %>% select(outfits_comment, racial_group) %>% filter(racial_group=="white", !is.na(outfits_comment)) %>%
+  mutate(unclear= str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"),
          underline = str_extract_all(outfits_comment,"(?=\\[underline\\]).*?(?<=\\[\\/underline\\])"),
-         nwords=sapply(strsplit(outfits_comment, " "), length),
-         nunclear = lengths(unclear),
+         insert = str_extract_all(outfits_comment,"(?=\\[insertion\\]).*?(?<=\\[\\/insertion\\])"),
+         delete = str_extract_all(outfits_comment,"(?=\\[deletion\\]).*?(?<=\\[\\/deletion\\])"),
+         circle = str_extract_all(outfits_comment,"(?=\\[circle\\]).*?(?<=\\[\\/circle\\])"),
+         nwords=sapply(strsplit(gsub("\\]"," ",outfits_comment), " "), length),
          tags = str_extract_all(outfits_comment, "(?=\\[).*?(?<=\\])|(?=\\[\\/).*?(?<=\\])"),
-         ntags = lengths(tags),
-         prop.tags = ntags/nwords)
+         #ntags = lengths(unclear) + lengths(insert)+ lengths(delete) + lengths(circle),
+         prop.tags = lengths(tags)/nwords,
+         prop.unclear = lengths(unclear)*2/nwords)
+
+#need to remove the return of "" results when there are consecutive metatags with no text inbetween
+#issue: correctly detecting [unclear][/unclear][unclear][/unclear]
+test59 <- long$long[59] #should result in : "[unclear][/unclear]" "[unclear][/unclear]"
+str_extract_all(test59, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", simplify = TRUE) #CURRENT DEFAULT returns : "[unclear][/unclear]" "" :(
+str_extract_all(test59, "(?<=\\[unclear\\]).*?(?=\\[\\/unclear\\])") # EVEN WORSEreturns: [1] "" ""
+str_extract_all(test59, "(?=\\[unclear\\]).*(?<=\\[\\/unclear\\])")
+
+
+weird <- long$long[3184]
+weird.res <- str_extract_all(weird, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])")
+n.weird <- strsplit(gsub("\\]"," ",weird), " ")
+strsplit(str_replace_all(weird, "[^[:alnum:]]", " "), " ")
 
