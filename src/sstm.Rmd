@@ -1,0 +1,71 @@
+---
+title: "sttm"
+author: "Saimun"
+date: "6/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+library(dplyr)
+library(ggplot2)
+library(data.table)
+library(BTM)
+library(udpipe)
+library(igraph)
+library(ggraph)
+library(concaveman)
+library(textplot)
+```
+
+
+
+```{r import data}
+library("RPostgreSQL")
+# connect to postgresql to get data (in rivanna)
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+S32 <- dbGetQuery(conn, "SELECT *
+                  FROM american_soldier.survey_32_combined")
+# disconnect from postgresql
+dbDisconnect(conn)
+```
+
+```{r}
+S32N = S32 %>% filter(racial_group == "black")
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long_comment)
+colnames(textn_df) = c("doc_id", "text")
+```
+
+
+```{r}
+anno  = udpipe(textn_df,"english")
+```
+
+```{r}
+biterms <- as.data.table(anno)
+biterms <- biterms[, cooccurrence(x = lemma,
+                                  relevant = upos %in% c("NOUN", "ADJ", "VERB") & 
+                                             nchar(lemma) > 2 & !lemma %in% stopwords("en"),
+                                  skipgram = 3),
+                   by = list(doc_id)]
+```
+
+```{r}
+set.seed(123456)
+traindata <- subset(anno, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
+traindata <- traindata[, c("doc_id", "lemma")]
+model     <- BTM(traindata, biterms = biterms, k = 9, iter = 2000, background = TRUE, trace = 100)
+
+```
+
+```{r}
+plot(model, top_n = 10,
+     title = "BTM model", subtitle = "S32N Long Comment")
+```
