@@ -205,8 +205,8 @@ long2_unclear <- data %>% select(-outfits_comment) %>%
   mutate(long = str_replace_all(removeWords(long, stop_words$word), "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s*\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler or with question mark
          #Note: there may result in additional white space."do you think [unclear][/unclear] will win the war" -> "do you think  will win the war"
          unclear=str_extract_all(long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
-         unclear = ifelse(unclear == "character(0)", NA, unclear))%>% filter(!is.na(long), !is.na(unclear)) #%>%
-  #unnest(unclear)
+         unclear = ifelse(unclear == "character(0)", NA, unclear))%>% filter(!is.na(long), !is.na(unclear)) %>%
+  unnest(unclear)
 
 sigh <- as.data.table(table(long_unclear))[order(-N),]#see how many unique instances now....
 # find all unclear with question marks: "\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]"
@@ -235,3 +235,14 @@ long_bracket <- data %>% select(-outfits_comment) %>%
          bracket=str_extract_all(long, "(?=\\[).*?(?<=\\])"), #identify unclear tag with text inside
          bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(long), !is.na(bracket)) %>%
   unnest(bracket)
+
+#### ------ LOOK AT DELETE INSTANCES -------------- ###########
+outfit_delete <- data %>% select(-long) %>% 
+  mutate(delete=str_extract_all(outfits_comment, "(?=\\[deletion\\]).*?(?<=\\[\\/deletion\\])"), #identify unclear tag with text inside
+         delete = ifelse(delete == "character(0)", NA, delete))%>% filter(!is.na(outfits_comment), !is.na(delete)) %>%
+  unnest(delete)
+
+long_delete <- data %>% select(-outfits_comment) %>% 
+  mutate(delete=str_extract_all(long, "(?=\\[deletion\\]).*?(?<=\\[\\/deletion\\])"), #identify unclear tag with text inside
+         delete = ifelse(delete == "character(0)", NA, delete))%>% filter(!is.na(long), !is.na(delete)) %>%
+  unnest(delete)
