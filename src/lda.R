@@ -12,6 +12,9 @@ library(tidyr)
 library(textdata)
 library(wordcloud)
 library(RColorBrewer)
+library(igraph)
+library(ggraph)
+library(widyr)
 
 
 #load in your data as data tables
@@ -274,11 +277,11 @@ bind_rows(afinn_n,
 
 # white - short response
 bing_and_nrc_77 <- bind_rows(tidy_77 %>%
-                            inner_join(bing) %>%
-                            mutate(method = "Bing et al."),
-                          tidy_77 %>%
-                            inner_join(nrc) %>%
-                            mutate(method = "NRC")) %>%
+                               inner_join(bing) %>%
+                               mutate(method = "Bing et al."),
+                             tidy_77 %>%
+                               inner_join(nrc) %>%
+                               mutate(method = "NRC")) %>%
   count(method, index = row %/% 80, sentiment) %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative)
@@ -364,6 +367,44 @@ bing_counts_78 %>%
        x = NULL) +
   coord_flip()
 
+# negations ----------------------------------------------------------
+
+AFINN <- get_sentiments("afinn")
+
+not_words <- bigrams_separated_n %>%
+  filter(word1 == "not") %>%
+  inner_join(AFINN, by = c(word2 = "word")) %>%
+  count(word2, value, sort = TRUE)
+
+not_words %>%
+  mutate(contribution = n * value) %>%
+  arrange(desc(abs(contribution))) %>%
+  head(20) %>%
+  mutate(word2 = reorder(word2, contribution)) %>%
+  ggplot(aes(word2, n * value, fill = n * value > 0)) +
+  geom_col(show.legend = FALSE) +
+  xlab("Words preceded by \"not\"") +
+  ylab("Sentiment value * number of occurrences") +
+  coord_flip()
+
+negation_words <- c("not", "no", "never", "without")
+
+negated_words <- bigrams_separated_n %>%
+  filter(word1 %in% negation_words) %>%
+  inner_join(AFINN, by = c(word2 = "word")) %>%
+  count(word1, word2, value, sort = TRUE)
+
+negated_words %>%
+  mutate(contribution = n * value) %>%
+  arrange(desc(abs(contribution))) %>%
+  head(20) %>%
+  mutate(word2 = reorder(word2, contribution)) %>%
+  ggplot(aes(word2, n * value, fill = n * value > 0)) +
+  geom_col(show.legend = FALSE) +
+  xlab("Words preceded by a negation") +
+  ylab("Sentiment value * number of occurrences") +
+  coord_flip()
+
 # word clouds ----------------------------------------------------------------------
 
 bing_counts_n %>%
@@ -377,3 +418,89 @@ bing_counts_77 %>%
 bing_counts_78 %>%
   count(word) %>%
   with(wordcloud(word, n, max.words = 100))
+
+# bigrams -------------------------------------------------------------------------
+
+tidy_n_bigrams <- textn_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
+  count(bigram, sort = TRUE)
+
+bigrams_separated_n <- tidy_n_bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+
+bigrams_filtered_n <- bigrams_separated_n %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
+
+bigram_counts_n <- bigrams_filtered_n %>% 
+  count(word1, word2, sort = TRUE)
+
+bigrams_united_n <- bigrams_filtered_n %>%
+  unite(bigram, word1, word2, sep = " ")
+
+tidy_n_trigrams <- textn_df %>%
+  unnest_tokens(trigram, text, token = "ngrams", n = 3) %>%
+  separate(trigram, c("word1", "word2", "word3"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word,
+         !word2 %in% stop_words$word,
+         !word3 %in% stop_words$word) %>%
+  count(word1, word2, word3, sort = TRUE)
+
+bigram_n_tf_idf <- bigrams_united_n %>%
+  count(bigram) %>%
+  bind_tf_idf(bigram, n) %>%
+  arrange(desc(tf_idf))
+
+bigram_graph_n <- bigram_counts_n %>%
+  filter(n > 20) %>%
+  graph_from_data_frame()
+
+set.seed(2016)
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+ggraph(bigram_graph_n, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.07, 'inches')) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  theme_void()
+
+
+# co-occurences -------------------------------------------------------------------
+
+row_n_words <- textn_df %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word)
+
+
+# count words co-occuring within sections
+word_pairs_n <- row_n_words %>%
+  pairwise_count(word, section, sort = TRUE)
+
+word_cors_n <- row_n_words %>%
+  group_by(word) %>%
+  filter(n() >= 20) %>%
+  pairwise_cor(word, section, sort = TRUE)
+
+word_cors_n %>%
+  filter(item1 %in% c("negro", "white")) %>%
+  group_by(item1) %>%
+  top_n(6) %>%
+  ungroup() %>%
+  mutate(item2 = reorder(item2, correlation)) %>%
+  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ item1, scales = "free") +
+  coord_flip()
+
+set.seed(2016)
+word_cors_n %>%
+  filter(correlation > .15) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void()
