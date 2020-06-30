@@ -1,31 +1,140 @@
 library(dplyr);library(ggplot2);library(data.table);library(tidyr);library(stringr)
-library(tidytext);library(textstem);library(SnowballC)
+library(tidytext);library(textstem);library(SnowballC);library(naniar);
 
 ##### READ DATA FROM DATABASE #############
 library("RPostgreSQL")
 # connect to postgresql to get data (in rivanna)
-conn <- dbConnect(drv = PostgreSQL(), 
-                  dbname = "sdad", 
-                  host = "10.250.124.195", 
-                  port = 5432, 
-                  user = Sys.getenv("db_userid"), 
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
                   password = Sys.getenv("db_pwd"))
-# query the bipartite edgelist data from github data  
-data <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_cont, racial_group  
+# query the bipartite edgelist data from github data
+data <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_cont, racial_group
                                  FROM american_soldier.survey_32_combined")
 # disconnect from postgresql
 dbDisconnect(conn)
 #first unite the long response and it's continued text
 data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE)
 
+# eda
+colnames(data)
 
+# outfits_comment
+# only look at white soldiers who have the response for the outfits comment
+# lump "no reason" into NAs
+
+na_list <- c("none", "[none]", "noone", "nnone", "[blank]", "n/a", "i", ".", "no comment", "no comments", "have none",
+              "no reason", "no reasons", "left blank", "[no answer]", "[slash] [slash]", "0")
+
+levels(as.factor(data$racial_group))
+# only white soldiers responded to outfits comment
+data %>% filter(!is.na(outfits_comment) & racial_group == "white") %>% count() # 1450
+data %>% filter(!is.na(outfits_comment) & racial_group == "black") %>% count() # 0
+
+# convert all responses to lower case
+ldata <- data %>%
+  mutate(
+    outfits_comment = tolower(outfits_comment),
+    long = tolower(long),
+  )
+# extract just black soldiers
+black_soldiers <- ldata %>% filter(racial_group == "black")
+
+# check that black soldiers don't have a response to outfits comment
+# count of black soldier responses
+nrow(black_soldiers) # 3464
+sum(is.na(black_soldiers$outfits_comment)) # 3464, that matches
+
+# check the number of NA responses for long for black soldiers
+sum(is.na(black_soldiers$long)) # 0
+
+# extract just white soliders
+white_soldiers <- ldata %>% filter(racial_group == "white")
+
+# count of white soldier reponses
+nrow(white_soldiers) # 2324
+
+# check the number of na values for the outfits comment
+sum(is.na(white_soldiers$outfits_comment)) # 874
+
+# check the number of na values for long for white soliders
+sum(is.na(white_soldiers$long)) # 0
+
+# number of outfits comment responses in na_list
+ldata %>% filter(racial_group == "white" & outfits_comment %in% na_list) %>% count() # 90
 
 ## change any answer that indicates no response to NA ##
 #ex: "none", "[None]", "0" some of this filtering has been done in the LDA.R file on Master branch
 
+outfits_predicate <- data$racial_group == "white" & tolower(data$outfits_comment) %in% na_list
+long_predicate <- tolower(data$long) %in% na_list
 
+data_clean <- data %>%
+  mutate(
+    outfits_comment = ifelse(outfits_predicate, NA, outfits_comment),
+    long = ifelse(long_predicate, NA, long)
+  )
 
 ## Remove the following metatags: [paragraph], [insertion][/insertion], [circle][/circle], [underline][/underline] ##
 #Regex expression for [underline]: \\[underline\\]
-#Regex expression for [/underline]: \\[\\/underline\\] 
+#Regex expression for [/underline]: \\[\\/underline\\]
+
+# remove [paragraph]
+paragraph_pattern <- "\\[paragraph\\]"
+data_clean$outfits_comment <- str_replace(data_clean$outfits_comment, paragraph_pattern, "")
+data_clean$long <- str_replace(data_clean$long, paragraph_pattern, "")
+
+# remove [insertion][/insertion]
+insertion_pattern.1 <- "\\[insertion\\]"
+insertion_pattern.2 <- "\\[\\/insertion\\]"
+
+# testing insertion pattern
+# insertion_test <- c("this doesn't have an insertion.", "this [insertion]does[/insertion] have one.")
+# insertion_test %>%
+#   str_replace(insertion_pattern.1, "") %>%
+#   str_replace(insertion_pattern.2, "")
+
+data_clean$outfits_comment <- data_clean$outfits_comment %>%
+  str_replace(insertion_pattern.1, "") %>%
+  str_replace(insertion_pattern.2, "")
+
+data_clean$long <- data_clean$long %>%
+  str_replace(insertion_pattern.1, "") %>%
+  str_replace(insertion_pattern.2, "")
+
+# remove [circle][/circle]
+circle_pattern.1 <- "\\[circle\\]"
+circle_pattern.2 <- "\\[\\/circle\\]"
+
+# testing circle pattern
+# circle_test <- c("[circle]this[/circle] is circled.", "this is not circled.")
+# circle_test %>%
+#   str_replace(circle_pattern.1, "") %>%
+#   str_replace(circle_pattern.2, "")
+
+data_clean$outfits_comment <- data_clean$outfits_comment %>%
+  str_replace(circle_pattern.1, "") %>%
+  str_replace(circle_pattern.2, "")
+
+data_clean$long <- data_clean$long %>%
+  str_replace(circle_pattern.1, "") %>%
+  str_replace(circle_pattern.2, "")
+
+# remove [underline][/underline]
+underline_pattern.1 <- "\\[underline\\]"
+underline_pattern.2 <- "\\[\\/underline\\]"
+
+data_clean$outfits_comment <- data_clean$outfits_comment %>%
+  str_replace(underline_pattern.1, "") %>%
+  str_replace(underline_pattern.2, "")
+
+data_clean$long <- data_clean$long %>%
+  str_replace(underline_pattern.1, "") %>%
+  str_replace(underline_pattern.2, "")
+
+# examine cleaned data
+head(data_clean)
+
 
