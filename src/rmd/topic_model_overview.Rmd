@@ -1,0 +1,402 @@
+---
+title: "American Soldier - Initial Analysis"
+author: "Morgan Stockham"
+date: "6/23/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(data.table)
+library(tidytext)
+library(textstem)
+library(SnowballC)
+library(readxl)
+library(rvest)
+library(tm)
+library(topicmodels)
+library(tidyr)
+library(textdata)
+library(wordcloud)
+library(RColorBrewer)
+library("RPostgreSQL")
+```
+# Topic Modeling
+```{r data, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+# connect to postgresql to get data (in rivanna)
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+S32 <- dbGetQuery(conn, "SELECT *
+                  FROM american_soldier.survey_32_combined")
+# disconnect from postgresql
+dbDisconnect(conn)
+
+S32N = S32 %>% filter(racial_group == "black")
+S32W = S32 %>% filter(racial_group == "white")
+
+
+# text mining - mo --------------------------------------------------------
+#T5 = long_comment, T3 = outfits_comment, T4 = long_comment
+# this will create data frames out out of text
+text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment) #Written response to "should soldiers be in separate outfits?"
+text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long_comment) #Written response on overall thoughts on the survey
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long_comment) #Written response to "should soldiers be in separate outfits?"
+
+# laod in stop words: words without any true meaning
+data(stop_words)
+
+useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]","gujfujuj", "None.", "I", NA)
+
+tidy_77 <- text77_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(row) %>%
+  count(word, sort = T)
+
+tidy_78 <- text78_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(row) %>%
+  count(word, sort = T)
+
+tidy_n <- textn_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(row) %>%
+  count(word, sort = T)
+
+tidy_77 <- na.omit(tidy_77)
+tidy_78 <- na.omit(tidy_78)
+tidy_n <- na.omit(tidy_n)
+
+n_words <- textn_df %>%
+  unnest_tokens(word, text) %>%
+  count(row, sort = T)
+words_77 <- text77_df %>%
+  unnest_tokens(word, text) %>%
+  count(row, sort = T)
+words_78 <- text78_df %>%
+  unnest_tokens(word, text) %>%
+  count(row, sort = T)
+```
+
+## Average Responses
+
+The average responses for black soldiers and white soldiers on questions 77 and 78 are a small size for LDA analysis.  The average response for black soldiers for their thoughts on the survey is about 70 words. The average for white soldiers on the short response is 7 and the average for their thoughts on the entire survey are about 47 words. Therefore, analysis using Topic Modelling will be less powerful than other methods.
+```{r table, echo = TRUE, message=FALSE, warning=FALSE}
+summary(n_words$n)
+summary(words_77$n)
+summary(words_78$n)
+```
+##Topic Modelling Graphs
+From these graphs we can see that there is a lot of overlap in topics across the three questions and two groups. The following graphs show the density of topics within three clusters of topics across each group and question. There is quite a bit of overlap between them because of the short responses.
+
+```{r dtm, echo = FALSE, results='hide', message=FALSE, warning=FALSE}
+dtm_77 <- cast_dtm(tidy_77, term = word, document = row, value = n)
+dtm_78 <- cast_dtm(tidy_78, term = word, document = row, value = n)
+dtm_n <- cast_dtm(tidy_n, term = word, document = row, value = n)
+
+# LDA finds topics depending on the number of clusters you want
+# number of clusters we want
+num_clusters <- 3
+lda_77 <- LDA(dtm_77, k = num_clusters, method = "VEM", control = NULL)
+lda_78 <- LDA(dtm_78, k = num_clusters, method = "VEM", control = NULL)
+lda_n <- LDA(dtm_n, k = num_clusters, method = "VEM", control = NULL)
+# this will separate out topics and have a weighted probability
+topics_77 <- tidy(lda_77, matrix = "beta")
+topics_78 <- tidy(lda_78, matrix = "beta")
+topics_n <- tidy(lda_n, matrix = "beta")
+
+
+# this groups by topics and shows top 10 words and arranges by beta
+# Q77 white
+topics_terms_77 <- topics_77 %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+# S32 Q78 white
+topics_terms_78 <- topics_78 %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+# S32 black
+topics_terms_n <- topics_n %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+topics_terms_77 %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  xlab("Topic Word Density") +
+  ylab("Term") +
+  labs(title = "LDA Topic Density for White Soldiers' Q 77") +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+topics_terms_78 %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  xlab("Topic Word Density") +
+  ylab("Term") +
+  labs(title = "LDA Topic Density for White Soldiers' Q 77") +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+topics_terms_n %>%
+  mutate(term = reorder(term, beta)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  xlab("Topic Word Density") +
+  ylab("Term") +
+  labs(title = "LDA Topic Density for Black Soldiers' Q 78") +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip()
+
+# exposure_78 <- posterior(lda_78,dtm_78)
+# apply(exposure_78$topics,1,sum)
+# exposure_n <- posterior(lda_n,dtm_n)
+# apply(exposure_n $topics,1,sum)
+
+# euclidean_distances <- c()
+# max_exposure <- matrix(F,nrow(exposure_n$topics),num_clusters)
+# for(i in 1:nrow(exposure_n$topics)){
+#   euclidean_distances[i] <- sqrt(sum((exposure_n$topics[i,] - exposure_78$topics[i,])^2))
+#   # which text was exposed to (full v summary)
+#   max_exposure[i,which.max(exposure_n$topics[i,])] <- T
+#   max_exposure[i,which.max(exposure_78$topics[i,])] <- T
+# }
+```
+
+## Euclidean Distance Measures
+
+Through the production of a euclidean distance measure we can see the difference between white and black soldiers is $.122$. This determines that the difference between topics of black soldiers and white soldiers for their thoughts on the entire survey is small.
+```{r euclid, echo=FALSE, message=FALSE, warning=FALSE}
+
+# print(sum(apply(max_exposure,1,sum) == 1)/nrow(exposure_n$topics))
+
+print(0.1220998)
+
+```
+# Sentiment Analysis
+```{r sentiment, echo=FALSE, message=FALSE, warning=FALSE}
+nrc <- get_sentiments("nrc")
+bing <- get_sentiments("bing")
+afinn <- get_sentiments("afinn")
+
+nrc_n <- tidy_n %>%
+  inner_join(nrc) %>%
+  count(word, sentiment, sort = TRUE)
+
+bing_n <- tidy_n %>%
+  inner_join(bing) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+afinn_n <- tidy_n %>%
+  inner_join(afinn) %>%
+  count(word, value, sort = TRUE) %>%
+  group_by(word) %>%
+  summarise(sentiment = sum(value), row) %>%
+  mutate(method = "AFINN")
+
+
+nrc_77 <- tidy_77 %>%
+  inner_join(nrc) %>%
+  count(word, sentiment, sort = TRUE)
+
+bing_77 <- tidy_77 %>%
+  inner_join(bing) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+afinn_77 <- tidy_77 %>%
+  inner_join(afinn) %>%
+  count(word, value, sort = TRUE) %>%
+  group_by(word) %>%
+  summarise(sentiment = sum(value), row) %>%
+  mutate(method = "AFINN")
+
+nrc_78 <- tidy_78 %>%
+  inner_join(nrc) %>%
+  count(word, sentiment, sort = TRUE)
+
+bing_78 <- tidy_78 %>%
+  inner_join(bing) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+afinn_78 <- tidy_78 %>%
+  inner_join(afinn) %>%
+  count(word, value, sort = TRUE) %>%
+  group_by(word) %>%
+  summarise(sentiment = sum(value), row) %>%
+  mutate(method = "AFINN")
+
+
+```
+## Differences in Sentiment Libraries
+
+We have created plots for the sentiments by person's reponse across each sentiment library. The three we include in this initial analysis are the AFINN, Bing, and NRC libraries. Each individual vertical line represents the total sentiment of one soldier.
+```{r diff, , echo = FALSE, results='hide', message=FALSE, warning=FALSE}
+# black - long response
+bing_and_nrc <- bind_rows(tidy_n %>%
+                            inner_join(bing) %>%
+                            mutate(method = "Bing et al."),
+                          tidy_n %>%
+                            inner_join(nrc) %>%
+                            mutate(method = "NRC")) %>%
+  count(method, index = row %/% 80, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+bind_rows(afinn_n,
+          bing_and_nrc) %>%
+  ggplot(aes(row, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  ggtitle("Black Soldier's Long Commentary") +
+  facet_wrap(~method, ncol = 1, scales = "free_y")
+
+# white - short response
+bing_and_nrc_77 <- bind_rows(tidy_77 %>%
+                            inner_join(bing) %>%
+                            mutate(method = "Bing et al."),
+                          tidy_77 %>%
+                            inner_join(nrc) %>%
+                            mutate(method = "NRC")) %>%
+  count(method, index = row %/% 80, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+bind_rows(afinn_77,
+          bing_and_nrc_77) %>%
+  ggplot(aes(row, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  ggtitle("White Soldier's Short Commentary") +
+  facet_wrap(~method, ncol = 1, scales = "free_y")
+
+# white - long response
+bing_and_nrc_78 <- bind_rows(tidy_78 %>%
+                               inner_join(bing) %>%
+                               mutate(method = "Bing et al."),
+                             tidy_78 %>%
+                               inner_join(nrc) %>%
+                               mutate(method = "NRC")) %>%
+  count(method, index = row %/% 80, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+bind_rows(afinn_78,
+          bing_and_nrc_78) %>%
+  ggplot(aes(row, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  ggtitle("White Soldier's Long Commentary") +
+  facet_wrap(~method, ncol = 1, scales = "free_y")
+```
+## Word Plots
+
+We have created word plots for each group's length of responses. These plots show the most popular 10 words by sentiment.
+
+
+```{r wordplots, , echo = FALSE, results='hide', message=FALSE, warning=FALSE}
+custom_stop_words <- bind_rows(tibble(word = c("unclear", "underline"), 
+                                      lexicon = c("custom")), 
+                               stop_words)
+
+# these graphs fully just show whatever number of words they want as oppsed to 10 because ties
+bing_counts_n <- tidy_n %>%
+  inner_join(bing) %>%
+  anti_join(custom_stop_words) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+
+bing_counts_n %>%
+  group_by(sentiment) %>%
+  slice_head(n = 10) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Contribution to sentiment",
+       x = NULL) +
+  ggtitle("Black Soldier's Long Commentary") +
+  coord_flip()
+
+bing_counts_77 <- tidy_77 %>%
+  inner_join(bing) %>%
+  anti_join(custom_stop_words) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+
+bing_counts_77 %>%
+  group_by(sentiment) %>%
+  slice_head(n = 10) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Contribution to sentiment",
+       x = NULL) +
+  ggtitle("White Soldier's Short Commentary") +
+  coord_flip()
+
+bing_counts_78 <- tidy_78 %>%
+  inner_join(bing) %>%
+  anti_join(custom_stop_words) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  ungroup()
+
+bing_counts_78 %>%
+  group_by(sentiment) %>%
+  slice_head(n = 10) %>%
+  ungroup() %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~sentiment, scales = "free_y") +
+  labs(y = "Contribution to sentiment",
+       x = NULL) +
+  ggtitle("White Soldier's Long Commentary") +
+  coord_flip()
+```
+
+## Word Clouds
+
+We have created word clouds for each group's length of responses. These plots show the most popular 50 words.
+
+```{r wordcloud, , echo = FALSE, results='hide', message=FALSE, warning=FALSE}
+bing_counts_n %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 50, main="Word Cloud of Black Soldiers"))
+
+bing_counts_77 %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 50, main="Word Cloud of White Soldiers' Short Responses"))
+
+bing_counts_78 %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 50, main="Word Cloud of White Soldiers' Long Responses"))
+
+
+```
