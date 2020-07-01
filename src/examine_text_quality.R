@@ -204,7 +204,7 @@ for (i in 1:nrow(outfit_unclear)){
   j<-outfit_unclear$index[i]
   data$outfits_comment[j] <- str_replace(data$outfits_comment[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[i])
 }
-data$outfits_comment[3730] <- str_replace(data$outfits_comment[outfit_unclear$index[1]], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[1])
+#data$outfits_comment[3730] <- str_replace(data$outfits_comment[outfit_unclear$index[1]], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[1])
 
 long_unclear <- data %>% select(-outfits_comment) %>% 
   mutate(long = str_replace_all(long, "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler or with question mark

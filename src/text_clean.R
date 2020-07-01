@@ -149,7 +149,40 @@ data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_co
 unclear.rm <- "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]"
 data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, unclear.rm, ""),
                                     long = str_replace_all(long, unclear.rm, ""))
-                                   
+
+# correcting unclear text 
+# outfit_unclear <- data_clean %>% select(-long) %>% 
+#   mutate(unclear=str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
+#          unclear = ifelse(unclear == "character(0)", NA, unclear),
+#          correct = rep("", nrow(data_clean)))%>% filter(!is.na(outfits_comment), !is.na(unclear)) %>%
+#   unnest(unclear)
+
+#Manually correct unclear instances
+#fwrite(outfit_unclear, file="~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #export the unclear table to csv
+#researcher manually enters the correction in the correct column
+outfit_unclear <- fread("~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #read the csv file back in.
+
+#loops through and corrects original dataset :))))
+for (i in 1:nrow(outfit_unclear)){
+  j<-outfit_unclear$index[i]
+  data_clean$outfits_comment[j] <- str_replace(data_clean$outfits_comment[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[i])
+}
+
+# long_unclear <- data_clean %>% select(-outfits_comment) %>% 
+#   mutate(#long = str_replace_all(long, "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler or with question mark
+#          #Note: there may result in additional white space."do you think [unclear][/unclear] will win the war" -> "do you think  will win the war"
+#          unclear=str_extract_all(long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
+#          unclear = ifelse(unclear == "character(0)", NA, unclear),
+#          correct = rep("", nrow(data_clean)))%>% filter(!is.na(long), !is.na(unclear)) %>%
+#   unnest(unclear)
+#fwrite(long_unclear, file="~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #export the unclear table to csv
+#researcher manually enters the correction in the correct column
+long_unclear <- fread("~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #read the csv file back in.
+
+# for (i in 1:nrow(long_unclear)){#populate clean dataset with corrections
+#   j<-long_unclear$index[i]
+#   data_clean$long_unclear[j] <- str_replace(data_clean$long_unclear[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", long_unclear$correct[i])
+# }
                                     
 
 # replace any empty response with NA
