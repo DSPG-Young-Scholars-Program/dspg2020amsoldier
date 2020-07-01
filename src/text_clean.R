@@ -16,7 +16,9 @@ data <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_con
 # disconnect from postgresql
 dbDisconnect(conn)
 #first unite the long response and it's continued text
-data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE)
+data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE) %>% 
+  mutate(long = tolower(long), outfits_comment = tolower(outfits_comment), index= 1:nrow(data))
+
 
 # eda
 colnames(data)
@@ -133,6 +135,26 @@ data_clean$outfits_comment <- data_clean$outfits_comment %>%
 data_clean$long <- data_clean$long %>%
   str_replace_all(underline_pattern.1, "") %>%
   str_replace_all(underline_pattern.2, "")
+
+# remove [deletion][/deletion] and anything inside the tag
+delete.rm <- "(?=\\[deletion\\]).*?(?<=\\[\\/deletion\\])"
+delete.rm2 <- "\\[deletion\\]|\\[\\/deletion\\]"
+data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, delete.rm, ""), #first delete occurances with words inside
+                                    long = str_replace_all(long, delete.rm, ""),
+                                    outfits_comment = str_replace_all(outfits_comment, delete.rm2, ""), #second delete any occurances of the tag
+                                    long = str_replace_all(long, delete.rm2, "")) 
+
+
+# remove [unclear][/unclear] with no meaningful filler or with question mark
+unclear.rm <- "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]"
+data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, unclear.rm, ""),
+                                    long = str_replace_all(long, unclear.rm, ""))
+                                   
+                                    
+
+# replace any empty response with NA
+data_clean <- data_clean %>% mutate(long = ifelse(long==""|long==" ", NA,long), 
+                                    outfits_comment = ifelse(outfits_comment==""|outfits_comment==" ", NA,outfits_comment))
 
 # examine cleaned data
 head(data_clean)
