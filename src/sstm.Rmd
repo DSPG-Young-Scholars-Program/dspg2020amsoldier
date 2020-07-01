@@ -110,7 +110,9 @@ biterms78 <- biterms78[, cooccurrence(x = lemma,
 traindata77 <- subset(anno77, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
 traindata77 <- traindata77[, c("doc_id", "lemma")]
 model77     <- BTM(traindata77, biterms = biterms77, k = 9, iter = 2000, background = TRUE, trace = 100)
+```
 
+```{r}
 traindata78 <- subset(anno78, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
 traindata78 <- traindata78[, c("doc_id", "lemma")]
 model78     <- BTM(traindata78, biterms = biterms78, k = 9, iter = 2000, background = TRUE, trace = 100)

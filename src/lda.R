@@ -405,6 +405,7 @@ negated_words %>%
   ylab("Sentiment value * number of occurrences") +
   coord_flip()
 
+
 # word clouds ----------------------------------------------------------------------
 
 bing_counts_n %>%
@@ -465,6 +466,33 @@ ggraph(bigram_graph_n, layout = "fr") +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
   theme_void()
 
+# negation bigrams -------------------------------------------------------------------------
+negation_bigrams <- bigrams_separated_n %>%
+  filter(word1 %in% negation_words) %>%
+  inner_join(AFINN, by = c(word2 = "word")) %>%
+  count(word1, word2, value, sort = TRUE) %>%
+  mutate(contribution = n * value) %>%
+  arrange(desc(abs(contribution))) %>%
+  group_by(word1) %>%
+  slice(seq_len(20)) %>%
+  arrange(word1,desc(contribution)) %>%
+  ungroup()
+
+bigram_graph <- negation_bigrams %>%
+  graph_from_data_frame() #From `igraph`
+
+set.seed(123)
+
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+
+ggraph(bigram_graph, layout = "fr") +
+  geom_edge_link(alpha = .25) +
+  geom_edge_density(aes(fill = value)) +
+  geom_node_point(color = "purple1", size = 1) + #Purple for Prince!
+  geom_node_text(aes(label = name),  repel = TRUE) +
+  theme_void() + theme(legend.position = "none",
+                       plot.title = element_text(hjust = 0.5)) +
+  ggtitle("Negation Bigram Network")
 
 # co-occurences -------------------------------------------------------------------
 
@@ -504,3 +532,4 @@ word_cors_n %>%
   geom_node_point(color = "lightblue", size = 5) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void()
+
