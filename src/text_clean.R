@@ -159,4 +159,26 @@ data_clean <- data_clean %>% mutate(long = ifelse(long==""|long==" ", NA,long),
 # examine cleaned data
 head(data_clean)
 
+##### Examine bracketed text ######
+# goal: replace the incorrect word with the correct bracketed word. In otherwords, bracketed word replaces its preceeding entity
+# ex: when it come to where a negro is alowed [allowed] in a white outfit than [then] i say to hell with the whole country"
+#     allowed replaces preceeding word alowed and then replaces preceeding word than
 
+# EXCEPTIONS: however, due to the nature of text data there are exceptions to the rule....
+# correcting abbreviations, account for punctuation in preceeding word : "i imagined i would get in the signal corps but instead i was placed in the m.p.[military police] escort guard co.[company]"
+# punctuation only: "they just dont [don't] like to be separated from their friends [.]" this isn't replacing any entity, rather a supplement. 
+#[sic] is used to indicate that the text has been transcribed verbatum, so I think we can just remove these. 
+#since the bracketed words are a small proportion of corrections, we may have to just accept that there will be inaccuracies here and there. 
+
+# The code below has extracted all instances of a bracketed word along with the original text and it's position in the original dataset.
+outfit_bracket <- data_clean %>% select(-long) %>% 
+  mutate(outfits_comment = str_replace_all(outfits_comment, "\\[unclear\\]|\\[\\/unclear\\]", ""),#remove all unclear 
+         bracket=str_extract_all(outfits_comment, "(?=\\[).*?(?<=\\])"), #identify unclear tag with text inside
+         bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(outfits_comment), !is.na(bracket)) %>%
+  unnest(bracket)
+
+long_bracket <- data_clean %>% select(-outfits_comment) %>% 
+  mutate(long = str_replace_all(long, "\\[unclear\\]|\\[\\/unclear\\]", ""),#remove all unclear 
+         bracket=str_extract_all(long, "(?=\\[).*?(?<=\\])"), #identify unclear tag with text inside
+         bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(long), !is.na(bracket)) %>%
+  unnest(bracket)
