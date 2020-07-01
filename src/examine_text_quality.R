@@ -185,13 +185,26 @@ strsplit(str_replace_all(weird, "[^[:alnum:]]", " "), " ")
 
 
 
-#### ------ LOOK AT UNCLEAR INSTANCES -------------- ###########
+#### ------ LOOK AT UNCLEAR INSTANCES AND CORRECTIVE MEASURES-------------- ###########
 outfit_unclear <- data %>% select(-long) %>% 
   mutate(outfits_comment = str_replace_all(outfits_comment, "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler 
          #Note: there may result in additional white space."do you think [unclear][/unclear] will win the war" -> "do you think  will win the war"
          unclear=str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
-         unclear = ifelse(unclear == "character(0)", NA, unclear))%>% filter(!is.na(outfits_comment), !is.na(unclear)) %>%
+         unclear = ifelse(unclear == "character(0)", NA, unclear),
+         correct = rep("", nrow(data)))%>% filter(!is.na(outfits_comment), !is.na(unclear)) %>%
   unnest(unclear)
+
+#Manually correct unclear instances
+#fwrite(outfit_unclear, file="~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #export the unclear table to csv
+#researcher manually enters the correction in the correct column
+outfit_unclear <- fread("~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #read the csv file back in.
+
+#loops through and corrects original dataset :))))
+for (i in 1:nrow(outfit_unclear)){
+  j<-outfit_unclear$index[i]
+  data$outfits_comment[j] <- str_replace(data$outfits_comment[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[i])
+}
+data$outfits_comment[3730] <- str_replace(data$outfits_comment[outfit_unclear$index[1]], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[1])
 
 long_unclear <- data %>% select(-outfits_comment) %>% 
   mutate(long = str_replace_all(long, "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler or with question mark

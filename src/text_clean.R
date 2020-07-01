@@ -83,8 +83,8 @@ data_clean <- data %>%
 
 # remove [paragraph]
 paragraph_pattern <- "\\[paragraph\\]"
-data_clean$outfits_comment <- str_replace(data_clean$outfits_comment, paragraph_pattern, "")
-data_clean$long <- str_replace(data_clean$long, paragraph_pattern, "")
+data_clean$outfits_comment <- str_replace_all(data_clean$outfits_comment, paragraph_pattern, "")
+data_clean$long <- str_replace_all(data_clean$long, paragraph_pattern, "")
 
 # remove [insertion][/insertion]
 insertion_pattern.1 <- "\\[insertion\\]"
@@ -97,12 +97,12 @@ insertion_pattern.2 <- "\\[\\/insertion\\]"
 #   str_replace(insertion_pattern.2, "")
 
 data_clean$outfits_comment <- data_clean$outfits_comment %>%
-  str_replace(insertion_pattern.1, "") %>%
-  str_replace(insertion_pattern.2, "")
+  str_replace_all(insertion_pattern.1, "") %>%
+  str_replace_all(insertion_pattern.2, "")
 
 data_clean$long <- data_clean$long %>%
-  str_replace(insertion_pattern.1, "") %>%
-  str_replace(insertion_pattern.2, "")
+  str_replace_all(insertion_pattern.1, "") %>%
+  str_replace_all(insertion_pattern.2, "")
 
 # remove [circle][/circle]
 circle_pattern.1 <- "\\[circle\\]"
@@ -115,24 +115,24 @@ circle_pattern.2 <- "\\[\\/circle\\]"
 #   str_replace(circle_pattern.2, "")
 
 data_clean$outfits_comment <- data_clean$outfits_comment %>%
-  str_replace(circle_pattern.1, "") %>%
-  str_replace(circle_pattern.2, "")
+  str_replace_all(circle_pattern.1, "") %>%
+  str_replace_all(circle_pattern.2, "")
 
 data_clean$long <- data_clean$long %>%
-  str_replace(circle_pattern.1, "") %>%
-  str_replace(circle_pattern.2, "")
+  str_replace_all(circle_pattern.1, "") %>%
+  str_replace_all(circle_pattern.2, "")
 
 # remove [underline][/underline]
 underline_pattern.1 <- "\\[underline\\]"
 underline_pattern.2 <- "\\[\\/underline\\]"
 
 data_clean$outfits_comment <- data_clean$outfits_comment %>%
-  str_replace(underline_pattern.1, "") %>%
-  str_replace(underline_pattern.2, "")
+  str_replace_all(underline_pattern.1, "") %>%
+  str_replace_all(underline_pattern.2, "")
 
 data_clean$long <- data_clean$long %>%
-  str_replace(underline_pattern.1, "") %>%
-  str_replace(underline_pattern.2, "")
+  str_replace_all(underline_pattern.1, "") %>%
+  str_replace_all(underline_pattern.2, "")
 
 # examine cleaned data
 head(data_clean)
