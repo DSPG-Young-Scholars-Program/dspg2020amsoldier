@@ -83,13 +83,17 @@ useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]"
 #   filter(!text %in% useless_responses) %>%
 #   View()
 
+# these are the most basic data frames of words split up w identifiers for length,
+# race, and individual and number of times used
+
 tidy_77 <- text77_df %>%
   filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
   unnest_tokens(word, text) %>%
   anti_join(stop_words) %>%
   mutate(word = wordStem(word)) %>%
   group_by(row) %>%
-  count(word, sort = T)
+  count(word, sort = T) %>%
+  mutate(response = "short", race = "white")
 
 tidy_78 <- text78_df %>%
   filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
@@ -97,7 +101,8 @@ tidy_78 <- text78_df %>%
   anti_join(stop_words) %>%
   mutate(word = wordStem(word)) %>%
   group_by(row) %>%
-  count(word, sort = T)
+  count(word, sort = T) %>%
+  mutate(response = "long", race = "white")
 
 tidy_n <- textn_df %>%
   filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
@@ -105,7 +110,10 @@ tidy_n <- textn_df %>%
   anti_join(stop_words) %>%
   mutate(word = wordStem(word)) %>%
   group_by(row) %>%
-  count(word, sort = T)
+  count(word, sort = T) %>%
+  mutate(response = "long", race = "black")
+
+
 
 
 # dtm - mo ---------------------------------------------------------------
@@ -502,6 +510,7 @@ row_n_words <- textn_df %>%
   unnest_tokens(word, text) %>%
   filter(!word %in% stop_words$word)
 
+stemmed <- wordStem(row_n_words)
 
 # count words co-occuring within sections
 word_pairs_n <- row_n_words %>%
@@ -525,6 +534,7 @@ word_cors_n %>%
 
 set.seed(2016)
 word_cors_n %>%
+  wordStem(item1) %>%
   filter(correlation > .15) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
