@@ -508,9 +508,9 @@ row_n_words <- textn_df %>%
   mutate(section = row_number()) %>%
   filter(section > 0) %>%
   unnest_tokens(word, text) %>%
+  mutate(word= wordStem(word)) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
   filter(!word %in% stop_words$word)
-
-stemmed <- wordStem(row_n_words)
 
 # count words co-occuring within sections
 word_pairs_n <- row_n_words %>%
@@ -534,7 +534,6 @@ word_cors_n %>%
 
 set.seed(2016)
 word_cors_n %>%
-  wordStem(item1) %>%
   filter(correlation > .15) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
