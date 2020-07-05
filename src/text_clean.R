@@ -16,12 +16,8 @@ data <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_con
 # disconnect from postgresql
 dbDisconnect(conn)
 #first unite the long response and it's continued text
-data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE) %>% 
+data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE) %>%
   mutate(long = tolower(long), outfits_comment = tolower(outfits_comment), index= 1:nrow(data))
-
-
-# eda
-colnames(data)
 
 # outfits_comment
 # only look at white soldiers who have the response for the outfits comment
@@ -29,43 +25,6 @@ colnames(data)
 
 na_list <- c("none", "[none]", "noone", "nnone", "[blank]", "n/a", "i", ".", "no comment", "no comments", "have none",
               "no reason", "no reasons", "left blank", "[no answer]", "[slash] [slash]", "0")
-
-levels(as.factor(data$racial_group))
-# only white soldiers responded to outfits comment
-data %>% filter(!is.na(outfits_comment) & racial_group == "white") %>% count() # 1450
-data %>% filter(!is.na(outfits_comment) & racial_group == "black") %>% count() # 0
-
-# convert all responses to lower case
-ldata <- data %>%
-  mutate(
-    outfits_comment = tolower(outfits_comment),
-    long = tolower(long),
-  )
-# extract just black soldiers
-black_soldiers <- ldata %>% filter(racial_group == "black")
-
-# check that black soldiers don't have a response to outfits comment
-# count of black soldier responses
-nrow(black_soldiers) # 3464
-sum(is.na(black_soldiers$outfits_comment)) # 3464, that matches
-
-# check the number of NA responses for long for black soldiers
-sum(is.na(black_soldiers$long)) # 0
-
-# extract just white soliders
-white_soldiers <- ldata %>% filter(racial_group == "white")
-
-# count of white soldier reponses
-nrow(white_soldiers) # 2324
-
-# check the number of na values for the outfits comment
-sum(is.na(white_soldiers$outfits_comment)) # 874
-
-# check the number of na values for long for white soliders
-sum(is.na(white_soldiers$long)) # 0
-
-# number of outfits comment responses in na_list
-ldata %>% filter(racial_group == "white" & outfits_comment %in% na_list) %>% count() # 90
 
 ## change any answer that indicates no response to NA ##
 #ex: "none", "[None]", "0" some of this filtering has been done in the LDA.R file on Master branch
@@ -142,7 +101,7 @@ delete.rm2 <- "\\[deletion\\]|\\[\\/deletion\\]"
 data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, delete.rm, ""), #first delete occurances with words inside
                                     long = str_replace_all(long, delete.rm, ""),
                                     outfits_comment = str_replace_all(outfits_comment, delete.rm2, ""), #second delete any occurances of the tag
-                                    long = str_replace_all(long, delete.rm2, "")) 
+                                    long = str_replace_all(long, delete.rm2, ""))
 
 
 # remove [unclear][/unclear] with no meaningful filler or with question mark
@@ -150,8 +109,8 @@ unclear.rm <- "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\
 data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, unclear.rm, ""),
                                     long = str_replace_all(long, unclear.rm, ""))
 
-# correcting unclear text 
-# outfit_unclear <- data_clean %>% select(-long) %>% 
+# correcting unclear text
+# outfit_unclear <- data_clean %>% select(-long) %>%
 #   mutate(unclear=str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
 #          unclear = ifelse(unclear == "character(0)", NA, unclear),
 #          correct = rep("", nrow(data_clean)))%>% filter(!is.na(outfits_comment), !is.na(unclear)) %>%
@@ -168,7 +127,7 @@ for (i in 1:nrow(outfit_unclear)){
   data_clean$outfits_comment[j] <- str_replace(data_clean$outfits_comment[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[i])
 }
 
-# long_unclear <- data_clean %>% select(-outfits_comment) %>% 
+# long_unclear <- data_clean %>% select(-outfits_comment) %>%
 #   mutate(#long = str_replace_all(long, "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler or with question mark
 #          #Note: there may result in additional white space."do you think [unclear][/unclear] will win the war" -> "do you think  will win the war"
 #          unclear=str_extract_all(long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
@@ -183,10 +142,10 @@ long_unclear <- fread("~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ","
 #   j<-long_unclear$index[i]
 #   data_clean$long_unclear[j] <- str_replace(data_clean$long_unclear[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", long_unclear$correct[i])
 # }
-                                    
+
 
 # replace any empty response with NA
-data_clean <- data_clean %>% mutate(long = ifelse(long==""|long==" ", NA,long), 
+data_clean <- data_clean %>% mutate(long = ifelse(long==""|long==" ", NA,long),
                                     outfits_comment = ifelse(outfits_comment==""|outfits_comment==" ", NA,outfits_comment))
 
 # examine cleaned data
@@ -199,19 +158,119 @@ head(data_clean)
 
 # EXCEPTIONS: however, due to the nature of text data there are exceptions to the rule....
 # correcting abbreviations, account for punctuation in preceeding word : "i imagined i would get in the signal corps but instead i was placed in the m.p.[military police] escort guard co.[company]"
-# punctuation only: "they just dont [don't] like to be separated from their friends [.]" this isn't replacing any entity, rather a supplement. 
-#[sic] is used to indicate that the text has been transcribed verbatum, so I think we can just remove these. 
-#since the bracketed words are a small proportion of corrections, we may have to just accept that there will be inaccuracies here and there. 
+# punctuation only: "they just dont [don't] like to be separated from their friends [.]" this isn't replacing any entity, rather a supplement.
+#[sic] is used to indicate that the text has been transcribed verbatum, so I think we can just remove these.
+#since the bracketed words are a small proportion of corrections, we may have to just accept that there will be inaccuracies here and there.
 
 # The code below has extracted all instances of a bracketed word along with the original text and it's position in the original dataset.
-outfit_bracket <- data_clean %>% select(-long) %>% 
-  mutate(outfits_comment = str_replace_all(outfits_comment, "\\[unclear\\]|\\[\\/unclear\\]", ""),#remove all unclear 
+outfit_bracket <- data_clean %>% select(-long) %>%
+  mutate(outfits_comment = str_replace_all(outfits_comment, "\\[unclear\\]|\\[\\/unclear\\]", ""),#remove all unclear
          bracket=str_extract_all(outfits_comment, "(?=\\[).*?(?<=\\])"), #identify unclear tag with text inside
          bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(outfits_comment), !is.na(bracket)) %>%
   unnest(bracket)
 
-long_bracket <- data_clean %>% select(-outfits_comment) %>% 
-  mutate(long = str_replace_all(long, "\\[unclear\\]|\\[\\/unclear\\]", ""),#remove all unclear 
+long_bracket <- data_clean %>% select(-outfits_comment) %>%
+  mutate(long = str_replace_all(long, "\\[unclear\\]|\\[\\/unclear\\]", ""),#remove all unclear
          bracket=str_extract_all(long, "(?=\\[).*?(?<=\\])"), #identify unclear tag with text inside
          bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(long), !is.na(bracket)) %>%
   unnest(bracket)
+
+# MY WORK
+levels(as.factor(outfit_bracket$bracket))
+
+replace_list <- c("[allowed]", "[and]", "[competition]", "[company]", "[couldn't]", "[different]",
+                  "[don't]", "[drop]", "[get]", "[jealousy]", "[morale]", "[more]", "[negroes]",
+                  "[occasionally]", "[october]", "[peculiarities]",
+                  "[separate]", "[should]", "[soldier]", "[southerners]", "[their]", "[then]",
+                  "[they]", "[together]", "[too]", "[undesirable]", "[won't]", "[would]", "[wouldn't]")
+insert_list <- c("[.]", "[/.]", "[/be]", "[/if]", "[any?]", "[be]", "[common]", "[it's]")
+remove_list <- c("[affect?/unclear]", "[layes]", "[sic]", "[something]", "[underline/]", "[underlined]")
+acronyms_list <- c("[military police escort guard company]", "[military police]")
+
+# use this code to go through tags and decide what to do
+# tag <- "[wouldn't]"
+# tmp <- outfit_bracket %>% filter(bracket == tag)
+
+# some weird cases:
+# check index 5580, one bracketed word not picked up
+# [layes] looks like it would be inserted, but I don't think that's a word?
+# "[non commissioned officers]"? check! how would I solve this
+
+
+resolveBracketedWords <- function(row) {
+  word <- row["bracket"]
+  if (word %in% replace_list) {
+    replaceBracketedWord(row)
+  } else if (word %in% insert_list) {
+    insertBracketedWord(row)
+  } else {
+    removeBracketedWord(row)
+  }
+}
+
+replaceBracketedWord <- function(row) {
+  # extract word inside brackets
+  word <- row["bracket"];
+  start <- str_locate_all(pattern = '\\[', word);
+  end <- str_locate_all(pattern = '\\]', word);
+  word <- substr(word, start[[1]][1] + 1, end[[1]][1] - 1);
+
+
+  split <- as.list(strsplit(row["outfits_comment"], '\\s+')[[1]])
+  bracket_index <- match(c("[common]"), split)
+  split[bracket_index - 1] <- split[bracket_index]
+  split <- split[-bracket_index]
+}
+
+insertBracketedWord <- function(row) {
+  # extract word inside brackets
+  word <- row["bracket"];
+  start <- str_locate_all(pattern = '\\[', word);
+  end <- str_locate_all(pattern = '\\]', word);
+  word <- substr(word, start[[1]][1] + 1, end[[1]][1] - 1);
+
+  # split outfit comments into individual words
+  split <- as.list(strsplit(row["outfits_comment"], '\\s+')[[1]]);
+  bracket_index <- match(c(row["bracket"]), split);
+
+  # replace bracketed word in text with unbracketed word
+  split[bracket_index] <- word;
+
+  reformattedComment <- paste(split, sep = ' ', collapse = ' ');
+  return(reformattedComment);
+}
+
+removeBracketedWord <- function() {
+  print("remove")
+}
+
+# replace list:
+# replace the word before with word in brackets
+# how to deal with spaces?
+tmp <- outfit_bracket %>% filter(index == 5689)
+test1 <- data_clean[3520, ]
+test1$outfits_comment
+split <- as.list(strsplit(test1$outfits_comment, '\\s+')[[1]])
+bracket_index <- match(c("[common]"), split)
+split[bracket_index - 1] <- split[bracket_index]
+split <- split[-bracket_index]
+
+# insert list
+# insert bracketed word without modifying text in any other way
+outfit_bracket %>%
+# remove list
+# remove bracketed word
+
+apply(X = outfit_bracket, MARGIN = 1, FUN = resolveBracketedWords)
+# acryonyms list
+# same methodology as replace list, but probably have to count periods to determine what characters to replace
+
+sdata <- c('a', 'b', 'c')
+# use this command to reform strings
+paste(split, sep = ' ', collapse = ' ')
+a <- "hello"
+substr(a, 1, 3)
+test_case <- "[common]"
+start <- str_locate_all(pattern = '\\[', test_case)
+end <- str_locate_all(pattern = '\\]', test_case)
+substr(test_case, start[[1]][1] + 1, end[[1]][1] - 1)
