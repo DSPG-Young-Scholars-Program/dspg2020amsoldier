@@ -11,7 +11,7 @@ library(fmsb)
 # textn_df - Black long response
 # text77_df - white outfit response
 # text78_df - white outfit response
-
+View(nrc_mean)
 # black, long reponse
 class(bing_and_nrc)
 
