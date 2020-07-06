@@ -6,6 +6,12 @@ library(tibble)
 library(scales)
 library(fmsb)
 
+
+# normalize sentiment scores to length of response
+# textn_df - Black long response
+# text77_df - white outfit response
+# text78_df - white outfit response
+
 # black, long reponse
 class(bing_and_nrc)
 
