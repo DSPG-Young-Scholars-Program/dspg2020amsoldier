@@ -114,22 +114,15 @@ tidy_n <- textn_df %>%
   mutate(response = "long", race = "black")
 
 
-
-
-# dtm - mo ---------------------------------------------------------------
-
-# cast_dtm creates dtm so that we can complete lda
-# a document term matrix is one row per document, one column per word,
-# each value is a count
+# lda - mo ---------------------------------------------------------------
+# LDA finds topics depending on the number of clusters you want
+# number of clusters we want
 
 dtm_77 <- cast_dtm(tidy_77, term = word, document = row, value = n)
 dtm_78 <- cast_dtm(tidy_78, term = word, document = row, value = n)
 dtm_n <- cast_dtm(tidy_n, term = word, document = row, value = n)
 
-# lda - mo ---------------------------------------------------------------
-# LDA finds topics depending on the number of clusters you want
-# number of clusters we want
-num_clusters <- 5
+num_clusters <- 3
 lda_77 <- LDA(dtm_77, k = num_clusters, method = "VEM", control = NULL)
 lda_78 <- LDA(dtm_78, k = num_clusters, method = "VEM", control = NULL)
 lda_n <- LDA(dtm_n, k = num_clusters, method = "VEM", control = NULL)
@@ -184,9 +177,7 @@ topics_terms_n %>%
   facet_wrap(~ topic, scales = "free") +
   coord_flip()
 
-
-# euclidean distances to compare white and black - mo -------------------------
-# comapre with 78 and n
+# euclidean distances
 exposure_78 <- posterior(lda_78,dtm_78)
 apply(exposure_78$topics,1,sum)
 exposure_n <- posterior(lda_n,dtm_n)
@@ -203,7 +194,7 @@ for(i in 1:nrow(exposure_n$topics)){
 print(sum(apply(max_exposure,1,sum) == 1)/nrow(exposure_n$topics))
 # 0.1157193 - what does this mean though: distance of topics between both groups
 
-# naming categories (the hard way) - mo ------------------------------------------------------
+# naming categories (the hard way)?
 # here, soon, will lie code for naming categories without us having to name them
 
 # sentiment analysis by word - mo -------------------------
@@ -264,7 +255,8 @@ afinn_78 <- tidy_78 %>%
   summarise(sentiment = sum(value), row) %>%
   mutate(method = "AFINN")
 
-# differences in sentiments -------------------------------------------------------
+# differences in sentiments  dictionaries -------------------------------------------------------
+
 
 # black - long response
 bing_and_nrc <- bind_rows(tidy_n %>%
@@ -469,9 +461,10 @@ set.seed(2016)
 a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
 ggraph(bigram_graph_n, layout = "fr") +
   geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
-                 arrow = a, end_cap = circle(.07, 'inches')) +
-  geom_node_point(color = "lightblue", size = 5) +
+                 arrow = a, end_cap = circle(.05, 'inches')) +
+  geom_node_point(color = "lightblue", size = 3) +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  ggtitle("Directional Relationships between Bigrams from Black Soldier's Long Responses") +
   theme_void()
 
 # negation bigrams -------------------------------------------------------------------------
@@ -508,8 +501,8 @@ row_n_words <- textn_df %>%
   mutate(section = row_number()) %>%
   filter(section > 0) %>%
   unnest_tokens(word, text) %>%
-  mutate(word= wordStem(word)) %>%
   mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word= wordStem(word)) %>%
   filter(!word %in% stop_words$word)
 
 # count words co-occuring within sections
@@ -529,16 +522,19 @@ word_cors_n %>%
   mutate(item2 = reorder(item2, correlation)) %>%
   ggplot(aes(item2, correlation)) +
   geom_bar(stat = "identity") +
+  xlab("Second Word") +
   facet_wrap(~ item1, scales = "free") +
+  ggtitle("Co-Occurences with 'Negro' and 'White' from Black Soldiers' Long Responses")
   coord_flip()
 
 set.seed(2016)
 word_cors_n %>%
-  filter(correlation > .15) %>%
+  filter(correlation > .3) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
   geom_node_point(color = "lightblue", size = 5) +
   geom_node_text(aes(label = name), repel = TRUE) +
+  ggtitle("Co-Occurences of Words from Black Soldiers' Long Responses at the 30 percent Threshold") +
   theme_void()
 
