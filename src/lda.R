@@ -501,9 +501,9 @@ row_n_words <- textn_df %>%
   mutate(section = row_number()) %>%
   filter(section > 0) %>%
   unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
   mutate(word= textstem::lemmatize_words(word)) %>%
-  mutate(word= wordStem(word)) %>%
-  filter(!word %in% stop_words$word)
+  mutate(word= wordStem(word))
 
 # count words co-occuring within sections
 word_pairs_n <- row_n_words %>%
@@ -513,6 +513,7 @@ word_cors_n <- row_n_words %>%
   group_by(word) %>%
   filter(n() >= 20) %>%
   pairwise_cor(word, section, sort = TRUE)
+write.csv(word_cors_n, "edgelist_2.csv")
 
 word_cors_n %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -529,12 +530,54 @@ word_cors_n %>%
 
 set.seed(2016)
 word_cors_n %>%
-  filter(correlation > .3) %>%
+  filter(correlation > .15) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
   geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
   geom_node_point(color = "lightblue", size = 5) +
   geom_node_text(aes(label = name), repel = TRUE) +
-  ggtitle("Co-Occurences of Words from Black Soldiers' Long Responses at the 30 percent Threshold") +
+  ggtitle("Co-Occurences of Words from Black Soldiers' Long Responses at the 15 percent Threshold") +
+  theme_void()
+
+# white long response
+row_78_words <- text78_df %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word= wordStem(word))
+
+# count words co-occuring within sections
+word_pairs_78 <- row_78_words %>%
+  pairwise_count(word, section, sort = TRUE)
+
+word_cors_78 <- row_78_words %>%
+  group_by(word) %>%
+  filter(n() >= 20) %>%
+  pairwise_cor(word, section, sort = TRUE)
+
+word_cors_78 %>%
+  filter(item1 %in% c("negro", "white")) %>%
+  group_by(item1) %>%
+  top_n(6) %>%
+  ungroup() %>%
+  mutate(item2 = reorder(item2, correlation)) %>%
+  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = "identity") +
+  xlab("Second Word") +
+  facet_wrap(~ item1, scales = "free") +
+  ggtitle("Co-Occurences with 'Negro' and 'White' from White Soldiers' Long Responses") +
+  coord_flip()
+
+set.seed(2016)
+word_cors_78 %>%
+  filter(correlation > .15) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  ggtitle("Co-Occurences of Words from White Soldiers' Long Responses at the 15 percent Threshold") +
   theme_void()
 
