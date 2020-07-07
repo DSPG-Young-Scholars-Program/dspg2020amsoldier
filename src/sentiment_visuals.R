@@ -11,9 +11,32 @@ library(fmsb)
 # textn_df - Black long response
 # text77_df - white outfit response
 # text78_df - white outfit response
+
+# normalize bing_and_nrc
+nrc_response_lengths <- apply(bing_and_nrc, 1, function(x) {
+  return(length(as.list(strsplit(textn_df[x["row"], ]$text, '\\s+')[[1]])))
+}); # returns integer vector
+
+bing_and_nrc$response_length <- nrc_response_lengths
+bing_and_nrc_norm <- bing_and_nrc %>%
+  mutate(anger = anger / response_length,
+         anticipation = anticipation / response_length,
+         disgust = disgust / response_length,
+         fear = fear / response_length,
+         joy = joy / response_length,
+         negative = negative / response_length,
+         positive = positive / response_length,
+         sadness = sadness / response_length,
+         surprise = surprise / response_length,
+         trust = trust / response_length,
+         sentiment = sentiment / response_length)
+head(bing_and_nrc)
+
 View(nrc_mean)
 # black, long reponse
 class(bing_and_nrc)
+
+
 
 nrc_mean <- dplyr::as_data_frame(bing_and_nrc) %>%
   filter(method == "NRC") %>%
