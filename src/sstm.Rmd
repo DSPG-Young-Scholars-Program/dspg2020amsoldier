@@ -135,3 +135,34 @@ plot(model77, top_n = top_n,
 plot(model78, top_n = top_n,
      title = "BTM model", subtitle = "S32W Long Comment")
 ```
+
+
+```{r}
+
+convert_to_edge = function(model){
+  df <- cbind(source = rownames(model$phi), model$phi)
+  rownames(df) <- 1:nrow(df)
+  df = as.data.frame(df)
+  edge_list = reshape2::melt(df, id.vars=c("source"), variable.name = "target", value.name = "weight")
+}
+edge_listn = convert_to_edge(model)
+edge_list77 = convert_to_edge(model77)
+edge_list78 = convert_to_edge(model78)
+
+write.csv(edge_listn, "32N_long_BTM_edge_list.csv")
+write.csv(edge_list77, "32W_outfits_BTM_edge_list.csv")
+write.csv(edge_list78, "32W_long_BTM_edge_list.csv")
+
+
+
+z = convert_to_edge(model)
+
+df <- cbind(word = rownames(model$phi), model$phi)
+rownames(df) <- 1:nrow(df)
+df = as.data.frame(df)
+l = tidyr::gather_(df, key = "condition", value = "measurement", V2:V9)
+l = reshape2::melt(df, id.vars = c("word"))
+
+
+
+```
