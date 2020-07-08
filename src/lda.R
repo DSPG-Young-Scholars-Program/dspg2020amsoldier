@@ -15,9 +15,9 @@ library(RColorBrewer)
 library(igraph)
 library(ggraph)
 library(widyr)
+library(stringr)
 
-
-#load in your data as data tables
+# data -----------------------------------------
 library("RPostgreSQL")
 # connect to postgresql to get data (in rivanna)
 conn <- dbConnect(drv = PostgreSQL(),
@@ -27,21 +27,197 @@ conn <- dbConnect(drv = PostgreSQL(),
                   user = Sys.getenv("db_userid"),
                   password = Sys.getenv("db_pwd"))
 # query the bipartite edgelist data from github data
-S32 <- dbGetQuery(conn, "SELECT *
-                  FROM american_soldier.survey_32_combined")
+data <- dbGetQuery(conn, "SELECT *
+                   FROM american_soldier.survey_32_combined")
 # disconnect from postgresql
 dbDisconnect(conn)
+#first unite the long response and it's continued text
+data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE) %>% 
+  mutate(long = tolower(long), outfits_comment = tolower(outfits_comment), index= 1:nrow(data))
 
-S32N = S32 %>% filter(racial_group == "black")
-S32W = S32 %>% filter(racial_group == "white")
+
+# eda
+colnames(data)
+
+# outfits_comment
+# only look at white soldiers who have the response for the outfits comment
+# lump "no reason" into NAs
+
+na_list <- c("none", "[none]", "noone", "nnone", "[blank]", "n/a", "i", ".", "no comment", "no comments", "have none",
+             "no reason", "no reasons", "left blank", "[no answer]", "[slash] [slash]", "0")
+
+levels(as.factor(data$racial_group))
+# only white soldiers responded to outfits comment
+data %>% filter(!is.na(outfits_comment) & racial_group == "white") %>% count() # 1450
+data %>% filter(!is.na(outfits_comment) & racial_group == "black") %>% count() # 0
+
+# convert all responses to lower case
+ldata <- data %>%
+  mutate(
+    outfits_comment = tolower(outfits_comment),
+    long = tolower(long)
+  )
+# extract just black soldiers
+black_soldiers <- ldata %>% filter(racial_group == "black")
+
+# check that black soldiers don't have a response to outfits comment
+# count of black soldier responses
+nrow(black_soldiers) # 3464
+sum(is.na(black_soldiers$outfits_comment)) # 3464, that matches
+
+# check the number of NA responses for long for black soldiers
+sum(is.na(black_soldiers$long)) # 0
+
+# extract just white soliders
+white_soldiers <- ldata %>% filter(racial_group == "white")
+
+# count of white soldier reponses
+nrow(white_soldiers) # 2324
+
+# check the number of na values for the outfits comment
+sum(is.na(white_soldiers$outfits_comment)) # 874
+
+# check the number of na values for long for white soliders
+sum(is.na(white_soldiers$long)) # 0
+
+# number of outfits comment responses in na_list
+ldata %>% filter(racial_group == "white" & outfits_comment %in% na_list) %>% count() # 90
+
+## change any answer that indicates no response to NA ##
+#ex: "none", "[None]", "0" some of this filtering has been done in the LDA.R file on Master branch
+
+outfits_predicate <- data$racial_group == "white" & tolower(data$outfits_comment) %in% na_list
+long_predicate <- tolower(data$long) %in% na_list
+
+data_clean <- data %>%
+  mutate(
+    outfits_comment = ifelse(outfits_predicate, NA, outfits_comment),
+    long = ifelse(long_predicate, NA, long)
+  )
+
+## Remove the following metatags: [paragraph], [insertion][/insertion], [circle][/circle], [underline][/underline] ##
+#Regex expression for [underline]: \\[underline\\]
+#Regex expression for [/underline]: \\[\\/underline\\]
+
+# remove [paragraph]
+paragraph_pattern <- "\\[paragraph\\]"
+data_clean$outfits_comment <- str_replace_all(data_clean$outfits_comment, paragraph_pattern, "")
+data_clean$long <- str_replace_all(data_clean$long, paragraph_pattern, "")
+
+# remove [insertion][/insertion]
+insertion_pattern.1 <- "\\[insertion\\]"
+insertion_pattern.2 <- "\\[\\/insertion\\]"
+
+# testing insertion pattern
+# insertion_test <- c("this doesn't have an insertion.", "this [insertion]does[/insertion] have one.")
+# insertion_test %>%
+#   str_replace(insertion_pattern.1, "") %>%
+#   str_replace(insertion_pattern.2, "")
+
+data_clean$outfits_comment <- data_clean$outfits_comment %>%
+  str_replace_all(insertion_pattern.1, "") %>%
+  str_replace_all(insertion_pattern.2, "")
+
+data_clean$long <- data_clean$long %>%
+  str_replace_all(insertion_pattern.1, "") %>%
+  str_replace_all(insertion_pattern.2, "")
+
+# remove [circle][/circle]
+circle_pattern.1 <- "\\[circle\\]"
+circle_pattern.2 <- "\\[\\/circle\\]"
+
+# testing circle pattern
+# circle_test <- c("[circle]this[/circle] is circled.", "this is not circled.")
+# circle_test %>%
+#   str_replace(circle_pattern.1, "") %>%
+#   str_replace(circle_pattern.2, "")
+
+data_clean$outfits_comment <- data_clean$outfits_comment %>%
+  str_replace_all(circle_pattern.1, "") %>%
+  str_replace_all(circle_pattern.2, "")
+
+data_clean$long <- data_clean$long %>%
+  str_replace_all(circle_pattern.1, "") %>%
+  str_replace_all(circle_pattern.2, "")
+
+# remove [underline][/underline]
+underline_pattern.1 <- "\\[underline\\]"
+underline_pattern.2 <- "\\[\\/underline\\]"
+
+data_clean$outfits_comment <- data_clean$outfits_comment %>%
+  str_replace_all(underline_pattern.1, "") %>%
+  str_replace_all(underline_pattern.2, "")
+
+data_clean$long <- data_clean$long %>%
+  str_replace_all(underline_pattern.1, "") %>%
+  str_replace_all(underline_pattern.2, "")
+
+# remove [deletion][/deletion] and anything inside the tag
+delete.rm <- "(?=\\[deletion\\]).*?(?<=\\[\\/deletion\\])"
+delete.rm2 <- "\\[deletion\\]|\\[\\/deletion\\]"
+data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, delete.rm, ""), #first delete occurances with words inside
+                                    long = str_replace_all(long, delete.rm, ""),
+                                    outfits_comment = str_replace_all(outfits_comment, delete.rm2, ""), #second delete any occurances of the tag
+                                    long = str_replace_all(long, delete.rm2, "")) 
 
 
-# text mining - mo --------------------------------------------------------
+# remove [unclear][/unclear] with no meaningful filler or with question mark
+unclear.rm <- "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]"
+data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, unclear.rm, ""),
+                                    long = str_replace_all(long, unclear.rm, ""))
+
+# correcting unclear text 
+# outfit_unclear <- data_clean %>% select(-long) %>% 
+#   mutate(unclear=str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
+#          unclear = ifelse(unclear == "character(0)", NA, unclear),
+#          correct = rep("", nrow(data_clean)))%>% filter(!is.na(outfits_comment), !is.na(unclear)) %>%
+#   unnest(unclear)
+
+#Manually correct unclear instances
+#fwrite(outfit_unclear, file="~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #export the unclear table to csv
+#researcher manually enters the correction in the correct column
+outfit_unclear <- fread("~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #read the csv file back in.
+
+#loops through and corrects original dataset :))))
+for (i in 1:nrow(outfit_unclear)){
+  j<-outfit_unclear$index[i]
+  data_clean$outfits_comment[j] <- str_replace(data_clean$outfits_comment[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[i])
+}
+
+# long_unclear <- data_clean %>% select(-outfits_comment) %>% 
+#   mutate(#long = str_replace_all(long, "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler or with question mark
+#          #Note: there may result in additional white space."do you think [unclear][/unclear] will win the war" -> "do you think  will win the war"
+#          unclear=str_extract_all(long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
+#          unclear = ifelse(unclear == "character(0)", NA, unclear),
+#          correct = rep("", nrow(data_clean)))%>% filter(!is.na(long), !is.na(unclear)) %>%
+#   unnest(unclear)
+#fwrite(long_unclear, file="~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #export the unclear table to csv
+#researcher manually enters the correction in the correct column
+long_unclear <- fread("~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #read the csv file back in.
+
+for (i in 1:nrow(long_unclear)){#populate clean dataset with corrections
+  j<-long_unclear$index[i]
+  data_clean$long[j] <- str_replace(data_clean$long[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", long_unclear$correct[i])
+}
+
+
+# replace any empty response with NA
+data_clean <- data_clean %>% mutate(long = ifelse(long==""|long==" ", NA,long), 
+                                    outfits_comment = ifelse(outfits_comment==""|outfits_comment==" ", NA,outfits_comment))
+
+# examine cleaned data
+head(data_clean)
+
+S32N = data_clean %>% filter(racial_group == "black")
+S32W = data_clean %>% filter(racial_group == "white")
+
+
+# text mining --------------------------------------------------------
 #T5 = long_comment, T3 = outfits_comment, T4 = long_comment
 # this will create data frames out out of text
-text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment) #Written response to "should soldiers be in separate outfits?"
-text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long_comment) #Written response on overall thoughts on the survey
-textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long_comment) #Written response to "should soldiers be in separate outfits?"
+text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment, outfits = S32W$outfits) #Written response to "should soldiers be in separate outfits?"
+text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long) #Written response on overall thoughts on the survey
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long) #Written response to "should soldiers be in separate outfits?"
 
 # laod in stop words: words without any true meaning
 data(stop_words)
@@ -113,8 +289,7 @@ tidy_n <- textn_df %>%
   count(word, sort = T) %>%
   mutate(response = "long", race = "black")
 
-
-# lda - mo ---------------------------------------------------------------
+# lda ---------------------------------------------------------------
 # LDA finds topics depending on the number of clusters you want
 # number of clusters we want
 
@@ -192,12 +367,12 @@ for(i in 1:nrow(exposure_n$topics)){
   max_exposure[i,which.max(exposure_78$topics[i,])] <- T
 }
 print(sum(apply(max_exposure,1,sum) == 1)/nrow(exposure_n$topics))
-# 0.1157193 - what does this mean though: distance of topics between both groups
+# 0.1878099 - what does this mean though: distance of topics between both groups
 
 # naming categories (the hard way)?
 # here, soon, will lie code for naming categories without us having to name them
 
-# sentiment analysis by word - mo -------------------------
+# sentiment analysis by word  -------------------------
 
 nrc <- get_sentiments("nrc")
 bing <- get_sentiments("bing")
@@ -369,11 +544,9 @@ bing_counts_78 %>%
 
 # negations ----------------------------------------------------------
 
-AFINN <- get_sentiments("afinn")
-
 not_words <- bigrams_separated_n %>%
   filter(word1 == "not") %>%
-  inner_join(AFINN, by = c(word2 = "word")) %>%
+  inner_join(afinn, by = c(word2 = "word")) %>%
   count(word2, value, sort = TRUE)
 
 not_words %>%
@@ -391,7 +564,7 @@ negation_words <- c("not", "no", "never", "without")
 
 negated_words <- bigrams_separated_n %>%
   filter(word1 %in% negation_words) %>%
-  inner_join(AFINN, by = c(word2 = "word")) %>%
+  inner_join(afinn, by = c(word2 = "word")) %>%
   count(word1, word2, value, sort = TRUE)
 
 negated_words %>%
@@ -422,6 +595,8 @@ bing_counts_78 %>%
 
 # bigrams -------------------------------------------------------------------------
 
+# black long bigrams
+
 tidy_n_bigrams <- textn_df %>%
   filter(!text %in% useless_responses) %>%
   unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
@@ -436,6 +611,7 @@ bigrams_filtered_n <- bigrams_separated_n %>%
 
 bigram_counts_n <- bigrams_filtered_n %>% 
   count(word1, word2, sort = TRUE)
+# write.csv(bigram_counts_n, "cleaned_black_long_edge.csv")
 
 bigrams_united_n <- bigrams_filtered_n %>%
   unite(bigram, word1, word2, sep = " ")
@@ -465,6 +641,54 @@ ggraph(bigram_graph_n, layout = "fr") +
   geom_node_point(color = "lightblue", size = 3) +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
   ggtitle("Directional Relationships between Bigrams from Black Soldier's Long Responses") +
+  theme_void()
+
+# white long bigrams
+
+tidy_78_bigrams <- text78_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
+  count(bigram, sort = TRUE)
+
+bigrams_separated_78 <- tidy_78_bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+
+bigrams_filtered_78 <- bigrams_separated_78 %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)
+
+bigram_counts_78 <- bigrams_filtered_78 %>% 
+  count(word1, word2, sort = TRUE)
+# write.csv(bigram_counts_78, "cleaned_white_long_edge.csv")
+
+bigrams_united_78 <- bigrams_filtered_78 %>%
+  unite(bigram, word1, word2, sep = " ")
+
+tidy_78_trigrams <- text78_df %>%
+  unnest_tokens(trigram, text, token = "ngrams", n = 3) %>%
+  separate(trigram, c("word1", "word2", "word3"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word,
+         !word2 %in% stop_words$word,
+         !word3 %in% stop_words$word) %>%
+  count(word1, word2, word3, sort = TRUE)
+
+bigram_78_tf_idf <- bigrams_united_78 %>%
+  count(bigram) %>%
+  bind_tf_idf(bigram, n) %>%
+  arrange(desc(tf_idf))
+
+bigram_graph_78 <- bigram_counts_78 %>%
+  filter(n > 20) %>%
+  graph_from_data_frame()
+
+set.seed(2016)
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+ggraph(bigram_graph_78, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.05, 'inches')) +
+  geom_node_point(color = "lightblue", size = 3) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  ggtitle("Directional Relationships between Bigrams from White Soldier's Long Responses") +
   theme_void()
 
 # negation bigrams -------------------------------------------------------------------------
@@ -513,6 +737,7 @@ word_cors_n <- row_n_words %>%
   group_by(word) %>%
   filter(n() >= 20) %>%
   pairwise_cor(word, section, sort = TRUE)
+# write.csv(word_cors_n, "clean_black_long_edge_occur.csv")
 
 word_cors_n %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -548,7 +773,6 @@ row_78_words <- text78_df %>%
   mutate(word= textstem::lemmatize_words(word)) %>%
   mutate(word= wordStem(word))
 
-# count words co-occuring within sections
 word_pairs_78 <- row_78_words %>%
   pairwise_count(word, section, sort = TRUE)
 
@@ -556,6 +780,7 @@ word_cors_78 <- row_78_words %>%
   group_by(word) %>%
   filter(n() >= 20) %>%
   pairwise_cor(word, section, sort = TRUE)
+# write.csv(word_cors_78, "clean_white_long_edge_occur.csv")
 
 word_cors_78 %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -581,4 +806,103 @@ word_cors_78 %>%
   geom_node_text(aes(label = name), repel = TRUE) +
   ggtitle("Co-Occurences of Words from White Soldiers' Long Responses at the 15 percent Threshold") +
   theme_void()
+
+# for v against -------------------------------------------
+# white for seg (w4)
+
+row_w4_words <- text77_df %>%
+  filter(outfits == "['They should be in separate outfits']") %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word= wordStem(word))
+
+word_pairs_w4 <- row_w4_words %>%
+  pairwise_count(word, section, sort = TRUE)
+
+word_cors_w4 <- row_w4_words %>%
+  group_by(word) %>%
+  filter(n() >= 20) %>%
+  pairwise_cor(word, section, sort = TRUE)
+
+word_cors_w4 %>%
+  filter(item1 %in% c("negro", "white")) %>%
+  group_by(item1) %>%
+  top_n(6) %>%
+  ungroup() %>%
+  mutate(item2 = reorder(item2, correlation)) %>%
+  mutate(item1 = reorder(item1, correlation)) %>%
+  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = "identity", fill = "#2C4F6B") +
+  xlab("Second Word") +
+  facet_wrap(~ item1, scales = "free") +
+  ggtitle("Co-Occurences with 'Negro' and 'White' from Pro-segregation White Soldier's Short Comments") +
+  coord_flip()
+
+set.seed(2016)
+word_cors_w4 %>%
+  filter(correlation > .15) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
+  geom_node_point(color = "#2C4F6B", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  ggtitle("Co-Occurences of Words from Black Soldiers' Long Responses at the 15 percent Threshold") +
+  theme_void()
+
+# white against segregation (wag)
+row_wag_words <- text77_df %>%
+  filter(outfits == "['They should be together in the same outfits']") %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word= wordStem(word))
+
+word_pairs_wag <- row_wag_words %>%
+  pairwise_count(word, section, sort = TRUE)
+
+word_cors_wag <- row_wag_words %>%
+  group_by(word) %>%
+  filter(n() >= 5) %>%
+  pairwise_cor(word, section, sort = TRUE)
+
+word_cors_wag %>%
+  filter(item1 %in% c("negro", "white")) %>%
+  group_by(item1) %>%
+  top_n(6) %>%
+  ungroup() %>%
+  mutate(item2 = reorder(item2, correlation)) %>%
+  mutate(item1 = reorder(item1, correlation)) %>%
+  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = "identity", fill = "#E57200") +
+  xlab("Second Word") +
+  facet_wrap(~ item1, scales = "free") +
+  ggtitle("Co-Occurences with 'Negro' and 'White' from Anti-segregation White Soldier's Short Comments") +
+  coord_flip()
+
+set.seed(2016)
+word_cors_wag %>%
+  filter(correlation > .15) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
+  geom_node_point(color = "#E57200", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  ggtitle("Co-Occurences of Words from White Soldiers' Long Responses at the 15 percent Threshold") +
+  theme_void()
+
+
+
+
+
+
+
+
+
+
+
 
