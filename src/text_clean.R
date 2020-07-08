@@ -179,10 +179,10 @@ for (i in 1:nrow(outfit_unclear)){
 #researcher manually enters the correction in the correct column
 long_unclear <- fread("~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #read the csv file back in.
 
-# for (i in 1:nrow(long_unclear)){#populate clean dataset with corrections
-#   j<-long_unclear$index[i]
-#   data_clean$long_unclear[j] <- str_replace(data_clean$long_unclear[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", long_unclear$correct[i])
-# }
+for (i in 1:nrow(long_unclear)){#populate clean dataset with corrections
+  j<-long_unclear$index[i]
+  data_clean$long[j] <- str_replace(data_clean$long[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", long_unclear$correct[i])
+}
                                     
 
 # replace any empty response with NA
