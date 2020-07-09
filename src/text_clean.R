@@ -165,111 +165,14 @@ head(data_clean)
 outfit_bracket <- data_clean %>% select(-long) %>%
   mutate(outfits_comment = str_replace_all(outfits_comment, "\\[unclear\\]|\\[\\/unclear\\]", ""),#remove all unclear
          bracket=str_extract_all(outfits_comment, "(?=\\[).*?(?<=\\])"), #identify unclear tag with text inside
-         bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(outfits_comment), !is.na(bracket)) %>%
-  unnest(bracket)
+         bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(outfits_comment), !is.na(bracket))
 
 long_bracket <- data_clean %>% select(-outfits_comment) %>%
   mutate(long = str_replace_all(long, "\\[unclear\\]|\\[\\/unclear\\]", ""),#remove all unclear
          bracket=str_extract_all(long, "(?=\\[).*?(?<=\\])"), #identify unclear tag with text inside
-         bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(long), !is.na(bracket)) %>%
-  unnest(bracket)
+         bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(long), !is.na(bracket))
 
 # MY WORK
-levels(as.factor(outfit_bracket$bracket))
-
-replace_list <- c("[allowed]", "[and]", "[competition]", "[company]", "[couldn't]", "[different]",
-                  "[don't]", "[drop]", "[get]", "[jealousy]", "[morale]", "[more]", "[negroes]",
-                  "[occasionally]", "[october]", "[peculiarities]",
-                  "[separate]", "[should]", "[soldier]", "[southerners]", "[their]", "[then]",
-                  "[they]", "[together]", "[too]", "[undesirable]", "[won't]", "[would]", "[wouldn't]")
-insert_list <- c("[.]", "[/.]", "[/be]", "[/if]", "[any?]", "[be]", "[common]", "[it's]")
-remove_list <- c("[affect?/unclear]", "[layes]", "[sic]", "[something]", "[underline/]", "[underlined]")
-acronyms_list <- c("[military police escort guard company]", "[military police]")
-
-# use this code to go through tags and decide what to do
-# tag <- "[wouldn't]"
-# tmp <- outfit_bracket %>% filter(bracket == tag)
-
-# some weird cases:
-# check index 5580, one bracketed word not picked up
-# [layes] looks like it would be inserted, but I don't think that's a word?
-# "[non commissioned officers]"? check! how would I solve this
-
-
-resolveBracketedWords <- function(row) {
-  word <- row["bracket"]
-  if (word %in% replace_list) {
-    replaceBracketedWord(row)
-  } else if (word %in% insert_list) {
-    insertBracketedWord(row)
-  } else {
-    removeBracketedWord(row)
-  }
-}
-
-replaceBracketedWord <- function(row) {
-  # extract word inside brackets
-  word <- row["bracket"];
-  start <- str_locate_all(pattern = '\\[', word);
-  end <- str_locate_all(pattern = '\\]', word);
-  word <- substr(word, start[[1]][1] + 1, end[[1]][1] - 1);
-
-
-  split <- as.list(strsplit(row["outfits_comment"], '\\s+')[[1]])
-  bracket_index <- match(c("[common]"), split)
-  split[bracket_index - 1] <- split[bracket_index]
-  split <- split[-bracket_index]
-}
-
-insertBracketedWord <- function(row) {
-  # extract word inside brackets
-  word <- row["bracket"];
-  start <- str_locate_all(pattern = '\\[', word);
-  end <- str_locate_all(pattern = '\\]', word);
-  word <- substr(word, start[[1]][1] + 1, end[[1]][1] - 1);
-
-  # split outfit comments into individual words
-  split <- as.list(strsplit(row["outfits_comment"], '\\s+')[[1]]);
-  bracket_index <- match(c(row["bracket"]), split);
-
-  # replace bracketed word in text with unbracketed word
-  split[bracket_index] <- word;
-
-  reformattedComment <- paste(split, sep = ' ', collapse = ' ');
-  return(reformattedComment);
-}
-
-removeBracketedWord <- function() {
-  print("remove")
-}
-
-# replace list:
-# replace the word before with word in brackets
-# how to deal with spaces?
-tmp <- outfit_bracket %>% filter(index == 5689)
-test1 <- data_clean[3520, ]
-test1$outfits_comment
-split <- as.list(strsplit(test1$outfits_comment, '\\s+')[[1]])
-bracket_index <- match(c("[common]"), split)
-split[bracket_index - 1] <- split[bracket_index]
-split <- split[-bracket_index]
-
-# insert list
-# insert bracketed word without modifying text in any other way
-outfit_bracket %>%
-# remove list
-# remove bracketed word
-
-apply(X = outfit_bracket, MARGIN = 1, FUN = resolveBracketedWords)
-# acryonyms list
-# same methodology as replace list, but probably have to count periods to determine what characters to replace
-
-sdata <- c('a', 'b', 'c')
-# use this command to reform strings
-paste(split, sep = ' ', collapse = ' ')
-a <- "hello"
-substr(a, 1, 3)
-test_case <- "[common]"
-start <- str_locate_all(pattern = '\\[', test_case)
-end <- str_locate_all(pattern = '\\]', test_case)
-substr(test_case, start[[1]][1] + 1, end[[1]][1] - 1)
+# manually correct bracketed instances
+# fwrite(outfit_bracket, file="~/git/dspg2020amsoldier/data/outfit_bracket.csv", sep = ",") # export the bracket table to csv
+# fwrite(long_bracket, file="~/git/dspg2020amsoldier/data/long_bracket.csv", sep = ",") # export the bracket table to csv
