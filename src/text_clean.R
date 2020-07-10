@@ -142,7 +142,7 @@ for (i in 1:nrow(long_unclear)){#populate clean dataset with corrections
   j<-long_unclear$index[i]
   data_clean$long[j] <- str_replace(data_clean$long[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", long_unclear$correct[i])
 }
-                                    
+
 # replace any empty response with NA
 data_clean <- data_clean %>% mutate(long = ifelse(long==""|long==" ", NA,long),
                                     outfits_comment = ifelse(outfits_comment==""|outfits_comment==" ", NA,outfits_comment))
@@ -176,3 +176,4 @@ long_bracket <- data_clean %>% select(-outfits_comment) %>%
 # manually correct bracketed instances
 # fwrite(outfit_bracket, file="~/git/dspg2020amsoldier/data/outfit_bracket.csv", sep = ",") # export the bracket table to csv
 # fwrite(long_bracket, file="~/git/dspg2020amsoldier/data/long_bracket.csv", sep = ",") # export the bracket table to csv
+# corrected files should be stored in the data folder with _corrected appended to original name
