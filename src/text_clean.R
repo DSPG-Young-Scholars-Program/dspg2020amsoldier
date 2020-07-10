@@ -11,11 +11,11 @@ conn <- dbConnect(drv = PostgreSQL(),
                   user = Sys.getenv("db_userid"),
                   password = Sys.getenv("db_pwd"))
 # query the bipartite edgelist data from github data
-data <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_cont, racial_group
+data <- dbGetQuery(conn, "SELECT *
                                  FROM american_soldier.survey_32_combined")
 # disconnect from postgresql
-dbDisconnect(conn)
-#first unite the long response and it's continued text
+#dbDisconnect(conn)
+#first unite the long response and it's continued text | make entire text lowercase | add an index column
 data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE) %>%
   mutate(long = tolower(long), outfits_comment = tolower(outfits_comment), index= 1:nrow(data))
 
@@ -24,7 +24,7 @@ data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = 
 # lump "no reason" into NAs
 
 na_list <- c("none", "[none]", "noone", "nnone", "[blank]", "n/a", "i", ".", "no comment", "no comments", "have none",
-              "no reason", "no reasons", "left blank", "[no answer]", "[slash] [slash]", "0")
+              "no reason", "no reasons", "left blank", "[no answer]", "[slash] [slash]", "0", "i have no comments")
 
 ## change any answer that indicates no response to NA ##
 #ex: "none", "[None]", "0" some of this filtering has been done in the LDA.R file on Master branch
@@ -109,16 +109,17 @@ unclear.rm <- "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\
 data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, unclear.rm, ""),
                                     long = str_replace_all(long, unclear.rm, ""))
 
-# correcting unclear text
-# outfit_unclear <- data_clean %>% select(-long) %>%
-#   mutate(unclear=str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
-#          unclear = ifelse(unclear == "character(0)", NA, unclear),
-#          correct = rep("", nrow(data_clean)))%>% filter(!is.na(outfits_comment), !is.na(unclear)) %>%
-#   unnest(unclear)
+##### correcting unclear text ####
+#Create dataframe identify occurances of [unclear]text[/unclear] in the outfit question
+outfit_unclear <- data_clean %>% select(-long) %>%
+  mutate(unclear=str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
+         unclear = ifelse(unclear == "character(0)", NA, unclear),
+         correct = rep("", nrow(data_clean)))%>% filter(!is.na(outfits_comment), !is.na(unclear)) %>%
+  unnest(unclear)
 
-#Manually correct unclear instances
+##Manually correct unclear instances
 #fwrite(outfit_unclear, file="~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #export the unclear table to csv
-#researcher manually enters the correction in the correct column
+##researcher manually enters the correction in the correct column
 outfit_unclear <- fread("~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #read the csv file back in.
 
 #loops through and corrects original dataset :))))
@@ -127,21 +128,26 @@ for (i in 1:nrow(outfit_unclear)){
   data_clean$outfits_comment[j] <- str_replace(data_clean$outfits_comment[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[i])
 }
 
-# long_unclear <- data_clean %>% select(-outfits_comment) %>%
-#   mutate(#long = str_replace_all(long, "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler or with question mark
-#          #Note: there may result in additional white space."do you think [unclear][/unclear] will win the war" -> "do you think  will win the war"
-#          unclear=str_extract_all(long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
-#          unclear = ifelse(unclear == "character(0)", NA, unclear),
-#          correct = rep("", nrow(data_clean)))%>% filter(!is.na(long), !is.na(unclear)) %>%
-#   unnest(unclear)
+# #Create dataframe identify occurances of [unclear]text[/unclear] in the long response question
+long_unclear <- data_clean %>% select(-outfits_comment) %>%
+  mutate(#long = str_replace_all(long, "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler or with question mark
+         #Note: there may result in additional white space."do you think [unclear][/unclear] will win the war" -> "do you think  will win the war"
+         unclear=str_extract_all(long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
+         unclear = ifelse(unclear == "character(0)", NA, unclear),
+         correct = rep("", nrow(data_clean)))%>% filter(!is.na(long), !is.na(unclear)) %>%
+  unnest(unclear)
 #fwrite(long_unclear, file="~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #export the unclear table to csv
-#researcher manually enters the correction in the correct column
+##researcher manually enters the correction in the correct column
 long_unclear <- fread("~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #read the csv file back in.
 
 for (i in 1:nrow(long_unclear)){#populate clean dataset with corrections
   j<-long_unclear$index[i]
   data_clean$long[j] <- str_replace(data_clean$long[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", long_unclear$correct[i])
 }
+                                    
+#remove unclear tags that occur alone [unclear] or [/unclear]
+data_clean$outfits_comment <- str_replace_all(data_clean$outfits_comment, "\\[unclear\\]|\\[\\/unclear\\]", "")
+data_clean$long <- str_replace_all(data_clean$long, "\\[unclear\\]|\\[\\/unclear\\]", "")
 
 # replace any empty response with NA
 data_clean <- data_clean %>% mutate(long = ifelse(long==""|long==" ", NA,long),
@@ -161,7 +167,7 @@ head(data_clean)
 #[sic] is used to indicate that the text has been transcribed verbatum, so I think we can just remove these.
 #since the bracketed words are a small proportion of corrections, we may have to just accept that there will be inaccuracies here and there.
 
-# The code below has extracted all instances of a bracketed word along with the original text and it's position in the original dataset.
+# The code below has extracted all instances of a bracketed word along with the original text and its position in the original dataset.
 outfit_bracket <- data_clean %>% select(-long) %>%
   mutate(outfits_comment = str_replace_all(outfits_comment, "\\[unclear\\]|\\[\\/unclear\\]", ""),#remove all unclear
          bracket=str_extract_all(outfits_comment, "(?=\\[).*?(?<=\\])"), #identify unclear tag with text inside
@@ -172,8 +178,56 @@ long_bracket <- data_clean %>% select(-outfits_comment) %>%
          bracket=str_extract_all(long, "(?=\\[).*?(?<=\\])"), #identify unclear tag with text inside
          bracket = ifelse(bracket == "character(0)", NA, bracket))%>% filter(!is.na(long), !is.na(bracket))
 
-# MY WORK
 # manually correct bracketed instances
 # fwrite(outfit_bracket, file="~/git/dspg2020amsoldier/data/outfit_bracket.csv", sep = ",") # export the bracket table to csv
 # fwrite(long_bracket, file="~/git/dspg2020amsoldier/data/long_bracket.csv", sep = ",") # export the bracket table to csv
 # corrected files should be stored in the data folder with _corrected appended to original name
+
+outfit_bracket_correct <- fread("~/git/dspg2020amsoldier/data/outfit_bracket_corrected.csv", sep = ",") #read the csv file back in.
+
+for (i in 1:nrow(outfit_bracket_correct)){#populate clean dataset with corrections
+  j<-outfit_bracket_correct$index[i]
+  data_clean$outfits_comment[j] <- outfit_bracket_correct$correct[i]
+}
+
+long_bracket_correct <- fread("~/git/dspg2020amsoldier/data/long_bracket_corrected.csv", sep = ",") #read the csv file back in.
+
+for (i in 1:nrow(long_bracket_correct)){#populate clean dataset with corrections
+  j<-long_bracket_correct$index[i]
+  data_clean$long[j] <- long_bracket_correct$correct[i]
+}
+
+##### Do spell checking ########
+
+# # unnest tokens using tidy text for both reponses.
+# longword <- select(data.frame(unnest_tokens(filter(data_clean, !is.na(long)), word, long)), index, word)
+# outfitword <- select(data.frame(unnest_tokens(filter(data_clean, !is.na(outfits_comment)), word, outfits_comment)), index, word)
+# word.tm <- rbind(longword,outfitword) #combine tokens from both questions in one data.frame
+
+# #get all unique words using tidytext
+# words <- as.vector(unique(word.tm$word)) #store just unique occurances of words
+# library(hunspell) #use hunspell to perform spell checking
+# bad.words <- unique(unlist(hunspell(words))) #identify the bad words (n=3697)
+# sugg.words <- unlist(lapply(hunspell_suggest(bad.words), function(x) x[1])) #suggested corrections
+# 
+# word.list <- as.data.frame(cbind(bad.words, sugg.words)) # get dataframe of bad words and their corrections
+# 
+# freq.word <- count(word.tm, word)
+# freq.word <- inner_join(freq.word, word.list, by=c(word = "bad.words")) # n = 3370 total words to spell check
+# spell_check <- freq.word %>% filter(n > 2) %>% select(-n) # (n=452) words to spell check | ones that occur more than twice
+#fwrite(spell_check, file="~/git/dspg2020amsoldier/data/spell_check.csv", sep = ",") #export the spell check table to csv
+
+#researcher corrects this list.
+#read the csv file back in.
+spell_check <- fread("~/git/dspg2020amsoldier/data/spell_check.csv", sep = ",") # (n=274)
+spell_check <- mutate(spell_check, word = paste("\\b", word,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
+
+library(stringi)
+data_clean$long <- stri_replace_all_regex(data_clean$long, spell_check$word, spell_check$sugg.words, vectorize_all = FALSE) #replace any bad words with a suggested word
+data_clean$outfits_comment <- stri_replace_all_regex(data_clean$outfits_comment, spell_check$word, spell_check$sugg.words, vectorize_all = FALSE)
+
+
+
+#### Push Clean data to SQL ####
+dbWriteTable(conn, name = c("american_soldier", "survey_32_clean"), value=data_clean, overwrite=TRUE)
+dbDisconnect(conn)
