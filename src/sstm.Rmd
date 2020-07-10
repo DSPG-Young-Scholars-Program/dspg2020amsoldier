@@ -64,13 +64,20 @@ set.seed(20200629)
 traindata <- subset(anno, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
 traindata <- traindata[, c("doc_id", "lemma")]
 model     <- BTM(traindata, biterms = biterms, k = 9, iter = 2000, background = TRUE, trace = 100)
-
 ```
 
 ```{r}
 plot(model, top_n = 20,
      title = "BTM model", subtitle = "S32N Long Comment")
 ```
+
+```{r}
+x = subset(anno,xpos %in% "JJ")
+x = sort(table(x$lemma))
+textplot_bar(x, top = 20, panel = "Adjective", xlab = "Frequency",
+             col.panel = "lightblue", cextext = .75)
+```
+
 ```{r}
 S32W = S32 %>% filter(racial_group == "white")
 text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment) %>% filter(!text %in% useless_responses)
@@ -122,10 +129,40 @@ model78     <- BTM(traindata78, biterms = biterms78, k = 9, iter = 2000, backgro
 ```{r}
 top_n = 15
 plot(model, top_n = top_n,
-     title = "BTM model", subtitle = "S32N Long Comment")
+     title = "BTM model", subtitle = "S32N Long Comment",)
 plot(model77, top_n = top_n,
      title = "BTM model", subtitle = "S32W Outfits Comment")
 plot(model78, top_n = top_n,
      title = "BTM model", subtitle = "S32W Long Comment")
+```
+
+
+```{r}
+
+convert_to_edge = function(model){
+  df <- cbind(source = rownames(model$phi), model$phi)
+  rownames(df) <- 1:nrow(df)
+  df = as.data.frame(df)
+  edge_list = reshape2::melt(df, id.vars=c("source"), variable.name = "target", value.name = "weight")
+}
+edge_listn = convert_to_edge(model)
+edge_list77 = convert_to_edge(model77)
+edge_list78 = convert_to_edge(model78)
+
+write.csv(edge_listn, "32N_long_BTM_edge_list.csv")
+write.csv(edge_list77, "32W_outfits_BTM_edge_list.csv")
+write.csv(edge_list78, "32W_long_BTM_edge_list.csv")
+
+
+
+z = convert_to_edge(model)
+
+df <- cbind(word = rownames(model$phi), model$phi)
+rownames(df) <- 1:nrow(df)
+df = as.data.frame(df)
+l = tidyr::gather_(df, key = "condition", value = "measurement", V2:V9)
+l = reshape2::melt(df, id.vars = c("word"))
+
+
 
 ```
