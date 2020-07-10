@@ -141,7 +141,7 @@ white_long <- copy(nrc_78_mean)
 
 # combine repsonses
 long <- rbind(black_long, white_long)
-rownames(long) <- c("black", "white")
+rownames(long) <- c("Black", "white")
 
 # get min and max for plotting
 long_melted <- melt(long)
@@ -153,12 +153,16 @@ plot_data <- rbind(rep(maxval, 10), rep(minval, 10), long)
 colors <- c("#e57200", "#232d4b")
 
 radarchart(plot_data,
-           cglcol = "grey",
-           cglty = 1,
-           pcol = colors,
-           plty=1)
-
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
 legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors )
+title(main = "NRC Sentiment Analysis of Long Response")
+
 
 # PLOT 4
 # use bar plots instead to visualize
@@ -235,7 +239,7 @@ for_mean <- dplyr::as_data_frame(nrc_77_for) %>%
   summarise_all(mean)
 
 comb <- rbind(against_mean, for_mean)
-rownames(comb) <- c("against", "for")
+rownames(comb) <- c("against integration", "for integration")
 
 # get min and max for plotting
 comb_melted <- melt(comb)
@@ -250,11 +254,13 @@ radarchart(plot_data,
            cglcol = "grey",
            cglty = 1,
            pcol = colors,
-           plty=1)
+           plty = 1, 
+           plwd = 3, # line width
+)
 
 legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors )
+title(main = "NRC Sentiment Analysis of White Soliders'\n Comment on Outfit Integration")
 
-rownames(plot_data)
 # change labels to same_outfits integrated_words
 
 
