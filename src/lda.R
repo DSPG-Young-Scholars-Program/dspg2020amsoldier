@@ -289,6 +289,7 @@ tidy_n <- textn_df %>%
   count(word, sort = T) %>%
   mutate(response = "long", race = "black")
 
+
 # lda ---------------------------------------------------------------
 # LDA finds topics depending on the number of clusters you want
 # number of clusters we want
@@ -736,33 +737,40 @@ word_pairs_n <- row_n_words %>%
 word_cors_n <- row_n_words %>%
   group_by(word) %>%
   filter(n() >= 20) %>%
-  pairwise_cor(word, section, sort = TRUE)
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(correlation > .1)
 # write.csv(word_cors_n, "clean_black_long_edge_occur.csv")
 
 word_cors_n %>%
   filter(item1 %in% c("negro", "white")) %>%
   group_by(item1) %>%
+  filter(item2 != "white") %>%
+  filter(item2 != "negro") %>%
   top_n(6) %>%
   ungroup() %>%
   mutate(item2 = reorder(item2, correlation)) %>%
   mutate(item1 = reorder(item1, correlation)) %>%
   ggplot(aes(item2, correlation)) +
-  geom_bar(stat = "identity", fill = "#2C4F6B") +
-  xlab("Second Word") +
+  geom_bar(stat = "identity", fill = "#E57200") +
+  xlab("Co-Occurring Word") +
   facet_wrap(~ item1, scales = "free") +
   ggtitle("Co-Occurences with 'Negro' and 'White' from Black Soldiers' Long Responses") +
-  coord_flip()
+  coord_flip() +
+  theme_minimal()
 
 set.seed(2016)
-word_cors_n %>%
+graph <- word_cors_n %>%
   filter(correlation > .15) %>%
-  graph_from_data_frame() %>%
-  ggraph(layout = "fr") +
-  geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
-  geom_node_point(color = "#2C4F6B", size = 5) +
-  geom_node_text(aes(label = name), repel = TRUE) +
-  ggtitle("Co-Occurences of Words from Black Soldiers' Long Responses at the 15 percent Threshold") +
-  theme_void()
+  graph_from_data_frame(directed = FALSE)
+  # graph_from_data_frame() %>%
+  # ggraph(layout = "fr") +
+  # geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
+  # geom_node_point(color = "#E57200", size = 5) +
+  # geom_node_text(aes(label = name), repel = TRUE) +
+  # ggtitle("Co-Occurences of Words from Black Soldiers' Long Responses at the 15 percent Threshold") +
+plot(graph)
+as.undirected(graph, mode = c("collapse", "each", "mutual"),
+              edge.attr.comb = igraph_opt("edge.attr.comb"))
 
 # white long response
 row_78_words <- text78_df %>%
@@ -779,22 +787,26 @@ word_pairs_78 <- row_78_words %>%
 word_cors_78 <- row_78_words %>%
   group_by(word) %>%
   filter(n() >= 20) %>%
-  pairwise_cor(word, section, sort = TRUE)
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(correlation > .1)
 # write.csv(word_cors_78, "clean_white_long_edge_occur.csv")
 
 word_cors_78 %>%
   filter(item1 %in% c("negro", "white")) %>%
   group_by(item1) %>%
+  filter(item2 != "white") %>%
+  filter(item2 != "negro") %>%
   top_n(6) %>%
   ungroup() %>%
   mutate(item2 = reorder(item2, correlation)) %>%
   mutate(item1 = reorder(item1, correlation)) %>%
   ggplot(aes(item2, correlation)) +
-  geom_bar(stat = "identity", fill = "#E57200") +
-  xlab("Second Word") +
+  geom_bar(stat = "identity", fill = "#2C4F6B") +
+  xlab("Co-Occurring Word") +
   facet_wrap(~ item1, scales = "free") +
   ggtitle("Co-Occurences with 'Negro' and 'White' from White Soldiers' Long Responses") +
-  coord_flip()
+  coord_flip() +
+  theme_minimal()
 
 set.seed(2016)
 word_cors_78 %>%
@@ -825,21 +837,25 @@ word_pairs_w4 <- row_w4_words %>%
 word_cors_w4 <- row_w4_words %>%
   group_by(word) %>%
   filter(n() >= 20) %>%
-  pairwise_cor(word, section, sort = TRUE)
+  pairwise_cor(word, section, sort = TRUE)  %>%
+  filter(correlation > 0)
 
 word_cors_w4 %>%
   filter(item1 %in% c("negro", "white")) %>%
   group_by(item1) %>%
+  filter(item2 != "white") %>%
+  filter(item2 != "negro") %>%
   top_n(6) %>%
   ungroup() %>%
   mutate(item2 = reorder(item2, correlation)) %>%
   mutate(item1 = reorder(item1, correlation)) %>%
   ggplot(aes(item2, correlation)) +
-  geom_bar(stat = "identity", fill = "#2C4F6B") +
-  xlab("Second Word") +
+  geom_bar(stat = "identity", fill = "#0E879C") +
+  xlab("Co-Occurring Word") +
   facet_wrap(~ item1, scales = "free") +
   ggtitle("Co-Occurences with 'Negro' and 'White' from Pro-segregation White Soldier's Short Comments") +
-  coord_flip()
+  coord_flip()  +
+  theme_minimal()
 
 set.seed(2016)
 word_cors_w4 %>%
@@ -868,21 +884,25 @@ word_pairs_wag <- row_wag_words %>%
 word_cors_wag <- row_wag_words %>%
   group_by(word) %>%
   filter(n() >= 5) %>%
-  pairwise_cor(word, section, sort = TRUE)
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(correlation > 0)
 
 word_cors_wag %>%
   filter(item1 %in% c("negro", "white")) %>%
   group_by(item1) %>%
+  filter(item2 != "white") %>%
+  filter(item2 != "negro") %>%
   top_n(6) %>%
   ungroup() %>%
   mutate(item2 = reorder(item2, correlation)) %>%
   mutate(item1 = reorder(item1, correlation)) %>%
   ggplot(aes(item2, correlation)) +
-  geom_bar(stat = "identity", fill = "#E57200") +
-  xlab("Second Word") +
+  geom_bar(stat = "identity", fill = "#E6CE3A") +
+  xlab("Co-Occurring Word") +
   facet_wrap(~ item1, scales = "free") +
   ggtitle("Co-Occurences with 'Negro' and 'White' from Anti-segregation White Soldier's Short Comments") +
-  coord_flip()
+  coord_flip()  +
+  theme_minimal()
 
 set.seed(2016)
 word_cors_wag %>%
@@ -896,12 +916,84 @@ word_cors_wag %>%
   theme_void()
 
 
+# white short response
+
+row_77_words <- text77_df %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word= wordStem(word))
+
+word_pairs_77 <- row_77_words %>%
+  pairwise_count(word, section, sort = TRUE)
+
+word_cors_77 <- row_77_words %>%
+  group_by(word) %>%
+  filter(n() >= 0) %>%
+  pairwise_cor(word, section, sort = TRUE)
+write.csv(word_cors_77, "clean_white_short_occur.csv")
 
 
+# simple n graphs ----------------------------------------
 
+tidy_words_n <- textn_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(word) %>%
+  count(word) %>%
+  filter(n > 700)
 
+tidy_words_n %>%
+  arrange(n) %>%
+  ggplot(aes(word, n)) +
+    geom_col(fill = "#E57200") +
+    xlab("Number of Times Used") +
+    coord_flip() +
+    ggtitle("Most Common Words Used by Black Soldiers in their Long Commentary") +
+    theme_minimal()
 
+tidy_words_78 <- text78_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(word) %>%
+  count(word) %>%
+  filter(n > 250)
 
+tidy_words_78 %>%
+  arrange(n) %>%
+  ggplot(aes(word, n)) +
+  geom_col(fill = "#2C4F6B") +
+  xlab("Number of Times Used") +
+  coord_flip() +
+  ggtitle("Most Common Words Used by White Soldiers in their Long Commentary") +
+  theme_minimal()
+  
+tidy_words_77 <- text77_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(word) %>%
+  count(word) %>%
+  filter(n > 75)
+
+tidy_words_77 %>%
+  arrange(n) %>%
+  ggplot(aes(word, n)) +
+  geom_col(fill = "#E6CE3A") +
+  xlab("Number of Times Used") +
+  coord_flip() +
+  ggtitle("Most Common Words Used by White Soldiers in their Short Commentary") +
+  theme_minimal()
 
 
 
