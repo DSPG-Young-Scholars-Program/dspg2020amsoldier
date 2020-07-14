@@ -16,6 +16,7 @@ library(igraph)
 library(ggraph)
 library(widyr)
 library(stringr)
+library(networkD3)
 
 # data -----------------------------------------
 library("RPostgreSQL")
@@ -121,16 +122,28 @@ dtm_77 <- cast_dtm(tidy_77, term = word, document = row, value = n)
 dtm_78 <- cast_dtm(tidy_78, term = word, document = row, value = n)
 dtm_n <- cast_dtm(tidy_n, term = word, document = row, value = n)
 
-num_clusters <- 3
-lda_77 <- LDA(dtm_77, k = num_clusters, method = "VEM", control = NULL)
-lda_78 <- LDA(dtm_78, k = num_clusters, method = "VEM", control = NULL)
-lda_n <- LDA(dtm_n, k = num_clusters, method = "VEM", control = NULL)
+num_clusters <- 8
+lda_77 <- LDA(dtm_77, k = num_clusters, method = "Gibbs", control = NULL)
+lda_78 <- LDA(dtm_78, k = num_clusters, method = "Gibbs", control = NULL)
+lda_n <- LDA(dtm_n, k = num_clusters, method = "Gibbs", control = NULL)
 
 # this will separate out topics and have a weighted probability
 topics_77 <- tidy(lda_77, matrix = "beta")
 topics_78 <- tidy(lda_78, matrix = "beta")
 topics_n <- tidy(lda_n, matrix = "beta")
 
+#takes word topic betas and graphs them as a network
+colnames(topics_n) = colnames(topics_77) = colnames(topics_78) =  c("source", "target", "weight")
+# Extract into data frame and plot
+topics_n %>%
+  filter(weight >= .01) %>%
+  simpleNetwork(fontSize = 12, zoom = T)
+topics_77 %>%
+  filter(weight >= .01) %>%
+  simpleNetwork(fontSize = 12, zoom = T)
+topics_78 %>%
+  filter(weight >= .01) %>%
+  simpleNetwork(fontSize = 12, zoom = T)
 
 # this groups by topics and shows top 10 words and arranges by beta
 # Q77 white
@@ -563,6 +576,9 @@ word_cors_n <- row_n_words %>%
   pairwise_cor(word, section, sort = TRUE) %>%
   filter(correlation > .1)
 # write.csv(word_cors_n, "clean_black_long_edge_occur.csv")
+#visualizes correlation network
+word_cors_n %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 word_cors_n %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -613,6 +629,9 @@ word_cors_78 <- row_78_words %>%
   pairwise_cor(word, section, sort = TRUE) %>%
   filter(correlation > .1)
 # write.csv(word_cors_78, "clean_white_long_edge_occur.csv")
+#visualizes correlation network
+word_cors_78 %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 word_cors_78 %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -662,6 +681,9 @@ word_cors_w4 <- row_w4_words %>%
   filter(n() >= 20) %>%
   pairwise_cor(word, section, sort = TRUE)  %>%
   filter(correlation > 0)
+#visualizes correlation network
+word_cors_w4 %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 word_cors_w4 %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -709,6 +731,9 @@ word_cors_wag <- row_wag_words %>%
   filter(n() >= 5) %>%
   pairwise_cor(word, section, sort = TRUE) %>%
   filter(correlation > 0)
+#visualizes correlation network
+word_cors_wag %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 word_cors_wag %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -756,8 +781,10 @@ word_cors_77 <- row_77_words %>%
   group_by(word) %>%
   filter(n() >= 0) %>%
   pairwise_cor(word, section, sort = TRUE)
-write.csv(word_cors_77, "clean_white_short_occur.csv")
-
+# write.csv(word_cors_77, "clean_white_short_occur.csv")
+#visualizes correlation network
+word_cors_77 %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 # simple n graphs ----------------------------------------
 
