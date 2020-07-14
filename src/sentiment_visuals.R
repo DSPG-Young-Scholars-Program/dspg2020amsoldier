@@ -5,6 +5,7 @@ library(ggradar)
 library(tibble)
 library(scales)
 library(fmsb)
+library(data.table)
 
 
 # normalize sentiment scores to length of response
@@ -14,65 +15,66 @@ library(fmsb)
 
 # normalize bing_and_nrc
 # returns a vector containing the length of each response
-response_lengths <- apply(bing_and_nrc, 1, function(x) {
-  return(length(as.list(strsplit(textn_df[x["row"], ]$text, '\\s+')[[1]])))
-}); # returns integer vector
-
-bing_and_nrc$response_length <- response_lengths
-bing_and_nrc_norm <- bing_and_nrc %>%
-  mutate(anger = anger / response_length,
-         anticipation = anticipation / response_length,
-         disgust = disgust / response_length,
-         fear = fear / response_length,
-         joy = joy / response_length,
-         negative = negative / response_length,
-         positive = positive / response_length,
-         sadness = sadness / response_length,
-         surprise = surprise / response_length,
-         trust = trust / response_length,
-         sentiment = sentiment / response_length)
-
-# normalize bing_and_nrc_77
-response_lengths <- apply(bing_and_nrc_77, 1, function(x) {
-  return(length(as.list(strsplit(text77_df[x["row"], ]$text, '\\s+')[[1]])))
-});
-
-bing_and_nrc_77$response_length <- response_lengths
-bing_and_nrc_77_norm <- bing_and_nrc_77 %>%
-  mutate(anger = anger / response_length,
-         anticipation = anticipation / response_length,
-         disgust = disgust / response_length,
-         fear = fear / response_length,
-         joy = joy / response_length,
-         negative = negative / response_length,
-         positive = positive / response_length,
-         sadness = sadness / response_length,
-         surprise = surprise / response_length,
-         trust = trust / response_length,
-         sentiment = sentiment / response_length)
-
-# normalize bing_and_nrc_78
-response_lengths <- apply(bing_and_nrc_78, 1, function(x) {
-  return(length(as.list(strsplit(text78_df[x["row"], ]$text, '\\s+')[[1]])))
-});
-
-bing_and_nrc_78$response_length <- response_lengths
-bing_and_nrc_78_norm <- bing_and_nrc_78 %>%
-  mutate(anger = anger / response_length,
-         anticipation = anticipation / response_length,
-         disgust = disgust / response_length,
-         fear = fear / response_length,
-         joy = joy / response_length,
-         negative = negative / response_length,
-         positive = positive / response_length,
-         sadness = sadness / response_length,
-         surprise = surprise / response_length,
-         trust = trust / response_length,
-         sentiment = sentiment / response_length)
+# response_lengths <- apply(bing_and_nrc, 1, function(x) {
+#   return(length(as.list(strsplit(textn_df[x["row"], ]$text, '\\s+')[[1]])))
+# }); # returns integer vector
+# 
+# bing_and_nrc$response_length <- response_lengths
+# bing_and_nrc_norm <- bing_and_nrc %>%
+#   mutate(anger = anger / response_length,
+#          anticipation = anticipation / response_length,
+#          disgust = disgust / response_length,
+#          fear = fear / response_length,
+#          joy = joy / response_length,
+#          negative = negative / response_length,
+#          positive = positive / response_length,
+#          sadness = sadness / response_length,
+#          surprise = surprise / response_length,
+#          trust = trust / response_length,
+#          sentiment = sentiment / response_length)
+# 
+# # normalize bing_and_nrc_77
+# response_lengths <- apply(bing_and_nrc_77, 1, function(x) {
+#   return(length(as.list(strsplit(text77_df[x["row"], ]$text, '\\s+')[[1]])))
+# });
+# 
+# bing_and_nrc_77$response_length <- response_lengths
+# bing_and_nrc_77_norm <- bing_and_nrc_77 %>%
+#   mutate(anger = anger / response_length,
+#          anticipation = anticipation / response_length,
+#          disgust = disgust / response_length,
+#          fear = fear / response_length,
+#          joy = joy / response_length,
+#          negative = negative / response_length,
+#          positive = positive / response_length,
+#          sadness = sadness / response_length,
+#          surprise = surprise / response_length,
+#          trust = trust / response_length,
+#          sentiment = sentiment / response_length)
+# 
+# # normalize bing_and_nrc_78
+# response_lengths <- apply(bing_and_nrc_78, 1, function(x) {
+#   return(length(as.list(strsplit(text78_df[x["row"], ]$text, '\\s+')[[1]])))
+# });
+# 
+# bing_and_nrc_78$response_length <- response_lengths
+# bing_and_nrc_78_norm <- bing_and_nrc_78 %>%
+#   mutate(anger = anger / response_length,
+#          anticipation = anticipation / response_length,
+#          disgust = disgust / response_length,
+#          fear = fear / response_length,
+#          joy = joy / response_length,
+#          negative = negative / response_length,
+#          positive = positive / response_length,
+#          sadness = sadness / response_length,
+#          surprise = surprise / response_length,
+#          trust = trust / response_length,
+#          sentiment = sentiment / response_length)
+sentiments
 
 # black, long reponse
-nrc_mean <- dplyr::as_data_frame(bing_and_nrc_norm) %>%
-  filter(method == "NRC") %>%
+black_long_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(response_type == "black_long") %>%
   select(c("anger",
            "anticipation",
            "disgust",
@@ -84,15 +86,16 @@ nrc_mean <- dplyr::as_data_frame(bing_and_nrc_norm) %>%
            "surprise",
            "trust")) %>%
   summarise_all(mean)
-nrc_mean_melted <- melt(nrc_mean)
-plot_data <- rbind(rep(max(nrc_mean_melted$value), 10), rep(min(nrc_mean_melted$value), 10), nrc_mean)
+
+bl_mean_melted <- melt(black_long_mean)
+plot_data <- rbind(rep(max(bl_mean_melted$value), 10), rep(min(bl_mean_melted$value), 10), black_long_mean)
 radarchart(plot_data,
            cglcol = "grey",
            cglty = 1)
 
 # white, short response
-nrc_77_mean <- dplyr::as_data_frame(bing_and_nrc_77_norm) %>%
-  filter(method == "NRC") %>%
+white_short_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(response_type == "white_short") %>%
   select(c("anger",
            "anticipation",
            "disgust",
@@ -105,16 +108,15 @@ nrc_77_mean <- dplyr::as_data_frame(bing_and_nrc_77_norm) %>%
            "trust")) %>%
   summarise_all(mean)
 
-nrc_77_mean_melted <- melt(nrc_77_mean)
-plot_data <- rbind(rep(max(nrc_77_mean_melted$value), 10), rep(min(nrc_77_mean_melted$value), 10), nrc_77_mean)
+ws_mean_melted <- melt(white_short_mean)
+plot_data <- rbind(rep(max(ws_mean_melted$value), 10), rep(min(ws_mean_melted$value), 10), white_short_mean)
 radarchart(plot_data,
            cglcol = "grey",
            cglty = 1)
 
 # white, long response
-bing_and_nrc_78
-nrc_78_mean <- dplyr::as_data_frame(bing_and_nrc_78_norm) %>%
-  filter(method == "NRC") %>%
+white_long_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(response_type == "white_long") %>%
   select(c("anger",
            "anticipation",
            "disgust",
@@ -127,17 +129,16 @@ nrc_78_mean <- dplyr::as_data_frame(bing_and_nrc_78_norm) %>%
            "trust")) %>%
   summarise_all(mean)
 
-nrc_78_mean_melted <- melt(nrc_78_mean)
-plot_data <- rbind(rep(max(nrc_78_mean_melted$value), 10), rep(min(nrc_78_mean_melted$value), 10), nrc_78_mean)
-
+wl_mean_melted <- melt(white_long_mean)
+plot_data <- rbind(rep(max(wl_mean_melted$value), 10), rep(min(wl_mean_melted$value), 10), white_long_mean)
 radarchart(plot_data,
            cglcol = "grey",
            cglty = 1)
 
 ## PLOT 3
 # combined long responses chart
-black_long <- copy(nrc_mean)
-white_long <- copy(nrc_78_mean)
+black_long <- copy(black_long_mean)
+white_long <- copy(white_long_mean)
 
 # combine repsonses
 long <- rbind(black_long, white_long)
@@ -177,9 +178,7 @@ ggplot(data = plot_data, mapping = aes(x = variable, y = value, fill = race)) +
 
 # PLOT 5
 # visualize differences in sentiments between white and black soldiers
-View(nrc_mean)
 long_diff <- black_long - white_long
-View(long_diff)
 long_diff %>%
   as.data.table(.) %>%
   melt(.) %>%
