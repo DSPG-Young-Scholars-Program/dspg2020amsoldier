@@ -163,8 +163,8 @@ edge_n %>%
 
 
 ```{r}
-biterms77 <- as.data.table(anno77)
-biterms77 <- biterms77[, cooccurrence(x = lemma,
+biterms_77 <- as.data.table(anno77)
+biterms_77 <- biterms_77[, cooccurrence(x = lemma,
                                   relevant = upos %in% c("NOUN", "ADJ", "VERB") & 
                                              nchar(lemma) > 2 & !lemma %in% stopwords("en"),
                                   skipgram = 3),
@@ -172,8 +172,8 @@ biterms77 <- biterms77[, cooccurrence(x = lemma,
 ```
 
 ```{r}
-biterms78 <- as.data.table(anno78)
-biterms78 <- biterms78[, cooccurrence(x = lemma,
+biterms_78 <- as.data.table(anno78)
+biterms_78 <- biterms_78[, cooccurrence(x = lemma,
                                   relevant = upos %in% c("NOUN", "ADJ", "VERB") & 
                                              nchar(lemma) > 2 & !lemma %in% stopwords("en"),
                                   skipgram = 3),
@@ -283,10 +283,7 @@ df_net <- ggnetwork(net, layout = "fr", weights="weight", niter=5000)
 ```
 
 ```{r}
-edge_listn = convert_to_edge(biterms)
-edge_list77 = convert_to_edge(biterms77)
-edge_list78 = convert_to_edge(biterms78)
-write.csv(edge_listn, "data/32N_long_biterms.csv")
-write.csv(edge_list77, "data/32W_outfits_biterms.csv")
-write.csv(edge_list78, "data/32W_long_biterms.csv")
+write.csv(edge_n, ".data\32N_long_biterms.csv")
+write.csv(edge_77, ".data\32W_outfits_biterms.csv")
+write.csv(edge_78, ".data\32W_long_biterms.csv")
 ```
