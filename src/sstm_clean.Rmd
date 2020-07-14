@@ -283,7 +283,8 @@ df_net <- ggnetwork(net, layout = "fr", weights="weight", niter=5000)
 ```
 
 ```{r}
-write.csv(edge_n, ".data\32N_long_biterms.csv")
-write.csv(edge_77, ".data\32W_outfits_biterms.csv")
-write.csv(edge_78, ".data\32W_long_biterms.csv")
+# 
+# write.csv(edge_n, here::here("data","32N_long_biterms.csv"))
+# write.csv(edge_77, here::here("data","32W_outfits_biterms.csv"))
+# write.csv(edge_78, here::here("data","32W_long_biterms.csv"))
 ```
