@@ -145,11 +145,12 @@ for (i in 1:nrow(outfit_unclear)){
 #          correct = rep("", nrow(data_clean)))%>% filter(!is.na(long), !is.na(unclear)) %>%
 #   unnest(unclear)
 #fwrite(long_unclear, file="~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #export the unclear table to csv
+
 ##researcher manually enters the correction in the correct column
 # #---------------------------------------------------------------------------------------------------------------------##
 
-# read in csv of unclear tag corrections for long response. 
-long_unclear <- fread("~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") 
+#researcher manually enters the correction in the correct column
+long_unclear <- fread("~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #read the csv file back in.
 for (i in 1:nrow(long_unclear)){#populate clean dataset with corrections
   j<-long_unclear$index[i]
   data_clean$long[j] <- str_replace(data_clean$long[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", long_unclear$correct[i])
