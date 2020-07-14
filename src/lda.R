@@ -28,7 +28,7 @@ conn <- dbConnect(drv = PostgreSQL(),
                   password = Sys.getenv("db_pwd"))
 # query the bipartite edgelist data from github data
 data <- dbGetQuery(conn, "SELECT *
-                   FROM american_soldier.survey_32_combined")
+                   FROM american_soldier.survey_32_clean")
 # disconnect from postgresql
 dbDisconnect(conn)
 S32N = data %>% filter(racial_group == "black")
@@ -39,8 +39,8 @@ S32W = data %>% filter(racial_group == "white")
 #T5 = long_comment, T3 = outfits_comment, T4 = long_comment
 # this will create data frames out out of text
 text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment, outfits = S32W$outfits) #Written response to "should soldiers be in separate outfits?"
-text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long_comment) #Written response on overall thoughts on the survey
-textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long_comment) #Written response to "should soldiers be in separate outfits?"
+text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long) #Written response on overall thoughts on the survey
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long) #Written response to "should soldiers be in separate outfits?"
 
 # laod in stop words: words without any true meaning
 data(stop_words)
@@ -518,7 +518,7 @@ ggraph(bigram_graph_78, layout = "fr") +
 # negation bigrams -------------------------------------------------------------------------
 negation_bigrams <- bigrams_separated_n %>%
   filter(word1 %in% negation_words) %>%
-  inner_join(AFINN, by = c(word2 = "word")) %>%
+  inner_join(afinn, by = c(word2 = "word")) %>%
   count(word1, word2, value, sort = TRUE) %>%
   mutate(contribution = n * value) %>%
   arrange(desc(abs(contribution))) %>%
