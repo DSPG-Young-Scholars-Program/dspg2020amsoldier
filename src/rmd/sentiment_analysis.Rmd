@@ -1,30 +1,275 @@
 ---
 title: "Sentiment Analysis"
 author: "Chase Dawson"
-date: "7/6/2020"
+date: "7/15/2020"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidytext)
+library(ggplot2)
+# to install ggradar, run the line commented out below
+# devtools::install_github("ricardo-bion/ggradar", dependencies = TRUE)
+library(ggradar)
+library(tibble)
+library(scales)
+library(fmsb)
+library(data.table)
+library(tidyverse)
 ```
 
-## R Markdown
+## NRC Lexicon
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+The NRC lexicon uses a dictionary to associates a word with the following sentiments: positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust. The sentiment of a body of text equals the number of words contributing to that sentiment. A word may contribute to multiple sentiments, yet each word is weighted equally in its contribution.
 
 ```{r cars}
-summary(cars)
+# read in the data
+data <- read.csv("../../data/s32_neg_bigrams_removed.csv") %>% subset(select = -c(X));
+data$index = 1:nrow(data);
 ```
 
-## Including Plots
+```{r }
+nrc_sentiments <- get_sentiments("nrc")
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+# compute sentiments for each response
+tmp <- data %>% 
+  unnest_tokens(word, text) %>%
+  inner_join(nrc_sentiments)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+tmp %>%
+  filter(sentiment == "positive") %>%
+  count(word, sort = TRUE) %>%
+  top_n(10)
+```
+```{r}
+tmp %>%
+  filter(sentiment == "negative") %>%
+  count(word, sort = TRUE) %>%
+  top_n(10)
+```
+```{r}
+tmp %>%
+  filter(sentiment == "joy") %>%
+  count(word, sort = TRUE) %>% 
+  top_n(10)
+```
+
+```{r}
+tmp %>%
+  filter(sentiment == "fear") %>%
+  count(word, sort = TRUE) %>%
+    top_n(10)
+```
+
+```{r}
+tmp %>%
+  filter(sentiment == "disgust") %>%
+  count(word, sort = TRUE) %>%
+    top_n(10)
+```
+
+```{r}
+tmp %>%
+  filter(sentiment == "anticipation") %>%
+  count(word, sort = TRUE) %>%
+    top_n(10)
+```
+
+```{r}
+tmp %>%
+  filter(sentiment == "anger") %>%
+  count(word, sort = TRUE) %>%
+  top_n(10)
+```
+
+```{r}
+tmp %>%
+  filter(sentiment == "trust") %>%
+  count(word, sort = TRUE) %>%
+  top_n(10)
+```
+
+```{r}
+tmp %>%
+  filter(sentiment == "surprise") %>%
+  count(word, sort = TRUE) %>%
+  top_n(10)
+```
+
+```{r}
+tmp %>%
+  filter(sentiment == "sadness") %>%
+  count(word, sort = TRUE) %>%
+  top_n(10)
+```
+
+Remove words
+```{r}
+words_to_remove <- c("white", "negro")
+tmp <- tmp %>% filter(!word %in% words_to_remove)
+```
+
+
+```{r}
+
+sentiments <- tmp %>% 
+  group_by(index, row, response_type, outfits, sentiment) %>% 
+  count() %>%
+  spread(sentiment, n, fill = 0)
+
+# normalize sentiments by the number of words contributing to that sentiment
+sentiments <- sentiments %>% 
+  mutate(word_count = anger + anticipation + disgust + fear + joy + negative + positive + sadness + surprise + trust) %>%
+  filter(word_count > 0) %>%
+  mutate(anger = anger / word_count,
+            anticipation = anticipation / word_count,
+            disgust = disgust / word_count,
+            fear = fear / word_count,
+            joy = joy / word_count,
+            negative = negative / word_count,
+            positive = positive / word_count,
+            sadness = sadness / word_count,
+            surprise = surprise / word_count,
+            trust = trust / word_count)
+```
+
+```{r, fig.align='center'}
+# black, long reponse
+black_long_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(response_type == "black_long") %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+bl_mean_melted <- melt(black_long_mean)
+plot_data <- rbind(rep(max(bl_mean_melted$value), 10), rep(min(bl_mean_melted$value), 10), black_long_mean)
+
+radarchart(plot_data,
+           cglcol = "grey",
+           cglty = 1)
+```
+
+```{r, fig.align='center'}
+white_long_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(response_type == "white_long") %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+wl_mean_melted <- melt(white_long_mean)
+plot_data <- rbind(rep(max(wl_mean_melted$value), 10), rep(min(wl_mean_melted$value), 10), white_long_mean)
+
+radarchart(plot_data,
+           cglcol = "grey",
+           cglty = 1)
+```
+
+```{r, fig.align='center'}
+black_long <- copy(black_long_mean)
+white_long <- copy(white_long_mean)
+
+# combine repsonses
+long <- rbind(black_long, white_long)
+rownames(long) <- c("Black", "white")
+
+# get min and max for plotting
+long_melted <- melt(long)
+minval <- min(long_melted$value)
+maxval <- max(long_melted$value)
+
+plot_data <- rbind(rep(maxval, 10), rep(minval, 10), long)
+
+colors <- c("#e57200", "#232d4b")
+
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+title(main = "General Response to S32");
+
+```
+
+```{r, fig.align='center'}
+# against desegregation
+ws_against <- sentiments %>%
+  filter(response_type == "white_short") %>%
+  filter(outfits == "['They should be in separate outfits']")
+
+# for desegregation
+ws_for <- sentiments %>%
+  filter(response_type == "white_short") %>% 
+  filter(outfits == "['They should be together in the same outfits']")
+
+against_mean <- dplyr::as_data_frame(ws_against) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+for_mean <- dplyr::as_data_frame(ws_for) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+comb <- rbind(against_mean, for_mean)
+rownames(comb) <- c("segregationist", "integrationist")
+
+# get min and max for plotting
+comb_melted <- melt(comb)
+minval <- min(comb_melted$value)
+maxval <- max(comb_melted$value)
+
+plot_data <- rbind(rep(maxval, 10), rep(minval, 10), comb)
+
+colors <- c("#e57200", "#232d4b")
+
+radarchart(plot_data,
+           cglcol = "grey",
+           cglty = 1,
+           pcol = colors,
+           plty = 1, 
+           plwd = 3, # line width
+);
+
+legend(x = 1, y = 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors);
+title(main = "White Soliders'\n Comment on Outfit Integration");
+```

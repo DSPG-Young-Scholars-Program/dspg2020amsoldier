@@ -5,6 +5,7 @@ library(tidytext)
 library(dplyr)
 library(purrr)
 library(tidyr)
+library(syn)
 
 #load in your data as data tables
 # connect to postgresql to get data (in rivanna)
@@ -28,9 +29,11 @@ S32W <- S32 %>% filter(racial_group == "white")
 # this will create data frames out out of text
 white_short <- tibble(row = 1:nrow(S32W), 
                       text = S32W$outfits_comment, 
+                      outfits = S32W$outfits,
                       response_type = rep("white_short", nrow(S32W))) # Written response to "should soldiers be in separate outfits?"
 white_long <- tibble(row = 1:nrow(S32W), 
                      text = S32W$long, 
+                     outfits = S32W$outfits,
                      response_type = rep("white_long", nrow(S32W))) # Written response on overall thoughts on the survey
 black_long <- tibble(row = 1:nrow(S32N),
                      text = S32N$long, 
@@ -76,9 +79,49 @@ neg_bigram_pattern <- paste(neg_bigrams$bigram, collapse = "|")
 data$text <- str_replace_all(data$text, neg_bigram_pattern, "")
 # use the line below, should be 0 to indicate that all negated bigrams have been removed
 # sum(str_detect(data$text, neg_bigram_pattern)) 
+
 # save data 
 write.csv(data, "./data/s32_neg_bigrams_removed.csv")
 
+head(neg_words)
+length(neg_words)
 
+# load nrc sentiments
+nrc_sentiments <- get_sentiments("nrc")
+
+# convert character vector to tibble
+neg_words <- tibble(word = neg_words)
+
+# find words that have sentiments
+neg_words_sents <- inner_join(neg_words, nrc_sentiments)
+
+# get list of unique words that have sentiments
+neg_words_to_save <- unique(neg_words_sents$word)
+# write.csv(neg_words_to_save, "./data/neg_words.csv")
+
+# loop over words and get first antonym which has nrc sentiments
+# returns NA for words that don't have antonyms or don't have 
+# nrc sentiments for those antonyms
+res <- sapply(neg_words_to_save, function(x) {
+  word <- x;
+  # get antonyms of word
+  ants <- ant(word);
+  # determine which antonyms are in the sentiments library
+  idx <- match(TRUE, ants %in% nrc_sentiments$word);
+  if (!is.na(idx)) {
+    return(ants[idx]);
+  } else {
+    return(NA);
+  }
+});
+
+# create tibble with original word and its antonym
+antonyms <- tibble(
+  word = neg_words_to_save,
+  antonym = res,
+);
+
+# how many NAs are there in the antonyms tibble?
+sum(is.na(antonyms$antonym)) # 266
 
 

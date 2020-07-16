@@ -201,16 +201,13 @@ S32W_for <- S32W %>%
   filter(outfits == "['They should be together in the same outfits']")
 nrow(S32W_for) # 101
 
-nrc_77_against <- bing_and_nrc_77_norm %>%
-  filter(method == "NRC") %>%
+nrc_77_against <- white_long %>%
   filter(row %in% S32W_against$row)
 
-nrc_77_for <- bing_and_nrc_77_norm %>%
-  filter(method == "NRC") %>%
+nrc_77_for <- white_long %>%
   filter(row %in% S32W_for$row)
 
 against_mean <- dplyr::as_data_frame(nrc_77_against) %>%
-  filter(method == "NRC") %>%
   select(c("anger",
            "anticipation",
            "disgust",
@@ -224,7 +221,6 @@ against_mean <- dplyr::as_data_frame(nrc_77_against) %>%
   summarise_all(mean)
 
 for_mean <- dplyr::as_data_frame(nrc_77_for) %>%
-  filter(method == "NRC") %>%
   select(c("anger",
            "anticipation",
            "disgust",
