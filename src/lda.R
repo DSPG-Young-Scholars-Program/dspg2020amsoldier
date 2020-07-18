@@ -122,7 +122,8 @@ dtm_77 <- cast_dtm(tidy_77, term = word, document = row, value = n)
 dtm_78 <- cast_dtm(tidy_78, term = word, document = row, value = n)
 dtm_n <- cast_dtm(tidy_n, term = word, document = row, value = n)
 
-num_clusters <- 8
+num_clusters <- 6
+weight_strength = .01
 lda_77 <- LDA(dtm_77, k = num_clusters, method = "Gibbs", control = NULL)
 lda_78 <- LDA(dtm_78, k = num_clusters, method = "Gibbs", control = NULL)
 lda_n <- LDA(dtm_n, k = num_clusters, method = "Gibbs", control = NULL)
@@ -136,13 +137,13 @@ topics_n <- tidy(lda_n, matrix = "beta")
 colnames(topics_n) = colnames(topics_77) = colnames(topics_78) =  c("source", "target", "weight")
 # Extract into data frame and plot
 topics_n %>%
-  filter(weight >= .01) %>%
+  filter(weight >= weight_strength) %>%
   simpleNetwork(fontSize = 12, zoom = T)
 topics_77 %>%
-  filter(weight >= .01) %>%
+  filter(weight >= weight_strength) %>%
   simpleNetwork(fontSize = 12, zoom = T)
 topics_78 %>%
-  filter(weight >= .01) %>%
+  filter(weight >= weight_strength) %>%
   simpleNetwork(fontSize = 12, zoom = T)
 
 # this groups by topics and shows top 10 words and arranges by beta
