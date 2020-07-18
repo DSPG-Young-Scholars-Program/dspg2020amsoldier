@@ -1,0 +1,17 @@
+---
+title: "Sample"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    smooth_scroll: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rmarkdown)
+```
+# EDA
+
+## EDA.1
