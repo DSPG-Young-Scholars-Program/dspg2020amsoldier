@@ -198,5 +198,5 @@ ggplot(aes(x=better, fill = edu)) +geom_bar(position = "fill") +
 demo %>%
 ggplot(aes(x=better, fill = community )) +geom_bar(position = "fill") +
   labs(title='Black Soldiers Outlook on Post-War Prospects\nProportioned by Community', x="Prospects", y = "Proportion")+
-      scale_fill_manual(values = rev(my_cols[1:6]), name = "Community")
+      scale_fill_manual(values = rev(my_cols[1:6]), name = "Community") 
 ```
