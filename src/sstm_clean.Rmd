@@ -15,6 +15,7 @@ library(BTM)
 library(udpipe)
 library(networkD3)
 library(plyr)
+library(SnowballC)
 # require(devtools) 
 # install_version("igraph", version = "1.2.4", repos = "http://cran.us.r-project.org")
 library(igraph)
@@ -82,9 +83,9 @@ colnames(textn_df) = colnames(text77_df) = colnames(text78_df) = c("doc_id", "te
 
 ```{r}
 #takes a grip to run :( so i commented it out 
-# anno_n  = udpipe(textn_df,"english")
-# anno77  = udpipe(text77_df,"english")
-# anno78 = udpipe(text78_df,"english")
+anno_n  = udpipe(textn_df,"english")
+anno77  = udpipe(text77_df,"english")
+anno78 = udpipe(text78_df,"english")
 ```
 
 ```{r}
@@ -95,6 +96,7 @@ biterms_n <- biterms_n[, cooccurrence(x = lemma,
                                              nchar(lemma) > 2 & !lemma %in% stopwords("en"),
                                   skipgram = 3),
                    by = list(doc_id)]
+#write.csv(biterms_n, here::here("data","biterms_n.csv"))
 ```
 
 ```{r}
@@ -102,6 +104,7 @@ biterms_n <- biterms_n[, cooccurrence(x = lemma,
 set.seed(20200629)
 traindata_n <- subset(anno_n, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
 traindata_n <- traindata_n[, c("doc_id", "lemma")]
+# write.csv(traindata_n, here::here("data","traindata_n.csv"))
 model_n     <- BTM(traindata_n, biterms = biterms_n, k = 5, iter = 2000, background = TRUE, trace = 100)
 ```
 
@@ -121,13 +124,14 @@ textplot_bar(x, top = 20, panel = "Adjective", xlab = "Frequency",
 
 ```{r}
 V = c("V2","V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10")
+k = c(1:model_n$K)
 topics = c("Topic 1","Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", " Topic 7", "Topic 8", "Topic 9")
 
 #convert word-topic porbability matrix into a long table 
 topics_n = tidy_topic_probs(model_n)
 topics_n$weight = as.numeric(topics_n$weight)
 topics_n$target = topics_n$target %>%
-mapvalues(from = V, to = topics)
+  mapvalues(from = V, to = topics)
 
 
 #rough network plot
@@ -156,6 +160,26 @@ edge_n = convert_to_edge(biterms_n)
 edge_n %>%
   filter(weight >=3)%>%
     simpleNetwork(fontSize = 12, zoom =T)
+
+
+edgelist = topics_n %>%
+  filter(weight >= .01)
+sources <- edgelist$source
+targets <- edgelist$target
+node_names <- factor(sort(unique(c(as.character(sources), 
+                                   as.character(targets)))))
+
+
+
+groups = edgelist %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:model_n$K, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist$weight)
+forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T, legend = T)
 ```
 
 
@@ -169,6 +193,7 @@ biterms_77 <- biterms_77[, cooccurrence(x = lemma,
                                              nchar(lemma) > 2 & !lemma %in% stopwords("en"),
                                   skipgram = 3),
                    by = list(doc_id)]
+# write.csv(biterms_77, here::here("data","biterms_77.csv"))
 ```
 
 ```{r}
@@ -178,12 +203,15 @@ biterms_78 <- biterms_78[, cooccurrence(x = lemma,
                                              nchar(lemma) > 2 & !lemma %in% stopwords("en"),
                                   skipgram = 3),
                    by = list(doc_id)]
+# write.csv(biterms_78, here::here("data","biterms_78.csv"))
 ```
 
 
 ```{r}
 traindata77 <- subset(anno77, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
 traindata77 <- traindata77[, c("doc_id", "lemma")]
+# write.csv(traindata77, here::here("data","traindata_77.csv"))
+
 model77     <- BTM(traindata77, biterms = biterms77, k = 9, iter = 2000, background = TRUE, trace = 100)
 ```
 
@@ -210,6 +238,8 @@ edge_77 %>%
 ```{r}
 traindata78 <- subset(anno78, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
 traindata78 <- traindata78[, c("doc_id", "lemma")]
+# write.csv(traindata78, here::here("data","traindata_78.csv"))
+
 model78     <- BTM(traindata78, biterms = biterms78, k = 9, iter = 2000, background = TRUE, trace = 100)
 ```
 
