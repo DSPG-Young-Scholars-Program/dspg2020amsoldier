@@ -1,8 +1,6 @@
 ---
 title: "Survey32 Writeup"
 output:
-  pdf_document: default
-  word_document: default
   html_document: default
 ---
 
@@ -48,6 +46,9 @@ add_demographic_factors = function(df){
   df$community = factor(df$Q.10.,
                      levels = c(0:6),
                      labels = c(NA,"Farm", "Countryside", "Village", "Small City" ,"City", "Large City"))
+  df$better = factor(df$Q.84.,
+                     levels = c(0:4),
+                     labels = c(NA, "Better", "Same", "Worse", "Undecided"))
   return(df)
 }
 ```
@@ -55,13 +56,11 @@ add_demographic_factors = function(df){
 ```{r reading, include= F}
 s144 = read.csv(here::here('data','working', "AMS0144_answers.csv")) %>% as.data.frame()
 
-demo = add_demographic_factors(s144) %>% select(age, edu, enlist, state, community)
+demo = add_demographic_factors(s144) %>% select(age, edu, enlist, state, community,better)
 #tidifying the dataset
 # ans = w_ans[, (ncol(w_ans)-10):ncol(w_ans)] %>% full_join(b_ans[, (ncol(b_ans)-10):ncol(b_ans)])
-
-n <- 60
-qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
-col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+my_cols = c("232d4b","2c4f6b","0e879c","60999a", "9bc0c0","d1e0bf", "ebf094", "d9e12b","e6ce3a","e6a01d","e57200","a35200","fdfdfd")
+my_cols = paste0('#', my_cols)
 ```
 
 
@@ -79,7 +78,7 @@ Age was not collected on a continuous scale and was discretized into a few diffe
 ```{r age}
 demo %>% 
 ggplot(aes(x=age)) +
-  geom_bar(position = "dodge") +
+  geom_bar(position = "dodge", fill = 'darkslategray4') +
   labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count")
 ```
 
@@ -90,7 +89,7 @@ If we look at education now we see that again black soldiers have littel spread 
 ```{r edu, fig.width=7, fig.height=4}
 demo %>% 
 ggplot(aes(x=edu)) +
-  geom_bar(position = "dodge", width = 0.7) +
+  geom_bar(position = "dodge", width = 0.7, fill = 'darkslategray4') +
   labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count")+
       labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -144,7 +143,8 @@ When we overlay the distribution of education levels with age ranges, we see tha
 demo %>%
 ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
   labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Proportion")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:12]))
 
 ```
 We see that larger portions of soldiers who are more educated come from communities whihc are larger in population.
@@ -153,7 +153,14 @@ We see that larger portions of soldiers who are more educated come from communit
 demo %>%
 ggplot( aes(x=edu, fill = community)) +geom_bar(position= "fill") +
   labs(title="Community Distribution over Education Levels of Soldiers", x="Education Level", y = "Proportion")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:6]), name = "Community")
+
+demo %>%
+ggplot( aes(x=edu, fill = better)) +geom_bar(position= "fill") +
+  labs(title="Community Distribution over Post-War Outlook of Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:6]), name  = "Outlook")
 ```
 
 ```{r, fig.width =8, fig.height= 6}
@@ -162,5 +169,34 @@ ggplot( aes(x=edu, fill = community)) +geom_bar(position= "fill") +
 demo %>%
 ggplot(aes(x=enlist, fill = age)) +geom_bar(position = "fill") +
   labs(title='Black Soldiers Enlistment Proportion by Age', x="Enlistment", y = "Proportion")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+    scale_fill_manual(values = rev(my_cols[1:12]), name = 'Age')
+demo %>%
+ggplot(aes(x=enlist, fill = better)) +geom_bar(position = "fill") +
+  labs(title='Black Soldiers Enlistment and Post-War Outlook', x="Enlistment", y = "Proportion")+
+  scale_fill_manual(values = rev(my_cols[1:5]), name = 'Outlook')
+
+```
+
+```{r}
+demo %>%
+ggplot(aes(x=better)) +geom_bar(fill = my_cols[4]) +
+  labs(title="Black Soldiers Outlook on Post-War Prospects ", x="Prospects", y = "Proportion")
+
+demo %>%
+ggplot(aes(x=better, fill = age)) +geom_bar(position = "fill") +
+  labs(title='Black Soldiers Outlook on Post-War Prospects Proportioned by Age', x="Prospects", y = "Proportion")+
+  scale_fill_manual(values = rev(my_cols[1:12]), name = "Age Range")
+
+
+demo %>%
+ggplot(aes(x=better, fill = edu)) +geom_bar(position = "fill") +
+  labs(title='Black Soldiers Outlook on Post-War Prospects \nProportion by Education', x="Prospects", y = "Proportion")+
+  scale_fill_manual(values = rev(my_cols[1:11]), name = "Education")
+
+
+demo %>%
+ggplot(aes(x=better, fill = community )) +geom_bar(position = "fill") +
+  labs(title='Black Soldiers Outlook on Post-War Prospects\nProportioned by Community', x="Prospects", y = "Proportion")+
+      scale_fill_manual(values = rev(my_cols[1:6]), name = "Community")
 ```
