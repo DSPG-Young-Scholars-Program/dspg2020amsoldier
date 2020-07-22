@@ -5,7 +5,9 @@ s195b <- read.csv("data/working/AMS195B_answers.csv")
 s195c <- read.csv("data/working/AMS195C_answers.csv")
 s35 <- read.csv("data/working/AMS0035_answers.csv")
 
-colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
+colors <- c("#232d4b",
+            # "#2c4f6b",
+            "#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 
 # Women ----------------------------------------------------------
 
@@ -19,12 +21,16 @@ colors <- c("#232d4b","#2c4f6b","#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a
 # S195B.Q14A. IN YOUR OPINION IS IT NECESSARY FOR THE WAR EFFORT TO HAVE WOMEN IN THE ARMY? 1. YES 2. NO 0. NO ANSWER
 
 s195b$Q.14A. <- recode_factor(s195b$Q.14A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.14B. <- recode_factor(s195b$Q.15B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
 s195b %>%
-  group_by(Q.14A.) %>%
+  group_by(Q.14A., Q.14B.) %>%
   count() %>%
   ggplot(aes(x = Q.14A., y = n)) +
   geom_bar(stat="identity", aes(fill = Q.14A.)) +
   ggtitle("IN YOUR OPINION IS IT NECESSARY FOR THE \nWAR EFFORT TO HAVE WOMEN IN THE ARMY?") +
+  facet_wrap(~Q.14B.) +
+  ylab("Number of Responses") +
+  xlab("Responses") +
   theme_minimal() +
   scale_fill_manual(values = colors)
 
