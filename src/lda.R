@@ -73,7 +73,7 @@ useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]"
 #   filter(row %in% num_words78$row[which(num_words78$n==1)]) %>%
 #   filter(!text %in% useless_responses) %>%
 #   View()
-# 
+#
 # num_wordsn <- textn_df %>%
 #   unnest_tokens(word, text) %>%
 #   count(row, sort = T)
@@ -278,7 +278,7 @@ bing_and_nrc <- bind_rows(tidy_n %>%
                           tidy_n %>%
                             inner_join(nrc) %>%
                             mutate(method = "NRC")) %>%
-  count(method, index = row %/% 80, sentiment) %>%
+  count(row, method, sentiment) %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative)
 
@@ -295,7 +295,7 @@ bing_and_nrc_77 <- bind_rows(tidy_77 %>%
                              tidy_77 %>%
                                inner_join(nrc) %>%
                                mutate(method = "NRC")) %>%
-  count(method, index = row %/% 80, sentiment) %>%
+  count(row, method, sentiment) %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative)
 
@@ -312,7 +312,7 @@ bing_and_nrc_78 <- bind_rows(tidy_78 %>%
                              tidy_78 %>%
                                inner_join(nrc) %>%
                                mutate(method = "NRC")) %>%
-  count(method, index = row %/% 80, sentiment) %>%
+  count(row, method, sentiment) %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative)
 
@@ -323,8 +323,8 @@ bind_rows(afinn_78,
   facet_wrap(~method, ncol = 1, scales = "free_y")
 
 # sentiment words counts -------------------------------------------------------
-custom_stop_words <- bind_rows(tibble(word = c("unclear", "underline"), 
-                                      lexicon = c("custom")), 
+custom_stop_words <- bind_rows(tibble(word = c("unclear", "underline"),
+                                      lexicon = c("custom")),
                                stop_words)
 
 # these graphs fully just show whatever number of words they want as oppsed to 10 because ties
@@ -447,7 +447,7 @@ bigrams_filtered_n <- bigrams_separated_n %>%
   filter(!word1 %in% stop_words$word) %>%
   filter(!word2 %in% stop_words$word)
 
-bigram_counts_n <- bigrams_filtered_n %>% 
+bigram_counts_n <- bigrams_filtered_n %>%
   count(word1, word2, sort = TRUE)
 # write.csv(bigram_counts_n, "cleaned_black_long_edge.csv")
 
