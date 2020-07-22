@@ -1,0 +1,260 @@
+---
+title: "Spatial Arrangement in S32"
+author: "Mary Solomon"
+date: "7/19/2020"
+output: html_document
+---
+
+An aspect of racial segregation that we want to analyze is segregation related to spatial arrangement. Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century. [include more context].
+
+We are interested to see if themes of spatial segregation are prevelant in the soldiers' responses and experiences in the army during WWII.
+
+
+```{r setup, include=FALSE}
+#libraries
+library(tidytext)
+library(data.table)
+library("RPostgreSQL")
+library(stringi)
+library(textstem)
+library(dplyr)
+library(tidyr)
+library(SnowballC)
+library(igraph)
+library(ggraph)
+library(widyr)
+library(stringr)
+```
+
+```{r functions, include = FALSE}
+# Visualizing Bigrams functions
+# From tidytext documentation
+visualize_bigrams <- function(bigrams, title) {
+  set.seed(2020)
+  a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+  
+  bigrams %>%
+    graph_from_data_frame() %>%
+    ggraph(layout = "fr") +
+    geom_edge_link(aes(edge_alpha = n), show.legend = FALSE, arrow = a) +
+    geom_node_point(color = "lightblue", size = 5) +
+    geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+    theme_void() + theme(legend.position = "none",
+                      plot.title = element_text(hjust = 0.5)) +
+    ggtitle(title)
+}
+```
+
+```{r dataload, include=FALSE}
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+data <- dbGetQuery(conn, "SELECT * FROM american_soldier.survey_32_clean")
+dbDisconnect(conn)
+```
+
+```{r dictionaryload, include=FALSE}
+#load dictionary csv
+spatial_words <- fread("~/git/dspg2020amsoldier/data/dictionary/spatial_arrangement.csv", sep = ",")
+space_match <- paste(paste("\\b", spatial_words$space,"\\b", sep = ""), collapse="|") #regex friendly 
+```
+
+
+```{r data_subset, include = FALSE}
+#subset data based on question and race
+S32W_short <- data %>% filter(racial_group== "white") %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
+S32W_short <- tibble(nrow=1:nrow(S32W_short), text = S32W_short$outfits_comment)
+
+S32W_long <- data %>% filter(racial_group== "white") %>% select(long) %>% filter(!is.na(long))
+S32W_long <- tibble(nrow=1:nrow(S32W_long), text = S32W_long$long)
+
+S32N_long <- data %>% filter(racial_group== "black") %>% select(long) %>% filter(!is.na(long))
+S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
+
+```
+
+
+```{r bigram_create, include = FALSE, echo = FALSE}
+short_bigrams_space <- S32W_short %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
+  count(word1, word2, sort = TRUE)
+
+longW_bigrams_space <- S32W_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)  %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
+  count(word1, word2, sort = TRUE)
+
+longN_bigrams_space <- S32N_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
+  count(word1, word2, sort = TRUE)
+
+```
+
+
+
+```{r bigram_visualize}
+visualize_bigrams(short_bigrams_space, "White Soldiers' Outfits Response - Spatial Arrangement") 
+visualize_bigrams(longW_bigrams_space, "White Soldiers' Long Response - Spatial Arrangement")
+visualize_bigrams(longN_bigrams_space, "Black Soldiers' Long Response - Spatial Arrangement")
+```
+
+Some notable nodes in the white soldiers' response is south, train, camp, town and post. Bigrams for the word South include hate and dislike. The node town is most commonly followed by the word police.
+
+
+
+### Re-do analysis with improved dictionary.
+collapsed words -> armyexchange & serviceclub
+
+```{r}
+#alterations to data
+##### some data cleaning
+#remove possessive 's
+data$outfits_comment <- str_replace_all(data$outfits_comment, "'s", "")
+data$long <- str_replace_all(data$long, "'s", "")
+
+#stem and lem gender words as well
+#load dictionary csv
+spatial_words <- fread("~/git/dspg2020amsoldier/data/dictionary/spatial_arrangement.csv", sep = ",")
+space_match <- paste(paste("\\b", spatial_words$space,"\\b", sep = ""), collapse="|") #regex friendly 
+
+####collapse certain two word phrases like white man --> whiteman
+#read the csv file of correct spellings back in.
+collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",") # (n=274)
+collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
+
+#replace with collapsed words
+data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse, vectorize_all = FALSE)
+data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse, vectorize_all = FALSE)
+```
+
+
+```{r }
+#subset data based on question and race
+S32W_short2 <- data %>% filter(racial_group== "white") %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
+S32W_short2 <- tibble(nrow=1:nrow(S32W_short2), text = S32W_short2$outfits_comment)
+
+S32W_long2 <- data %>% filter(racial_group== "white") %>% select(long) %>% filter(!is.na(long))
+S32W_long2 <- tibble(nrow=1:nrow(S32W_long2), text = S32W_long2$long)
+
+S32N_long2 <- data %>% filter(racial_group== "black") %>% select(long) %>% filter(!is.na(long))
+S32N_long2 <- tibble(nrow=1:nrow(S32N_long2), text = S32N_long2$long)
+```
+
+```{r }
+short_bigrams_space2 <- S32W_short2 %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
+  count(word1, word2, sort = TRUE)
+
+longW_bigrams_space2 <- S32W_long2 %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)  %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
+  count(word1, word2, sort = TRUE) #%>% filter(n > 1)
+
+longN_bigrams_space2 <- S32N_long2 %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
+  count(word1, word2, sort = TRUE) #%>% filter(n > 1)
+
+```
+
+
+
+```{r }
+visualize_bigrams(short_bigrams_space2, "White Soldiers' Outfits Response - Spatial Arrangement") 
+visualize_bigrams(longW_bigrams_space2, "White Soldiers' Long Response - Spatial Arrangement")
+visualize_bigrams(longN_bigrams_space2, "Black Soldiers' Long Response - Spatial Arrangement")
+```
+
+
+
+
+### Co-occurences:
+```{r}
+cooccur_spatial <- function(data, n=5, corr=.15){
+  #load dictionary csv
+  spatial_words <- fread("~/git/dspg2020amsoldier/data/dictionary/spatial_arrangement.csv", sep = ",")
+  space_match <- paste(paste("\\b", spatial_words$space,"\\b", sep = ""), collapse="|") #regex friendly 
+  space_match <- stem_words(lemmatize_words(space_match))
+  
+  data %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word = stem_words(lemmatize_words(word))) %>%
+  group_by(word) %>% 
+  filter(n() >= n) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(grepl(space_match, item1))%>%
+  filter(correlation > corr) 
+}
+visualize_cooccur <- function(data, title){
+  data %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + ggtitle(title)
+}
+```
+
+
+
+white soldiers short response
+```{r}
+S32W_short_cors <- cooccur_spatial(S32W_short2, n = 5, corr = 0.15) 
+
+#plot
+visualize_cooccur(S32W_short_cors, "White Soldiers' Short Response - Spatial Arrangement Co-occurences")
+```
+
+
+
+white soldiers long response
+```{r}
+S32W_long_cors <- cooccur_spatial(S32W_long2) 
+
+#plot
+visualize_cooccur(S32W_long_cors, "White Soldiers' Long Response - Spatial Arrangement Co-occurences")
+```
+
+
+black soldiers long response
+```{r}
+S32N_long_cors <- cooccur_spatial(S32N_long2) 
+
+#plot
+visualize_cooccur(S32N_long_cors, "Black Soldiers' Long Response - Spatial Arrangement Co-occurences")
+```

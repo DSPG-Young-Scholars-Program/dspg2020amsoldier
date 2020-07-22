@@ -3,8 +3,10 @@ androgynous,identity
 boy,male
 boys,male
 bride,female
+brother,male
 engage,relation
 engaged,relation
+father,male
 fem,female
 female,female
 females,female
@@ -31,6 +33,7 @@ marry,relation
 masculine,male
 men,male
 misogynous,construct
+mother,female
 patriarchal,construct
 patrilineal,male
 rape,relation
@@ -39,6 +42,8 @@ sexed,construct
 sexes,construct
 sexism,construct
 sexist,construct
+sister,female
+sweetheart,relation
 sexual relations,relation
 transgender,identity
 transgendered,identity
@@ -53,3 +58,15 @@ wife,relation
 wives,relation
 woman,female
 women,female
+whitewoman,female
+whiteman,male
+whiteboi,male
+whitegirl,female
+negrowoman,female
+negroman,male
+negroboi,male
+negrogirl,female
+colorboi,male
+colorgirl,female
+colorwoman,female
+colorman,male

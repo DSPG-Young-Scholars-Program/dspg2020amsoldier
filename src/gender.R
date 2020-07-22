@@ -38,9 +38,16 @@ conn <- dbConnect(drv = PostgreSQL(),
 data <- dbGetQuery(conn, "SELECT * FROM american_soldier.survey_32_clean")
 dbDisconnect(conn)
 
+# Words to collapse for Gender analysis: white boi, 
+
+
+
 ##### ------------- Dictionary load -----------------------------------------######
 gender_words <- fread("~/git/dspg2020amsoldier/data/dictionary/gender.csv", sep = ",") 
 spatial_words <- fread("~/git/dspg2020amsoldier/data/dictionary/spatial_arrangement.csv", sep = ",")
+
+
+
 
 gender_match <- paste(paste("\\b", gender_words$gender,"\\b", sep = ""), collapse="|")
 space_match <- paste(paste("\\b", spatial_words$space,"\\b", sep = ""), collapse="|")
