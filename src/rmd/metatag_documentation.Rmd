@@ -1,0 +1,173 @@
+---
+title: "Metatag Documentation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr);library(ggplot2);library(data.table);library(tidyr);library(stringr);library(gridExtra)
+library(tidytext);library(textstem);library(SnowballC)
+```
+
+```{r echo = FALSE}
+library("RPostgreSQL")
+# connect to postgresql to get data (in rivanna)
+conn <- dbConnect(drv = PostgreSQL(), 
+                  dbname = "sdad", 
+                  host = "10.250.124.195", 
+                  port = 5432, 
+                  user = Sys.getenv("db_userid"), 
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data  
+data <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_cont, racial_group  
+                                 FROM american_soldier.survey_32_combined")
+# disconnect from postgresql
+dbDisconnect(conn)
+#combine continuation of long question into one column
+data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE) %>% 
+  mutate(long = tolower(ifelse(long=="", NA,long)), outfits_comment = tolower(ifelse(outfits_comment=="", NA,outfits_comment)), index= 1:nrow(data))
+
+```
+
+```{r echo = FALSE}
+long <- data %>% select(long, racial_group) %>% filter(!is.na(long), long != " ", long != "") %>%
+  mutate(nwords=sapply(strsplit(gsub("\\]"," ",long), " "), length),
+         unclear= str_extract_all(long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"),
+         nunclear=lengths(unclear)*2,
+         #underline = str_extract_all(long,"(?=\\[underline\\]).*?(?<=\\[\\/underline\\])"),
+         #insert = str_extract_all(long,"(?=\\[insertion\\]).*?(?<=\\[\\/insertion\\])"),
+         #delete = str_extract_all(long,"(?=\\[deletion\\]).*?(?<=\\[\\/deletion\\])"),
+         #circle = str_extract_all(long,"(?=\\[circle\\]).*?(?<=\\[\\/circle\\])"),
+         tags = str_extract_all(long, "(?=\\[).*?(?<=\\])|(?=\\[\\/).*?(?<=\\])"),
+         #ntags = lengths(unclear) + lengths(insert)+ lengths(delete) + lengths(circle),
+         ntags = lengths(tags),
+         prop.tags = ntags/nwords,
+         prop.unclear = nunclear/nwords,
+         question = "long") %>% rename(response = long)
+ 
+
+outfits <- data %>% select(outfits_comment, racial_group) %>% filter(racial_group=="white", !is.na(outfits_comment)) %>%
+  mutate(nwords=sapply(strsplit(gsub("\\]"," ",outfits_comment), " "), length),
+         unclear= str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"),
+         nunclear=lengths(unclear)*2,
+         #underline = str_extract_all(outfits_comment,"(?=\\[underline\\]).*?(?<=\\[\\/underline\\])"),
+         #insert = str_extract_all(outfits_comment,"(?=\\[insertion\\]).*?(?<=\\[\\/insertion\\])"),
+         #delete = str_extract_all(outfits_comment,"(?=\\[deletion\\]).*?(?<=\\[\\/deletion\\])"),
+         #circle = str_extract_all(outfits_comment,"(?=\\[circle\\]).*?(?<=\\[\\/circle\\])"),
+         tags = str_extract_all(outfits_comment, "(?=\\[).*?(?<=\\])|(?=\\[\\/).*?(?<=\\])"),
+         #ntags = lengths(unclear) + lengths(insert)+ lengths(delete) + lengths(circle),
+         ntags = lengths(tags),
+         prop.tags = ntags/nwords,
+         prop.unclear = nunclear/nwords,
+         question = "outfits") %>% rename(response=outfits_comment)
+
+proportions <- rbind(long, outfits)
+```
+### Distribution of word count per response
+Current word count includes stop words. 
+```{r}
+gridExtra::grid.arrange(
+ggplot(filter(proportions, question == "long"), aes(x=nwords)) + geom_histogram(aes(y=..count../sum(..count..)), bins = 50, fill = "dark blue") + ggtitle("Long: number of words per comment") + coord_cartesian(ylim = c(0,0.25)) + ylab("% of responses"),
+ggplot(filter(proportions, question == "outfits"), aes(x=nwords)) + geom_histogram(aes(y=..count../sum(..count..)), bins = 50, fill = "dark blue") +ggtitle("Outfits: number of words per comment")+ coord_cartesian(ylim = c(0,0.25))+ ylab("% of responses"),
+nrow=1)
+```
+
+The soldiers used around 0-200 words per response for the question asking about their overall thoughts on the survey. However, for the question on whether soldiers should be in separate outfits, 0-25 words are used per response. The outfit response was directed at a specific topic whereas the long response asked for the soldiers' overall feelings towards the questionnaire. Naturally, the soldiers may want to talk about many of the questions or themes in the survey, therefore making those responses longer. 
+
+#Examine metadata tag use over entire collection of text
+```{r}
+long <- data$long;long <- long[long != ""] #all text for long questions
+outfit <- na.omit(data$outfits_comment) #all text for outfits question
+text<- c(long, outfit) #entirety of text
+```
+
+
+```{r echo=FALSE}
+#Function to extract all use cases of metadata tags
+extract_tag <- function(data, metatag){
+  if (metatag == "bracket"){
+    data.bracket <- unlist(str_extract_all(data, "(?=\\[).*?(?<=\\])"))
+    remove <- c("[unclear]","[/unclear]","[paragraph]", "[Paragraph]","[insertion]","[/insertion]", "", "[deletion]", "[/deletion]", "[underline]", "[/underline]", "[circle]", "[/circle]")
+    for(i in 1:13){data.bracket <- data.bracket[data.bracket!= remove[i]]}
+    data.bracket <- gsub("\\[", "", data.bracket);data.bracket <- gsub("\\]", "", data.bracket)
+    data.bracket <- as.data.table(table(data.bracket))[order(-N),]
+    return(data.bracket)
+  }
+  else{
+  #create regex pattern that matches the metadata tag
+  rx <- paste("(?=\\[", metatag, "\\]).*?(?<=\\[\\/", metatag, "\\])", sep="")
+  #extract all cases of use for that tag
+  data.metatag <- unlist(str_extract_all(data, rx))
+  #Remove missing data and store in data.frame.
+  data.metatag <- data.metatag[data.metatag != ""]
+  data.metatag <- as.data.table(table(data.metatag))[order(-N),]
+  return(data.metatag)
+  }
+}
+unclear <- extract_tag(text, "unclear")
+underline <- extract_tag(text, "underline")
+insert <- extract_tag(text, "insertion")
+delete <- extract_tag(text, "deletion")
+circle <- extract_tag(text, "circle")
+bracket <- extract_tag(text, "bracket")
+```
+
+### How many tags per response?
+
+
+
+
+```{r}
+gridExtra::grid.arrange(
+ggplot(filter(proportions, question == "long"), aes(x=ntags)) + geom_histogram(aes(y=..count../sum(..count..)), bins = 50, fill = "dark blue") + ggtitle("Long: metatags per comment")+ coord_cartesian(ylim = c(0,1))+ ylab("% of responses"),
+ggplot(filter(proportions, question == "outfits"), aes(x=ntags)) + geom_histogram(aes(y=..count../sum(..count..)), bins = 50, fill = "dark blue") +ggtitle("Outfits:metatags per comment")+ coord_cartesian(ylim = c(0,1)) + scale_x_continuous(breaks = seq(0, 10, 2))+ ylab("% of responses"),
+nrow=1)
+```
+
+Both histograms for the Long response and the reponse for separate outfits are havily skewed to the right because majority of the responses have 0 metatags. The long response has more tags used per response than the question regarding outfits. This is most likely becuase the outfits responses used far fewer words than the long response.
+
+### unclear
+
+Zooniverse instructions for metatag use: 
+The "unclear" metatags are used for words that are illegible. If a word is completely illegible, you should include [unclear][/unclear] without anything appearing between the opening and ending metatags. If you think you know the word but are not sure, you can put your guess inside the "unclear" metatags, such as [unclear]Utopia[/unclear]. Each set of unclear metatags [unclear][/unclear] should represent one unclear word, so if you see multiple illegible words in a row, you should use multiple sets, one for each unclear word. For example, if you see two consecutive words that are illegible, you should put [unclear][/unclear] [unclear][/unclear]. You will use this basic approach to metatags for the following metatags.
+```{r}
+nrow(unclear)
+head(unclear, 10)
+```
+
+Overall, there are around 792 unique uses of this tag. This tells us that the use of the tag does not have an overarching pattern throughout the responses. Rather each use of the tag is a case by case instance that is unique to the needs of the individual response. Majority of cases for use of the tag are to indicate a portion of the response that is completely illegible. In addition, we see the presence of unclear tags containing question marks, which upon further investigation, also indicates a portion of the response that is illegible.  
+
+### Underline
+
+```{r}
+nrow(underline)
+head(underline, 10)
+```
+
+There are 95 unique uses of soldiersunderlining portions of their response. Given that few of these instances are used multiple times throughout the entire collection of responses, we can see there's no notable trend in what the soldiers have chosen to emphasize by underlining.For the purposes of Natural Language Processing methods, the presence of the underline tag doesn't pose a significant advantage. Therefore, they will be removed during text cleaning. However, some separate visualization of the undelrined words may be considered to highlight some of the words that were important to the soldiers.
+
+### Circle
+
+```{r}
+nrow(circle)
+head(circle, 10)
+```
+
+The metatag of circle is very rarely used and only has 6 cases. The use of circle is used when the soldier circled a number to reference a previous question in the survey. The use of the tag is trivial to conveying meaning of the soldier's responses. Therefore it will simply be removed from the transcribed responses.
+
+### Brackets
+```{r}
+nrow(bracket)
+head(bracket, 10)
+```
+
+There are around 662 unique cases of brackets being used to provide corrections to a portion of the text response. However, you can see that a bracketed word such as Underlined is meant to have operated as the underline metatag. This is an indicator that some of the metatags have not been inserted correctly by the Zooniverse transcriber.
+
+#Treatment of tags during text cleaning
+
+* paragraph: These tags will be removed since they do not provide additional insight to the soldier's responses.
+* insertion: These tags will be removed, leaving the text in between the tags to remain in the response. The writing contained in the insertion metatag were clearly intended to be part of the soldier's response. The tag alone does not provide any additional insight to the soldier response.    
+* circle : As shown in the examination of the metatag uses, the circle tag is primarily used for referring to previous questions in the survey. These tags will be removed since they do not provide additional insight to the soldier's responses. But the contents within the tag will remain in the response.   
+* deletion: The deletion tags are used by the transcriber to mark any parts of the text that were crossed out by the soldier/or whomever processed the surveys at the time of collection. Due to the intent of omitting these contents of the response, the deletion tag and the contents inside will be removed from the survey responses.
+* brackets: Any entity of the transcription that is in brackets indicates a correction to its preceeding word in the soldier's response. An additional use of brackets is to indicate a correction in language, punctuation or grammar where it should occur in the response. Due to the variety of uses, correction of brackets is done manually by the researcher.
+* unclear: The unclear tag is the most troublesome of all the metatags. Any unclear tags with the absence of a word will be deleted, such as [unclear][/unclear] and [unclear]???[/unclear]. There are many unique instances of its use, making it difficult to develop a consistent rule for treatment. Therefore, the unclear tags are corrected manually by the researcher.  
