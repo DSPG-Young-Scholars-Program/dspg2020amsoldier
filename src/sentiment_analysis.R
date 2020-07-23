@@ -1,36 +1,45 @@
 # sentiment analysis file
 # load libraries
 library(tidytext)
+library(tidyr)
+library(here)
 
-nrc_sentiments <- get_sentiments("nrc")
+# load data
+source(here::here("src", "load_data.R"));
+source(here::here("src", "examining_negation.R"));
 
-# differences in sentiments between race
-nrc_sentiments %>% filter(word == "black")
-nrc_sentiments %>% filter(word == "white")
-nrc_sentiments %>% filter(word == "negro")
+# identical(s32, s32_negation_removed) # FALSE
+# load sentiments
+nrc_sentiments <- get_sentiments("nrc");
+
+remove_words <- function(text, words) {
+  pattern <- paste(words, collapse = "|");
+  text <- str_replace_all(text, pattern, "");
+  return(text);
+}
 
 # load data with negated bigrams removed for sentiment analysis
-data <- read.csv("./data/s32_neg_bigrams_removed.csv") %>% subset(select = -c(X));
-data$index = 1:nrow(data)
+# data$index = 1:nrow(data) # need to change
 
 # remove white, black, negro from text
-data$text <- str_replace_all(data$text, "white", "")
-data$text <- str_replace_all(data$text, "black", "")
-data$text <- str_replace_all(data$text, "negro", "")
+words <- c("white", "black", "negro");
+
+s32$text <- remove_words(s32$text, words);
+s32_negation_removed$text <- remove_words(s32_negation_removed$text, words);
 
 
-# compute sentiments for each response
-tmp <- data %>% 
+## compute sentiments
+tmp <- s32 %>% 
   unnest_tokens(word, text) %>%
-  inner_join(nrc_sentiments)
+  inner_join(nrc_sentiments);
 
-sentiments <- tmp %>% 
-  group_by(index, response_type, sentiment) %>% 
+s32_sentiments <- tmp %>% 
+  group_by(index, racial_group, response_type, outfits, sentiment) %>% 
   count() %>%
-  spread(sentiment, n, fill = 0)
+  spread(sentiment, n, fill = 0);
 
 # normalize sentiments by the number of words contributing to that sentiment
-sentiments <- sentiments %>% 
+s32_sentiments <- s32_sentiments %>% 
   mutate(word_count = anger + anticipation + disgust + fear + joy + negative + positive + sadness + surprise + trust) %>%
   filter(word_count > 0) %>%
   mutate(anger = anger / word_count,
@@ -42,7 +51,34 @@ sentiments <- sentiments %>%
             positive = positive / word_count,
             sadness = sadness / word_count,
             surprise = surprise / word_count,
-            trust = trust / word_count)
+            trust = trust / word_count);
+
+## compute sentiments with negated bigrams removed
+tmp <- s32_negation_removed %>% 
+  unnest_tokens(word, text) %>%
+  inner_join(nrc_sentiments);
+
+s32_negation_removed_sentiments <- tmp %>% 
+  group_by(index, racial_group, response_type, outfits, sentiment) %>% 
+  count() %>%
+  spread(sentiment, n, fill = 0);
+
+# normalize sentiments by the number of words contributing to that sentiment
+s32_negation_removed_sentiments <- s32_negation_removed_sentiments %>% 
+  mutate(word_count = anger + anticipation + disgust + fear + joy + negative + positive + sadness + surprise + trust) %>%
+  filter(word_count > 0) %>%
+  mutate(anger = anger / word_count,
+         anticipation = anticipation / word_count,
+         disgust = disgust / word_count,
+         fear = fear / word_count,
+         joy = joy / word_count,
+         negative = negative / word_count,
+         positive = positive / word_count,
+         sadness = sadness / word_count,
+         surprise = surprise / word_count,
+         trust = trust / word_count);
+
+
 
 
 

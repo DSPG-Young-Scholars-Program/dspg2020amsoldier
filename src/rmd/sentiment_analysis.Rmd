@@ -17,6 +17,153 @@ library(scales)
 library(fmsb)
 library(data.table)
 library(tidyverse)
+library(here)
+```
+
+```{r }
+source(here::here("src", "load_data.R"));
+```
+
+## Useful Functions
+
+```{r}
+remove_words <- function(text, words) {
+  pattern <- paste(words, collapse = "|");
+  text <- str_replace_all(text, pattern, "");
+  return(text);
+}
+```
+
+## Removing biased words
+
+Words referring to race are biased within the sentiment libraries. For example, within the NRC lexicon, "black" and "negro" are associated with the negative and sadness sentiments, while "white" is associated with the anticipation, joy, positive, and trust sentiments.
+
+```{r}
+nrc_sentiments <- get_sentiments("nrc");
+nrc_sentiments %>% filter(word == "black" | word == "negro" | word == "white")
+```
+
+These words are removed from the text before sentiments are analyzed to mitigate racial bias.
+
+```{r}
+words <- c("white", "black", "negro");
+s32$text <- remove_words(s32$text, words);
+```
+
+## Computing Sentiments 
+
+The Bing and Afinn lexicons compute sentiments by associated a word with positivity or negativity. Bing classifies words in a binary fasion as positive or negative, and Afinn ranks a word on a scale from -5 to +5 with -5 being the most negative and +5 being the most positive.
+
+Computing the overall sentiment of a response varies by the underlying lexicon. For Bing, the overall sentiment is computed by subtracting the number of positive words by the number of negative words. For Afinn, the overall sentiment is computed by summing the sentiment values for individual words.
+
+```{r}
+tidy_s32 <- s32 %>% 
+  unnest_tokens(word, text);
+
+s32_bing <- tidy_s32 %>%
+  inner_join(get_sentiments('bing')) %>%
+  group_by(index, racial_group, response_type, outfits, sentiment) %>% 
+  count() %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative);
+
+s32_afinn <- tidy_s32 %>%
+  inner_join(get_sentiments('afinn')) %>%
+  group_by(index, racial_group, response_type, outfits) %>%
+  summarise(sentiment = sum(value));
+```
+
+## Comparing Sentiments Across Groups
+
+Compare BING sentiments of long responses for white and Black soldiers.
+```{r, fig.align="center"}
+black_long <- s32_bing %>% 
+  filter(racial_group == "black" & response_type == "long") %>%
+  arrange(desc(sentiment));
+black_long$order <- 1:nrow(black_long);
+
+white_long <- s32_bing %>%
+  filter(racial_group == "white" & response_type == "long") %>%
+  arrange(desc(sentiment));
+white_long$order <- 1:nrow(white_long);
+ 
+rbind(black_long, white_long) %>%
+ggplot(., aes(x = order, y = sentiment, fill = racial_group)) + 
+geom_col(show.legend = FALSE) + 
+facet_wrap(~racial_group, ncol = 2, scales = "free_x")
+```
+
+Compare BING sentiments of long responses for white segregationists and integrationist soldiers.
+```{r, fig.align="center"}
+group1 <- s32_bing %>% 
+  filter(racial_group == "white" & response_type == "long" & outfits == "['They should be in separate outfits']") %>%
+  arrange(desc(sentiment));
+group1$order <- 1:nrow(group1);
+
+group2 <- s32_bing %>%
+  filter(racial_group == "white" & response_type == "long" & outfits == "['They should be together in the same outfits']") %>%
+  arrange(desc(sentiment));
+group2$order <- 1:nrow(group2);
+ 
+rbind(group1, group2) %>%
+ggplot(., aes(x = order, y = sentiment, fill = outfits)) + 
+geom_col(show.legend = FALSE) + 
+facet_wrap(~outfits, ncol = 2, scales = "free_x")
+```
+
+Compare BING sentiments of short responses for white segregationists and integrationist soldiers.
+```{r, fig.align="center"}
+group1 <- s32_bing %>% 
+  filter(racial_group == "white" & response_type == "short" & outfits == "['They should be in separate outfits']") %>%
+  arrange(desc(sentiment));
+group1$order <- 1:nrow(group1);
+
+group2 <- s32_bing %>%
+  filter(racial_group == "white" & response_type == "short" & outfits == "['They should be together in the same outfits']") %>%
+  arrange(desc(sentiment));
+group2$order <- 1:nrow(group2);
+ 
+rbind(group1, group2) %>%
+ggplot(., aes(x = order, y = sentiment, fill = outfits)) + 
+geom_col(show.legend = FALSE) + 
+facet_wrap(~outfits, ncol = 2, scales = "free_x")
+```
+
+Compare AFINN sentiments of long responses for white and Black soldiers.
+```{r, fig.align="center"}
+black_long <- s32_afinn %>% 
+  filter(racial_group == "black" & response_type == "long") %>%
+  arrange(desc(sentiment));
+black_long$order <- 1:nrow(black_long);
+
+white_long <- s32_afinn %>%
+  filter(racial_group == "white" & response_type == "long") %>%
+  arrange(desc(sentiment));
+white_long$order <- 1:nrow(white_long);
+ 
+rbind(black_long, white_long) %>%
+ggplot(., aes(x = order, y = sentiment, fill = racial_group)) + 
+geom_col(show.legend = FALSE) + 
+facet_wrap(~racial_group, ncol = 2, scales = "free_x")
+```
+
+Compare AFINN sentiments of long responses for white segregationist and integrationist soldiers.
+
+```{r, fig.align="center"}
+group1 <- s32_afinn %>% 
+  filter(racial_group == "white" & response_type == "long" & outfits == "['They should be in separate outfits']") %>%
+  arrange(desc(sentiment));
+group1$order <- 1:nrow(group1);
+
+group2 <- s32_afinn %>%
+  filter(racial_group == "white" & response_type == "long" & outfits == "['They should be together in the same outfits']") %>%
+  arrange(desc(sentiment));
+group2$order <- 1:nrow(group2);
+ 
+rbind(group1, group2) %>%
+ggplot(., aes(x = order, y = sentiment, fill = outfits)) + 
+geom_col(show.legend = FALSE) + 
+facet_wrap(~outfits, ncol = 2, scales = "free_x")
 ```
 
 ## NRC Lexicon
@@ -25,8 +172,8 @@ The NRC lexicon uses a dictionary to associates a word with the following sentim
 
 ```{r cars}
 # read in the data
-data <- read.csv("../../data/s32_neg_bigrams_removed.csv") %>% subset(select = -c(X));
-data$index = 1:nrow(data);
+# data <- read.csv("../../data/s32_neg_bigrams_removed.csv") %>% subset(select = -c(X));
+data <- data.table::copy(s32);
 ```
 
 ```{r }
@@ -39,10 +186,20 @@ tmp <- data %>%
 ```
 
 ```{r}
-tmp %>%
-  filter(sentiment == "positive") %>%
+plot_words <- function(sentiment) {
+  plot_data <- tmp %>%
+  filter(sentiment == sentiment) %>%
   count(word, sort = TRUE) %>%
   top_n(10)
+  
+  # use to set order of words
+  plot_data$word <- factor(plot_data$word, levels = plot_data$word)
+  plot_data %>%
+    ggplot(., aes(x = word, y = n)) +
+    geom_bar(stat = "identity")
+}
+
+plot_words("positive")
 ```
 ```{r}
 tmp %>%
@@ -106,17 +263,10 @@ tmp %>%
   top_n(10)
 ```
 
-Remove words
-```{r}
-words_to_remove <- c("white", "negro")
-tmp <- tmp %>% filter(!word %in% words_to_remove)
-```
-
-
 ```{r}
 
 sentiments <- tmp %>% 
-  group_by(index, row, response_type, outfits, sentiment) %>% 
+  group_by(index, racial_group, response_type, outfits, sentiment) %>% 
   count() %>%
   spread(sentiment, n, fill = 0)
 
@@ -139,7 +289,7 @@ sentiments <- sentiments %>%
 ```{r, fig.align='center'}
 # black, long reponse
 black_long_mean <- dplyr::as_data_frame(sentiments) %>%
-  filter(response_type == "black_long") %>%
+  filter(racial_group == "black" & response_type == "long") %>%
   select(c("anger",
            "anticipation",
            "disgust",
@@ -162,7 +312,7 @@ radarchart(plot_data,
 
 ```{r, fig.align='center'}
 white_long_mean <- dplyr::as_data_frame(sentiments) %>%
-  filter(response_type == "white_long") %>%
+  filter(racial_group == "white" & response_type == "long") %>%
   select(c("anger",
            "anticipation",
            "disgust",
@@ -216,12 +366,12 @@ title(main = "General Response to S32");
 ```{r, fig.align='center'}
 # against desegregation
 ws_against <- sentiments %>%
-  filter(response_type == "white_short") %>%
+  filter(racial_group == "white" & response_type == "short") %>%
   filter(outfits == "['They should be in separate outfits']")
 
 # for desegregation
 ws_for <- sentiments %>%
-  filter(response_type == "white_short") %>% 
+  filter(racial_group == "white" & response_type == "short") %>% 
   filter(outfits == "['They should be together in the same outfits']")
 
 against_mean <- dplyr::as_data_frame(ws_against) %>%
