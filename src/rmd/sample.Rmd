@@ -3,7 +3,8 @@ title: "Sample"
 output:
   html_document:
     toc: true
-    toc_depth: 3
+    toc_depth: 2
+    number_sections: true
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Honestly WWII really sucked
 
-### Data Cleaning and Text Mining
+## Data Cleaning and Text Mining
 
 This is the perfect place to talk about how much you hate cleaning
 
@@ -42,7 +43,7 @@ Senitment Analysis Rocks
 
 SNA is amazing
 
-### Topic Modelling
+## Topic Modelling
 
 ```{r topic, echo=FALSE}
 
