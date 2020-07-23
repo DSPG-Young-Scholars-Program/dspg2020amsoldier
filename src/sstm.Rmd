@@ -1,0 +1,155 @@
+---
+title: "sttm"
+author: "Saimun"
+date: "6/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(data.table)
+library(BTM)
+library(udpipe)
+library(igraph)
+library(ggraph)
+library(concaveman)
+library(textplot)
+library(stopwords)
+```
+
+
+
+```{r import data}
+library("RPostgreSQL")
+# connect to postgresql to get data (in rivanna)
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+S32 <- dbGetQuery(conn, "SELECT *
+                  FROM american_soldier.survey_32_combined")
+# disconnect from postgresql
+dbDisconnect(conn)
+```
+
+```{r}
+useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]","gujfujuj", "None.", "I", NA)
+S32N = S32 %>% filter(racial_group == "black")
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long_comment) %>% filter(!text %in% useless_responses)
+colnames(textn_df) = c("doc_id", "text")
+```
+
+
+```{r}
+#takes a grip to run :(
+anno  = udpipe(textn_df,"english")
+```
+
+```{r}
+biterms <- as.data.table(anno)
+biterms <- biterms[, cooccurrence(x = lemma,
+                                  relevant = upos %in% c("NOUN", "ADJ", "VERB") & 
+                                             nchar(lemma) > 2 & !lemma %in% stopwords("en"),
+                                  skipgram = 3),
+                   by = list(doc_id)]
+```
+
+```{r}
+set.seed(20200629)
+traindata <- subset(anno, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
+traindata <- traindata[, c("doc_id", "lemma")]
+model     <- BTM(traindata, biterms = biterms, k = 9, iter = 2000, background = TRUE, trace = 100)
+```
+
+```{r}
+plot(model, top_n = 20,
+     title = "BTM model", subtitle = "S32N Long Comment")
+```
+
+```{r}
+x = subset(anno,xpos %in% "JJ")
+x = sort(table(x$lemma))
+textplot_bar(x, top = 20, panel = "Adjective", xlab = "Frequency",
+             col.panel = "lightblue", cextext = .75)
+```
+
+```{r}
+S32W = S32 %>% filter(racial_group == "white")
+text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment) %>% filter(!text %in% useless_responses)
+text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long_comment) %>% filter(!text %in% useless_responses)
+colnames(text77_df) = colnames(text78_df) = c("doc_id", "text")
+```
+
+```{r}
+anno77  = udpipe(text77_df,"english")
+```
+
+```{r}
+anno78 = udpipe(text78_df,"english")
+```
+
+```{r}
+biterms77 <- as.data.table(anno77)
+biterms77 <- biterms77[, cooccurrence(x = lemma,
+                                  relevant = upos %in% c("NOUN", "ADJ", "VERB") & 
+                                             nchar(lemma) > 2 & !lemma %in% stopwords("en"),
+                                  skipgram = 3),
+                   by = list(doc_id)]
+
+```
+
+```{r}
+biterms78 <- as.data.table(anno78)
+biterms78 <- biterms78[, cooccurrence(x = lemma,
+                                  relevant = upos %in% c("NOUN", "ADJ", "VERB") & 
+                                             nchar(lemma) > 2 & !lemma %in% stopwords("en"),
+                                  skipgram = 3),
+                   by = list(doc_id)]
+```
+
+
+```{r}
+traindata77 <- subset(anno77, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
+traindata77 <- traindata77[, c("doc_id", "lemma")]
+model77     <- BTM(traindata77, biterms = biterms77, k = 9, iter = 2000, background = TRUE, trace = 100)
+```
+
+```{r}
+traindata78 <- subset(anno78, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
+traindata78 <- traindata78[, c("doc_id", "lemma")]
+model78     <- BTM(traindata78, biterms = biterms78, k = 9, iter = 2000, background = TRUE, trace = 100)
+```
+
+
+```{r}
+top_n = 15
+plot(model, top_n = top_n,
+     title = "BTM model", subtitle = "S32N Long Comment",)
+plot(model77, top_n = top_n,
+     title = "BTM model", subtitle = "S32W Outfits Comment")
+plot(model78, top_n = top_n,
+     title = "BTM model", subtitle = "S32W Long Comment")
+```
+
+
+```{r}
+
+
+convert_to_edge = function(biterms){
+  biterms %>% group_by(term1,  term2) %>% select(-doc_id) %>% rename(source = term1, target = term2, weight = cooc)
+}
+
+edge_listn = convert_to_edge(biterms)
+edge_list77 = convert_to_edge(biterms77)
+edge_list78 = convert_to_edge(biterms78)
+
+write.csv(edge_listn, "32N_long_biterms.csv")
+write.csv(edge_list77, "32W_outfits_biterms.csv")
+write.csv(edge_list78, "32W_long_biterms.csv")
+
+```
