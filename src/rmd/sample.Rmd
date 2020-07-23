@@ -1,0 +1,55 @@
+---
+title: "Sample"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Honestly WWII really sucked
+
+### Data Cleaning and Text Mining
+
+This is the perfect place to talk about how much you hate cleaning
+
+# Exploratory Data Analysis
+
+```{r eda, echo=FALSE}
+
+```
+
+Here you can talk about graphs you made that are not as cool as the others
+
+# Sentiment Analysis
+
+```{r sent, echo=FALSE}
+
+```
+
+Senitment Analysis Rocks
+
+# Social Network Analysis
+
+```{r sna, echo=FALSE}
+
+```
+
+SNA is amazing
+
+### Topic Modelling
+
+```{r topic, echo=FALSE}
+
+```
+
+We used SNA to get topics as opposed to LDA
+
+# Conclusion
+
+WWII still sucked and white soldiers were racist. Fin.
