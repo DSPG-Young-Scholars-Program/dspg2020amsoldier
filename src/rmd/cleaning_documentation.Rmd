@@ -1,0 +1,115 @@
+---
+title: "Text Cleaning Documentation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr);library(ggplot2);library(data.table);library(tidyr);library(stringr)
+library(tidytext);library(textstem);library(SnowballC);library(naniar);library(textclean)
+
+```
+
+```{r include=FALSE, echo=FALSE}
+##### 1. READ DATA FROM DATABASE #############
+# library("RPostgreSQL")
+# # connect to postgresql to get data (in rivanna)
+# conn <- dbConnect(drv = PostgreSQL(),
+#                   dbname = "sdad",
+#                   host = "10.250.124.195",
+#                   port = 5432,
+#                   user = Sys.getenv("db_userid"),
+#                   password = Sys.getenv("db_pwd"))
+# # query the bipartite edgelist data from github data
+# data0 <- dbGetQuery(conn, "SELECT * FROM american_soldier.survey_32_combined")
+# data_clean <- dbGetQuery(conn, "SELECT * FROM american_soldier.survey_32_clean")
+# dbDisconnect(conn)
+# data <- data0 %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE) %>% # first unite the long response and it's continued text 
+#   mutate(long = tolower(long), outfits_comment = tolower(outfits_comment),  # make entire text lowercase 
+#          index= 1:nrow(data0)) # add an index column
+```
+
+### 1. Data is read in from the database.
+The columns outfits_comment, long_comment and long_comment_cont, contain the transcribed responses of soldiers from S32N and S32W. The outfits_comment corresponds to question 62a in S32W and 77a in S32N which asks whether black and white soldiers should be in separate outfits. Long_comment_cont is a continuation of long_comment which asked soldiers about their overall thoughts on the questionnaire.
+
+
+### 2. Data undergoes initial processing.
+The following alterations are made to the data in order to prep for text cleaning:   
+
+* long_comment and long_comment_cont are combined into a single column called long.    
+* all text are converted to lowercase   
+* index column is added   
+
+
+### 3. Meaningless responses converted to NA
+
+In both the outfit and long responses, there exists responses that indicate an lack of input such as  "none", "n/a" or 0. These instances are converted to NA for easy filtering when performing analysis.    
+
+
+### 4. Automated metatag removal
+Metatags are included in the transcriptions by the zooniverse transcribers to indicate attributes or corrections to the text. Further documentation on these metatags can be found in the file *metatag_documentation*.
+The following metatags are completely removed from responses:    
+* underline: [underline] and [/underline]  
+* circle: [circle] and [/circle]      
+* insertion: [insertion] and [/insertion]    
+* deletion: [deletion]text[/deletion]. The tags themselves as well as the text in between are removed from the response.  
+* unclear without words: [unclear][/unclear] and [unclear]???[/unclear]
+
+
+
+### 5. Unclear metatag cleaning   
+
+The following steps are taken to manually clean the unclear metatags:  
+
+1.	Table of all instances of unclear cases are created for both the long and outfit questions. The columns are:  
+        +	Long or Outfits_Comment: Transcribed response of the soldier  
+        + Racial_group: categorical variable indicating black or white soldier  
+        + Index: The row of the transcribed response in the original dataset.  
+        + Unclear: The instance of use for the unclear tag that needs to be corrected.  
+        + Correct: correction to the unclear entity  
+      
+2.	A table of the unclear cases is stored in the data folder under the name “long_unclear.csv” or “outfits_unclear.csv”
+
+3.	Researcher manually enters correction for unclear word on their local text editor then re-uploads most updated file in the repo under the same name. Researcher should refer to the transcribed response to make judgement on the best correction for the unclear word.        
+        +	 If there is no logical correction, leave the correction field for that unclear word blank.     
+        +  If the word inside the unclear tags is already correct, just re-type the word in the correction column.   
+4.	The R script loops through the .csv file and updates the corrections to the clean dataset.     
+
+Steps 1-3 of the unclear metatag cleaning are included in the cleaning script but are commented out.   
+
+
+### 6. Bracketed text cleaning
+Like unclear metatags, bracketed text is manually cleaned by the researcher. The steps are detailed below: 
+
+1.	Table of all instances of unclear cases are created for both the long and outfit questions. The columns are:  
+        +	 Long or Outfits_Comment: Transcribed response of the soldier   
+        +  Racial_group: categorical variable indicating black or white soldier   
+        +  Index: The row of the transcribed response in the original dataset.   
+        +  Bracket: The instance of use for the unclear tag that needs to be corrected.   
+        +	 Correct: Full text of the corrected response.   
+2.	A table of the unclear cases is stored in the data folder under the name “long_bracket.csv” or “outfits_bracket.csv” 
+
+3.	Researcher manually corrects the response on their local text editor then re-uploads most updated file in the repo as "long_bracket_corrected.csv" or "outfits_bracket_corrected.csv".
+
+4.	The R script loops through the .csv file and updates the corrections to the clean dataset.     
+
+Steps 1-3 of the unclear metatag cleaning are included in the cleaning script but are commented out.  
+
+### 7. Manual Spell-Checking   
+
+1. The hunspell spell-checking package is applied to unique tokenized words from both the outfits and long response to identify mispelled words and provide spelling suggestions. 
+
+2. A dataframe of the mispelled unique words that occur more than 2 times throughout the entire body of text and their primary spelling suggestion from the hunspell package are exported to a file named "spell_check.csv". 
+
+3. The researcher then manually checks and corrects the spelling suggestions as well as adding their own detected mispellings. 
+
+4. Finally, the R script corrects all spellings in the "spell_check.csv" file.
+
+Steps 1-3 of the unclear metatag cleaning are included in the cleaning script but are commented out.  
+
+
+### 8. Final Processing
+* contractions are replaced: don't --> do not
+* responses that contain an empty string are replaced with NA
+
+### 9. Push clean data to database.

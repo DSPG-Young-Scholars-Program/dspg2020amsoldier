@@ -1,0 +1,412 @@
+---
+title: "Gender Analysis"
+author: "Mary Solomon"
+date: "7/19/2020"
+output: html_document
+---
+
+
+In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers. Our particular focus is on women, but both male and female roles are explored.
+
+
+### Preparing the data
+```{r setup, include=FALSE}
+#libraries
+library(tidytext)
+library(data.table)
+library("RPostgreSQL")
+library(stringi)
+library(textstem)
+library(dplyr)
+library(tidyr)
+library(SnowballC)
+library(igraph)
+library(ggraph)
+library(widyr)
+library(stringr)
+```
+
+```{r functions}
+# Visualizing Bigrams functions
+# From tidytext documentation
+visualize_bigrams <- function(bigrams, title) {
+  set.seed(2020)
+  a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+  
+  bigrams %>%
+    graph_from_data_frame() %>%
+    ggraph(layout = "fr") +
+    geom_edge_link(aes(edge_alpha = n), show.legend = FALSE, arrow = a) +
+    geom_node_point(color = "lightblue", size = 5) +
+    geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+    theme_void() + theme(legend.position = "none",
+                      plot.title = element_text(hjust = 0.5)) +
+    ggtitle(title)
+}
+
+```
+
+```{r dataload}
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+data <- dbGetQuery(conn, "SELECT * FROM american_soldier.survey_32_clean")
+dbDisconnect(conn)
+
+##### some data cleaning
+#remove possessive 's
+data$outfits_comment <- str_replace_all(data$outfits_comment, "'s", "")
+data$long <- str_replace_all(data$long, "'s", "")
+```
+
+
+A dictionary of gender words are loaded to identy which responses relate to gender topics. 
+```{r dictionaryload}
+#load dictionary csv
+gender_words <- fread("~/git/dspg2020amsoldier/data/dictionary/gender.csv", sep = ",");head(gender_words) 
+gender_match <- paste(paste("\\b", gender_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
+```
+
+```{r data_subset}
+#subset data based on question and race
+S32W_short <- data %>% filter(racial_group== "white") %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
+S32W_short <- tibble(nrow=1:nrow(S32W_short), text = S32W_short$outfits_comment)
+
+S32W_long <- data %>% filter(racial_group== "white") %>% select(long) %>% filter(!is.na(long))
+S32W_long <- tibble(nrow=1:nrow(S32W_long), text = S32W_long$long)
+
+S32N_long <- data %>% filter(racial_group== "black") %>% select(long) %>% filter(!is.na(long))
+S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
+
+```
+
+
+#Bi-Grams
+To view commentary on gender relations, we will look at the bi-grams which will show which words appear next to gender related words.
+
+```{r bigram_create}
+#### unnest tokens into bigrams
+#### counts bigrams, but filter for those that have words in the gender dictionary.
+#### separates bigrams into word1 and word 2 column
+#### removes rows that contain a stopword
+#### lem then stem words
+#### finally count the bigrams.
+short_bigrams_gender <- S32W_short %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(gender_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
+  count(word1, word2, sort = TRUE)
+
+longW_bigrams_gender <- S32W_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(gender_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)  %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
+  count(word1, word2, sort = TRUE)
+
+longN_bigrams_gender <- S32N_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(gender_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
+  count(word1, word2, sort = TRUE)
+```
+
+
+```{r bigram_visualize, include = FALSE}
+visualize_bigrams(short_bigrams_gender, "White Soldiers' Outfits Response - Gender Words")
+visualize_bigrams(longW_bigrams_gender, "White Soldiers' Long Response - Gender Words")
+visualize_bigrams(longN_bigrams_gender, "Black Soldiers' Long Response - Gender Words")
+```
+
+
+In the white soldiers' responses on the outfits separation question, we can see that the associations to gendered words are primarily related to racial identity. Since we are interested in investigating how conversations about gender differed between the two racial groups, we will join the two words into one. For example, color boi will be collapsed to colorboi, to see which words are used with this subject.
+ 
+Overall, there's a wider variety of words that the black soldiers are using in their long responses.
+
+
+
+```{r include = FALSE, echo = FALSE}
+#co-occurances
+section_words <- S32N_long %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word)
+word_cors <- section_words %>%
+  group_by(word) %>% 
+  filter(n() >= 5) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(grepl(gender_match, item1))
+
+#plot
+word_cors %>%
+  filter(correlation > .15) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + ggtitle("Black Soldiers' Long Response - Gender Related Co-occurences")
+```
+
+
+
+#### Bi-Grams: Words-collapsed
+
+With bi-grams, we will explore which words are paired with gender related words. 
+```{r}
+#load dictionary csv
+gender_words <- fread("~/git/dspg2020amsoldier/data/dictionary/gender.csv", sep = ",") 
+gender_match <- paste(paste("\\b", gender_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
+
+####collapse certain two word phrases like white man --> whiteman
+
+#read the csv file of correct spellings back in.
+collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",") 
+collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
+
+#replace with collapsed words
+data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse, vectorize_all = FALSE)
+data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse, vectorize_all = FALSE)
+```
+
+
+```{r }
+#subset data based on question and race
+S32W_short2 <- data %>% filter(racial_group== "white") %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
+S32W_short2 <- tibble(nrow=1:nrow(S32W_short2), text = S32W_short2$outfits_comment)
+
+S32W_long2 <- data %>% filter(racial_group== "white") %>% select(long) %>% filter(!is.na(long))
+S32W_long2 <- tibble(nrow=1:nrow(S32W_long2), text = S32W_long2$long)
+
+S32N_long2 <- data %>% filter(racial_group== "black") %>% select(long) %>% filter(!is.na(long))
+S32N_long2 <- tibble(nrow=1:nrow(S32N_long2), text = S32N_long2$long)
+```
+
+```{r }
+#### unnest tokens into bigrams
+#### counts bigrams, but filter for those that have words in the gender dictionary.
+#### separates bigrams into word1 and word 2 column
+#### removes rows that contain a stopword
+#### lem then stem words
+#### finally count the bigrams.
+short_bigrams_gender2 <- S32W_short2 %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(gender_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
+  count(word1, word2, sort = TRUE)
+
+longW_bigrams_gender2 <- S32W_long2 %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(gender_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)  %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
+  count(word1, word2, sort = TRUE)
+
+longN_bigrams_gender2 <- S32N_long2 %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(gender_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
+  count(word1, word2, sort = TRUE) 
+```
+
+```{r }
+visualize_bigrams(short_bigrams_gender2, "White Soldiers' Outfits Response - Gender Words")
+```
+
+White soldiers short response: 
+
+* only comments about either black or white men are mentioned. This is logical since the question asks soldiers about whether black and white soldiers should be in separate outfits or not. 
+
+
+```{r }
+visualize_bigrams(longW_bigrams_gender2, "White Soldiers' Long Response - Gender Words")
+```
+
+
+White soldiers long response: 
+
+* rarely talk about black men or women. one presence of "colorman" that does exist is paired with despise.   
+
+* We also see that white soldiers are talking about interracial marriage.   
+
+* White commentar on the word woman are paired with wrods relating to women in the workforce such as worker, and waac and auxiliari which refer to the Women's Army Corps.    
+
+
+
+
+```{r }
+visualize_bigrams(longN_bigrams_gender2, "Black Soldiers' Long Response - Gender Words")
+```
+
+Black soldier long response: 
+
+* A commonality between the black and white soldier commentary regarding females, is that their role as wife or mother is prevelant.  
+
+* When talking about gender(both male and female) there is more commentary specifying racial groups as opposed to how white soldiers are talking about gender in their long responses. A notable bi-gram is the series of words following the node of whitewoman: whitewoman->holler->rape. In addition, when the white men are talked about, they are most frequently paired with the adjective southern. This is relating to commentary of how southern white men treated black men at the time.
+
+* colorwoman used with the words whip and vice    
+
+
+
+In all of the responses, the prevelance of familial words such as mother, father, brother, sister shows that soldiers frequently discussed family.
+
+
+
+### Co-Occurrences
+
+With co-occurrences we want to measure the proximity of words that occur with gender related words. The co-ooccurring words do not have to be directly before or after the gender word of interest.   
+The co-occurances are measured with pearson's coefficient to measure the correlation of occurances between words. 
+
+The threshold for the long responses are words that occur more than 5 times and correlations greater than .15. 
+The threshold for the short responses is lower than that of long because it is a smaller body of text with correlations greater than .10
+
+```{r}
+gender_match <- stem_words(lemmatize_words(gender_match))
+```
+
+
+#### white soldiers short response
+```{r}
+S32W_short_cors <- S32W_short2 %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word = stem_words(lemmatize_words(word))) %>%
+  group_by(word) %>% 
+  filter(n() >= 5) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(grepl(gender_match, item1))%>%
+  filter(correlation > .10) 
+
+#plot
+S32W_short_cors  %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + ggtitle("White Soldiers' Short Response - Gender Related Co-occurences")
+```
+
+Only a small handful of the outfits questions mention a word relating to the female gender. Due to the settings filtering for words that occur more than 5 times in the data, these occurrances don't show.
+
+An interesting observation is that colored men are correlated with the word jealousy and whiteman correlated with the word clean.This provides further insight to the sentiment that white soldiers had towards themselves versus black soldiers. Furthermore, the strong correlation between whiteman and negro implies that the relationship between the two were talked about often.  
+
+no threshold for word count to show co-occurances that mention female relating words. 
+```{r}
+S32W_short_cors <- S32W_short2 %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word = stem_words(lemmatize_words(word))) %>%
+  group_by(word) %>% 
+  #filter(n() >= 5) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(grepl(gender_match, item1))%>%
+  filter(correlation > .10) 
+
+#plot
+S32W_short_cors  %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + ggtitle("White Soldiers' Short Response - Gender Related Co-occurences")
+```
+
+It shows that wife has a great number of correlates, however, there is only one comment that mentions wife, and therefore, is not representative of the overall discussion of wives in relation to the question.   
+
+```{r}
+data$outfits_comment[5726]
+```
+
+Upon closer inspection, this comment seems to be an error in data storage and is more related to the long response question.
+
+
+#### white soldiers long response
+```{r}
+S32W_long_cors <- S32W_long2 %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word = stem_words(lemmatize_words(word))) %>%
+  group_by(word) %>% 
+  filter(n() >= 5) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(grepl(gender_match, item1))%>%
+  filter(correlation > .15) 
+
+#plot
+S32W_long_cors  %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + ggtitle("White Soldiers' Long Response - Gender Related Co-occurences")
+```
+
+
+#### Black soldiers long response
+```{r}
+S32N_long_cors <- S32N_long2 %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word = stem_words(lemmatize_words(word))) %>%
+  group_by(word) %>% 
+  filter(n() >= 5) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(grepl(gender_match, item1))%>%
+  filter(correlation >= .15) 
+
+#plot
+S32N_long_cors  %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + ggtitle("Black Soldiers' Long Response - Gender Related Co-occurences")
+
+
+### try networkD3
+# colnames(S32N_long_cors) <- c("Source", "Target", "Weight")
+# S32N_long_cors <- filter(S32N_long_cors, correlation > .20)
+# simpleNetwork(S32N_long_cors)
+```
+
+When talking about whitemen specifically, the correlated words show that the soldiers will talk about relations to black men and fighting. When talking about women there is a distinction made between white and black women. Other than that cluster of words, women are often talked about as family members and home life.
+
+
+
+
+
+##### Sentiment Analysis ########
+

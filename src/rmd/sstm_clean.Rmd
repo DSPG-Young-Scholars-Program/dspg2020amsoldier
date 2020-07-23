@@ -1,0 +1,320 @@
+---
+title: "sttm"
+author: "Saimun"
+date: "6/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(data.table)
+library(tidyr)
+library(BTM)
+library(udpipe)
+library(networkD3)
+library(plyr)
+library(SnowballC)
+# require(devtools) 
+# install_version("igraph", version = "1.2.4", repos = "http://cran.us.r-project.org")
+library(igraph)
+library(ggraph)
+library(concaveman)
+library(textplot)
+library(stopwords)
+```
+
+```{r}
+#takes the word-topic probability matrix and tidifies it
+tidy_topic_probs = function(model){
+  df <- cbind(source = rownames(model$phi), model$phi)
+  rownames(df) <- 1:nrow(df)
+  df = as.data.frame(df)
+  edge_list = reshape2::melt(df, id.vars=c("source"), variable.name = "target", value.name = "weight")
+}
+#takes biterms and turns it into an edglist
+convert_to_edge = function(biterms){
+  biterms = biterms %>% 
+    group_by(term1,  term2) %>% 
+    select(-doc_id) %>%  
+    #lemmatizes and stems
+    mutate(term1= textstem::lemmatize_words(term1), term2 = textstem::lemmatize_words(term2)) %>%
+    mutate(term1= wordStem(term1), term2 = wordStem(term2)) %>% 
+    group_by(term1,  term2) 
+  colnames(biterms) = c("source","target", "weight")
+  biterms
+}
+
+
+```
+
+
+```{r import data}
+library("RPostgreSQL")
+# connect to postgresql to get data (in rivanna)
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+S32 <- dbGetQuery(conn, "SELECT *
+                  FROM american_soldier.survey_32_clean")
+# disconnect from postgresql
+dbDisconnect(conn)
+```
+
+```{r}
+#manually filter out nonsensical responses
+useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]","gujfujuj", "None.", "I", NA, "unclear")
+
+S32N = S32 %>% filter(racial_group == "black")
+S32W = S32 %>% filter(racial_group == "white")
+
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long) %>% filter(!text %in% useless_responses)
+text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment) %>% filter(!text %in% useless_responses)
+text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long) %>% filter(!text %in% useless_responses)
+
+colnames(textn_df) = colnames(text77_df) = colnames(text78_df) = c("doc_id", "text")
+```
+
+
+```{r}
+#takes a grip to run :( so i commented it out 
+anno_n  = udpipe(textn_df,"english")
+anno77  = udpipe(text77_df,"english")
+anno78 = udpipe(text78_df,"english")
+```
+
+```{r}
+#gets biterms by document
+biterms_n <- as.data.table(anno_n)
+biterms_n <- biterms_n[, cooccurrence(x = lemma,
+                                  relevant = upos %in% c("NOUN", "ADJ", "VERB") & 
+                                             nchar(lemma) > 2 & !lemma %in% stopwords("en"),
+                                  skipgram = 3),
+                   by = list(doc_id)]
+#write.csv(biterms_n, here::here("data","biterms_n.csv"))
+```
+
+```{r}
+#runs the BTM model
+set.seed(20200629)
+traindata_n <- subset(anno_n, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
+traindata_n <- traindata_n[, c("doc_id", "lemma")]
+# write.csv(traindata_n, here::here("data","traindata_n.csv"))
+model_n     <- BTM(traindata_n, biterms = biterms_n, k = 5, iter = 2000, background = TRUE, trace = 100)
+```
+
+```{r}
+#rough plot of Topics and words produced by BTM model
+plot(model_n, top_n = 20,
+     title = "BTM model", subtitle = "S32N Long Comment")
+```
+
+```{r}
+#plot of adj. freq
+x = subset(anno,xpos %in% "JJ")
+x = sort(table(x$lemma))
+textplot_bar(x, top = 20, panel = "Adjective", xlab = "Frequency",
+             col.panel = "lightblue", cextext = .75)
+```
+
+```{r}
+V = c("V2","V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10")
+k = c(1:model_n$K)
+topics = c("Topic 1","Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", " Topic 7", "Topic 8", "Topic 9")
+
+#convert word-topic porbability matrix into a long table 
+topics_n = tidy_topic_probs(model_n)
+topics_n$weight = as.numeric(topics_n$weight)
+topics_n$target = topics_n$target %>%
+  mapvalues(from = V, to = topics)
+
+
+#rough network plot
+# topics_n %>%
+#   filter(weight >= .01) %>%
+#   graph_from_data_frame() %>%
+#   ggraph(layout = "fr") +
+#   geom_edge_link(edge_colour = "cyan4") +
+#   geom_node_point( size = 5) +
+#   geom_node_text(aes(label = name), repel = TRUE, 
+#                  point.padding = unit(0.2, "lines")) +
+#   theme_void()
+
+```
+
+
+```{r}
+# Extract into data frame and plot
+topics_n %>%
+  filter(weight >= .01) %>%
+  # graph_from_data_frame() 
+# gd = get.data.frame(gd, what = "edges") 
+  simpleNetwork(fontSize = 12, zoom = T)
+
+edge_n = convert_to_edge(biterms_n)
+edge_n %>%
+  filter(weight >=3)%>%
+    simpleNetwork(fontSize = 12, zoom =T)
+
+
+edgelist = topics_n %>%
+  filter(weight >= .01)
+sources <- edgelist$source
+targets <- edgelist$target
+node_names <- factor(sort(unique(c(as.character(sources), 
+                                   as.character(targets)))))
+
+
+
+groups = edgelist %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:model_n$K, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist$weight)
+forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T, legend = T)
+```
+
+
+
+
+
+```{r}
+biterms_77 <- as.data.table(anno77)
+biterms_77 <- biterms_77[, cooccurrence(x = lemma,
+                                  relevant = upos %in% c("NOUN", "ADJ", "VERB") & 
+                                             nchar(lemma) > 2 & !lemma %in% stopwords("en"),
+                                  skipgram = 3),
+                   by = list(doc_id)]
+# write.csv(biterms_77, here::here("data","biterms_77.csv"))
+```
+
+```{r}
+biterms_78 <- as.data.table(anno78)
+biterms_78 <- biterms_78[, cooccurrence(x = lemma,
+                                  relevant = upos %in% c("NOUN", "ADJ", "VERB") & 
+                                             nchar(lemma) > 2 & !lemma %in% stopwords("en"),
+                                  skipgram = 3),
+                   by = list(doc_id)]
+# write.csv(biterms_78, here::here("data","biterms_78.csv"))
+```
+
+
+```{r}
+traindata77 <- subset(anno77, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
+traindata77 <- traindata77[, c("doc_id", "lemma")]
+# write.csv(traindata77, here::here("data","traindata_77.csv"))
+
+model77     <- BTM(traindata77, biterms = biterms77, k = 9, iter = 2000, background = TRUE, trace = 100)
+```
+
+```{r}
+#convert word-topic porbability matrix into a long table 
+topics_77 = tidy_topic_probs(model_77)
+topics_77$weight = as.numeric(topics_77$weight)
+topics_77$target = topics_77$target %>%
+mapvalues(from = V, to = topics)
+
+# Extract into data frame and plot
+topics_77 %>%
+  filter(weight >= .01) %>%
+  # graph_from_data_frame() 
+# gd = get.data.frame(gd, what = "edges") 
+  simpleNetwork(fontSize = 12, zoom = T)
+
+edge_77 = convert_to_edge(biterms_77)
+edge_77 %>%
+  filter(weight >=3)%>%
+    simpleNetwork(fontSize = 12, zoom =T)
+```
+
+```{r}
+traindata78 <- subset(anno78, upos %in% c("NOUN", "ADJ", "VERB") & !lemma %in% stopwords("en") & nchar(lemma) > 2)
+traindata78 <- traindata78[, c("doc_id", "lemma")]
+# write.csv(traindata78, here::here("data","traindata_78.csv"))
+
+model78     <- BTM(traindata78, biterms = biterms78, k = 9, iter = 2000, background = TRUE, trace = 100)
+```
+
+```{r}
+#convert word-topic porbability matrix into a long table 
+topics_78 = tidy_topic_probs(model_78)
+topics_78$weight = as.numeric(topics_78$weight)
+topics_78$target = topics_78$target %>%
+mapvalues(from = V, to = topics)
+
+# Extract into data frame and plot
+topics_78 %>%
+  filter(weight >= .01) %>%
+  # graph_from_data_frame() 
+# gd = get.data.frame(gd, what = "edges") 
+  simpleNetwork(fontSize = 12, zoom = T)
+
+edge_78 = convert_to_edge(biterms_78)
+edge_78 %>%
+  filter(weight >=3)%>%
+    simpleNetwork(fontSize = 12, zoom =T)
+```
+
+
+```{r}
+top_n = 15
+plot(model, top_n = top_n,
+     title = "BTM model", subtitle = "S32N Long Comment",)
+plot(model77, top_n = top_n,
+     title = "BTM model", subtitle = "S32W Outfits Comment")
+plot(model78, top_n = top_n,
+     title = "BTM model", subtitle = "S32W Long Comment")
+```
+
+```{r}
+topics_77 = tidy_topic_probs(model77)
+topics_77$weight = as.numeric(topics_77$weight)
+
+topics_77 %>%
+  filter(weight >= .02) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "stress") +
+  geom_edge_link(edge_colour = "cyan4") +
+  geom_node_point(size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE, 
+                 point.padding = unit(0.2, "lines")) +
+  theme_void()
+
+topics_78 = tidy_topic_probs(model78)
+topics_78$weight = as.numeric(topics_78$weight)
+
+topics_78 %>%
+  filter(weight >= .02) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "stress") +
+  geom_edge_link(edge_colour = "cyan4") +
+  geom_node_point(size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE, 
+                 point.padding = unit(0.2, "lines")) +
+  labs(main= "s32")+
+  theme_void()
+
+```
+
+
+```{r}
+net <- graph.data.frame(topics_n, directed = F)
+V(net)$degree <- centralization.degree(net)$res
+df_net <- ggnetwork(net, layout = "fr", weights="weight", niter=5000)
+
+```
+
+```{r}
+# 
+# write.csv(edge_n, here::here("data","32N_long_biterms.csv"))
+# write.csv(edge_77, here::here("data","32W_outfits_biterms.csv"))
+# write.csv(edge_78, here::here("data","32W_long_biterms.csv"))
+```

@@ -16,6 +16,7 @@ library(igraph)
 library(ggraph)
 library(widyr)
 library(stringr)
+library(networkD3)
 
 # data -----------------------------------------
 library("RPostgreSQL")
@@ -28,188 +29,11 @@ conn <- dbConnect(drv = PostgreSQL(),
                   password = Sys.getenv("db_pwd"))
 # query the bipartite edgelist data from github data
 data <- dbGetQuery(conn, "SELECT *
-                   FROM american_soldier.survey_32_combined")
+                   FROM american_soldier.survey_32_clean")
 # disconnect from postgresql
 dbDisconnect(conn)
-#first unite the long response and it's continued text
-data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE) %>% 
-  mutate(long = tolower(long), outfits_comment = tolower(outfits_comment), index= 1:nrow(data))
-
-
-# eda
-colnames(data)
-
-# outfits_comment
-# only look at white soldiers who have the response for the outfits comment
-# lump "no reason" into NAs
-
-na_list <- c("none", "[none]", "noone", "nnone", "[blank]", "n/a", "i", ".", "no comment", "no comments", "have none",
-             "no reason", "no reasons", "left blank", "[no answer]", "[slash] [slash]", "0")
-
-levels(as.factor(data$racial_group))
-# only white soldiers responded to outfits comment
-data %>% filter(!is.na(outfits_comment) & racial_group == "white") %>% count() # 1450
-data %>% filter(!is.na(outfits_comment) & racial_group == "black") %>% count() # 0
-
-# convert all responses to lower case
-ldata <- data %>%
-  mutate(
-    outfits_comment = tolower(outfits_comment),
-    long = tolower(long)
-  )
-# extract just black soldiers
-black_soldiers <- ldata %>% filter(racial_group == "black")
-
-# check that black soldiers don't have a response to outfits comment
-# count of black soldier responses
-nrow(black_soldiers) # 3464
-sum(is.na(black_soldiers$outfits_comment)) # 3464, that matches
-
-# check the number of NA responses for long for black soldiers
-sum(is.na(black_soldiers$long)) # 0
-
-# extract just white soliders
-white_soldiers <- ldata %>% filter(racial_group == "white")
-
-# count of white soldier reponses
-nrow(white_soldiers) # 2324
-
-# check the number of na values for the outfits comment
-sum(is.na(white_soldiers$outfits_comment)) # 874
-
-# check the number of na values for long for white soliders
-sum(is.na(white_soldiers$long)) # 0
-
-# number of outfits comment responses in na_list
-ldata %>% filter(racial_group == "white" & outfits_comment %in% na_list) %>% count() # 90
-
-## change any answer that indicates no response to NA ##
-#ex: "none", "[None]", "0" some of this filtering has been done in the LDA.R file on Master branch
-
-outfits_predicate <- data$racial_group == "white" & tolower(data$outfits_comment) %in% na_list
-long_predicate <- tolower(data$long) %in% na_list
-
-data_clean <- data %>%
-  mutate(
-    outfits_comment = ifelse(outfits_predicate, NA, outfits_comment),
-    long = ifelse(long_predicate, NA, long)
-  )
-
-## Remove the following metatags: [paragraph], [insertion][/insertion], [circle][/circle], [underline][/underline] ##
-#Regex expression for [underline]: \\[underline\\]
-#Regex expression for [/underline]: \\[\\/underline\\]
-
-# remove [paragraph]
-paragraph_pattern <- "\\[paragraph\\]"
-data_clean$outfits_comment <- str_replace_all(data_clean$outfits_comment, paragraph_pattern, "")
-data_clean$long <- str_replace_all(data_clean$long, paragraph_pattern, "")
-
-# remove [insertion][/insertion]
-insertion_pattern.1 <- "\\[insertion\\]"
-insertion_pattern.2 <- "\\[\\/insertion\\]"
-
-# testing insertion pattern
-# insertion_test <- c("this doesn't have an insertion.", "this [insertion]does[/insertion] have one.")
-# insertion_test %>%
-#   str_replace(insertion_pattern.1, "") %>%
-#   str_replace(insertion_pattern.2, "")
-
-data_clean$outfits_comment <- data_clean$outfits_comment %>%
-  str_replace_all(insertion_pattern.1, "") %>%
-  str_replace_all(insertion_pattern.2, "")
-
-data_clean$long <- data_clean$long %>%
-  str_replace_all(insertion_pattern.1, "") %>%
-  str_replace_all(insertion_pattern.2, "")
-
-# remove [circle][/circle]
-circle_pattern.1 <- "\\[circle\\]"
-circle_pattern.2 <- "\\[\\/circle\\]"
-
-# testing circle pattern
-# circle_test <- c("[circle]this[/circle] is circled.", "this is not circled.")
-# circle_test %>%
-#   str_replace(circle_pattern.1, "") %>%
-#   str_replace(circle_pattern.2, "")
-
-data_clean$outfits_comment <- data_clean$outfits_comment %>%
-  str_replace_all(circle_pattern.1, "") %>%
-  str_replace_all(circle_pattern.2, "")
-
-data_clean$long <- data_clean$long %>%
-  str_replace_all(circle_pattern.1, "") %>%
-  str_replace_all(circle_pattern.2, "")
-
-# remove [underline][/underline]
-underline_pattern.1 <- "\\[underline\\]"
-underline_pattern.2 <- "\\[\\/underline\\]"
-
-data_clean$outfits_comment <- data_clean$outfits_comment %>%
-  str_replace_all(underline_pattern.1, "") %>%
-  str_replace_all(underline_pattern.2, "")
-
-data_clean$long <- data_clean$long %>%
-  str_replace_all(underline_pattern.1, "") %>%
-  str_replace_all(underline_pattern.2, "")
-
-# remove [deletion][/deletion] and anything inside the tag
-delete.rm <- "(?=\\[deletion\\]).*?(?<=\\[\\/deletion\\])"
-delete.rm2 <- "\\[deletion\\]|\\[\\/deletion\\]"
-data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, delete.rm, ""), #first delete occurances with words inside
-                                    long = str_replace_all(long, delete.rm, ""),
-                                    outfits_comment = str_replace_all(outfits_comment, delete.rm2, ""), #second delete any occurances of the tag
-                                    long = str_replace_all(long, delete.rm2, "")) 
-
-
-# remove [unclear][/unclear] with no meaningful filler or with question mark
-unclear.rm <- "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]"
-data_clean <- data_clean %>% mutate(outfits_comment = str_replace_all(outfits_comment, unclear.rm, ""),
-                                    long = str_replace_all(long, unclear.rm, ""))
-
-# correcting unclear text 
-# outfit_unclear <- data_clean %>% select(-long) %>% 
-#   mutate(unclear=str_extract_all(outfits_comment, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
-#          unclear = ifelse(unclear == "character(0)", NA, unclear),
-#          correct = rep("", nrow(data_clean)))%>% filter(!is.na(outfits_comment), !is.na(unclear)) %>%
-#   unnest(unclear)
-
-#Manually correct unclear instances
-#fwrite(outfit_unclear, file="~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #export the unclear table to csv
-#researcher manually enters the correction in the correct column
-outfit_unclear <- fread("~/git/dspg2020amsoldier/data/outfit_unclear.csv", sep = ",") #read the csv file back in.
-
-#loops through and corrects original dataset :))))
-for (i in 1:nrow(outfit_unclear)){
-  j<-outfit_unclear$index[i]
-  data_clean$outfits_comment[j] <- str_replace(data_clean$outfits_comment[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", outfit_unclear$correct[i])
-}
-
-# long_unclear <- data_clean %>% select(-outfits_comment) %>% 
-#   mutate(#long = str_replace_all(long, "\\[unclear\\]\\[\\/unclear\\]|\\[unclear\\]\\s\\[\\/unclear\\]|\\[unclear\\]\\s*\\?{1,}\\s*\\[\\/unclear\\]", ""),#remove any unclear with no filler or with question mark
-#          #Note: there may result in additional white space."do you think [unclear][/unclear] will win the war" -> "do you think  will win the war"
-#          unclear=str_extract_all(long, "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])"), #identify unclear tag with text inside
-#          unclear = ifelse(unclear == "character(0)", NA, unclear),
-#          correct = rep("", nrow(data_clean)))%>% filter(!is.na(long), !is.na(unclear)) %>%
-#   unnest(unclear)
-#fwrite(long_unclear, file="~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #export the unclear table to csv
-#researcher manually enters the correction in the correct column
-long_unclear <- fread("~/git/dspg2020amsoldier/data/long_unclear.csv", sep = ",") #read the csv file back in.
-
-for (i in 1:nrow(long_unclear)){#populate clean dataset with corrections
-  j<-long_unclear$index[i]
-  data_clean$long[j] <- str_replace(data_clean$long[j], "(?=\\[unclear\\]).*?(?<=\\[\\/unclear\\])", long_unclear$correct[i])
-}
-
-
-# replace any empty response with NA
-data_clean <- data_clean %>% mutate(long = ifelse(long==""|long==" ", NA,long), 
-                                    outfits_comment = ifelse(outfits_comment==""|outfits_comment==" ", NA,outfits_comment))
-
-# examine cleaned data
-head(data_clean)
-
-S32N = data_clean %>% filter(racial_group == "black")
-S32W = data_clean %>% filter(racial_group == "white")
+S32N = data %>% filter(racial_group == "black")
+S32W = data %>% filter(racial_group == "white")
 
 
 # text mining --------------------------------------------------------
@@ -298,16 +122,29 @@ dtm_77 <- cast_dtm(tidy_77, term = word, document = row, value = n)
 dtm_78 <- cast_dtm(tidy_78, term = word, document = row, value = n)
 dtm_n <- cast_dtm(tidy_n, term = word, document = row, value = n)
 
-num_clusters <- 3
-lda_77 <- LDA(dtm_77, k = num_clusters, method = "VEM", control = NULL)
-lda_78 <- LDA(dtm_78, k = num_clusters, method = "VEM", control = NULL)
-lda_n <- LDA(dtm_n, k = num_clusters, method = "VEM", control = NULL)
+num_clusters <- 6
+weight_strength = .01
+lda_77 <- LDA(dtm_77, k = num_clusters, method = "Gibbs", control = NULL)
+lda_78 <- LDA(dtm_78, k = num_clusters, method = "Gibbs", control = NULL)
+lda_n <- LDA(dtm_n, k = num_clusters, method = "Gibbs", control = NULL)
 
 # this will separate out topics and have a weighted probability
 topics_77 <- tidy(lda_77, matrix = "beta")
 topics_78 <- tidy(lda_78, matrix = "beta")
 topics_n <- tidy(lda_n, matrix = "beta")
 
+#takes word topic betas and graphs them as a network
+colnames(topics_n) = colnames(topics_77) = colnames(topics_78) =  c("source", "target", "weight")
+# Extract into data frame and plot
+topics_n %>%
+  filter(weight >= weight_strength) %>%
+  simpleNetwork(fontSize = 12, zoom = T)
+topics_77 %>%
+  filter(weight >= weight_strength) %>%
+  simpleNetwork(fontSize = 12, zoom = T)
+topics_78 %>%
+  filter(weight >= weight_strength) %>%
+  simpleNetwork(fontSize = 12, zoom = T)
 
 # this groups by topics and shows top 10 words and arranges by beta
 # Q77 white
@@ -354,20 +191,20 @@ topics_terms_n %>%
   coord_flip()
 
 # euclidean distances
-exposure_78 <- posterior(lda_78,dtm_78)
-apply(exposure_78$topics,1,sum)
-exposure_n <- posterior(lda_n,dtm_n)
-apply(exposure_n $topics,1,sum)
+# exposure_78 <- posterior(lda_78,dtm_78)
+# apply(exposure_78$topics,1,sum)
+# exposure_n <- posterior(lda_n,dtm_n)
+# apply(exposure_n $topics,1,sum)
 
-euclidean_distances <- c()
-max_exposure <- matrix(F,nrow(exposure_n$topics),num_clusters)
-for(i in 1:nrow(exposure_n$topics)){
-  euclidean_distances[i] <- sqrt(sum((exposure_n$topics[i,] - exposure_78$topics[i,])^2))
-  # which text was exposed to (black v white)
-  max_exposure[i,which.max(exposure_n$topics[i,])] <- T
-  max_exposure[i,which.max(exposure_78$topics[i,])] <- T
-}
-print(sum(apply(max_exposure,1,sum) == 1)/nrow(exposure_n$topics))
+# euclidean_distances <- c()
+# max_exposure <- matrix(F,nrow(exposure_n$topics),num_clusters)
+# for(i in 1:nrow(exposure_n$topics)){
+#   euclidean_distances[i] <- sqrt(sum((exposure_n$topics[i,] - exposure_78$topics[i,])^2))
+#   # which text was exposed to (black v white)
+#   max_exposure[i,which.max(exposure_n$topics[i,])] <- T
+#   max_exposure[i,which.max(exposure_78$topics[i,])] <- T
+# }
+# print(sum(apply(max_exposure,1,sum) == 1)/nrow(exposure_n$topics))
 # 0.1878099 - what does this mean though: distance of topics between both groups
 
 # naming categories (the hard way)?
@@ -695,7 +532,7 @@ ggraph(bigram_graph_78, layout = "fr") +
 # negation bigrams -------------------------------------------------------------------------
 negation_bigrams <- bigrams_separated_n %>%
   filter(word1 %in% negation_words) %>%
-  inner_join(AFINN, by = c(word2 = "word")) %>%
+  inner_join(afinn, by = c(word2 = "word")) %>%
   count(word1, word2, value, sort = TRUE) %>%
   mutate(contribution = n * value) %>%
   arrange(desc(abs(contribution))) %>%
@@ -740,6 +577,9 @@ word_cors_n <- row_n_words %>%
   pairwise_cor(word, section, sort = TRUE) %>%
   filter(correlation > .1)
 # write.csv(word_cors_n, "clean_black_long_edge_occur.csv")
+#visualizes correlation network
+word_cors_n %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 word_cors_n %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -790,6 +630,9 @@ word_cors_78 <- row_78_words %>%
   pairwise_cor(word, section, sort = TRUE) %>%
   filter(correlation > .1)
 # write.csv(word_cors_78, "clean_white_long_edge_occur.csv")
+#visualizes correlation network
+word_cors_78 %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 word_cors_78 %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -839,6 +682,9 @@ word_cors_w4 <- row_w4_words %>%
   filter(n() >= 20) %>%
   pairwise_cor(word, section, sort = TRUE)  %>%
   filter(correlation > 0)
+#visualizes correlation network
+word_cors_w4 %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 word_cors_w4 %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -886,6 +732,9 @@ word_cors_wag <- row_wag_words %>%
   filter(n() >= 5) %>%
   pairwise_cor(word, section, sort = TRUE) %>%
   filter(correlation > 0)
+#visualizes correlation network
+word_cors_wag %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 word_cors_wag %>%
   filter(item1 %in% c("negro", "white")) %>%
@@ -933,8 +782,10 @@ word_cors_77 <- row_77_words %>%
   group_by(word) %>%
   filter(n() >= 0) %>%
   pairwise_cor(word, section, sort = TRUE)
-write.csv(word_cors_77, "clean_white_short_occur.csv")
-
+# write.csv(word_cors_77, "clean_white_short_occur.csv")
+#visualizes correlation network
+word_cors_77 %>%
+  simpleNetwork(fontSize = 12, zoom =T)
 
 # simple n graphs ----------------------------------------
 
