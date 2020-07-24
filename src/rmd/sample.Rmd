@@ -13,11 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-Honestly WWII really sucked
-
-## Data Cleaning and Text Mining
-
-This is the perfect place to talk about how much you hate cleaning
+Why we care about this topic and what we would like to learn
 
 # Exploratory Data Analysis
 
@@ -25,7 +21,8 @@ This is the perfect place to talk about how much you hate cleaning
 
 ```
 
-Here you can talk about graphs you made that are not as cool as the others
+plots on distributions
+words used
 
 # Sentiment Analysis
 
@@ -33,7 +30,9 @@ Here you can talk about graphs you made that are not as cool as the others
 
 ```
 
-Senitment Analysis Rocks
+Radar Charts?
+Plots of words by sentiment and number of uses
+
 
 # Social Network Analysis
 
@@ -41,16 +40,16 @@ Senitment Analysis Rocks
 
 ```
 
-SNA is amazing
+overall networks
 
-## Topic Modelling
+## Identifying Topics
 
 ```{r topic, echo=FALSE}
 
 ```
 
-We used SNA to get topics as opposed to LDA
+networks in the context of networks
 
 # Conclusion
 
-WWII still sucked and white soldiers were racist. Fin.
+what we learned, why it matters

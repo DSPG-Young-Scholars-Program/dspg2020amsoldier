@@ -114,11 +114,14 @@ s195b %>%
 
 # S195B.Q22A. IS THE ARMY ANY PLACE FOR A GIRL TO BE? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.22A. <- recode_factor(s195b$Q.22A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.22B. <- recode_factor(s195b$Q.22B.,`1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 s195b %>%
-  group_by(Q.22A.) %>%
+  group_by(Q.22A., Q.22B.) %>%
   count() %>%
   ggplot(aes(x = Q.22A., y = n)) +
   geom_bar(stat="identity", aes(fill = Q.22A.))+
+  facet_wrap(~Q.22B.) +
   ggtitle("IS THE ARMY ANY PLACE FOR A GIRL TO BE?") +
   theme_minimal() +
   scale_fill_manual(values = colors)
@@ -145,7 +148,7 @@ s195b %>%
   theme_minimal() +
   scale_fill_manual(values = colors)
 
-# this is the same survey at a different camp I think
+# this is the same survey to the same people, just different questions.
 # S195C.Q4A. IN YOUR OPINION HOW NECESSARY IS IT FOR THE WAR EFFORT TO HAVE WOMEN IN THE ARMY?  1. VERY NECESSARY 2. PRETTY NECESSARY 3. NOT SO NECESSARY 4. NOT NECESSARY AT ALL 5. UNDECIDED 0. NO ANSWER
 # S195C.Q5A. SUPPOSE A GIRL FRIEND OF YOURS WAS CONSIDERING JOINING THE WAC, WOULD YOU ADVISE HER TO JOIN OR NOT TO JOIN?  1. I WOULD ADVISE HER TO JOIN 2. I WOULD ADVISE HER NOT TO JOIN 3. UNDECIDED 0. NO ANSWER 
 # S195C.Q6A. IN YOUR OPINION ARE THE JOBS WHICH WOMEN IN THE WAC DO MORE IMPORTANT OR LESS IMPORTANT THAN THE JOBS WHICH ARE DONE BY MEN IN THE ARMY WHO ARE NOT ON COMBAT DUTY, OR ARE THEY EQUALLY IMPORTANT?  1. THE WAC DOES MORE IMPORTANT JOBS 2. THE WAC DOES LESS IMPORTANT JOBS 3. THE JOBS ARE EQUALLY IMPORTANT 0. NO ANSWER 
