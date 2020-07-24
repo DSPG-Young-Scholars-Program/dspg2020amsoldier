@@ -6,71 +6,79 @@ library(tibble)
 library(scales)
 library(fmsb)
 library(data.table)
+library(here)
+
+source(here::here("src", "sentiment_analysis.R"));
+s32_sentiments
+
+plot_single <- function(data, race, type) {
+  group_mean <- dplyr::as_data_frame(data) %>%
+    filter(racial_group == race & response_type == type) %>%
+    select(c("anger",
+             "anticipation",
+             "disgust",
+             "fear",
+             "joy",
+             "negative",
+             "positive",
+             "sadness",
+             "surprise",
+             "trust")) %>%
+    summarise_all(mean);
+  
+  group_mean_melted <- melt(group_mean)
+  plot_data <- rbind(rep(max(group_mean_melted$value), 10), rep(min(group_mean_melted$value), 10), group_mean);
+  return(plot_data);
+}
+
+plot_double <- function(data1, data2, race1, race2, type1, type2) {
+  group1_mean <- dplyr::as_data_frame(data1) %>%
+    filter(racial_group == race1 & response_type == type1) %>%
+    select(c("anger",
+             "anticipation",
+             "disgust",
+             "fear",
+             "joy",
+             "negative",
+             "positive",
+             "sadness",
+             "surprise",
+             "trust")) %>%
+    summarise_all(mean);
+  
+  group2_mean <- dplyr::as_data_frame(data2) %>%
+    filter(racial_group == race2 & response_type == type2) %>%
+    select(c("anger",
+             "anticipation",
+             "disgust",
+             "fear",
+             "joy",
+             "negative",
+             "positive",
+             "sadness",
+             "surprise",
+             "trust")) %>%
+    summarise_all(mean);
+  
+  # combine repsonses
+  comb <- rbind(group1_mean, group2_mean)
+  rownames(comb) <- c("group1", "group2")
+  
+  # get min and max for plotting
+  comb_melted <- melt(comb)
+  minval <- min(comb_melted$value)
+  maxval <- max(comb_melted$value)
+  
+  plot_data <- rbind(rep(maxval, 10), rep(minval, 10), comb)
+  return(plot_data);
+}
+
+plot_data <- plot_single(race = "black", type = "long", s32_sentiments);
+radarchart(plot_data,
+           cglcol = "grey", 
+           cglty = 1)
 
 
-# normalize sentiment scores to length of response
-# textn_df - Black long response
-# text77_df - white outfit response
-# text78_df - white outfit response
-
-# normalize bing_and_nrc
-# returns a vector containing the length of each response
-# response_lengths <- apply(bing_and_nrc, 1, function(x) {
-#   return(length(as.list(strsplit(textn_df[x["row"], ]$text, '\\s+')[[1]])))
-# }); # returns integer vector
-# 
-# bing_and_nrc$response_length <- response_lengths
-# bing_and_nrc_norm <- bing_and_nrc %>%
-#   mutate(anger = anger / response_length,
-#          anticipation = anticipation / response_length,
-#          disgust = disgust / response_length,
-#          fear = fear / response_length,
-#          joy = joy / response_length,
-#          negative = negative / response_length,
-#          positive = positive / response_length,
-#          sadness = sadness / response_length,
-#          surprise = surprise / response_length,
-#          trust = trust / response_length,
-#          sentiment = sentiment / response_length)
-# 
-# # normalize bing_and_nrc_77
-# response_lengths <- apply(bing_and_nrc_77, 1, function(x) {
-#   return(length(as.list(strsplit(text77_df[x["row"], ]$text, '\\s+')[[1]])))
-# });
-# 
-# bing_and_nrc_77$response_length <- response_lengths
-# bing_and_nrc_77_norm <- bing_and_nrc_77 %>%
-#   mutate(anger = anger / response_length,
-#          anticipation = anticipation / response_length,
-#          disgust = disgust / response_length,
-#          fear = fear / response_length,
-#          joy = joy / response_length,
-#          negative = negative / response_length,
-#          positive = positive / response_length,
-#          sadness = sadness / response_length,
-#          surprise = surprise / response_length,
-#          trust = trust / response_length,
-#          sentiment = sentiment / response_length)
-# 
-# # normalize bing_and_nrc_78
-# response_lengths <- apply(bing_and_nrc_78, 1, function(x) {
-#   return(length(as.list(strsplit(text78_df[x["row"], ]$text, '\\s+')[[1]])))
-# });
-# 
-# bing_and_nrc_78$response_length <- response_lengths
-# bing_and_nrc_78_norm <- bing_and_nrc_78 %>%
-#   mutate(anger = anger / response_length,
-#          anticipation = anticipation / response_length,
-#          disgust = disgust / response_length,
-#          fear = fear / response_length,
-#          joy = joy / response_length,
-#          negative = negative / response_length,
-#          positive = positive / response_length,
-#          sadness = sadness / response_length,
-#          surprise = surprise / response_length,
-#          trust = trust / response_length,
-#          sentiment = sentiment / response_length)
-sentiments
 
 # black, long reponse
 black_long_mean <- dplyr::as_data_frame(sentiments) %>%
@@ -137,22 +145,14 @@ radarchart(plot_data,
 
 ## PLOT 3
 # combined long responses chart
-black_long <- copy(black_long_mean)
-white_long <- copy(white_long_mean)
+plot_data <- plot_double(data1 = s32_sentiments,
+              data2 = s32_sentiments,
+              race1 = "black", 
+              race2 = "white", 
+              type1 = "long", 
+              type2 = "long");
 
-# combine repsonses
-long <- rbind(black_long, white_long)
-rownames(long) <- c("Black", "white")
-
-# get min and max for plotting
-long_melted <- melt(long)
-minval <- min(long_melted$value)
-maxval <- max(long_melted$value)
-
-plot_data <- rbind(rep(maxval, 10), rep(minval, 10), long)
-
-colors <- c("#e57200", "#232d4b")
-
+colors <- c("#e57200", "#232d4b");
 radarchart(plot_data,
            cglcol = "grey", # color of net
            cglty = 1, # net line type
@@ -162,7 +162,7 @@ radarchart(plot_data,
            plty = 1, # plot line type
 )
 legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors )
-title(main = "NRC Sentiment Analysis of Long Response")
+title(main = "NRC Sentiment Analysis of Long Response");
 
 
 # PLOT 4
@@ -258,4 +258,110 @@ title(main = "NRC Sentiment Analysis of White Soliders'\n Comment on Outfit Inte
 
 # change labels to same_outfits integrated_words
 
+# does removing negation significantly change results?
+plot_data <- plot_double(
+  data1 = s32_sentiments,
+  data2 = s32_negation_removed_sentiments,
+  race1 = "black",
+  race2 = "black",
+  type1 = "long",
+  type2 = "long"
+);
 
+colors <- c("#e57200", "#232d4b");
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors )
+title(main = "Effect of removing negative bigrams on sentiment scores.");
+
+View(s32_sentiments)
+
+
+sum(s32_sentiments == s32_negation_removed_sentiments)
+nrow(s32_sentiments)
+
+# negation impacts on white short for separate
+plot_data <- plot_double(data1 = s32_sentiments %>% filter(outfits == "['They should be in separate outfits']"),
+                         data2 = s32_negation_removed_sentiments %>% filter(outfits == "['They should be in separate outfits']"),
+                         race1 = "white", 
+                         race2 = "white", 
+                         type1 = "short", 
+                         type2 = "short");
+
+colors <- c("#e57200", "#232d4b");
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors )
+title(main = "Impact of Negation on Segregationist White Short Responses");
+
+# negation impacts on white short for together
+plot_data <- plot_double(data1 = s32_sentiments %>% filter(outfits == "['They should be together in the same outfits']"),
+                         data2 = s32_negation_removed_sentiments %>% filter(outfits == "['They should be together in the same outfits']"),
+                         race1 = "white", 
+                         race2 = "white", 
+                         type1 = "short", 
+                         type2 = "short");
+
+colors <- c("#e57200", "#232d4b");
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors )
+title(main = "Impact of Negation on Integrationist White Short Responses");
+
+# negation impacts on white long for separate
+plot_data <- plot_double(data1 = s32_sentiments %>% filter(outfits == "['They should be in separate outfits']"),
+                         data2 = s32_negation_removed_sentiments %>% filter(outfits == "['They should be in separate outfits']"),
+                         race1 = "white", 
+                         race2 = "white", 
+                         type1 = "long", 
+                         type2 = "long");
+
+colors <- c("#e57200", "#232d4b");
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors )
+title(main = "Impact of Negation on Segregationist White Long Responses");
+
+# negation impacts on white long for integration
+plot_data <- plot_double(data1 = s32_sentiments %>% filter(outfits == "['They should be together in the same outfits']"),
+                         data2 = s32_negation_removed_sentiments %>% filter(outfits == "['They should be together in the same outfits']"),
+                         race1 = "white", 
+                         race2 = "white", 
+                         type1 = "long", 
+                         type2 = "long");
+
+colors <- c("#e57200", "#232d4b");
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors )
+title(main = "Impact of Negation on Integrationist White Long Responses");
