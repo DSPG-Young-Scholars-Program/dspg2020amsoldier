@@ -1,4 +1,5 @@
 ﻿space
+armycamp
 armyexchange
 barrack
 barracks
@@ -16,6 +17,7 @@ house
 housing
 latrine
 live
+messhall
 north
 northern
 post
@@ -29,6 +31,8 @@ serviceclub
 sleep
 south
 southern
+station
+stationed
 theater
 town
 train

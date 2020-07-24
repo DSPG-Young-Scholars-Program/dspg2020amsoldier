@@ -44,6 +44,29 @@ visualize_bigrams <- function(bigrams, title) {
     ggtitle(title)
 }
 
+cooccur <- function(data, match, n=5, corr=.15){
+  data %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word = stem_words(lemmatize_words(word))) %>%
+  group_by(word) %>% 
+  filter(n() >= n) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(grepl(match, item1))%>%
+  filter(correlation > corr) 
+}
+visualize_cooccur <- function(data, title){
+  data %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + ggtitle(title)
+}
+
 ```
 
 ```{r dataload}
@@ -61,8 +84,19 @@ dbDisconnect(conn)
 #remove possessive 's
 data$outfits_comment <- str_replace_all(data$outfits_comment, "'s", "")
 data$long <- str_replace_all(data$long, "'s", "")
+
+data$outfits_comment <- str_replace_all(data$outfits_comment, "\\+", "and")
+data$long <- str_replace_all(data$long, "\\+", "and")
+
+#remove all symbols except periods.
+data$outfits_comment <- str_replace_all(data$outfits_comment, "[^[:alnum:][:space:].]", "")
+data$long <- str_replace_all(data$long, "[^[:alnum:][:space:].]", "")
 ```
 
+
+# How do Black and White soldiers talk about gender roles?
+
+The following analysis will explore which words are paired and associated with female and male words.
 
 A dictionary of gender words are loaded to identy which responses relate to gender topics. 
 ```{r dictionaryload}
@@ -85,7 +119,7 @@ S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
 ```
 
 
-#Bi-Grams
+###Bi-Grams
 To view commentary on gender relations, we will look at the bi-grams which will show which words appear next to gender related words.
 
 ```{r bigram_create}
@@ -163,7 +197,7 @@ word_cors %>%
 
 
 
-#### Bi-Grams: Words-collapsed
+### Bi-Grams: Words-collapsed
 
 With bi-grams, we will explore which words are paired with gender related words. 
 ```{r}
@@ -402,9 +436,57 @@ S32N_long_cors  %>%
 # simpleNetwork(S32N_long_cors)
 ```
 
-When talking about whitemen specifically, the correlated words show that the soldiers will talk about relations to black men and fighting. When talking about women there is a distinction made between white and black women. Other than that cluster of words, women are often talked about as family members and home life.
+When talking about whitemen specifically, the correlated words show that the soldiers will talk about relations to black men and fighting. When talking about women there is a distinction made between white and black women. Other than those cluster of words, women are often talked about as family members and home life.
 
 
+# Compare the narrative of female to male commentary amongst all soldier responses 
+```{r}
+#split the dictionary so we can analyze male and female separately
+female_words <- gender_words %>% filter(category == "female") 
+female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
+
+male_words <- gender_words %>% filter(category == "male") 
+male_match <- paste(paste("\\b", male_words$gender,"\\b", sep = ""), collapse="|") #regex friendly
+
+collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",") 
+collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
+
+#make sure replace with collapsed words
+data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse, vectorize_all = FALSE)
+data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse, vectorize_all = FALSE)
+```
+
+
+### long response commentary
+```{r}
+S32_long <- data %>% select(long) %>% filter(!is.na(long))
+S32_long <- tibble(nrow=1:nrow(S32_long), text = S32_long$long)
+
+long_bigrams_female <- S32_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(female_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word)  %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
+  count(word1, word2, sort = TRUE)
+
+visualize_bigrams(long_bigrams_female, "Soldiers' Long Response - Female Words Bigrams")
+```
+
+The most frequent pairs of words being used when talking about the female gender is familial roles such as wife and relations to family like dad.
+
+colorwoman -> whip
+```{r}
+filter(S32_long,nrow == 690)$text
+```
+
+negrowoman -> graduat & negrowoman -> attain
+```{r}
+filter(S32_long,nrow == 3356)$text
+```
+
+This response shows that despite the segregation of black and white Americans, there were some opportunities available to Black women at the time. The following link explains the acceptance of Black women into the army training school in Des Moines, Iowa: http://www.iowapbs.org/iowapathways/mypath/female-black-officers-train-des-moines-world-war-ii
 
 
 
