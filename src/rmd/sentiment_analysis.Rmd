@@ -22,6 +22,7 @@ library(here)
 
 ```{r }
 source(here::here("src", "load_data.R"));
+source(here::here("src", "sentiment_analysis.R"))
 ```
 
 ## Useful Functions
@@ -31,6 +32,83 @@ remove_words <- function(text, words) {
   pattern <- paste(words, collapse = "|");
   text <- str_replace_all(text, pattern, "");
   return(text);
+}
+
+radar <- function(sentiments, race, res_type) {
+  group_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == race & response_type == res_type) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+group_mean_melted <- melt(group_mean)
+plot_data <- rbind(rep(max(group_mean_melted$value), 10), rep(min(group_mean_melted$value), 10), group_mean);
+
+radarchart(plot_data,
+           cglcol = "grey",
+           cglty = 1);
+}
+
+radar2 <- function(sentiments, group1, group2, title = "Sentiment Analysis Results") {
+  group1_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == group1[1] & response_type == group1[2]) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+  
+  group2_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == group2[1] & response_type == group2[2]) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+  
+  # combine repsonses
+  groups <- rbind(group1_mean, group2_mean)
+  rownames(groups) <- c(group1[3], group2[3])
+  
+  # get min and max for plotting
+  groups_melted <- melt(groups)
+  minval <- min(groups_melted$value)
+  maxval <- max(groups_melted$value)
+  
+  plot_data <- rbind(rep(maxval, 10), rep(minval, 10), groups)
+  
+  colors <- c("#e57200", "#232d4b")
+  
+  radarchart(plot_data,
+             cglcol = "grey", # color of net
+             cglty = 1, # net line type
+             pcol = colors, # line color
+             cglwd = 1, # net width,
+             plwd = 3, # line width
+             plty = 1, # plot line type
+  )
+  legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+  title(main = title);
 }
 ```
 
@@ -422,4 +500,45 @@ radarchart(plot_data,
 
 legend(x = 1, y = 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors);
 title(main = "White Soliders'\n Comment on Outfit Integration");
+```
+
+## Gender
+
+```{r}
+radar2(s32_gender_sentiments,
+       group1 = c("black", "long", "Black"),
+       group2 = c("white", "long", "white"), 
+       title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss women");
+```
+
+```{r}
+radar2(s32_female_sentiments,
+       group1 = c("black", "long", "Black"),
+       group2 = c("white", "long", "white"), 
+       title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss women");
+```
+```{r}
+radar2(s32_male_sentiments,
+       group1 = c("black", "long", "Black"),
+       group2 = c("white", "long", "white"), 
+       title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss men");
+```
+```{r }
+gender_words %>% filter(category == "relation")
+```
+
+```{r}
+radar2(s32_relation_sentiments,
+       group1 = c("black", "long", "Black"),
+       group2 = c("white", "long", "white"), 
+       title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss gender relations");
+```
+
+difference in sentiments between white and Black soldiers that use gendered words related to females or relations in their long responses
+
+```{r}
+radar2(s32_female_and_relation_sentiments,
+       group1 = c("black", "long", "Black"),
+       group2 = c("white", "long", "white"), 
+       title = "");
 ```
