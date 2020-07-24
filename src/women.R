@@ -9,6 +9,9 @@ colors <- c("#232d4b",
             # "#2c4f6b",
             "#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
 
+my_cols = c("232d4b","2c4f6b","0e879c","60999a", "9bc0c0","d1e0bf", "ebf094", "d9e12b","e6ce3a","e6a01d","e57200","a35200","fdfdfd")
+my_cols = paste0('#', my_cols)
+
 # Women ----------------------------------------------------------
 
 # 195B
@@ -21,137 +24,97 @@ colors <- c("#232d4b",
 # S195B.Q14A. IN YOUR OPINION IS IT NECESSARY FOR THE WAR EFFORT TO HAVE WOMEN IN THE ARMY? 1. YES 2. NO 0. NO ANSWER
 
 s195b$Q.14A. <- recode_factor(s195b$Q.14A., `1` = "Yes", `2` = "No", `0` = "No Answer")
-s195b$Q.14B. <- recode_factor(s195b$Q.15B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
-s195b %>%
-  group_by(Q.14A., Q.14B.) %>%
-  count() %>%
-  ggplot(aes(x = Q.14A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.14A.)) +
-  ggtitle("IN YOUR OPINION IS IT NECESSARY FOR THE \nWAR EFFORT TO HAVE WOMEN IN THE ARMY?") +
-  facet_wrap(~Q.14B.) +
-  ylab("Number of Responses") +
-  xlab("Responses") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+s195b$Q.14B. <- recode_factor(s195b$Q.14B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
+# s195b %>%
+#   group_by(Q.14A., Q.14B.) %>%
+#   count() %>%
+#   ggplot(aes(x = Q.14A., y = n)) +
+#   geom_bar(stat="identity", aes(fill = Q.14A.)) +
+#   ggtitle("IN YOUR OPINION IS IT NECESSARY FOR THE \nWAR EFFORT TO HAVE WOMEN IN THE ARMY?") +
+#   facet_wrap(~Q.14B.) +
+#   ylab("Number of Responses") +
+#   xlab("Responses") +
+#   theme_minimal() +
+#   scale_fill_manual(values = colors)
 
 s195b %>%
   ggplot(aes(x=Q.14A.)) +
   geom_bar(position = "dodge", fill = 'darkslategray4') +
   labs(title="IN YOUR OPINION IS IT NECESSARY FOR THE \nWAR EFFORT TO HAVE WOMEN IN THE ARMY?", x="Answers", y = "Count")
 
+s195b %>%
+  ggplot( aes(x=Q.14A., fill = Q.14B.)) +geom_bar(position= "fill") +
+  labs(title="IN YOUR OPINION IS IT NECESSARY FOR THE \nWAR EFFORT TO HAVE WOMEN IN THE ARMY?", x="Answers Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:4]))
+
 # S195B.Q15A. SUPPOSE A GIRL FRIEND OF YOURS WAS CONSIDERING JOINING THE WAC, WOULD YOU ADVISE HER TO JOIN OR NOT TO JOIN? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.15A. <- recode_factor(s195b$Q.15A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.15B. <- recode_factor(s195b$Q.15B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 s195b %>%
-  group_by(Q.15A.) %>%
-  count() %>%
-  ggplot(aes(x = Q.15A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.15A.))+
-  ggtitle("SUPPOSE A GIRL FRIEND OF YOURS WAS CONSIDERING JOINING THE\nWAC, WOULD YOU ADVISE HER TO JOIN OR NOT TO JOIN?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+  ggplot(aes(x=Q.15A.)) +
+  geom_bar(position = "dodge", fill = 'darkslategray4') +
+  labs(title="SUPPOSE A GIRL FRIEND OF YOURS WAS CONSIDERING JOINING THE\nWAC, WOULD YOU ADVISE HER TO JOIN OR NOT TO JOIN?", x="Answers", y = "Count")
+
+s195b %>%
+  ggplot( aes(x=Q.15A., fill = Q.15B.)) +geom_bar(position= "fill") +
+  labs(title="SUPPOSE A GIRL FRIEND OF YOURS WAS CONSIDERING JOINING THE\nWAC, WOULD YOU ADVISE HER TO JOIN OR NOT TO JOIN?", x="Answers Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:4]))
 
 # S195B.Q16A. IN YOUR OPINION ARE THE JOBS WHICH WOMEN IN THE WAC DO LESS IMPORTANT THAN THE JOBS WHICH ARE DONE BY MEN IN THE ARMY WHO ARE NOT ON COMBAT DUTY? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.16A. <- recode_factor(s195b$Q.16A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.16B. <- recode_factor(s195b$Q.16B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 s195b %>%
-  group_by(Q.16A.) %>%
-  count() %>%
-  ggplot(aes(x = Q.16A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.16A.))+
-  ggtitle("IN YOUR OPINION ARE THE JOBS WHICH WOMEN IN THE WAC DO \nLESS IMPORTANT THAN THE JOBS WHICH ARE DONE BY \nMEN IN THE ARMY WHO ARE NOT ON COMBAT DUTY?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+  ggplot( aes(x=Q.16A., fill = Q.16B.)) +geom_bar(position= "fill") +
+  labs(title="IN YOUR OPINION ARE THE JOBS WHICH WOMEN IN THE WAC DO LESS IMPORTANT \nTHAN THE JOBS WHICH ARE DONE BY MEN IN THE ARMY WHO ARE NOT ON COMBAT DUTY? ", x="Answers Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:4]))
 
 # S195B.Q17A. IF YOU HAD A SISTER, 21 YEARS OR OLDER, WOULD YOU LIKE TO SEE HER JOIN THE WAC OR NOT? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.17A. <- recode_factor(s195b$Q.17A., `1` = "Yes", `2` = "No", `0` = "No Answer")
-s195b %>%
-  group_by(Q.17A.) %>%
-  count() %>%
-  ggplot(aes(x = Q.17A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.17A.))+
-  ggtitle("IF YOU HAD A SISTER, 21 YEARS OR OLDER, WOULD \nYOU LIKE TO SEE HER JOIN THE WAC OR NOT?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+s195b$Q.17B. <- recode_factor(s195b$Q.17B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 
 # S195B.Q18A. CAN A WOMAN DO MORE FOR HER COUNTRY IN THE WAC THAN SHE CAN BY WORKING IN A WAR INDUSTRY? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.18A. <- recode_factor(s195b$Q.18A., `1` = "Yes", `2` = "No", `0` = "No Answer")
-s195b %>%
-  group_by(Q.18A.) %>%
-  count() %>%
-  ggplot(aes(x = Q.18A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.18A.))+
-  ggtitle("CAN A WOMAN DO MORE FOR HER COUNTRY IN THE \nWAC THAN SHE CAN BY WORKING IN A WAR INDUSTRY?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+s195b$Q.18B. <- recode_factor(s195b$Q.18B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 
 
 # S195B.Q19A. WILL THE TRAINING A WOMAN GETS IN THE WAC BE USEFUL IN CIVILIAN LIFE? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.19A. <- recode_factor(s195b$Q.19A., `1` = "Yes", `2` = "No", `0` = "No Answer")
-s195b %>%
-  group_by(Q.19A.) %>%
-  count() %>%
-  ggplot(aes(x = Q.19A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.19A.))+
-  ggtitle("WILL THE TRAINING A WOMAN GETS IN THE WAC \nBE USEFUL IN CIVILIAN LIFE?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+s195b$Q.19B. <- recode_factor(s195b$Q.19B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 
 # S195B.Q20A. ARE MOST OF THE JOBS IN THE WAC INTERESTING AND AGREEABLE? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.20A. <- recode_factor(s195b$Q.20A., `1` = "Yes", `2` = "No", `0` = "No Answer")
-s195b %>%
-  group_by(Q.20A.) %>%
-  count() %>%
-  ggplot(aes(x = Q.20A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.20A.))+
-  ggtitle("ARE MOST OF THE JOBS IN THE WAC INTERESTING AND AGREEABLE?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+s195b$Q.20B. <- recode_factor(s195b$Q.20B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 
 # S195B.Q21A. IS BEING A WAC BAD FOR A GIRL'S REPUTATION? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.21A. <- recode_factor(s195b$Q.21A., `1` = "Yes", `2` = "No", `0` = "No Answer")
-s195b %>%
-  group_by(Q.21A.) %>%
-  count() %>%
-  ggplot(aes(x = Q.21A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.21A.))+
-  ggtitle("IS BEING A WAC BAD FOR A GIRL'S REPUTATION?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+s195b$Q.21B. <- recode_factor(s195b$Q.21B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 
 # S195B.Q22A. IS THE ARMY ANY PLACE FOR A GIRL TO BE? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.22A. <- recode_factor(s195b$Q.22A., `1` = "Yes", `2` = "No", `0` = "No Answer")
 s195b$Q.22B. <- recode_factor(s195b$Q.22B.,`1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
 
-s195b %>%
-  group_by(Q.22A., Q.22B.) %>%
-  count() %>%
-  ggplot(aes(x = Q.22A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.22A.))+
-  facet_wrap(~Q.22B.) +
-  ggtitle("IS THE ARMY ANY PLACE FOR A GIRL TO BE?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+
 
 # S195B.Q23A. DO WAC OFFICERS DESERVE A SALUTE JUST THE SAME AS MEN OFFICERS? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.23A. <- recode_factor(s195b$Q.23A., `1` = "Yes", `2` = "No", `0` = "No Answer")
-s195b %>%
-  group_by(Q.23A.) %>%
-  count() %>%
-  ggplot(aes(x = Q.23A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.23A.))+
-  ggtitle("DO WAC OFFICERS DESERVE A SALUTE JUST THE SAME AS MEN OFFICERS?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+s195b$Q.23B. <- recode_factor(s195b$Q.23B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 
 # S195B.Q24A. DO WAC'S GET RATINGS A LOT EASIER THAN MEN? 1. YES 2. NO 0. NO ANSWER
 s195b$Q.24A. <- recode_factor(s195b$Q.24A., `1` = "Yes", `2` = "No", `0` = "No Answer")
-s195b %>%
-  group_by(Q.24A.) %>%
-  count() %>%
-  ggplot(aes(x = Q.24A., y = n)) +
-  geom_bar(stat="identity", aes(fill = Q.24A.))+
-  ggtitle("DO WAC'S GET RATINGS A LOT EASIER THAN MEN?") +
-  theme_minimal() +
-  scale_fill_manual(values = colors)
+s195b$Q.24B. <- recode_factor(s195b$Q.24B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
 
 # this is the same survey to the same people, just different questions.
 # S195C.Q4A. IN YOUR OPINION HOW NECESSARY IS IT FOR THE WAR EFFORT TO HAVE WOMEN IN THE ARMY?  1. VERY NECESSARY 2. PRETTY NECESSARY 3. NOT SO NECESSARY 4. NOT NECESSARY AT ALL 5. UNDECIDED 0. NO ANSWER
