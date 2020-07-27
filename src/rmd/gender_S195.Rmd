@@ -168,36 +168,3 @@ s195b %>%
   scale_fill_manual(values = rev(my_cols[1:4]))
 
 ```
-
-plots on distributions
-words used
-
-# Sentiment Analysis - Mary
-
-```{r sent, echo=FALSE}
-
-```
-
-Radar Charts?
-Plots of words by sentiment and number of uses
-
-
-# Social Network Analysis - Mary
-
-```{r sna, echo=FALSE}
-
-```
-
-overall networks
-
-## Identifying Topics - Mary
-
-```{r topic, echo=FALSE}
-
-```
-
-networks in the context of networks
-
-# Conclusion
-
-what we learned, why it matters
