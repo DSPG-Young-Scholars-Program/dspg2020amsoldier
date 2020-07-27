@@ -204,8 +204,8 @@ visualize_bigrams(longN_bigrams_space2, "Black Soldiers' Long Response - Spatial
 cooccur_spatial <- function(data, n=5, corr=.15){
   #load dictionary csv
   spatial_words <- fread("~/git/dspg2020amsoldier/data/dictionary/spatial_arrangement.csv", sep = ",")
-  space_match <- stem_words(lemmatize_words(space_match))
-  space_match <- paste(paste("\\b", spatial_words$space,"\\b", sep = ""), collapse="|") #regex friendly 
+  space_match <- stem_words(lemmatize_words(spatial_words$space))
+  space_match <- paste(paste("\\b", space_match,"\\b", sep = ""), collapse="|") #regex friendly 
   
   data %>%
   mutate(section = row_number()) %>%
@@ -219,6 +219,27 @@ cooccur_spatial <- function(data, n=5, corr=.15){
   filter(grepl(space_match, item1))%>%
   filter(correlation > corr) 
 }
+
+cooccur_spatial_edit <- function(data, n=5, corr=.15){
+  #load dictionary csv
+  spatial_words <- fread("~/git/dspg2020amsoldier/data/dictionary/spatial_arrangement_edit.csv", sep = ",")
+  space_match <- stem_words(lemmatize_words(spatial_words$space))
+  space_match <- paste(paste("\\b", space_match,"\\b", sep = ""), collapse="|") #regex friendly 
+  
+  data %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word = stem_words(lemmatize_words(word))) %>%
+  group_by(word) %>% 
+  filter(n() >= n) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(grepl(space_match, item1))%>%
+  filter(correlation > corr) 
+}
+
+
 visualize_cooccur <- function(data, title){
   set.seed(2020)
   data %>%
@@ -268,7 +289,7 @@ segregation <- filter(data, outfits == "['They should be in separate outfits']")
 integration  <- filter(data, outfits == "['They should be together in the same outfits']")
 ```
 
-##### co-occurrances of the short response
+##### co-occurrences of the short response
 ```{r}
 segregation_short <- segregation %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
 seg_short <- tibble(nrow=1:nrow(segregation_short), text = segregation_short$outfits_comment)
@@ -281,21 +302,44 @@ int_short <- tibble(nrow=1:nrow(integration_short), text = integration_short$out
 seg_short_cors <- cooccur_spatial(seg_short, n = 5, corr = 0.10) 
 
 #plot
-visualize_cooccur(seg_short_cors, "Pro Segregation Short Response - Spatial Arrangement Co-occurences")
+visualize_cooccur(seg_short_cors, "Pro Segregation Short Response - Spatial Arrangement Co-occurrences")
 ```
+
+
 
 ```{r}
 int_short_cors <- cooccur_spatial(int_short, n = 0, corr = 0.10) 
 
 #plot
-visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arrangement Co-occurences")
+visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arrangement Co-occurrences")
 ```
 
 
 
-although these soldiers suported integration there seems to be a lot of talk about conditions on which the Black and White soldiers would share the same space. For example we see that both sleep and px were associated with separation. 
+Although these soldiers suported integration there is commentary about conditions in which the Black and White soldiers would share the same space. For the rightmost branch of cooccurrences,  example we see that both sleep and px were associated with separation. 
 
-There is a burst/cluster surrounding the nodes Southern, Northern and live. When talking about possibly integrating outfits, the interactions of southerners and northerners were a significant topic. Soldiers seem to talk about the differencesi n culture between the southerners and northerners on regards to race relations. We also see that other ethnicities such as Chinese and Filipino are mentioned.
+There is a burst/cluster surrounding the nodes Southern, Northern and live. When talking about possibly integrating outfits, the interactions of southerners and northerners were a significant topic. Perhaps soldiers are talking about the differences in culture between the southerners and northerners on regards to race relations. We also see that other ethnicities such as Chinese and Filipino are mentioned.
+
+
+The same co-occurance plot but with edited dictionary.
+
+```{r}
+seg_short_cors <- cooccur_spatial_edit(seg_short, n = 5, corr = 0.10) 
+
+#plot
+visualize_cooccur(seg_short_cors, "Pro Segregation Short Response - Spatial Arrangement Co-occurrences")
+
+
+#subset data based on question and race
+int_short_cors <- cooccur_spatial_edit(int_short, n = 0, corr = 0.01) 
+
+#plot
+visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arrangement Co-occurrences")
+
+```
+
+When taking out words like north/south, the co-occurrence network is cleaner. however, changing the correlation threshold doesn't do anything for the short pro-integration responses.
+
 
 ##### Co-occurances for long response
 
@@ -308,19 +352,18 @@ int_long <- tibble(nrow=1:nrow(integration_long), text = integration_long$long)
 ```
 
 ```{r}
+### for segregation ####
 seg_long_cors <- cooccur_spatial(seg_long, n = 5, corr = 0.15) 
-
 #plot
-visualize_cooccur(seg_short_cors, "Pro Segregation Long Response - Spatial Arrangement Co-occurences")
-```
+visualize_cooccur(seg_long_cors, "Pro Segregation Long Response - Spatial Arrangement Co-occurrences")
 
 
-```{r}
+### for integration ###
 int_long_cors <- cooccur_spatial(int_long, n = 3, corr = 0.30) 
-
 #plot
-visualize_cooccur(int_long_cors, "Pro Integration Long Response - Spatial Arrangement Co-occurences")
+visualize_cooccur(int_long_cors, "Pro Integration Long Response - Spatial Arrangement Co-occurrences")
 ```
+
 
 
 
