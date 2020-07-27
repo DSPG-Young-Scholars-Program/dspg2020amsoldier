@@ -1,5 +1,5 @@
 ---
-title: "Survey32 Writeup"
+title: "Survey 144 Writeup"
 output:
   html_document: default
 ---
@@ -66,95 +66,94 @@ my_cols = paste0('#', my_cols)
 
 ## Who Are the Soldiers?
 
-Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits. Our questions of interest are regarding age, education, enlistment, state, community type, and of course their opinions on outfits. On the survey these questions were asked in Questions 1,2,3,13,14, and 77 (63 for white soldiers), respectively. 
+Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4678 black soldiers and focused on post-war aspirations and plans of the soldiers. Of particular interest to us however, is the soldiers' responses to question if their lives would be better after the war.
 
 ```{r}
 sample_n(demo,10)
 ```
 
-### How Old Are the Soldiers
+### Age
 Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24. 
 
 ```{r age}
 demo %>% 
 ggplot(aes(x=age)) +
-  geom_bar(position = "dodge", fill = 'darkslategray4') +
+  geom_bar(position = "dodge", fill = my_cols[4]) +
   labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count")
 ```
 
 
-### How Far in School Were They?
-If we look at education now we see that again black soldiers have littel spread in their education. Remarkably, all of the black soldiers survied have less than a 5th grade education at the time. Meanwhile, the bulk of the white soldiers have had a high school/some high school. 
+### Education
+If we look at education we see that the majority have hade atleast some high school or trade school. This is in contrast with the black soldiers survied in S32 who only had upto a 4th grade education. Here we see the black soldiers education is distributed similarly to the white soldeir survied in S32. 
 
 ```{r edu, fig.width=7, fig.height=4}
 demo %>% 
 ggplot(aes(x=edu)) +
-  geom_bar(position = "dodge", width = 0.7, fill = 'darkslategray4') +
+  geom_bar(position = "dodge", width = 0.7, fill = my_cols[4]) +
   labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count")+
       labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
-
-
-### How Did They End Up in the  Military
-Something interesting arises here were we find that vast majority of the black soldiers actually volunteered to join the military whereas about 3/4 of the survied white soldiers were drafted and the remaining soldiers were moslty volunteers and a few were from the National Guard.
-```{r enlist, fig.width=7, fig.height=4}
-demo %>%
-ggplot(aes(x=enlist)) +
-  geom_bar(fill = 'darkslategray4') +
-  labs(title='How Black Soldiers were Enlisted', x="Enlistment Type", y = "Count") 
-
-```
-
-
-### Where Are the Soldiers From?
-
-Expectedly, most of the soldiers hailed from the most populous states at the time. White soldiers were mostly from Illionois, Pennsylvania, Ney York, Texas, and Michigan while black soldiers were mostly from Texas, New York, Illinois, Pennsylvania, and Ohio. Note that the top 4 states for white soldiers had similar amounts of soldiers but there was a sever drop off in representation of black soldiers from other states after Texas and New York.  
-
-```{r state, fig.width =10, fig.height= 8}
-demo %>% count(state, sort =T) %>% na.omit() %>%
-ggplot() +
-  geom_bar(aes(reorder(state,n),n), stat = 'identity', fill = 'darkslategray4')+
-  labs(title="Where the White Soldiers are from", x="State", y = "Count") +
-  coord_flip()
-```
-
-### What sort of places did they live in?
- 
-As expected, most soldiers whose home communities are large cities had the most representation across both groups. White soldiers saw roughly equal representation from soldiers who came from a farm, town, or city with actually slightly less people from cities. On the otherhand, the next community with the largest representation for black soldiers was a city followed by farms and towns which had approximately similar contributions. 
-
-```{r community, fig.width =8, fig.height= 6}
-demo %>%
-ggplot(aes(x=community)) +
-  geom_bar(fill = 'darkslategray4') +
-  labs(title="White Soldiers' Communities", x="Community", y = "Count") 
-```
-
-## Deeper relationships 
-
-Of course, we are interested in seeing how these variables intearct with one another to underdstand and reveal any deeper inticracies in the data. 
-
-### Breaking down Education
-When we overlay the distribution of education levels with age ranges, we see that older white soldiers made up a larger porportion of white soldiers with less education compared to soldiers with some high school. As a contingent, it appears that soldiers between 21 and 24 with a high school education make up the largest contingent of white white soldiers when grouped by education and age. 
-
-```{r, edu+age, fig.width =8, fig.height= 6}
-# not informative maybe
+There are no obvious trends between education and age, but we do see that nearly 3/4 of the college educated soldiers are 25 or older which is a larger proportion than the other education levels.
+```{r}
 demo %>%
 ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
   labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_manual(values = rev(my_cols[1:12]))
+```
+
+
+### Enlistment
+The vast majority of the soldiers were drafted into the military with less than 1000 enlisting via other means.
+```{r enlist, fig.width=7, fig.height=4}
+demo %>%
+ggplot(aes(x=enlist)) +
+  geom_bar(fill = my_cols[4]) +
+  labs(title='How Soldiers were Enlisted', x="Enlistment Type", y = "Count") 
 
 ```
-We see that larger portions of soldiers who are more educated come from communities whihc are larger in population.
 
-```{r, education+community}
+
+### Region
+
+The survey didn't ask for the specific state a soldier was from but rather a region. It appears that most of the soldiers survied where from the East Coast with the most coming from the South Atlantic states.
+
+```{r state, fig.width =10, fig.height= 8}
+demo %>% count(state, sort =T) %>% na.omit() %>%
+ggplot() +
+  geom_bar(aes(reorder(state,n),n), stat = 'identity', fill = my_cols[4])+
+  labs(title="Where the  Soldiers are from", x="Region", y = "Count") +
+  coord_flip()
+```
+
+### Community
+ 
+As expected, most soldiers whose home communities are large cities had the most representation. What suprising however is that there are more black soldiers from communities which are farms than those from the countryside or village like places.
+
+```{r community, fig.width =8, fig.height= 6}
+demo %>%
+ggplot(aes(x=community)) +
+  geom_bar(fill = my_cols[4]) +
+  labs(title="Soldiers' Communities", x="Community", y = "Count") 
+```
+Unsurprisingly, we see that soldiers from from high population communities make up a larger portion of soldiers with higher education levels. 
+
+```{r}
 demo %>%
 ggplot( aes(x=edu, fill = community)) +geom_bar(position= "fill") +
   labs(title="Community Distribution over Education Levels of Soldiers", x="Education Level", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_manual(values = rev(my_cols[1:6]), name = "Community")
+```
+
+
+
+We see that larger portions of soldiers who are more educated come from communities whihc are larger in population.
+
+```{r, education+community}
+
 
 demo %>%
 ggplot( aes(x=edu, fill = better)) +geom_bar(position= "fill") +
@@ -163,40 +162,30 @@ ggplot( aes(x=edu, fill = better)) +geom_bar(position= "fill") +
   scale_fill_manual(values = rev(my_cols[1:6]), name  = "Outlook")
 ```
 
+### Post-War Outlook 
+We can see that a good deal of black soldiers think that after the war, things will be better for them than before. However, about 1500 soldiers are also undecided. A significant amount also don't think anything will change or may change for the worse.
 ```{r, fig.width =8, fig.height= 6}
-
-
-demo %>%
-ggplot(aes(x=enlist, fill = age)) +geom_bar(position = "fill") +
-  labs(title='Black Soldiers Enlistment Proportion by Age', x="Enlistment", y = "Proportion")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-    scale_fill_manual(values = rev(my_cols[1:12]), name = 'Age')
-demo %>%
-ggplot(aes(x=enlist, fill = better)) +geom_bar(position = "fill") +
-  labs(title='Black Soldiers Enlistment and Post-War Outlook', x="Enlistment", y = "Proportion")+
-  scale_fill_manual(values = rev(my_cols[1:5]), name = 'Outlook')
-
-```
-
-```{r}
 demo %>%
 ggplot(aes(x=better)) +geom_bar(fill = my_cols[4]) +
-  labs(title="Black Soldiers Outlook on Post-War Prospects ", x="Prospects", y = "Proportion")
+  labs(title="Black Soldiers Outlook on Post-War Life ", x="Prospects", y = "Proportion")
+
+```
+We also can observe that the age distribution is roughly similar along these outlooks. Interestingly, it seems that as the soldiers education level increases the less likely they are to belive things will be better for them after the war. Similarly, soldiers from more populated areas are less likely to have an optimistic outlook for life after the war.
+```{r}
+
 
 demo %>%
 ggplot(aes(x=better, fill = age)) +geom_bar(position = "fill") +
-  labs(title='Black Soldiers Outlook on Post-War Prospects Proportioned by Age', x="Prospects", y = "Proportion")+
+  labs(title='Black Soldiers Outlook on Post-War Life Proportioned by Age', x="Prospects", y = "Proportion")+
   scale_fill_manual(values = rev(my_cols[1:12]), name = "Age Range")
-
 
 demo %>%
 ggplot(aes(x=better, fill = edu)) +geom_bar(position = "fill") +
-  labs(title='Black Soldiers Outlook on Post-War Prospects \nProportion by Education', x="Prospects", y = "Proportion")+
-  scale_fill_manual(values = rev(my_cols[1:11]), name = "Education")
-
+  labs(title='Black Soldiers Outlook on Post-War Life \nProportion by Education', x="Education", y = "Proportion")+
+  scale_fill_manual(values = rev(my_cols[1:11]), name = "Prospects")
 
 demo %>%
-ggplot(aes(x=better, fill = community )) +geom_bar(position = "fill") +
-  labs(title='Black Soldiers Outlook on Post-War Prospects\nProportioned by Community', x="Prospects", y = "Proportion")+
-      scale_fill_manual(values = rev(my_cols[1:6]), name = "Community") 
+ggplot(aes(x=community, fill = better )) +geom_bar(position = "fill") +
+  labs(title='Black Soldiers Outlook on Post-War Life\nProportioned by Community', x="Community", y = "Proportion")+
+      scale_fill_manual(values = rev(my_cols[1:6]), name = "Prospects") 
 ```

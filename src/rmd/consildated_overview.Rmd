@@ -1,9 +1,9 @@
 ---
 title: "Survey32 Writeup"
 output:
-  pdf_document: default
-  word_document: default
   html_document: default
+  word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -159,7 +159,6 @@ w_ans %>%
     ggplot(aes(fill=variable)) +
     geom_bar(aes(reorder(age,value),value), stat='identity', position='dodge')+
     labs(title='Age Groups of Soldiers', x="Age Groups", y = "Count")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_discrete(name = "Race", labels = c("White", "Black"))
   
 ```
@@ -388,6 +387,13 @@ b_ans %>%
   ggplot(aes(black_treatment))+
   geom_bar(aes(y = ..prop.., group = 1), fill = my_cols[4])+
   labs(x="Treatment by White People", y = "Prop", title = 'Black Soldiers Opinions on Post-War Treatment from White People ') 
+
+b_ans %>%
+  ggplot(aes(black_treatment, fill = post_war_rights))+
+  geom_bar(position = 'fill')+
+  labs(x="Treatment by White People", y = "Prop", title = 'Black Soldiers Opinions on Post-War Treatment from White People ') +
+  scale_fill_manual(values = rev(my_cols[1:4]), name = 'Post-War Rights')
+
 ```
 ## Deeper relationships 
 
@@ -447,7 +453,7 @@ ggplot( aes(x=community, fill = edu)) +geom_bar(position= "fill") +
   facet_grid(rows = vars(race), scales="free_y")+
   labs(title="Education Distribution over Community Type of Soldiers", x="Community", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_fill_manual(values = mycolors)
+  scale_fill_manual(values = my_cols)
 ```
 
 ### Breaking Down Enlistment 
@@ -518,7 +524,7 @@ ggplot( aes(x=outfits, fill = edu)) +geom_bar(position= "fill") +
   facet_grid(rows = vars(race), scales="free_y")+
   labs(title="Education Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_fill_manual(values = mycolors)
+  scale_fill_manual(values = my_cols)
 ```
 
 Across both races we also see that of those who choose integration a greater portion were from large cities and soldiers who came from more populated voted for sepration less proportionally. 
@@ -529,21 +535,51 @@ ggplot( aes(x=outfits, fill = community)) +geom_bar(position= "fill") +
   facet_grid(rows = vars(race), scales="free_y")+
   labs(title="Community Type Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_fill_manual(values = mycolors)
+  scale_fill_manual(values = my_cols)
 
 ans %>% filter(outfits!="NA") %>%
 ggplot( aes(x=community, fill = outfits)) +geom_bar(position= "fill") +
   facet_grid(rows = vars(race), scales="free_y")+
   labs(title="Community Type Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_fill_manual(values = mycolors)
+  scale_fill_manual(values = my_cols)
 
 w_ans %>% filter(outfits!="NA") %>%
 ggplot( aes(x=community, fill = outfits)) +geom_bar(position= "fill") +
   # facet_grid(rows = vars(race), scales="free_y")+
   labs(title="Community Type Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  scale_fill_manual(values = mycolors)
+  scale_fill_manual(values = my_cols)
 ```
 
 
+```{r}
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = post_war_rights)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Community Type Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = my_cols)
+
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = black_rights_should)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Community Type Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = my_cols)
+
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = black_rights_will)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Community Type Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = my_cols)
+
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = black_treatment)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Community Type Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = my_cols)
+
+```

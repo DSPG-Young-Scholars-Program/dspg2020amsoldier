@@ -49,5 +49,24 @@ Main Findings [Here you will describe the results and include important visualiz
 Main Findings [Here you will describe the results and include important visualizations from your project.</description>
     </item>
     
+    <item>
+      <title>Profiling S32 Respondents</title>
+      <link>/findings/s32_website/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/s32_website/</guid>
+      <description>Who Are the Soldiers? Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits. Our questions of interest are regarding age, education, enlistment, state, community type, and of course their opinions on outfits.</description>
+    </item>
+    
+    <item>
+      <title>Survey 144 Writeup</title>
+      <link>/findings/eda_s144/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/eda_s144/</guid>
+      <description>Who Are the Soldiers? Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4678 black soldiers and focused on post-war aspirations and plans of the soldiers. Of particular interest to us however, is the soldiers&#39; responses to question if their lives would be better after the war.
+## age edu enlist state community ## 1 24 SOME COLLEGE DRAFTED PACIFIC Large City ## 2 &amp;lt;=18 SOME HIGH/TRADE SCHOOL DRAFTED EAST NORTH ATLANTIC Large City ## 3 23 HIGH SCHOOL DRAFTED EAST SOUTH ATLANTIC Large City ## 4 22 SOME COLLEGE DRAFTED EAST NORTH ATLANTIC Large City ## 5 26-29 SOME HIGH/TRADE SCHOOL DRAFTED WEST SOUTH ATLANTIC City ## 6 26-29 8TH GRADE DRAFTED WEST SOUTH ATLANTIC City ## 7 &amp;lt;=18 SOME HIGH/TRADE SCHOOL DRAFTED EAST SOUTH ATLANTIC Large City ## 8 20 HIGH SCHOOL DRAFTED EAST SOUTH ATLANTIC Large City ## 9 &amp;lt;NA&amp;gt; 7TH GRADE DRAFTED EAST NORTH ATLANTIC Farm ## 10 25 7TH GRADE DRAFTED MIDDLE ATLANTIC Large City ## better ## 1 &amp;lt;NA&amp;gt; ## 2 Worse ## 3 Same ## 4 Undecided ## 5 &amp;lt;NA&amp;gt; ## 6 Undecided ## 7 Better ## 8 Same ## 9 &amp;lt;NA&amp;gt; ## 10 Better Age Age was not collected on a continuous scale and was discretized into a few different age groups.</description>
+    </item>
+    
   </channel>
 </rss>
