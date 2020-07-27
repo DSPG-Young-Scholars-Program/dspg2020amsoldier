@@ -40,13 +40,13 @@ Main Findings [Here you will describe the results and include important visualiz
     </item>
     
     <item>
-      <title>Results Section Three</title>
+      <title>Results Section Three: Cooccurrence and Bigrams</title>
       <link>/findings/results-section-three/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/results-section-three/</guid>
       <description>[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data &amp;amp; Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.]
-Main Findings [Here you will describe the results and include important visualizations from your project.</description>
+How do Black and White soldiers talk about gender roles? In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers.</description>
     </item>
     
     <item>
@@ -55,8 +55,8 @@ Main Findings [Here you will describe the results and include important visualiz
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/methods/</guid>
-      <description>2020 Fairfax County Summer Project Data and Methodology Example text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in varius purus. Nullam ut sodales ante. Fusee justo nisi, suscipit a lacus et, posuere sagittis ex. Nulla convallis ante elit, at consequat ipsum ultricies ut. Aliquam erat volutpat. nderline. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in variu convallis ante elit, at consequat ipsum ultricies ut.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.</description>
+      <description>2020 NEH American Soldier Summer Project Data Our data is from a comprehensive surveying project by the US military during World War II. We are particularly interested in Survey 32, 144, and 190 which contain multiple choice questions ranging from demographic information, thoughts on the army, thoughts on the war, career plans, etc.
+Survey 32 was administered to both black and white soldiers in order to studying attitudes of and towards black soldiers.</description>
     </item>
     
     <item>
@@ -65,8 +65,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/overview/</guid>
-      <description>2020 Fairfax County Summer Project Example text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in varius purus. Nullam ut sodales ante. Fusee justo nisi, suscipit a lacus et, posuere sagittis ex. Nulla convallis ante elit, at consequat ipsum ultricies ut. Aliquam erat volutpat. nderline. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in variu convallis ante elit, at consequat ipsum ultricies ut.
-Project Goals Example text: We&amp;rsquo;re devising and assessing methods that make human populations more resilient not just during, but also before and after natural disasters.</description>
+      <description>2020 NEH American Soldier Summer Project The objective of this project is to use a novel data source to garner new insights into race, gender, and spacial relationships between army soldiers during world war II. The project uses transcribed data from a crowdsourcing platform to create textual data. The survey that we are focusing on is Survey 32 which is a survey that includes one multiple choice question on whether or not soldiers want separated or integrated outfits and two response questions giving space for them to extend on their multiple choice answer and their sentiments on the survey as a whole.</description>
     </item>
     
     <item>

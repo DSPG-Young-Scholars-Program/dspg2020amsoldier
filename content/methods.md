@@ -1,12 +1,6 @@
-### 2020 Fairfax County Summer Project {style=text-align:center}
-### Data and Methodology {style=text-align:center}
+### 2020 NEH American Soldier Summer Project {style=text-align:center}
+### Data {style=text-align:center}
 
-Example text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in varius purus. Nullam ut sodales ante. Fusee justo nisi, suscipit a lacus et, posuere sagittis ex. Nulla convallis ante elit, at consequat ipsum ultricies ut. Aliquam erat volutpat. nderline. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in variu convallis ante elit, at consequat ipsum ultricies ut.
+Our data is from a comprehensive surveying project by the US military during World War II. We are particularly interested in Survey 32, 144, and 190 which contain multiple choice questions ranging from demographic information, thoughts on the army, thoughts on the war, career plans, etc. 
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in varius purus. Nullam ut sodales ante. Fusee justo nisi, suscipit a lacus et, posuere sagittis ex. Nulla convallis ante elit, at consequat ipsum ultricies ut. Aliquam erat volutpat. nderline. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in variu convallis ante elit, at consequat ipsum ultricies ut.
-
-##### [Visualizations go about here.] {style=text-align:center}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in varius purus. Nullam ut sodales ante. Fusee justo nisi, suscipit a lacus et, posuere sagittis ex. Nulla convallis ante elit, at consequat ipsum ultricies ut. Aliquam erat volutpat. nderline. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in variu convallis ante elit, at consequat ipsum ultricies ut.
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in varius purus. Nullam ut sodales ante. Fusee justo nisi, suscipit a lacus et, posuere sagittis ex. Nulla convallis ante elit, at consequat ipsum ultricies ut. Aliquam erat volutpat. nderline. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in variu convallis ante elit, at consequat ipsum ultricies ut.
+Survey 32 was administered to both black and white soldiers in order to studying attitudes of and towards black soldiers. A question of interest on the survey is, "Do you think white and black soldiers should be in separate outfits?" The soldiers gave a response to this as a multiple choice question and we have 7442 responses from black soldiers and 4678 from white soldeiors. The soldiers also had room to elaborate on their responses in a short answer field. Along with this short response, there was room for a longer comment on the overall survey. Sadly, we do not have any short responses to the question from black soldiers. The written responses were transcribed by volunteers through the citizen science platform Zooniverse. Overall, we have 3464 written responses from black soldiers and 2324 written responses of white soldiers. The responese theselves were on the shorter side with the average response length being shorter than 100 words. 
