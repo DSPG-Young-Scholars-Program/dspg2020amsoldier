@@ -376,15 +376,15 @@ words_joined <- full_join(black_words, white_words, by = "word") %>%
 words_diff <- words_joined %>%
   transmute(word, n.x, n.y) %>%
   rename(black = n.x, white = n.y) %>%
-  mutate(diff = black - white)
+  mutate(diff = black - white) %>%
+  mutate(word = fct_reorder(word, diff)) %>%
+  arrange(desc(diff)) %>%
+  top_n(10, diff)
 
 words_diff$group <- ifelse(words_diff$diff >= 0, 1, 0)
 
+
 words_diff %>%
-  group_by(word) %>%
-  arrange(desc(diff)) %>%
-  top_n(5, diff) %>%
-  ungroup() %>%
   ggplot(aes(x=word,y=diff,fill=group))+
     geom_bar(stat="identity")+
     coord_flip()
