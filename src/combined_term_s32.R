@@ -91,7 +91,7 @@ word_cors_n <- row_n_words %>%
 
 # colorman, whiteman, coloredsoldi, negrosoldi, whitesoldi
 word_cors_n %>%
-  filter(item1 %in% c("coloredsoldi", "whiteman")) %>%
+  filter(item1 %in% c("coloredsoldi", "colorman")) %>%
   group_by(item1) %>%
   filter(item2 != "negro") %>%
   filter(item2 != "white") %>%
@@ -109,7 +109,7 @@ word_cors_n %>%
 
 set.seed(2016)
 word_cors_n %>%
-  filter(correlation > .15) %>%
+  filter(correlation > .2) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
   geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
@@ -272,7 +272,7 @@ word_cors_wag %>%
   geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
   geom_node_point(color = "#E57200", size = 5) +
   geom_node_text(aes(label = name), repel = TRUE) +
-  ggtitle("Co-Occurences of Words from White Soldiers' Long Responses at the 15 percent Threshold") +
+  ggtitle("Co-Occurences of Words from Anti-Segregation White Soldiers' Short Responses at the 15 percent Threshold") +
   theme_void()
 
 
@@ -327,6 +327,8 @@ word_cors_77 %>%
   ggtitle("Co-Occurences of Words from White Soldiers' Short Responses at the 15 percent Threshold") +
   theme_minimal()
 
+
+# Bigrams
 
 
 
