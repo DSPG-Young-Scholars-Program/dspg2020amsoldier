@@ -27,8 +27,8 @@ collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) 
 #replace with collapsed words
 source(here::here("src", "load_data.R"))
 
-data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse, vectorize_all = FALSE)
-data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse, vectorize_all = FALSE)
+data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse_union, vectorize_all = FALSE)
+data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse_union, vectorize_all = FALSE)
 
 S32N <- filter(data, racial_group == "black")
 S32W <- filter(data, racial_group == "white")
@@ -91,10 +91,15 @@ word_cors_n <- row_n_words %>%
 
 # colorman, whiteman, coloredsoldi, negrosoldi, whitesoldi
 word_cors_n %>%
-  filter(item1 %in% c("coloredsoldi", "colorman")) %>%
+  filter(item1 %in% c("blackmal", "whitemal")) %>%
   group_by(item1) %>%
+  filter(item2 != "blackmal") %>%
+  filter(item2 != "whitemal") %>%
   filter(item2 != "negro") %>%
   filter(item2 != "white") %>%
+  filter(item2 != "color") %>%
+  filter(item2 != "south") %>%
+  filter(item2 != "southern") %>%
   top_n(6) %>%
   ungroup() %>%
   mutate(item2 = reorder(item2, correlation)) %>%
@@ -103,7 +108,7 @@ word_cors_n %>%
   geom_bar(stat = "identity", fill = "#E57200") +
   xlab("Co-Occurring Word") +
   facet_wrap(~ item1, scales = "free") +
-  ggtitle("Co-Occurences with 'coloredsoldi' and 'whiteman' from Black Soldiers' Long Responses") +
+  ggtitle("Co-Occurences with Terms for Black Males and White Males from Black Soldiers' Long Responses") +
   coord_flip() +
   theme_minimal()
 
@@ -143,10 +148,15 @@ word_cors_78 <- row_78_words %>%
 # whiteman,
 
 word_cors_78 %>%
-  filter(item1 %in% c("whiteman", "blacksoldi")) %>%
+  filter(item1 %in% c("whitemal", "blackmal")) %>%
   group_by(item1) %>%
+  filter(item2 != "blackmal") %>%
+  filter(item2 != "whitemal") %>%
   filter(item2 != "negro") %>%
   filter(item2 != "white") %>%
+  filter(item2 != "color") %>%
+  filter(item2 != "south") %>%
+  filter(item2 != "southern") %>%
   top_n(6) %>%
   ungroup() %>%
   mutate(item2 = reorder(item2, correlation)) %>%
@@ -155,13 +165,13 @@ word_cors_78 %>%
   geom_bar(stat = "identity", fill = "#2C4F6B") +
   xlab("Co-Occurring Word") +
   facet_wrap(~ item1, scales = "free") +
-  ggtitle("Co-Occurences with 'Negro' and 'White' from White Soldiers' Long Responses") +
+  ggtitle("Co-Occurences with Terms for Black Males and White Males from White Soldiers' Long Responses") +
   coord_flip() +
   theme_minimal()
 
 set.seed(2016)
 word_cors_78 %>%
-  filter(correlation > .15) %>%
+  filter(correlation > .2) %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
   geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
@@ -196,10 +206,15 @@ word_cors_w4 <- row_w4_words %>%
 
 # whiteman, negrosoldi
 word_cors_w4 %>%
-  filter(item1 %in% c("whiteman", "negrosoldi")) %>%
+  filter(item1 %in% c("whitemal", "blackmal")) %>%
   group_by(item1) %>%
-  filter(item2 != "white") %>%
+  filter(item2 != "blackmal") %>%
+  filter(item2 != "whitemal") %>%
   filter(item2 != "negro") %>%
+  filter(item2 != "white") %>%
+  filter(item2 != "color") %>%
+  filter(item2 != "south") %>%
+  filter(item2 != "southern") %>%
   top_n(6) %>%
   ungroup() %>%
   mutate(item2 = reorder(item2, correlation)) %>%
@@ -247,22 +262,27 @@ word_cors_wag <- row_wag_words %>%
 
 # there arent any combos
 
-# word_cors_wag %>%
-#   filter(item1 %in% c("whiteman", "negrosoldi")) %>%
-#   group_by(item1) %>%
-#   filter(item2 != "white") %>%
-#   filter(item2 != "negro") %>%
-#   top_n(6) %>%
-#   ungroup() %>%
-#   mutate(item2 = reorder(item2, correlation)) %>%
-#   mutate(item1 = reorder(item1, correlation)) %>%
-#   ggplot(aes(item2, correlation)) +
-#   geom_bar(stat = "identity", fill = "#E6CE3A") +
-#   xlab("Co-Occurring Word") +
-#   facet_wrap(~ item1, scales = "free") +
-#   ggtitle("Co-Occurences with 'Negro' and 'White' from Anti-segregation White Soldier's Short Comments") +
-#   coord_flip()  +
-#   theme_minimal()
+word_cors_wag %>%
+  filter(item1 %in% c("whitemal", "blackmal")) %>%
+  group_by(item1) %>%
+  # filter(item2 != "blackmal") %>%
+  # filter(item2 != "whitemal") %>%
+  # filter(item2 != "negro") %>%
+  # filter(item2 != "white") %>%
+  # filter(item2 != "color") %>%
+  # filter(item2 != "south") %>%
+  # filter(item2 != "southern") %>%
+  top_n(6) %>%
+  ungroup() %>%
+  mutate(item2 = reorder(item2, correlation)) %>%
+  mutate(item1 = reorder(item1, correlation)) %>%
+  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = "identity", fill = "#E6CE3A") +
+  xlab("Co-Occurring Word") +
+  facet_wrap(~ item1, scales = "free") +
+  ggtitle("Co-Occurences with 'Negro' and 'White' from Anti-segregation White Soldier's Short Comments") +
+  coord_flip()  +
+  theme_minimal()
 
 set.seed(2016)
 word_cors_wag %>%
@@ -274,7 +294,6 @@ word_cors_wag %>%
   geom_node_text(aes(label = name), repel = TRUE) +
   ggtitle("Co-Occurences of Words from Anti-Segregation White Soldiers' Short Responses at the 15 percent Threshold") +
   theme_void()
-
 
 # white short response
 
@@ -300,10 +319,15 @@ word_cors_77 <- row_77_words %>%
 
 # whiteman, negrosoldi, whitesoldi, colorman
 word_cors_77 %>%
-  filter(item1 %in% c("whiteman", "negrosoldi")) %>%
+  filter(item1 %in% c("blackmal", "whitemal")) %>%
   group_by(item1) %>%
-  filter(item2 != "white") %>%
+  filter(item2 != "blackmal") %>%
+  filter(item2 != "whitemal") %>%
   filter(item2 != "negro") %>%
+  filter(item2 != "white") %>%
+  filter(item2 != "color") %>%
+  filter(item2 != "south") %>%
+  filter(item2 != "southern") %>%
   top_n(6) %>%
   ungroup() %>%
   mutate(item2 = reorder(item2, correlation)) %>%
@@ -327,9 +351,42 @@ word_cors_77 %>%
   ggtitle("Co-Occurences of Words from White Soldiers' Short Responses at the 15 percent Threshold") +
   theme_minimal()
 
+# bar plots with differences ----------------------------------------------------
 
-# Bigrams
+data(stop_words)
+
+word_counts <- s32 %>%
+  filter(response_type == "long") %>% # we only need to look at long responses
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(racial_group, response_type, word) %>%
+  count() %>%
+  arrange(desc(n))
 
 
+black_words <- word_counts %>% filter(racial_group == "black")
+white_words <- word_counts %>% filter(racial_group == "white")
+unique_black_words <- anti_join(black_words, white_words, by = "word")
+unique_white_words <- anti_join(white_words, black_words, by = "word")
+
+words_joined <- full_join(black_words, white_words, by = "word") %>%
+  replace_na(replace = list(black_words = 0, white_words = 0))
+
+words_diff <- words_joined %>%
+  transmute(word, n.x, n.y) %>%
+  rename(black = n.x, white = n.y) %>%
+  mutate(diff = black - white)
+
+words_diff$group <- ifelse(words_diff$diff >= 0, 1, 0)
+
+words_diff %>%
+  group_by(word) %>%
+  arrange(desc(diff)) %>%
+  top_n(5, diff) %>%
+  ungroup() %>%
+  ggplot(aes(x=word,y=diff,fill=group))+
+    geom_bar(stat="identity")+
+    coord_flip()
 
 
