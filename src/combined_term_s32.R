@@ -39,33 +39,7 @@ textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long)
 
 useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]","gujfujuj", "None.", "I", NA)
 
-# tidy_77 <- text77_df %>%
-#   filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
-#   unnest_tokens(word, text) %>%
-#   anti_join(stop_words) %>%
-#   mutate(word = wordStem(word)) %>%
-#   group_by(row) %>%
-#   count(word, sort = T) %>%
-#   mutate(response = "short", race = "white")
-#
-# tidy_78 <- text78_df %>%
-#   filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
-#   unnest_tokens(word, text) %>%
-#   anti_join(stop_words) %>%
-#   mutate(word = wordStem(word)) %>%
-#   group_by(row) %>%
-#   count(word, sort = T) %>%
-#   mutate(response = "long", race = "white")
-#
-# tidy_n <- textn_df %>%
-#   filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
-#   unnest_tokens(word, text) %>%
-#   anti_join(stop_words) %>%
-#   mutate(word = wordStem(word)) %>%
-#   group_by(row) %>%
-#   count(word, sort = T) %>%
-#   mutate(response = "long", race = "black")
-
+# combined co-occurrences ---------------------------------------------
 # co-occurences
 row_n_words <- textn_df %>%
   mutate(section = row_number()) %>%
@@ -382,93 +356,31 @@ words_diff <- words_joined %>%
 top_diff <- words_diff %>%
   arrange(-diff) %>%
   group_by(word) %>%
-  top_n(n = 10, wt = diff) %>%
-  filter(diff > 570)
+  mutate(word = factor(word, levels = word))  %>%
+  top_n(n = 10, wt = diff)
 
-top_diff$group <- ifelse(top_diff$diff >= 0, 1, 0)
+words_diff %>%
+  as.data.frame(.) %>%
+  arrange(desc(diff)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, diff) %>%
+  ggplot(., aes(x = word, y = diff)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Words in Soldiers' Long Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()
 
-top_diff %>%
-  ggplot() +
-  geom_bar(aes(reorder(word, -diff), diff, fill = group,
-             stat="identity", position = "dodge")) +
-           coord_flip()
-
-# bigrams -------------------------------------------------------------
-
-tidy_n_bigrams <- textn_df %>%
-  filter(!text %in% useless_responses) %>%
-  unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
-  count(bigram, sort = TRUE)
-
-bigrams_separated_n <- tidy_n_bigrams %>%
-  separate(bigram, c("word1", "word2"), sep = " ")
-
-bigrams_filtered_n <- bigrams_separated_n %>%
-  filter(!word1 %in% stop_words$word) %>%
-  filter(!word2 %in% stop_words$word)
-
-bigram_counts_n <- bigrams_filtered_n %>%
-  count(word1, word2, sort = TRUE)
-# write.csv(bigram_counts_n, "cleaned_black_long_edge.csv")
-
-bigrams_united_n <- bigrams_filtered_n %>%
-  unite(bigram, word1, word2, sep = " ")
-
-bigram_n_tf_idf <- bigrams_united_n %>%
-  count(bigram) %>%
-  bind_tf_idf(bigram, n) %>%
-  arrange(desc(tf_idf))
-
-bigram_graph_n <- bigram_counts_n %>%
-  filter(n > 20) %>%
-  graph_from_data_frame()
-
-set.seed(2016)
-a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
-ggraph(bigram_graph_n, layout = "fr") +
-  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
-                 arrow = a, end_cap = circle(.05, 'inches')) +
-  geom_node_point(color = "lightblue", size = 3) +
-  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
-  ggtitle("Directional Relationships between Bigrams from Black Soldier's Long Responses") +
-  theme_void()
-
-# white long bigrams
-
-tidy_78_bigrams <- text78_df %>%
-  filter(!text %in% useless_responses) %>%
-  unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
-  count(bigram, sort = TRUE)
-
-bigrams_separated_78 <- tidy_78_bigrams %>%
-  separate(bigram, c("word1", "word2"), sep = " ")
-
-bigrams_filtered_78 <- bigrams_separated_78 %>%
-  filter(!word1 %in% stop_words$word) %>%
-  filter(!word2 %in% stop_words$word)
-
-bigram_counts_78 <- bigrams_filtered_78 %>%
-  count(word1, word2, sort = TRUE)
-# write.csv(bigram_counts_78, "cleaned_white_long_edge.csv")
-
-bigrams_united_78 <- bigrams_filtered_78 %>%
-  unite(bigram, word1, word2, sep = " ")
-
-bigram_78_tf_idf <- bigrams_united_78 %>%
-  count(bigram) %>%
-  bind_tf_idf(bigram, n) %>%
-  arrange(desc(tf_idf))
-
-bigram_graph_78 <- bigram_counts_78 %>%
-  filter(n > 5) %>%
-  graph_from_data_frame()
-
-set.seed(2016)
-a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
-ggraph(bigram_graph_78, layout = "fr") +
-  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
-                 arrow = a, end_cap = circle(.05, 'inches')) +
-  geom_node_point(color = "lightblue", size = 3) +
-  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
-  ggtitle("Directional Relationships between Bigrams from White Soldier's Long Responses") +
-  theme_void()
+words_diff %>%
+  as.data.frame(.) %>%
+  arrange(desc(diff)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(-10, diff) %>%
+  ggplot(., aes(x = word, y = diff)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Words in Soldiers' Long Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()

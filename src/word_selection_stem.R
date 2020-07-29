@@ -48,25 +48,32 @@ word_props_final <- word_props_joined %>% arrange(desc(rel_prop))
 View(word_props_final)
 
 # unique word frequency plots
+
 unique_black_words %>%
-  arrange(n) %>%
-  filter(n > 12) %>%
-  ggplot(aes(word, n)) +
-  geom_col(fill = "#E6CE3A") +
-  xlab("Number of Times Used") +
-  coord_flip() +
-  ggtitle("Most Common Unique Words Used by Black Soldiers in their Long Commentary") +
-  theme_minimal()
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Unique Words in Black Soldiers' Long Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()
 
 unique_white_words %>%
-  arrange(n) %>%
-  filter(n > 6) %>%
-  ggplot(aes(word, n)) +
-  geom_col(fill = "#E6CE3A") +
-  xlab("Number of Times Used") +
-  coord_flip() +
-  ggtitle("Most Common Unique Words Used by White Soldiers in their Long Commentary") +
-  theme_minimal()
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Unique Words in White Soldiers' Long Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()
 
 # word clouds
 white_props %>%
@@ -120,25 +127,32 @@ word_props_final_short <- word_props_short_joined %>% arrange(desc(rel_prop))
 View(word_props_final_short)
 
 # unique word frequency plots
+
 unique_seg_words %>%
-  arrange(n) %>%
-  filter(n > 15) %>%
-  ggplot(aes(word, n)) +
-  geom_col(fill = "#E6CE3A") +
-  xlab("Number of Times Used") +
-  coord_flip() +
-  ggtitle("Most Common Unique Words Used by Segregationalist White Soldiers in their Short Commentary") +
-  theme_minimal()
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Unique Words in Pro-Segregation White Soldiers' Short Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()
 
 unique_int_words %>%
-  arrange(n) %>%
-  filter(n > 1) %>%
-  ggplot(aes(word, n)) +
-  geom_col(fill = "#E6CE3A") +
-  xlab("Number of Times Used") +
-  coord_flip() +
-  ggtitle("Most Common Unique Words Used by Integrationist White Soldiers in their Short Commentary") +
-  theme_minimal()
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(4, n) %>%
+  ggplot(., aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Unique Words in Anti-Segregation White Soldiers' Short Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()
 
 # word clouds
 seg_props %>%
