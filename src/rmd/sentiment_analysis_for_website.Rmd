@@ -1,12 +1,13 @@
 ---
-title: "Sentiment Analysis"
+title: "Sentiment Analysis For Website"
 author: "Chase Dawson"
-date: "7/15/2020"
+date: "7/29/2020"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE);
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) ;
 # load necessary libraries
 library(tidytext)
 library(ggplot2)
@@ -22,9 +23,11 @@ library(here)
 library(wordcloud)
 ```
 
+
 ```{r, include=FALSE}
 source(here::here("src", "load_data.R"));
 source(here::here("src", "sentiment_analysis.R"));
+source(here::here("src", "word_selection.R"))
 
 colors <- c("#e57200", "#232d4b");
 ```
@@ -163,133 +166,17 @@ words <- c("white", "black", "negro");
 s32$text <- remove_words(s32$text, words);
 ```
 
-## Computing Sentiments 
-
-The BING and AFINN lexicons compute sentiments by associated a word with positivity or negativity. Bing classifies words in a binary fasion as positive or negative, and Afinn ranks a word on a scale from -5 to +5 with -5 being the most negative and +5 being the most positive.
-
-Computing the overall sentiment of a response varies by the underlying lexicon. For Bing, the overall sentiment is computed by subtracting the number of positive words by the number of negative words. For Afinn, the overall sentiment is computed by summing the sentiment values for individual words.
-
-```{r}
-tidy_s32 <- s32 %>% 
-  unnest_tokens(word, text);
-
-s32_bing <- tidy_s32 %>%
-  inner_join(get_sentiments('bing')) %>%
-  group_by(index, racial_group, response_type, outfits, sentiment) %>% 
-  count() %>%
-  spread(sentiment, n, fill = 0) %>%
-  mutate(sentiment = positive - negative);
-
-s32_afinn <- tidy_s32 %>%
-  inner_join(get_sentiments('afinn')) %>%
-  group_by(index, racial_group, response_type, outfits) %>%
-  summarise(sentiment = sum(value));
-```
-
-## Comparing BING and AFINN Sentiments Across Groups
-
-Compare BING sentiments of long responses for white and Black soldiers.
-```{r, fig.align="center", echo=FALSE}
-black_long <- s32_bing %>% 
-  filter(racial_group == "black" & response_type == "long") %>%
-  arrange(desc(sentiment));
-black_long$order <- 1:nrow(black_long);
-
-white_long <- s32_bing %>%
-  filter(racial_group == "white" & response_type == "long") %>%
-  arrange(desc(sentiment));
-white_long$order <- 1:nrow(white_long);
- 
-rbind(black_long, white_long) %>%
-ggplot(., aes(x = order, y = sentiment, fill = racial_group)) + 
-geom_col(show.legend = FALSE) + 
-facet_wrap(~racial_group, ncol = 2, scales = "free_x")
-```
-
-Compare BING sentiments of long responses for white segregationists and integrationist soldiers.
-```{r, fig.align="center"}
-group1 <- s32_bing %>% 
-  filter(racial_group == "white" & response_type == "long" & outfits == "['They should be in separate outfits']") %>%
-  arrange(desc(sentiment));
-group1$order <- 1:nrow(group1);
-
-group2 <- s32_bing %>%
-  filter(racial_group == "white" & response_type == "long" & outfits == "['They should be together in the same outfits']") %>%
-  arrange(desc(sentiment));
-group2$order <- 1:nrow(group2);
- 
-rbind(group1, group2) %>%
-ggplot(., aes(x = order, y = sentiment, fill = outfits)) + 
-geom_col(show.legend = FALSE) + 
-facet_wrap(~outfits, ncol = 2, scales = "free_x")
-```
-
-Compare BING sentiments of short responses for white segregationists and integrationist soldiers.
-```{r, fig.align="center"}
-group1 <- s32_bing %>% 
-  filter(racial_group == "white" & response_type == "short" & outfits == "['They should be in separate outfits']") %>%
-  arrange(desc(sentiment));
-group1$order <- 1:nrow(group1);
-
-group2 <- s32_bing %>%
-  filter(racial_group == "white" & response_type == "short" & outfits == "['They should be together in the same outfits']") %>%
-  arrange(desc(sentiment));
-group2$order <- 1:nrow(group2);
- 
-rbind(group1, group2) %>%
-ggplot(., aes(x = order, y = sentiment, fill = outfits)) + 
-geom_col(show.legend = FALSE) + 
-facet_wrap(~outfits, ncol = 2, scales = "free_x")
-```
-
-Compare AFINN sentiments of long responses for white and Black soldiers.
-```{r, fig.align="center"}
-black_long <- s32_afinn %>% 
-  filter(racial_group == "black" & response_type == "long") %>%
-  arrange(desc(sentiment));
-black_long$order <- 1:nrow(black_long);
-
-white_long <- s32_afinn %>%
-  filter(racial_group == "white" & response_type == "long") %>%
-  arrange(desc(sentiment));
-white_long$order <- 1:nrow(white_long);
- 
-rbind(black_long, white_long) %>%
-ggplot(., aes(x = order, y = sentiment, fill = racial_group)) + 
-geom_col(show.legend = FALSE) + 
-facet_wrap(~racial_group, ncol = 2, scales = "free_x")
-```
-
-Compare AFINN sentiments of long responses for white segregationist and integrationist soldiers.
-
-```{r, fig.align="center"}
-group1 <- s32_afinn %>% 
-  filter(racial_group == "white" & response_type == "long" & outfits == "['They should be in separate outfits']") %>%
-  arrange(desc(sentiment));
-group1$order <- 1:nrow(group1);
-
-group2 <- s32_afinn %>%
-  filter(racial_group == "white" & response_type == "long" & outfits == "['They should be together in the same outfits']") %>%
-  arrange(desc(sentiment));
-group2$order <- 1:nrow(group2);
- 
-rbind(group1, group2) %>%
-ggplot(., aes(x = order, y = sentiment, fill = outfits)) + 
-geom_col(show.legend = FALSE) + 
-facet_wrap(~outfits, ncol = 2, scales = "free_x")
-```
-
 ## NRC Lexicon
 
 The NRC lexicon uses a dictionary to associates a word with the following sentiments: positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust. The sentiment of a body of text equals the number of words contributing to that sentiment. A word may contribute to multiple sentiments, yet each word is weighted equally in its contribution.
 
-```{r cars}
+```{r, include=FALSE}
 # read in the data
 # data <- read.csv("../../data/s32_neg_bigrams_removed.csv") %>% subset(select = -c(X));
 data <- data.table::copy(s32);
 ```
 
-```{r }
+```{r, include=FALSE}
 nrc_sentiments <- get_sentiments("nrc")
 
 # compute sentiments for each response
@@ -314,7 +201,7 @@ plot_words <- function(sentiment) {
 }
 ```
 
-# What words contribute to various sentiments within this text corpus?
+# What words primarily contribute to each sentiment?
 
 ```{r echo=FALSE, fig.align='center'}
 tmp %>%
@@ -468,7 +355,7 @@ tmp %>%
 
 # Exploring different sentiment distributions across groups.
 
-```{r}
+```{r, include=FALSE}
 sentiments <- tmp %>% 
   group_by(index, racial_group, response_type, outfits, sentiment) %>% 
   count() %>%
@@ -490,7 +377,7 @@ sentiments <- sentiments %>%
             trust = trust / word_count)
 ```
 
-```{r}
+```{r, include=FALSE}
 # black, long reponse
 black_long_mean <- dplyr::as_data_frame(sentiments) %>%
   filter(racial_group == "black" & response_type == "long") %>%
@@ -507,7 +394,7 @@ black_long_mean <- dplyr::as_data_frame(sentiments) %>%
   summarise_all(mean);
 ```
 
-```{r}
+```{r, include=FALSE}
 white_long_mean <- dplyr::as_data_frame(sentiments) %>%
   filter(racial_group == "white" & response_type == "long") %>%
   select(c("anger",
@@ -523,7 +410,7 @@ white_long_mean <- dplyr::as_data_frame(sentiments) %>%
   summarise_all(mean);
 ```
 
-```{r, fig.align='center'}
+```{r, fig.align='center', echo=FALSE}
 black_long <- copy(black_long_mean)
 white_long <- copy(white_long_mean)
 
@@ -549,11 +436,12 @@ radarchart(plot_data,
            plty = 1, # plot line type
 )
 legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
-title(main = "Average sentiments for Black and white soliders' long response.");
-
+title(main = "Average Sentiments for Black and\n White Soliders' Long Response");
 ```
 
-```{r, fig.align='center'}
+Since black and white soliders are largely dicussing similar topics related to the war there isn't much difference between the distribution of average sentiments. However, black soliders tend to be more angry, more fearful, and less positive in their responses than white soldiers.
+
+```{r, fig.align='center', echo=FALSE}
 # against desegregation
 ws_against <- sentiments %>%
   filter(racial_group == "white" & response_type == "short") %>%
@@ -611,57 +499,60 @@ radarchart(plot_data,
 );
 
 legend(x = 1, y = 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors);
-title(main = "Average sentiments for pro-integration and pro-segregation\n white soliders' outfits comment");
+title(main = "Average Sentiments for Pro-Segregation and\nPro-Integration White Soliders' Outfits Comment");
 ```
+
+In their responses to whether army outfits should be integrated, white soldiers who thought the outfits should remain segregated tended to show more anger and anticipation in their repsonses. Perhaps unexpectedly, white soldiers in favor of desegregating outfits were signficantly more fearful. Also, it's important to note that a very small percentage of soldiers were in favor of desegregating outfits, so the average sentiments are more sensitive to small changes in a single repsonse.
 
 ## Looking at Sentiments in Responses that Discuss Gender
 
-```{r, fig.align='center'}
+```{r, fig.align='center', include=FALSE}
 radar2(s32_gender_sentiments,
-       group1 = c("black", "long", "Black"),
+       group1 = c("black", "long", "black"),
        group2 = c("white", "long", "white"), 
-       title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss women");
+       title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Gender");
 ```
 
-```{r, fig.align='center'}
+
+```{r, fig.align='center', echo=FALSE}
 radar2(s32_female_sentiments,
-       group1 = c("black", "long", "Black"),
+       group1 = c("black", "long", "black"),
        group2 = c("white", "long", "white"), 
-       title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss women");
+       title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Women");
 ```
-```{r, fig.align='center'}
+
+To create this plot, we filtered the original corpus to responses that contain gendered words, specifically female. When combined with the knowledge gaind from co-occurence analysis, this plot becomes very revealing. black soldiers often write that white women "hollar rape", and this is reflected in the average sentiments because black soliders' responses about women are more fearful and negative and less trusting and joyful than white soldiers' responses.
+
+```{r, fig.align='center', include=FALSE}
 radar2(s32_male_sentiments,
-       group1 = c("black", "long", "Black"),
+       group1 = c("black", "long", "black"),
        group2 = c("white", "long", "white"), 
-       title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss men");
-```
-```{r }
-gender_words %>% filter(category == "relation")
+       title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Men");
 ```
 
-```{r}
+
+```{r, fig.align='center', include=FALSE}
 radar2(s32_relation_sentiments,
-       group1 = c("black", "long", "Black"),
+       group1 = c("black", "long", "black"),
        group2 = c("white", "long", "white"), 
-       title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss gender relations");
+       title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Gender Relations");
 ```
 
-difference in sentiments between white and Black soldiers that use gendered words related to females or relations in their long responses
-
-```{r}
+```{r, echo=FALSE, include=FALSE}
 radar2(s32_female_and_relation_sentiments,
-       group1 = c("black", "long", "Black"),
+       group1 = c("black", "long", "black"),
        group2 = c("white", "long", "white"), 
        title = "");
 ```
 
 ## Examining Words Used Uniquely by Different Groups
 
-```{r}
-source(here::here("src", "word_selection.R"))
-```
-What words are used uniquely across race?
-```{r, fig.align='center'}
+Since Survey 32 is generally about the war and experience within the military, many soldiers write about the same topics and use the same words, which adds noise and makes it harder to differentiate the sentiment distribution between different groups. In this section, we look at words that are used uniquely by certain groups.
+
+The wordclouds below show the words used uniquely by black and white soldiers, in orange and navy blue, respectively.
+
+
+```{r, include=FALSE}
 tot_black_words <- sum(unique_black_words$n)
 tot_white_words <- sum(unique_white_words$n)
 
@@ -671,13 +562,16 @@ unique_white_words <- unique_white_words %>% mutate(prop = n / tot_white_words)
 unique_black_words$color <- rep(colors[1], nrow(unique_black_words))
 unique_white_words$color <- rep(colors[2], nrow(unique_white_words))
 
+unique_seg_words$color <- rep(colors[1], nrow(unique_seg_words))
+unique_int_words$color <- rep(colors[2], nrow(unique_int_words))
+
 unique_words <- rbind(unique_black_words, unique_white_words) %>% 
   arrange(desc(prop)) %>%
   mutate(n = n / 10)
-
-unique_black_words %>% with(wordcloud(word, n, random.order = FALSE, colors=unique_black_words$color, max.words = 20, ordered.colors = TRUE))
 ```
-```{r, fig.align='center'}
+
+
+```{r, fig.align='center', include=FALSE}
 unique_black_words %>%
   as.data.frame(.) %>%
   arrange(desc(n)) %>%
@@ -692,11 +586,16 @@ unique_black_words %>%
   
 ```
 
-```{r, fig.align='center'}
-unique_white_words %>% with(wordcloud(word, n, random.order = FALSE, colors=unique_white_words$color, max.words = 20, ordered.colors = TRUE))
+
+```{r, fig.show='hold', fig.height=8, out.width="50%", echo=FALSE}
+
+unique_black_words %>% with(wordcloud(word, n, random.order = FALSE, colors=unique_black_words$color, max.words = 20, ordered.colors = TRUE))
+
+unique_white_words %>% with(wordcloud(word, n, random.order = FALSE, colors = unique_white_words$color, max.words = 20, ordered.colors = TRUE))
 ```
 
-```{r, fig.align='center'}
+
+```{r, fig.align='center', include=FALSE}
 unique_white_words %>%
   as.data.frame(.) %>%
   arrange(desc(n)) %>%
@@ -710,8 +609,8 @@ unique_white_words %>%
     theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-What words are used uniquely across opinion on outfit integration?
-```{r, fig.align='center'}
+
+```{r, fig.align='center', echo=FALSE, include=FALSE}
 unique_seg_words %>%
   as.data.frame(.) %>%
   arrange(desc(n)) %>%
@@ -724,7 +623,18 @@ unique_seg_words %>%
          y = "Frequency") + 
       theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
-```{r, fig.align='center'}
+
+
+What words are used uniquely across opinion on outfit integration? The wordclouds below show the words used uniquely by pro-segregation and pro-integration white soldiers, in orange and navy blue, respectively.
+
+```{r, fig.height=8, out.width="50%", echo=FALSE}
+unique_seg_words %>% with(wordcloud(word, n, random.order = FALSE, colors = unique_seg_words$color, max.words = 20, ordered.colors = TRUE))
+
+unique_int_words %>% with(wordcloud(word, n, min.freq=1, random.order = FALSE, colors = unique_int_words$color, max.words = 21, ordered.colors = TRUE))
+```
+
+
+```{r, fig.align='center', echo=FALSE, include=FALSE}
 unique_int_words %>%
   as.data.frame(.) %>%
   arrange(desc(n)) %>%
@@ -738,13 +648,14 @@ unique_int_words %>%
       theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-```{r, fig.align='center'}
+
+```{r, fig.align='center', echo=FALSE}
 group1_mean <- unique_black_words_sentiments
 group2_mean <- unique_white_words_sentiments
 
 # combine repsonses
 groups <- rbind(group1_mean, group2_mean)
-rownames(groups) <- c("Black", "White")
+rownames(groups) <- c("black", "white")
 
 # get min and max for plotting
 groups_melted <- melt(groups)
@@ -764,10 +675,14 @@ radarchart(plot_data,
            plty = 1, # plot line type
 )
 legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
-title(main = "Sentiments of Words Used Uniquely by Each Group");
+title(main = "Sentiment Distribution of Words Used\nUniquely by Black and White Soldiers");
 ```
 
-```{r, fig.align='center'}
+
+This plot was created from the words used uniquely by each group, so the words used to evaluate sentiment for black soldiers were never used by white soldiers and vice versa. The unique words of black soldiers corresponded with more fear, disgust, anger, and sadness than those of white soldiers. 
+
+
+```{r, fig.align='center', echo=FALSE}
 group1_mean <- unique_seg_words_sentiments
 group2_mean <- unique_int_words_sentiments
 
@@ -793,16 +708,28 @@ radarchart(plot_data,
            plty = 1, # plot line type
 )
 legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
-title(main = "Sentiments of Words Used Uniquely by Each Group");
+title(main = "Sentiment Distribution of Words Used\nUniquely by Pro-Integration and Pro-Segregation Soldiers");
 ```
 
-```{r, fig.align='center'}
+This plot reveals an interestig pattern because it is perhaps unexpected that pro-segregation white soldiers would be more trusting, more positive, and less fearful than pro-integration white soldiers. It is important to remember however that such a small percentage of white soldiers supported desegregation, so the average is easily influenced by a single response. The spike in fear by pro-integration soliders is very peculiar, and should be looked into more deeply.
+
+
+```{r, fig.align='center', echo=FALSE}
 word_props_final %>%
+  as.data.frame(.) %>%
+  arrange(signed_prop) %>%
+  mutate(word = factor(word, levels = word)) %>%
   top_n(20, diff_prop) %>%
   ggplot(., aes(x = word, y = signed_prop, fill = signed_prop > 0)) + 
     geom_bar(stat = "identity") + 
     coord_flip() + 
-    labs(title = "Difference in proportion of word use in long\nresponse for white and Black soldiers.", 
+    labs(title = "Difference in Word Usage\nbetween Black and White Soldiers", 
          x = "Word",
-         y = "Difference in Proportion")
+         y = "Difference in Proportion", 
+         fill = "Used More By") + 
+    scale_fill_manual(labels = c("White Soldiers", "Black Soldiers"), values = c(colors[2], colors[1]))
 ```
+
+This plot looks at the difference in word usage between black and white soldiers. Basically, it takes the proportion the word is used by black soldiers and subtracts it by the proportion that the word is used by white soldiers. Positive values indicate words that are used more by black soldiers, while negative values indicate words that are used more by white soldiers.
+
+Arguably the most important takeaway from this chart is that black soldiers are discussing race more often than their white counterparts. For black soldiers in the military during WW2, their race was a central to their experience and was at the forefront of their minds in a way that it was not for white soldiers. 
