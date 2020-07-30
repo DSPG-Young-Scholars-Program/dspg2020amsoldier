@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Survey 144 Writeup</title>
+        <title>Demographic Analyses of Black Soldiers</title>
         <link rel="canonical" href="../../findings/eda_s144/">
         <style>
 
@@ -113,14 +113,14 @@ $(document).ready(function(){
     
     
     
-    <meta property="og:title" content="Survey 144 Writeup">
+    <meta property="og:title" content="Demographic Analyses of Black Soldiers">
     <meta property="og:type" content="article">
       
       <meta name="twitter:card" content="summary">
       <meta name="twitter:image" content="/favicon/uva-dspg-logo.jpg" >
       
-    <meta property="description" content="">
-    <meta property="og:description" content="">
+    <meta property="description" content="This page provides some exploratory data analysis of Survey 144.">
+    <meta property="og:description" content="This page provides some exploratory data analysis of Survey 144.">
     
     <meta name="twitter:creator" content="">
     <meta name="twitter:site" content="">
@@ -138,7 +138,7 @@ $(document).ready(function(){
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Survey 144 Writeup</a>
+                    <a class="navbar-brand visible-xs" href="#">Demographic Analyses of Black Soldiers</a>
                     <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -155,7 +155,7 @@ $(document).ready(function(){
                             
                                 <li><a href="../../methods/">Data &amp; Methods</a></li>
                             
-                                <li><a href="../../findings-alt/">Findings</a></li>
+                                <li><a href="../../findings/">Findings</a></li>
                             
                                 <li><a href="../../team/">Team</a></li>
                             
@@ -189,15 +189,27 @@ $(document).ready(function(){
     
 
     
-    
+      
       
     
 
-    <h4><a href="../../findings/eda_s144/">Survey 144 Writeup</a></h4>
+    <h4><a href="../../findings/eda_s144/">Demographic Analyses of Black Soldiers</a></h4>
     
-    <h5></h5>
+    <h5>This page provides some exploratory data analysis of Survey 144.</h5>
 
     
+    
+    <a href="../../tags/r">
+        <kbd class="item-tag"> R </kbd>
+    </a>
+    
+    <a href="../../tags/eda">
+        <kbd class="item-tag"> EDA </kbd>
+    </a>
+    
+    <a href="../../tags/race-relations">
+        <kbd class="item-tag"> race relations </kbd>
+    </a>
     
 
 </div>
@@ -206,31 +218,16 @@ $(document).ready(function(){
     <br> <div class="text-justify">
 
 
-<div id="who-are-the-soldiers" class="section level2">
-<h2>Who Are the Soldiers?</h2>
-<p>Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4678 black soldiers and focused on post-war aspirations and plans of the soldiers. Of particular interest to us however, is the soldiers' responses to question if their lives would be better after the war.</p>
-<pre><code>##      age                    edu  enlist               state  community
-## 1     24           SOME COLLEGE DRAFTED             PACIFIC Large City
-## 2   &lt;=18 SOME HIGH/TRADE SCHOOL DRAFTED EAST NORTH ATLANTIC Large City
-## 3     23            HIGH SCHOOL DRAFTED EAST SOUTH ATLANTIC Large City
-## 4     22           SOME COLLEGE DRAFTED EAST NORTH ATLANTIC Large City
-## 5  26-29 SOME HIGH/TRADE SCHOOL DRAFTED WEST SOUTH ATLANTIC       City
-## 6  26-29              8TH GRADE DRAFTED WEST SOUTH ATLANTIC       City
-## 7   &lt;=18 SOME HIGH/TRADE SCHOOL DRAFTED EAST SOUTH ATLANTIC Large City
-## 8     20            HIGH SCHOOL DRAFTED EAST SOUTH ATLANTIC Large City
-## 9   &lt;NA&gt;              7TH GRADE DRAFTED EAST NORTH ATLANTIC       Farm
-## 10    25              7TH GRADE DRAFTED     MIDDLE ATLANTIC Large City
-##       better
-## 1       &lt;NA&gt;
-## 2      Worse
-## 3       Same
-## 4  Undecided
-## 5       &lt;NA&gt;
-## 6  Undecided
-## 7     Better
-## 8       Same
-## 9       &lt;NA&gt;
-## 10    Better</code></pre>
+<style type="text/css">
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+</style>
+<div id="who-are-the-soldiers" class="section level3">
+<h3>Who Are the Soldiers?</h3>
+<p>Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4,678 black soldiers and focused on post-war plans and aspirations of the soldiers. We were particularly interested in how the soldiers thought their lives would be better after the war.</p>
+</div>
 <div id="age" class="section level3">
 <h3>Age</h3>
 <p>Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24.</p>
@@ -239,11 +236,14 @@ $(document).ready(function(){
 <div id="education" class="section level3">
 <h3>Education</h3>
 <p>If we look at education we see that the majority have hade atleast some high school or trade school. This is in contrast with the black soldiers survied in S32 who only had upto a 4th grade education. Here we see the black soldiers education is distributed similarly to the white soldeir survied in S32.</p>
-<p><img src="../../findings/eda_s144_files/figure-html/edu-1.png" width="672" /> There are no obvious trends between education and age, but we do see that nearly 3/4 of the college educated soldiers are 25 or older which is a larger proportion than the other education levels. <img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-3-1.png" width="768" /></p>
+<p><img src="../../findings/eda_s144_files/figure-html/edu-1.png" width="672" /></p>
+<p>There are no obvious trends between education and age, but we do see that nearly 3/4 of the college educated soldiers are 25 or older which is a larger proportion than the other education levels.</p>
+<p><img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
 </div>
 <div id="enlistment" class="section level3">
 <h3>Enlistment</h3>
-<p>The vast majority of the soldiers were drafted into the military with less than 1000 enlisting via other means. <img src="../../findings/eda_s144_files/figure-html/enlist-1.png" width="672" /></p>
+<p>The vast majority of the soldiers were drafted into the military with less than 1000 enlisting via other means.</p>
+<p><img src="../../findings/eda_s144_files/figure-html/enlist-1.png" width="672" /></p>
 </div>
 <div id="region" class="section level3">
 <h3>Region</h3>
@@ -253,15 +253,18 @@ $(document).ready(function(){
 <div id="community" class="section level3">
 <h3>Community</h3>
 <p>As expected, most soldiers whose home communities are large cities had the most representation. What suprising however is that there are more black soldiers from communities which are farms than those from the countryside or village like places.</p>
-<p><img src="../../findings/eda_s144_files/figure-html/community-1.png" width="768" /> Unsurprisingly, we see that soldiers from from high population communities make up a larger portion of soldiers with higher education levels.</p>
-<p><img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
+<p><img src="../../findings/eda_s144_files/figure-html/community-1.png" width="768" /></p>
+<p>Unsurprisingly, we see that soldiers from from high population communities make up a larger portion of soldiers with higher education levels.</p>
+<p><img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
 <p>We see that larger portions of soldiers who are more educated come from communities whihc are larger in population.</p>
 <p><img src="../../findings/eda_s144_files/figure-html/education+community-1.png" width="768" /></p>
 </div>
 <div id="post-war-outlook" class="section level3">
 <h3>Post-War Outlook</h3>
-<p>We can see that a good deal of black soldiers think that after the war, things will be better for them than before. However, about 1500 soldiers are also undecided. A significant amount also don't think anything will change or may change for the worse. <img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-5-1.png" width="768" /> We also can observe that the age distribution is roughly similar along these outlooks. Interestingly, it seems that as the soldiers education level increases the less likely they are to belive things will be better for them after the war. Similarly, soldiers from more populated areas are less likely to have an optimistic outlook for life after the war. <img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-6-1.png" width="768" /><img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-6-2.png" width="768" /><img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-6-3.png" width="768" /></p>
-</div>
+<p>We can see that a good deal of black soldiers think that after the war, things will be better for them than before. However, about 1500 soldiers are also undecided. A significant amount also don't think anything will change or may change for the worse.</p>
+<p><img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-6-1.png" width="768" /></p>
+<p>We also can observe that the age distribution is roughly similar along these outlooks. Interestingly, it seems that as the soldiers education level increases the less likely they are to belive things will be better for them after the war. Similarly, soldiers from more populated areas are less likely to have an optimistic outlook for life after the war.</p>
+<p><img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-7-1.png" width="768" /><img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-7-2.png" width="768" /><img src="../../findings/eda_s144_files/figure-html/unnamed-chunk-7-3.png" width="768" /></p>
 </div>
 </div>
 

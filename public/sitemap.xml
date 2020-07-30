@@ -3,31 +3,31 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/findings/general-overview/</loc>
+    <loc>/findings/race_overall/</loc>
   </url>
   
   <url>
-    <loc>/findings/results-section-one/</loc>
+    <loc>/findings/eda_s144/</loc>
   </url>
   
   <url>
-    <loc>/findings/results-section-two/</loc>
+    <loc>/findings/gender_s195/</loc>
   </url>
   
   <url>
-    <loc>/findings/results-section-three/</loc>
+    <loc>/findings/spatial_arrangement_overview/</loc>
   </url>
   
   <url>
-    <loc>/antiquated/methods/</loc>
+    <loc>/findings/results-gender-analysis/</loc>
   </url>
   
   <url>
-    <loc>/antiquated/overview/</loc>
+    <loc>/findings/topic_models/</loc>
   </url>
   
   <url>
-    <loc>/antiquated/team/</loc>
+    <loc>/findings/project_challenges/</loc>
   </url>
   
   <url>
@@ -43,11 +43,7 @@
   </url>
   
   <url>
-    <loc>/antiquated/</loc>
-  </url>
-  
-  <url>
-    <loc>/tags/app/</loc>
+    <loc>/tags/bigrams/</loc>
   </url>
   
   <url>
@@ -55,7 +51,7 @@
   </url>
   
   <url>
-    <loc>/tags/collapsibletree/</loc>
+    <loc>/tags/eda/</loc>
   </url>
   
   <url>
@@ -63,19 +59,19 @@
   </url>
   
   <url>
-    <loc>/tags/geospatial/</loc>
+    <loc>/tags/gender/</loc>
   </url>
   
   <url>
-    <loc>/findings/gender_s195/</loc>
+    <loc>/tags/historicized-terms/</loc>
   </url>
   
   <url>
-    <loc>/tags/networks/</loc>
+    <loc>/tags/interactive-text-networks/</loc>
   </url>
   
   <url>
-    <loc>/findings/s32_website/</loc>
+    <loc>/tags/messy-data/</loc>
   </url>
   
   <url>
@@ -83,11 +79,23 @@
   </url>
   
   <url>
-    <loc>/findings/eda_s144/</loc>
+    <loc>/tags/race-relations/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/space/</loc>
   </url>
   
   <url>
     <loc>/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/text-networks/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/topic-modeling/</loc>
   </url>
   
   <url>

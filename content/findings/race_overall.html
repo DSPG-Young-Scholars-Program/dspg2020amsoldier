@@ -1,5 +1,8 @@
 ---
-title: "Race Relations"
+title: "Overall Comparisons of White & Black Soldiers"
+description: "This page provides comparisons of  of Survey 32."
+tags: ["R", "EDA", "race relations"]
+weight: 1
 output:
   html_document:
     toc: true
@@ -12,40 +15,44 @@ output:
 <script src="/rmarkdown-libs/forceNetwork-binding/forceNetwork.js"></script>
 
 
-<div id="introduction" class="section level1">
-<h1>Introduction</h1>
-<p>Why we care about this topic and what we would like to learn</p>
-</div>
-<div id="exploratory-data-analysis" class="section level1">
-<h1>Exploratory Data Analysis</h1>
+<style type="text/css">
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+</style>
+<div id="approach" class="section level1">
+<h1>Approach</h1>
+<p>Why we care about this topic and what we would like to learn. Also explain you are using EDA</p>
 <div id="who-are-the-soldiers" class="section level2">
 <h2>Who Are the Soldiers?</h2>
 <p>Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits. Our questions of interest are regarding age, education, enlistment, state, community type, and of course their opinions on outfits. On the survey these questions were asked in Questions 1,2,3,13,14, and 77 (63 for white soldiers), respectively. We also looked at questions regarding what their thoughts were about the future and how black rights and treatment will change after the war.</p>
 <div id="age" class="section level3">
 <h3>Age</h3>
 <p>Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24.</p>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-1-1.png" width="768" /></p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-2-1.png" width="768" /></p>
 </div>
 <div id="education" class="section level3">
 <h3>Education</h3>
 <p>If we look at education now we see that again black soldiers have little spread in their education. Remarkably, all of the black soldiers survied have less than a 5th grade education at the time. Meanwhile, the bulk of the white soldiers have had a high school/some high school.</p>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-2-1.png" width="768" /></p>
-<p>When we overlay the distribution of education levels with age ranges, we see that older white soldiers made up a larger porportion of white soldiers with less education compared to soldiers with some high school. As a contingent, it appears that soldiers between 21 and 24 with a high school education make up the largest contingent of white white soldiers when grouped by education and age.</p>
 <p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-3-1.png" width="768" /></p>
+<p>When we overlay the distribution of education levels with age ranges, we see that older white soldiers made up a larger porportion of white soldiers with less education compared to soldiers with some high school. As a contingent, it appears that soldiers between 21 and 24 with a high school education make up the largest contingent of white white soldiers when grouped by education and age.</p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
 </div>
 <div id="enlistment" class="section level3">
 <h3>Enlistment</h3>
-<p>Something interesting arises here were we find that vast majority of the black soldiers actually volunteered to join the military whereas about 3/4 of the survied white soldiers were drafted and the remaining soldiers were mostly volunteers and a few were from the National Guard. <img src="/findings/race_overall_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
+<p>Something interesting arises here were we find that vast majority of the black soldiers actually volunteered to join the military whereas about 3/4 of the survied white soldiers were drafted and the remaining soldiers were mostly volunteers and a few were from the National Guard.</p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
 </div>
 <div id="location" class="section level3">
 <h3>Location</h3>
 <p>Expectedly, most of the soldiers hailed from the most populous states at the time. White soldiers were mostly from Illionois, Pennsylvania, Ney York, Texas, and Michigan while black soldiers were mostly from Texas, New York, Illinois, Pennsylvania, and Ohio. Note that the top 4 states for white soldiers had similar amounts of soldiers but there was a sever drop off in representation of black soldiers from other states after Texas and New York.</p>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-5-1.png" width="768" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-5-2.png" width="768" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-5-3.png" width="768" /></p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-6-1.png" width="768" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-6-2.png" width="768" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-6-3.png" width="768" /></p>
 </div>
 <div id="communities" class="section level3">
 <h3>Communities</h3>
 <p>As expected, most soldiers whose home communities are large cities had the most representation across both groups. White soldiers saw roughly equal representation from soldiers who came from a farm, town, or city with actually slightly less people from cities. On the otherhand, the next community with the largest representation for black soldiers was a city followed by farms and towns which had approximately similar contributions.</p>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-6-1.png" width="768" /></p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-7-1.png" width="768" /></p>
 <p>We see that larger portions of soldiers who are more educated come from communities which are larger in population.</p>
 <p><img src="/findings/race_overall_files/figure-html/education+community-1.png" width="768" /></p>
 </div>
@@ -57,12 +64,12 @@ output:
 <p>Now if we are to overlay the education distribution over the integration opinions we see something more interesting. It appears that the white soldiers that voted for the outfits to be together skew towards being more educated. In fact, over 50% of the soldiers who did vote for integrated units have atleast finished high school. This is not the case for any of the other responses.</p>
 <p><img src="/findings/race_overall_files/figure-html/outfits%20+%20edu-1.png" width="768" /></p>
 <p>Across both races we also see that of those who choose integration a greater portion were from large cities and soldiers who came from more populated voted for sepration less proportionally.</p>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-7-1.png" width="768" /></p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-8-1.png" width="768" /></p>
 </div>
 <div id="thoughts-on-the-future" class="section level3">
 <h3>Thoughts on the future</h3>
 <p>The majority of the white soldiers believed that their rights will not change after the war and roughly equal amoutns thought they would increase or decrease. About 40% of the black soldiers thought their rights would increase following the war. A slightly smaller amount expected no change at all. Interestingly, the black soldiers answers to whether black people will have more rights after the war was nearly identical, but now there are more white soldiers who think black people will get more rights. The majority of black soldiers thought that after the war white people would treat them the same but about 30% were optimistic that they'd recieve better treatment. Interestingly,</p>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-8-1.png" width="768" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-8-2.png" width="768" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-8-3.png" width="768" /></p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-9-1.png" width="768" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-9-2.png" width="768" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-9-3.png" width="768" /></p>
 </div>
 </div>
 <div id="unique-terms" class="section level2">
@@ -134,7 +141,6 @@ output:
 <p>The NRC lexicon uses a dictionary to associates a word with the following sentiments: positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust. The sentiment of a body of text equals the number of words contributing to that sentiment. A word may contribute to multiple sentiments, yet each word is weighted equally in its contribution.</p>
 <div id="what-words-primarily-contribute-to-each-sentiment" class="section level3">
 <h3>What words primarily contribute to each sentiment?</h3>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-14-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-17-1.png" width="768" style="display: block; margin: auto;" /></p>
@@ -144,12 +150,13 @@ output:
 <p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-23-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-24-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="exploring-different-sentiment-distributions-across-groups." class="section level3">
 <h3>Exploring different sentiment distributions across groups.</h3>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-27-1.png" width="768" style="display: block; margin: auto;" /></p>
-<p>Since black and white soliders are largely dicussing similar topics related to the war there isn't much difference between the distribution of average sentiments. However, black soliders tend to be more angry, more fearful, and less positive in their responses than white soldiers.</p>
 <p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-28-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Since black and white soliders are largely dicussing similar topics related to the war there isn't much difference between the distribution of average sentiments. However, black soliders tend to be more angry, more fearful, and less positive in their responses than white soldiers.</p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>In their responses to whether army outfits should be integrated, white soldiers who thought the outfits should remain segregated tended to show more anger and anticipation in their repsonses. Perhaps unexpectedly, white soldiers in favor of desegregating outfits were signficantly more fearful. Also, it's important to note that a very small percentage of soldiers were in favor of desegregating outfits, so the average sentiments are more sensitive to small changes in a single repsonse.</p>
 </div>
 </div>
@@ -157,12 +164,12 @@ output:
 <h2>Unique Terms</h2>
 <p>Since Survey 32 is generally about the war and experience within the military, many soldiers write about the same topics and use the same words, which adds noise and makes it harder to differentiate the sentiment distribution between different groups. In this section, we look at words that are used uniquely by certain groups.</p>
 <p>The wordclouds below show the words used uniquely by black and white soldiers, in orange and navy blue, respectively.</p>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-31-1.png" width="50%" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-31-2.png" width="50%" /></p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-32-1.png" width="50%" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-32-2.png" width="50%" /></p>
 <p>What words are used uniquely across opinion on outfit integration? The wordclouds below show the words used uniquely by pro-segregation and pro-integration white soldiers, in orange and navy blue, respectively.</p>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-34-1.png" width="50%" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-34-2.png" width="50%" /></p>
-<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-36-1.png" width="768" style="display: block; margin: auto;" /></p>
-<p>This plot was created from the words used uniquely by each group, so the words used to evaluate sentiment for black soldiers were never used by white soldiers and vice versa. The unique words of black soldiers corresponded with more fear, disgust, anger, and sadness than those of white soldiers.</p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-35-1.png" width="50%" /><img src="/findings/race_overall_files/figure-html/unnamed-chunk-35-2.png" width="50%" /></p>
 <p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-37-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>This plot was created from the words used uniquely by each group, so the words used to evaluate sentiment for black soldiers were never used by white soldiers and vice versa. The unique words of black soldiers corresponded with more fear, disgust, anger, and sadness than those of white soldiers.</p>
+<p><img src="/findings/race_overall_files/figure-html/unnamed-chunk-38-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>This plot reveals an interestig pattern because it is perhaps unexpected that pro-segregation white soldiers would be more trusting, more positive, and less fearful than pro-integration white soldiers. It is important to remember however that such a small percentage of white soldiers supported desegregation, so the average is easily influenced by a single response. The spike in fear by pro-integration soliders is very peculiar, and should be looked into more deeply.</p>
 <p>This plot looks at the difference in word usage between black and white soldiers. Basically, it takes the proportion the word is used by black soldiers and subtracts it by the proportion that the word is used by white soldiers. Positive values indicate words that are used more by black soldiers, while negative values indicate words that are used more by white soldiers.</p>
 <p>Arguably the most important takeaway from this chart is that black soldiers are discussing race more often than their white counterparts. For black soldiers in the military during WW2, their race was a central to their experience and was at the forefront of their minds in a way that it was not for white soldiers.</p>

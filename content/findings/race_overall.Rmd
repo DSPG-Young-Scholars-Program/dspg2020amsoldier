@@ -1,11 +1,21 @@
 ---
-title: "Race Relations"
+title: "Overall Comparisons of White & Black Soldiers"
+description: "This page provides comparisons of  of Survey 32."
+tags: ["R", "EDA", "race relations"]
+weight: 1
 output:
   html_document:
     toc: true
     toc_depth: 2
     number_sections: true
 ---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
 
 ```{r setup, include=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = F, fig.width = 8, fig.height = 6)
@@ -185,11 +195,9 @@ radar2 <- function(sentiments, group1, group2, title = "Sentiment Analysis Resul
 }
 ```
 
-# Introduction
+# Approach
 
-Why we care about this topic and what we would like to learn
-
-# Exploratory Data Analysis
+Why we care about this topic and what we would like to learn. Also explain you are using EDA 
 
 ```{r functions, include = F, echo=FALSE, message=FALSE, warning=FALSE}
 # modifies the survey data to factor the multiple choice responses into interpretable variables
@@ -341,6 +349,7 @@ ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
 
 ### Enlistment
 Something interesting arises here were we find that vast majority of the black soldiers actually volunteered to join the military whereas about 3/4 of the survied white soldiers were drafted and the remaining soldiers were mostly volunteers and a few were from the National Guard.
+
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 w_ans %>% 
   count(enlist, sort =T) %>% 
@@ -377,7 +386,7 @@ w_state <- w_ans %>%
   mutate(freq = n / sum(n))
 plot_usmap(data = w_state, values = "freq", regions = "state") + 
   labs(title = "Heat Map of Relative Frequency of White US Soldiers by State") + 
-  scale_fill_continuous(low = "white", high = "red", name = "Frequency", label = scales::comma) +
+  scale_fill_continuous(low = "white", high = "#E6A01D", name = "Frequency", label = scales::comma) +
   theme(legend.position = "right")
 b_state <- b_ans %>%
   group_by(state) %>%
@@ -385,7 +394,7 @@ b_state <- b_ans %>%
   mutate(freq = n / sum(n))
 plot_usmap(data = b_state, values = "freq", regions = "state") + 
   labs(title = "Heat Map of Relative Frequency of Black US Soldiers by State") + 
-  scale_fill_continuous(low = "white", high = "red", name = "Frequency", label = scales::comma) +
+  scale_fill_continuous(low = "white", high = "#60999A", name = "Frequency", label = scales::comma) +
   theme(legend.position = "right")
 ```
 

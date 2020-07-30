@@ -1,9 +1,17 @@
 ---
-title: "Topic Models"
-author: "Saimun"
-date: "7/20/2020"
+title: "Topic Modeling with Networks"
+description: "This page documents our use of biterm topic modelings and interactive text networks."
+tags: ["R", "topic modeling", "interactive text networks", "race relations"]
+weight: 6
 output: html_document
 ---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
 
 ```{r setup, include=FALSE, echo = F}
 knitr::opts_chunk$set(echo = TRUE)
@@ -135,7 +143,7 @@ topics_n_lda <- tidy(lda_n, matrix = "beta")
 colnames(topics_n_lda) = colnames(topics_77_lda) = colnames(topics_78_lda) =  c("source", "target", "weight")
 ```
 
-## Topic Model Networks
+### Topic Model Networks
 
 A topic model put simply models the topics in a piece of text and the words that are associated with each topic. Naturally, words may fall in multiple topics and the model accounts for this by giving each topic a probability distribution over the words. A Topic Model Network is a useful way to visualize the topics and the words associated with each topic. Here we will explore two different topic models.
 
@@ -143,8 +151,11 @@ A topic model put simply models the topics in a piece of text and the words that
 
 Latent Dirchlet Allocation, or LDA, is the typical go to method for topic modelling. We chose to model the texts with 6 topics. We can see that in the three networks this produces very disconnected topics which intuitively seems to be a poor fit as the corpus is rather small and the soldiers are responding to direct and specific questions. LDA does produce a better connected network for the white soldiers outfits comment but does not do a great job in delineating the topics.
 
-#### Black Soldiers Long Comment
-```{r black lda, echo = F}
+### Black Soldiers Long Comment
+
+[Need interpretation here]
+
+```{r black lda, fig.height=6, echo = F}
 edgelist_n_lda= topics_n_lda %>%
   filter(weight >= .01) %>%
   arrange(target)
@@ -163,12 +174,15 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_n_lda$weight)
 net_n_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T)
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_n_lda
 ```
 
-#### White Soldiers Outfits Comment
-```{r 77 lda, echo = F}
+### White Soldiers Outfits Comment
+
+[Need interpretation here]
+
+```{r 77 lda, fig.height=6,echo = F}
 edgelist_77_lda= topics_77_lda %>%
   filter(weight >= .01) %>%
   arrange(target)
@@ -187,12 +201,15 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_77_lda$weight)
 net_77_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T)
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_77_lda
 ```
 
-#### White Soldiers Long Comment
-```{r 78 lda, echo=F}
+### White Soldiers Long Comment
+
+[Need interpretation here]
+
+```{r 78 lda, fig.height=6, echo=F}
 edgelist_78_lda= topics_78_lda %>%
   filter(weight >= .01) %>%
   arrange(target)
@@ -211,13 +228,14 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_78_lda$weight)
 net_78_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T)
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_78_lda
 ```
 
-### BTM
+### Biterm Topic Modeling (BTM)
 
 There are some drawbacks to using LDA for our dataset, namely it doesn't handle short texts well. That is why we also implemented a [Biterm Topic Model](https://cran.r-project.org/web/packages/BTM/index.html) that does better on short texts. Overall, it seems that the topic model networks produced this way strike a better balance between effectively delineating the topics and showing interconnectivity. 
+
 ```{r btm, include = FALSE}
 
 K = 6
@@ -251,8 +269,11 @@ topics_78_btm = topics_78_btm[, c(2, 1, 3)]
 colnames(topics_n_btm) = colnames(topics_77_btm) = colnames(topics_78_btm) =  c("source", "target", "weight")
 ```
 
-#### Black Soldiers Long Comment
-```{r black btm, echo = F}
+### Black Soldiers Long Comment
+
+[Need interpretation here]
+
+```{r black btm, fig.height=6, echo = F}
 edgelist_n_btm= topics_n_btm %>%
   filter(weight >= .01) %>%
   arrange(target)
@@ -271,12 +292,15 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_n_btm$weight)
 net_n_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T)
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_n_btm
 ```
 
-#### White Soldiers Outfits Comment
-```{r 77 btm, echo = F}
+### White Soldiers Outfits Comment
+
+[Need interpretation here]
+
+```{r 77 btm, fig.height=6, echo = F}
 edgelist_77_btm= topics_77_btm %>%
   filter(weight >= .01) %>%
   arrange(target)
@@ -295,12 +319,15 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_77_btm$weight)
 net_77_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T)
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_77_btm
 ```
 
-#### White Soldiers Long Comment
-```{r 78 btm, echo = F}
+### White Soldiers Long Comment
+
+[Need interpretation here]
+
+```{r 78 btm, fig.height=6, echo = F}
 edgelist_78_btm= topics_78_btm %>%
   filter(weight >= .01) %>%
   arrange(target)
@@ -319,6 +346,6 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_78_btm$weight)
 net_78_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T)
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_78_btm
 ```

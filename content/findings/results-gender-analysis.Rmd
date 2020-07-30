@@ -1,11 +1,18 @@
 ---
-title: "Results Section Three: Cooccurrence and Bigrams"
-description: "Project description here"
-tags: ["R", "networks"]
+title: "Bigram and Co-Occurrence Text Networks"
+description: "This page documents our use of bigrams and co-occurence to construct text networks."
+tags: ["R", "bigrams", "text networks", "race relations", "gender"]
 weight: 4
 draft: false
 output: html_document
 ---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
 
 ```{r setup, include=FALSE}
 #libraries
@@ -26,7 +33,7 @@ library(stringr)
 library(ggplot2)
 # to install ggradar, run the line commented out below
 # devtools::install_github("ricardo-bion/ggradar", dependencies = TRUE)
-library(ggradar)
+#library(ggradar)
 library(tibble)
 library(scales)
 library(fmsb)
@@ -118,13 +125,15 @@ data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$or
 custom_stop <- append(stop_words$word, c("question", "questionnaire", "answer"))
 ```
 
-# How do Black and White soldiers talk about gender roles?
+### How do Black and White soldiers talk about gender?
+
 In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers. Our particular focus is on women's gender roles during the time of 1943 and at the intersection of race relations.
 
-A dictionary of gender words are loaded to identy which responses relate to gender topics. This dictionary was created with reference from "A Dictionary of Gender Studies" published by the Oxford University Press. In addition, there is consideration of how women were referred to in the 1940s such as "lady" and "sweetheart".
+A dictionary of gender words are loaded to identy which responses relate to gender topics. This dictionary was created using terms included in the the [Oxford University Press Dictionary of Gender Studies](https://www.oxfordreference.com/view/10.1093/acref/9780191834837.001.0001/acref-9780191834837?btog=chap&hide=true&pageSize=20&skipEditions=true&sort=titlesort&source=%2F10.1093%2Facref%2F9780191834837.001.0001%2Facref-9780191834837). In addition, there is consideration of how women were referred to in the 1940s such as "lady" and "sweetheart".
 
 Furthermore, phrases such as "colored women" and "negro women" are collapsed and pre-stemmed/pre-lemmed to "colorwoman" and "negrowoman" in both the dictionary and the text. The purpose of this is to treat these references to women as a single entity as opposed to the text being analyzed as colored and negro being frequent adjectives for women.
-```{r dictionaryload, echo = FALSE, warning=FALSE, message=FALSE}
+
+```{r dictionaryload, echo = FALSE, warning=FALSE, message=FALSE, include=FALSE}
 #load dictionary csv
 gender_words <- fread("~/git/dspg2020amsoldier/data/dictionary/gender.csv", sep = ",");head(gender_words) 
 gender_match <- paste(paste("\\b", gender_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
@@ -154,7 +163,10 @@ S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
 
 ### Main Findings 
 
+<center>
 #### Which words do soldiers use to pair with female relating words? 
+</center>
+
 In the long response question, soldiers are asked to give their feedback on any part of the questionnaire. Any and all aspects of the war were free to talk about. In this section we will be analyzing the bigrams of the soldier responses. bigrams are the consecutive pairings of words in a corpus of text.
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -186,8 +198,8 @@ Another interesting addition to the network with relationship words is the chain
 
 Otherwise, themes of family are prevelant for women's role in the commentary of the soldiers. We can also see the different pairings with the word woman, seeming to talk about their roles as workers amongst other attributes  (worker, waac, auxiliary)
 
-
 Lets see how these pairings differ between the white and black soldiers:
+
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
@@ -215,7 +227,6 @@ visualize_bigrams(black_long_bigrams_female, "Black Soldiers' Long Response - Fe
 
 Commentary on women are racialized with explicit mention of 'colorwoman' and 'whitewoman'.
   
-
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
@@ -241,14 +252,14 @@ visualize_bigrams(white_long_bigrams_female, "White Soldiers' Long Response - Fe
 
 We see a complete lack of narrative in black women specifically. Conversations about women are mostly about their role in the family as a mother, wife or sister. Another common conversation is about working women, with pairings to WAAC, auxiliary (referring to WAAC) and worker.
 
-
-
-
+<center>
 #### Which words that soldiers use are correlated with female relating words?
+</center>
+
 An alternative to the method of bigrams, Co-occurrences measure the correlation of two words appearing with one another in a body of text. Unlike bigrams, these words do not have to appear directly next to one another, and their strength of association is measured.
 
-
 First, we will look at which words are correlated with female words in all soldiers' long responses.   
+
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
@@ -260,10 +271,7 @@ long_fem_co <- long_fem_co[!(long_fem_co$item2 == "like" & !long_fem_co$item1 %i
 visualize_cooccur(long_fem_co, "Female related co-occurrences for long soldier response")
 ```
 
-
-
 Themes of family are still prevelant. Negrowoman are associated with some negative words like filthy and invade. Whitewomen associations with the words intercourse, cry and molest are related to the controversy of black men having sexual realtions with whitemen. In addition, whitewomen is associated with negroman. This is shows that there is commentary of the association of black and white women which was controversial at the time. 
-
 
 Next, we will break it down by race.   
 
@@ -278,12 +286,8 @@ black_long_fem_co <- black_long_fem_co[!(black_long_fem_co$item2 == "like" & !bl
 visualize_cooccur(black_long_fem_co, "Female related co-occurrences for long Black soldiers' responses")
 ```
 
-
-
 One of the strongest correlations are between negrowoman and negroman as well as negroman and whitewoman. This is indicative that interracial relations are one the most heavily correlated topics to women in the Black soldiers' responses. 
 In addition, mother, sister and father have some of the strongest correlations, showing that women's most prevalent role for the soldiers was in their families.     
-
-
 
 ```{r echo= FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
@@ -296,12 +300,10 @@ white_long_fem_co <- white_long_fem_co[!(white_long_fem_co$item2 == "like" & !wh
 visualize_cooccur(white_long_fem_co, "Female related co-occurrences for long White soldiers' responses")
 ```
 
-
 These words correlated with female words seem inherently random. This could be due to the fact that commentary about women were included in responses that talked about other various topics regarding the war and soldier life. However, we again see an absence of discussion about Black women as a whole. 
 
-
-
 *NOTE*  Use gephi to visualize the differences in commentary on gender by race in one network. Use community detection 
+
 ```{r include = FALSE, message = FALSE, warning = FALSE}
 #create edgelists to make this in gephi
 # edgelist_long_bigrams_gender <- rbind(mutate(black_long_bigrams_female, racial_group = "black"),
@@ -325,10 +327,9 @@ These words correlated with female words seem inherently random. This could be d
 #fwrite(nodelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/nodelist_long_cooccur_gender.csv")
 ```
 
-
-### What are the sentiments that are associated with gender?
-
-
+<center>
+#### What are the sentiments that are associated with gender?
+</center>
 
 ```{r, include=FALSE, message = FALSE, warning = FALSE}
 source(here::here("src", "load_data.R"));
@@ -463,9 +464,6 @@ radar2(s32_female_sentiments,
 ```
 
 To create this plot, we filtered the original corpus to responses that contain gendered words, specifically female. When comparing the sentiment resulsts with the knowledge gaind from co-occurence analysis, this plot becomes very revealing. The average sentiments for Black soliders' responses about women are more fearful and negative and less trusting and joyful than white soldiers' responses. In the co-occurances for Black soldiers we saw a presence of commentary that white women "hollar rape". This observation in the co-occurrences reflects the fear that Black soldiers had in being accused of sexually harassing white women.  
-
-
-
 
 ### Conclusion and Policy Implications 
 

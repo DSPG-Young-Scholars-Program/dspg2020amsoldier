@@ -1,11 +1,21 @@
 ---
-title: "Survey 195 Writeup"
+title: "Exploratory Data Analysis of Gender Relations Survey"
+description: "This page provides some exploratory data analysis of Survey 195."
+weight: 2
+tags: ["R", "EDA", "gender"]
 output:
   html_document:
     toc: true
-    toc_depth: 2
+    toc_depth: 3
     number_sections: true
 ---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -14,19 +24,22 @@ library(tidyverse)
 library(ggthemes)
 ```
 
-# Introduction
+### Introduction
 
 In addition to race relations in the Army, we are also focused on perspectives on women and gender within the military. The questions and responses are mostly geared towards WACs, which are Women's Army Corps members. In addition to survey 32, which captures textual data on gender in teh Army, a survey was given out in January of 1945 to capture perspectives of male soldiers on their WAC counterparts. This survey is survey 195B. From survey 32's textual data we have extracted insights into what topics and words male soldiers used to discuss women, and from survey 195 we have been able to identify general persepectives of soldiers on WACs.
 
-# Exploratory Data Analysis
+### Exploratory Data Analysis
 
 Survey 195 has 11 larger questions about WACs in which soldiers are asked a yes/no/no answer question which is then followed by a question of how strongly they feel on a very/fairly/not/no answer scale. From this, we can extract that most soldiers felt negatively towards WACs and of those that felt negatively, they also felt very strongly about their answers.
 
 ```{r eda, echo=FALSE}
+s195b <- read.csv("/sfs/qumulo/qhome/kb7hp/git/dspg2020amsoldier/data/working/AMS195B_answers.csv")
+s195c <- read.csv("/sfs/qumulo/qhome/kb7hp/git/dspg2020amsoldier/data/working/AMS195C_answers.csv")
+s35 <- read.csv("/sfs/qumulo/qhome/kb7hp/git/dspg2020amsoldier/data/working/AMS0035_answers.csv")
 
-s195b <- read.csv("~/git/dspg2020amsoldier/data/working/AMS195B_answers.csv")
-s195c <- read.csv("~/git/dspg2020amsoldier/data/working/AMS195C_answers.csv")
-s35 <- read.csv("~/git/dspg2020amsoldier/data/working/AMS0035_answers.csv")
+#s195b <- read.csv("~/git/dspg2020amsoldier/data/working/AMS195B_answers.csv")
+#s195c <- read.csv("~/git/dspg2020amsoldier/data/working/AMS195C_answers.csv")
+#s35 <- read.csv("~/git/dspg2020amsoldier/data/working/AMS0035_answers.csv")
 
 colors <- c("#232d4b",
             # "#2c4f6b",

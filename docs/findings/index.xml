@@ -11,6 +11,16 @@
     
     
     <item>
+      <title>Overall Comparisons of White &amp; Black Soldiers</title>
+      <link>/findings/race_overall/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/race_overall/</guid>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Approach Why we care about this topic and what we would like to learn. Also explain you are using EDA
+Who Are the Soldiers? Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits.</description>
+    </item>
+    
+    <item>
       <title>Demographic Analyses of Black Soldiers</title>
       <link>/findings/eda_s144/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -20,41 +30,50 @@
     </item>
     
     <item>
-      <title>Results Section Three: Cooccurrence and Bigrams</title>
-      <link>/findings/results-section-three/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/findings/results-section-three/</guid>
-      <description>[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data &amp;amp; Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.]
-How do Black and White soldiers talk about gender roles? In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers.</description>
-    </item>
-    
-    <item>
-      <title>Race Relations</title>
-      <link>/findings/race_overall/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/findings/race_overall/</guid>
-      <description>Introduction Why we care about this topic and what we would like to learn
- Exploratory Data Analysis Who Are the Soldiers? Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits.</description>
-    </item>
-    
-    <item>
-      <title>Survey 195 Writeup</title>
+      <title>Exploratory Data Analysis of Gender Relations Survey</title>
       <link>/findings/gender_s195/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/gender_s195/</guid>
-      <description>Introduction In addition to race relations in the Army, we are also focused on perspectives on women and gender within the military. The questions and responses are mostly geared towards WACs, which are Women&#39;s Army Corps members. In addition to survey 32, which captures textual data on gender in teh Army, a survey was given out in January of 1945 to capture perspectives of male soldiers on their WAC counterparts.</description>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Introduction In addition to race relations in the Army, we are also focused on perspectives on women and gender within the military. The questions and responses are mostly geared towards WACs, which are Women&#39;s Army Corps members. In addition to survey 32, which captures textual data on gender in teh Army, a survey was given out in January of 1945 to capture perspectives of male soldiers on their WAC counterparts.</description>
     </item>
     
     <item>
-      <title>Topic Models</title>
+      <title>Race &amp; Space</title>
+      <link>/findings/spatial_arrangement_overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/spatial_arrangement_overview/</guid>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  An aspect of racial segregation that we want to analyze is segregation related to spatial arrangement. Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century. [include more context].</description>
+    </item>
+    
+    <item>
+      <title>Bigram and Co-Occurrence Text Networks</title>
+      <link>/findings/results-gender-analysis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/results-gender-analysis/</guid>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  How do Black and White soldiers talk about gender? In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers. Our particular focus is on women&#39;s gender roles during the time of 1943 and at the intersection of race relations.
+A dictionary of gender words are loaded to identy which responses relate to gender topics.</description>
+    </item>
+    
+    <item>
+      <title>Topic Modeling with Networks</title>
       <link>/findings/topic_models/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/topic_models/</guid>
-      <description>Topic Model Networks A topic model put simply models the topics in a piece of text and the words that are associated with each topic. Naturally, words may fall in multiple topics and the model accounts for this by giving each topic a probability distribution over the words. A Topic Model Network is a useful way to visualize the topics and the words associated with each topic.</description>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Topic Model Networks A topic model put simply models the topics in a piece of text and the words that are associated with each topic. Naturally, words may fall in multiple topics and the model accounts for this by giving each topic a probability distribution over the words.</description>
+    </item>
+    
+    <item>
+      <title>Challenges &amp; Limitations</title>
+      <link>/findings/project_challenges/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/project_challenges/</guid>
+      <description>Data Quality Working with text data is never straight forward. There are always typical text mining issues such as misspellings, punctuations, abbreviations, and so on. However, our collection of soldier commentary posed unique challenges.
+Our primary challenge was the presence of metatags within the text. Transcribers on Zooniverse were able to tag attributes of the text such as unclear writing, underlining, deletions, corrections and more. The following response is an example of these tags and how they are used in the soldiers&#39; responses.</description>
     </item>
     
   </channel>
