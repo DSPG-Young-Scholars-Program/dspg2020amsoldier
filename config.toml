@@ -1,7 +1,7 @@
 baseURL = "/"
 languageCode = "en-us"
 title = "UVA Biocomplexity Institute"
-description = "A website for University of Virginia's 2020 Data Science for the Public Good Program."
+description = "A website for University of Virginia's 2020 DSPG American Soldier Project."
 theme = "min_night"
 disqusShortname = ""
 googleAnalytics = ""
@@ -13,7 +13,7 @@ publishDir = "docs"
 
 [params]
     author = "UVA Biocomplexity Institute"
-    description = "2020 DSPG Project Name"
+    description = "2020 DSPG American Soldier Project"
     logo = "favicon/uva-dspg-logo.jpg"
     githubUsername = "uva-bi-sdad"
     accent = "#232D4B" # dark colors do best
@@ -40,7 +40,7 @@ publishDir = "docs"
     weight = 3
 
 [[menu.main]]
-    url = "/findings/"
+    url = "/findings-alt/"
     name = "Findings"
     weight = 4
 
@@ -69,5 +69,5 @@ publishDir = "docs"
     weight = 3
 
 [[menu.icon]]
-    url = "mailto:kb7hp@virginia.edu"
+    url = "mailto:gkorkmaz@virginia.edu"
     name = "far fa-envelope"
