@@ -40,13 +40,41 @@ Main Findings [Here you will describe the results and include important visualiz
     </item>
     
     <item>
-      <title>Results Section Three</title>
+      <title>Results Section Three: Cooccurrence and Bigrams</title>
       <link>/findings/results-section-three/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/results-section-three/</guid>
       <description>[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data &amp;amp; Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.]
-Main Findings [Here you will describe the results and include important visualizations from your project.</description>
+How do Black and White soldiers talk about gender roles? In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers.</description>
+    </item>
+    
+    <item>
+      <title>Male Perspectives on WAC&#39;s - Survey 195</title>
+      <link>/findings/gender_s195/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/gender_s195/</guid>
+      <description>Introduction In addition to race relations in the Army, we are also focused on perspectives on women and gender within the military. The questions and responses are mostly geared towards WACs, which are Women&#39;s Army Corps members. In addition to survey 32, which captures textual data on gender in teh Army, a survey was given out in January of 1945 to capture perspectives of male soldiers on their WAC counterparts.</description>
+    </item>
+    
+    <item>
+      <title>Survey 144 Writeup</title>
+      <link>/findings/eda_s144/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/eda_s144/</guid>
+      <description>Who Are the Soldiers? Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4678 black soldiers and focused on post-war aspirations and plans of the soldiers. Of particular interest to us however, is the soldiers&#39; responses to question if their lives would be better after the war.
+## age edu enlist state community ## 1 24 SOME COLLEGE DRAFTED PACIFIC Large City ## 2 &amp;lt;=18 SOME HIGH/TRADE SCHOOL DRAFTED EAST NORTH ATLANTIC Large City ## 3 23 HIGH SCHOOL DRAFTED EAST SOUTH ATLANTIC Large City ## 4 22 SOME COLLEGE DRAFTED EAST NORTH ATLANTIC Large City ## 5 26-29 SOME HIGH/TRADE SCHOOL DRAFTED WEST SOUTH ATLANTIC City ## 6 26-29 8TH GRADE DRAFTED WEST SOUTH ATLANTIC City ## 7 &amp;lt;=18 SOME HIGH/TRADE SCHOOL DRAFTED EAST SOUTH ATLANTIC Large City ## 8 20 HIGH SCHOOL DRAFTED EAST SOUTH ATLANTIC Large City ## 9 &amp;lt;NA&amp;gt; 7TH GRADE DRAFTED EAST NORTH ATLANTIC Farm ## 10 25 7TH GRADE DRAFTED MIDDLE ATLANTIC Large City ## better ## 1 &amp;lt;NA&amp;gt; ## 2 Worse ## 3 Same ## 4 Undecided ## 5 &amp;lt;NA&amp;gt; ## 6 Undecided ## 7 Better ## 8 Same ## 9 &amp;lt;NA&amp;gt; ## 10 Better Age Age was not collected on a continuous scale and was discretized into a few different age groups.</description>
+    </item>
+    
+    <item>
+      <title>Topic Models</title>
+      <link>/findings/topic_models/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/topic_models/</guid>
+      <description>Topic Model Networks A topic model put simply models the topics in a piece of text and the words that are associated with each topic. Naturally, words may fall in multiple topics and the model accounts for this by giving each topic a probability distribution over the words. A Topic Model Network is a useful way to visualize the topics and the words associated with each topic.</description>
     </item>
     
   </channel>

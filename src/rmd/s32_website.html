@@ -1,0 +1,212 @@
+---
+title: "Profiling S32 Respondents"
+author: "Saimun"
+date: "7/27/2020"
+output: html_document
+---
+
+
+
+<div id="who-are-the-soldiers" class="section level2">
+<h2>Who Are the Soldiers?</h2>
+<p>Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits. Our questions of interest are regarding age, education, enlistment, state, community type, and of course their opinions on outfits. On the survey these questions were asked in Questions 1,2,3,13,14, and 77 (63 for white soldiers), respectively. We also looked at questions regarding what their thoughts were about the future and how black rights and treatment will change after the war.</p>
+<div id="age" class="section level3">
+<h3>Age</h3>
+<p>Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24.</p>
+<pre class="r"><code>w_ans %&gt;% 
+  count(age, sort =T) %&gt;% 
+  na.omit() %&gt;% 
+  left_join(b_ans %&gt;% count(age, sort =T) %&gt;% na.omit(),by = &quot;age&quot;) %&gt;%
+  melt(id.vars= &quot;age&quot;) %&gt;%
+  ggplot(aes(fill=variable)) +
+  geom_bar(aes(reorder(age,value),value), stat=&#39;identity&#39;, position=&#39;dodge&#39;)+
+  labs(title=&#39;Age Groups of Soldiers&#39;, x=&quot;Age Groups&quot;, y = &quot;Count&quot;)+
+  scale_fill_manual(values =  c(my_cols[10], my_cols[4]), name = &#39;Race&#39;, labels = c(&quot;White&quot;, &quot;Black&quot;))</code></pre>
+<pre><code>## Warning in melt(., id.vars = &quot;age&quot;): The melt generic in data.table has been
+## passed a data.frame and will attempt to redirect to the relevant reshape2
+## method; please note that reshape2 is deprecated, and this redirection is now
+## deprecated as well. To continue using melt methods from reshape2 while both
+## libraries are attached, e.g. melt.list, you can prepend the namespace like
+## reshape2::melt(.). In the next version, this warning will become an error.</code></pre>
+<pre><code>## Warning: Removed 6 rows containing missing values (geom_bar).</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="education" class="section level3">
+<h3>Education</h3>
+<p>If we look at education now we see that again black soldiers have little spread in their education. Remarkably, all of the black soldiers survied have less than a 5th grade education at the time. Meanwhile, the bulk of the white soldiers have had a high school/some high school.</p>
+<pre class="r"><code>w_ans %&gt;% 
+  count(edu, sort =T) %&gt;% 
+  na.omit() %&gt;% 
+  left_join(b_ans %&gt;% count(edu, sort =T) %&gt;% na.omit(),by = &quot;edu&quot;) %&gt;%
+  melt(id.vars= &quot;edu&quot;) %&gt;%
+  ggplot(aes(fill=variable)) +
+  geom_bar(aes(reorder(edu,value),value), stat=&#39;identity&#39;, position=&#39;dodge&#39;)+
+  labs(title=&#39;Education Levels of Soldiers&#39;, x=&quot;Education&quot;, y = &quot;Count&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values =  c(my_cols[10], my_cols[4]), name = &#39;Race&#39;, labels = c(&quot;White&quot;, &quot;Black&quot;))</code></pre>
+<pre><code>## Warning in melt(., id.vars = &quot;edu&quot;): The melt generic in data.table has been
+## passed a data.frame and will attempt to redirect to the relevant reshape2
+## method; please note that reshape2 is deprecated, and this redirection is now
+## deprecated as well. To continue using melt methods from reshape2 while both
+## libraries are attached, e.g. melt.list, you can prepend the namespace like
+## reshape2::melt(.). In the next version, this warning will become an error.</code></pre>
+<pre><code>## Warning: Removed 9 rows containing missing values (geom_bar).</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>When we overlay the distribution of education levels with age ranges, we see that older white soldiers made up a larger porportion of white soldiers with less education compared to soldiers with some high school. As a contingent, it appears that soldiers between 21 and 24 with a high school education make up the largest contingent of white white soldiers when grouped by education and age.</p>
+<pre class="r"><code>ans %&gt;%
+ggplot( aes(x=edu, fill = age)) +geom_bar(position= &quot;fill&quot;) +
+  facet_grid(rows = vars(race), scales=&quot;free_y&quot;)+
+  labs(title=&quot;Age Distribution over Education Levels of Black Soldiers&quot;, x=&quot;Education Level&quot;, y = &quot;Proportion&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:7]))</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="enlistment" class="section level3">
+<h3>Enlistment</h3>
+<p>Something interesting arises here were we find that vast majority of the black soldiers actually volunteered to join the military whereas about 3/4 of the survied white soldiers were drafted and the remaining soldiers were mostly volunteers and a few were from the National Guard.</p>
+<pre class="r"><code>w_ans %&gt;% 
+  count(enlist, sort =T) %&gt;% 
+  na.omit() %&gt;% 
+  left_join(b_ans %&gt;% count(enlist, sort =T) %&gt;% na.omit(),by = &quot;enlist&quot;) %&gt;%
+  melt(id.vars= &quot;enlist&quot;) %&gt;%
+  ggplot(aes(fill=variable)) +
+  geom_bar(aes(reorder(enlist,value),value), stat=&#39;identity&#39;, position=&#39;dodge&#39;)+
+  labs(title=&#39;How Soldiers were Enlisted&#39;, x=&quot;Enlistment&quot;, y = &quot;Count&quot;)+
+  scale_fill_manual(values =  c(my_cols[10], my_cols[4]), name = &#39;Race&#39;, labels = c(&quot;White&quot;, &quot;Black&quot;))</code></pre>
+<pre><code>## Warning in melt(., id.vars = &quot;enlist&quot;): The melt generic in data.table has
+## been passed a data.frame and will attempt to redirect to the relevant reshape2
+## method; please note that reshape2 is deprecated, and this redirection is now
+## deprecated as well. To continue using melt methods from reshape2 while both
+## libraries are attached, e.g. melt.list, you can prepend the namespace like
+## reshape2::melt(.). In the next version, this warning will become an error.</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="location" class="section level3">
+<h3>Location</h3>
+<p>Expectedly, most of the soldiers hailed from the most populous states at the time. White soldiers were mostly from Illionois, Pennsylvania, Ney York, Texas, and Michigan while black soldiers were mostly from Texas, New York, Illinois, Pennsylvania, and Ohio. Note that the top 4 states for white soldiers had similar amounts of soldiers but there was a sever drop off in representation of black soldiers from other states after Texas and New York.</p>
+<pre class="r"><code>b_ans %&gt;% 
+  count(state, sort =T) %&gt;% 
+  na.omit() %&gt;% 
+  left_join(w_ans %&gt;% count(state, sort =T) %&gt;% na.omit(),by = &quot;state&quot;) %&gt;%
+  melt(id.vars= &quot;state&quot;) %&gt;%
+  ggplot() +
+  geom_bar(aes(reorder(state,value),value, fill = variable), stat=&#39;identity&#39;, position=&#39;dodge&#39;)+
+  facet_grid(cols = vars(variable))+
+  scale_fill_manual(values =  c(my_cols[4], my_cols[10]), name = &#39;Race&#39;, labels = c(&quot;Black&quot;, &quot;White&quot;))+
+  labs(title=&quot;Where are the Soldiers from&quot;, x=&quot;State&quot;, y = &quot;Count&quot;) +
+  coord_flip()+
+  theme(strip.text.x = element_blank())</code></pre>
+<pre><code>## Warning in melt(., id.vars = &quot;state&quot;): The melt generic in data.table has
+## been passed a data.frame and will attempt to redirect to the relevant reshape2
+## method; please note that reshape2 is deprecated, and this redirection is now
+## deprecated as well. To continue using melt methods from reshape2 while both
+## libraries are attached, e.g. melt.list, you can prepend the namespace like
+## reshape2::melt(.). In the next version, this warning will become an error.</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>w_state &lt;- w_ans %&gt;%
+  group_by(state) %&gt;%
+  summarise (n = n()) %&gt;%
+  mutate(freq = n / sum(n))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>plot_usmap(data = w_state, values = &quot;freq&quot;, regions = &quot;state&quot;) + 
+  labs(title = &quot;Heat Map of Relative Frequency of White US Soldiers by State&quot;) + 
+  scale_fill_continuous(low = &quot;white&quot;, high = &quot;red&quot;, name = &quot;Frequency&quot;, label = scales::comma) +
+  theme(legend.position = &quot;right&quot;)</code></pre>
+<pre><code>## Warning: Use of `map_df$x` is discouraged. Use `x` instead.</code></pre>
+<pre><code>## Warning: Use of `map_df$y` is discouraged. Use `y` instead.</code></pre>
+<pre><code>## Warning: Use of `map_df$group` is discouraged. Use `group` instead.</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>b_state &lt;- b_ans %&gt;%
+  group_by(state) %&gt;%
+  summarise (n = n()) %&gt;%
+  mutate(freq = n / sum(n))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>plot_usmap(data = b_state, values = &quot;freq&quot;, regions = &quot;state&quot;) + 
+  labs(title = &quot;Heat Map of Relative Frequency of Black US Soldiers by State&quot;) + 
+  scale_fill_continuous(low = &quot;white&quot;, high = &quot;red&quot;, name = &quot;Frequency&quot;, label = scales::comma) +
+  theme(legend.position = &quot;right&quot;)</code></pre>
+<pre><code>## Warning: Use of `map_df$x` is discouraged. Use `x` instead.</code></pre>
+<pre><code>## Warning: Use of `map_df$y` is discouraged. Use `y` instead.</code></pre>
+<pre><code>## Warning: Use of `map_df$group` is discouraged. Use `group` instead.</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+</div>
+<div id="communities" class="section level3">
+<h3>Communities</h3>
+<p>As expected, most soldiers whose home communities are large cities had the most representation across both groups. White soldiers saw roughly equal representation from soldiers who came from a farm, town, or city with actually slightly less people from cities. On the otherhand, the next community with the largest representation for black soldiers was a city followed by farms and towns which had approximately similar contributions.</p>
+<pre class="r"><code>ans %&gt;% group_by(race) %&gt;% count(community) %&gt;% na.omit() %&gt;%
+  ggplot() +
+  geom_bar(aes(reorder(community,n),n, fill = race), stat=&#39;identity&#39;, position=&#39;dodge&#39;)+
+  facet_grid(rows = vars(race))+
+  labs(title=&#39;Community Type of Soldiers&#39;, x=&quot;Community&quot;, y = &quot;Count&quot;)+
+  scale_fill_manual(values =  c(my_cols[4], my_cols[10]), guide=FALSE)</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>We see that larger portions of soldiers who are more educated come from communities which are larger in population.</p>
+<pre class="r"><code>ans %&gt;%
+ggplot( aes(x=edu, fill = community)) +geom_bar(position= &quot;fill&quot;) +
+  facet_grid(rows = vars(race), scales=&quot;free_y&quot;)+
+  labs(title=&quot;Community Distribution over Education Levels of Soldiers&quot;, x=&quot;Education Level&quot;, y = &quot;Proportion&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:7]))</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/education+community-1.png" width="672" /></p>
+</div>
+<div id="integrating-outfits" class="section level3">
+<h3>Integrating Outfits</h3>
+<p>Our key variable of interest from this survey is the soldiers opinions on integrating their outfits. Expectedly, we see the vast majority of white soldiers are against integrating however the black soldeirs seem to be divided on whether they want integration or not. They are rougly evenly split on keeping outfits seperated and integrating them and a good amount are also undecided or indifferent.</p>
+<pre class="r"><code>ans %&gt;% filter(outfits!=&quot;NA&quot;) %&gt;%
+  ggplot(aes(x=outfits, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle(&quot;Soldiers&#39; Opinions on Outfits&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values =  c(my_cols[4], my_cols[10]), guide=FALSE)</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/outfits-1.png" width="672" /></p>
+<p>If we look at the proportion of ages who elected for each category we see that the proportions are relatively stable across all opinions towards integration.</p>
+<pre class="r"><code>ans %&gt;% filter(outfits!=&quot;NA&quot;) %&gt;%
+ggplot( aes(x=outfits, fill = age)) +geom_bar(position= &quot;fill&quot;) +
+  facet_grid(rows = vars(race), scales=&quot;free_y&quot;)+
+  labs(title=&quot;Age Distribution over Integration of Outfits Opinions&quot;, x=&quot;Opinion&quot;, y = &quot;Proportion&quot;)+
+  scale_fill_manual(values = rev(my_cols[1:7]))</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/outfits+age-1.png" width="672" /></p>
+<p>Now if we are to overlay the education distribution over the integration opinions we see something more interesting. It appears that the white soldiers that voted for the outfits to be together skew towards being more educated. In fact, over 50% of the soldiers who did vote for integrated units have atleast finished high school. This is not the case for any of the other responses.</p>
+<pre class="r"><code>ans %&gt;% filter(outfits!=&quot;NA&quot;) %&gt;%
+ggplot( aes(x=outfits, fill = edu)) +geom_bar(position= &quot;fill&quot;) +
+  facet_grid(rows = vars(race), scales=&quot;free_y&quot;)+
+  labs(title=&quot;Education Distribution over Integration of Outfits Opinions&quot;, x=&quot;Opinion&quot;, y = &quot;Proportion&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:10]))</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/outfits%20+%20edu-1.png" width="672" /></p>
+<p>Across both races we also see that of those who choose integration a greater portion were from large cities and soldiers who came from more populated voted for sepration less proportionally.</p>
+<pre class="r"><code>ans %&gt;% filter(outfits!=&quot;NA&quot;) %&gt;%
+ggplot( aes(x=outfits, fill = community)) +geom_bar(position= &quot;fill&quot;) +
+  facet_grid(rows = vars(race), scales=&quot;free_y&quot;)+
+  labs(title=&quot;Community Type Distribution over Integration of Outfits Opinions&quot;, x=&quot;Opinion&quot;, y = &quot;Proportion&quot;)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:5]))</code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="thoughts-on-the-future" class="section level3">
+<h3>Thoughts on the future</h3>
+<p>The majority of the white soldiers believed that their rights will not change after the war and roughly equal amoutns thought they would increase or decrease. About 40% of the black soldiers thought their rights would increase following the war. A slightly smaller amount expected no change at all. Interestingly, the black soldiers answers to whether black people will have more rights after the war was nearly identical, but now there are more white soldiers who think black people will get more rights. The majority of black soldiers thought that after the war white people would treat them the same but about 30% were optimistic that they'd recieve better treatment. Interestingly,</p>
+<pre class="r"><code>ans %&gt;% 
+  ggplot(aes(x=post_war_rights, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle(&quot;Soldiers&#39; Opinions on If They Will Have More Rights After the War&quot;)+
+  scale_fill_manual(values = c(my_cols[4], my_cols[10]), name = &#39;Race&#39;, guide = F)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(x=&quot;Rights After the War&quot;, y = &quot;Prop&quot;) </code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>ans %&gt;% 
+  ggplot(aes(x=black_rights_will, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle(&quot;Soldiers&#39; Opinions on If Blacks Will Have More Rights After the War&quot;)+
+  scale_fill_manual(values = c(my_cols[4], my_cols[10]), name = &#39;Race&#39;, guide = F)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(x=&quot;Rights After the War&quot;, y = &quot;Prop&quot;) </code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<pre class="r"><code>b_ans %&gt;%
+  ggplot(aes(black_treatment))+
+  geom_bar(aes(y = ..prop.., group = 1), fill = my_cols[4])+
+  labs(x=&quot;Treatment by White People&quot;, y = &quot;Prop&quot;, title = &#39;Black Soldiers Opinions on Post-War Treatment by White People &#39;) </code></pre>
+<p><img src="/findings/s32_website_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+</div>
+</div>
