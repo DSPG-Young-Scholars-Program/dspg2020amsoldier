@@ -24,6 +24,7 @@ library(igraph)
 library(ggraph)
 library(widyr)
 library(stringr)
+knitr::opts_chunk$set(fig.width=12, fig.height=8)
 ```
 
 ```{r functions, include = FALSE}
@@ -58,9 +59,28 @@ dbDisconnect(conn)
 ```
 
 ```{r dictionaryload, include=FALSE}
+#alterations to data
+##### some data cleaning
+#remove possessive 's
+data$outfits_comment <- str_replace_all(data$outfits_comment, "'s", "")
+data$long <- str_replace_all(data$long, "'s", "")
+
+#stem and lem gender words as well
 #load dictionary csv
 spatial_words <- fread("~/git/dspg2020amsoldier/data/dictionary/spatial_arrangement.csv", sep = ",")
 space_match <- paste(paste("\\b", spatial_words$space,"\\b", sep = ""), collapse="|") #regex friendly 
+
+####collapse certain two word phrases like white man --> whiteman
+#read the csv file of correct spellings back in.
+collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",") # (n=274)
+collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
+
+#replace with collapsed words
+data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse, vectorize_all = FALSE)
+data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse, vectorize_all = FALSE)
+
+#### create custom stop words 
+custom_stop <- append(stop_words$word, c("question", "questionnaire", "answer"))
 ```
 
 
@@ -120,85 +140,6 @@ Some notable nodes in the white soldiers' response is south, train, camp, town a
 
 
 
-### Re-do analysis with improved dictionary.
-collapsed words -> armyexchange & serviceclub
-
-```{r}
-#alterations to data
-##### some data cleaning
-#remove possessive 's
-data$outfits_comment <- str_replace_all(data$outfits_comment, "'s", "")
-data$long <- str_replace_all(data$long, "'s", "")
-
-#stem and lem gender words as well
-#load dictionary csv
-spatial_words <- fread("~/git/dspg2020amsoldier/data/dictionary/spatial_arrangement.csv", sep = ",")
-space_match <- paste(paste("\\b", spatial_words$space,"\\b", sep = ""), collapse="|") #regex friendly 
-
-####collapse certain two word phrases like white man --> whiteman
-#read the csv file of correct spellings back in.
-collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",") # (n=274)
-collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
-
-#replace with collapsed words
-data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse, vectorize_all = FALSE)
-data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse, vectorize_all = FALSE)
-```
-
-
-```{r }
-#subset data based on question and race
-S32W_short2 <- data %>% filter(racial_group== "white") %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
-S32W_short2 <- tibble(nrow=1:nrow(S32W_short2), text = S32W_short2$outfits_comment)
-
-S32W_long2 <- data %>% filter(racial_group== "white") %>% select(long) %>% filter(!is.na(long))
-S32W_long2 <- tibble(nrow=1:nrow(S32W_long2), text = S32W_long2$long)
-
-S32N_long2 <- data %>% filter(racial_group== "black") %>% select(long) %>% filter(!is.na(long))
-S32N_long2 <- tibble(nrow=1:nrow(S32N_long2), text = S32N_long2$long)
-```
-
-```{r }
-short_bigrams_space2 <- S32W_short2 %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
-  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
-  separate(bigram, c("word1", "word2"), sep = " ") %>%
-  filter(!word1 %in% stop_words$word) %>%
-  filter(!word2 %in% stop_words$word) %>% 
-  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
-  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
-  count(word1, word2, sort = TRUE)
-
-longW_bigrams_space2 <- S32W_long2 %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
-  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
-  separate(bigram, c("word1", "word2"), sep = " ") %>%
-  filter(!word1 %in% stop_words$word) %>%
-  filter(!word2 %in% stop_words$word)  %>% 
-  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
-  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
-  count(word1, word2, sort = TRUE) #%>% filter(n > 1)
-
-longN_bigrams_space2 <- S32N_long2 %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
-  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
-  separate(bigram, c("word1", "word2"), sep = " ") %>%
-  filter(!word1 %in% stop_words$word) %>%
-  filter(!word2 %in% stop_words$word) %>% 
-  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
-  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
-  count(word1, word2, sort = TRUE) #%>% filter(n > 1)
-
-```
-
-
-
-```{r }
-visualize_bigrams(short_bigrams_space2, "White Soldiers' Outfits Response - Spatial Arrangement") 
-visualize_bigrams(longW_bigrams_space2, "White Soldiers' Long Response - Spatial Arrangement")
-visualize_bigrams(longN_bigrams_space2, "Black Soldiers' Long Response - Spatial Arrangement")
-```
-
-
-
-
 ### Co-occurences:
 ```{r}
 cooccur_spatial <- function(data, n=5, corr=.15){
@@ -207,11 +148,13 @@ cooccur_spatial <- function(data, n=5, corr=.15){
   space_match <- stem_words(lemmatize_words(spatial_words$space))
   space_match <- paste(paste("\\b", space_match,"\\b", sep = ""), collapse="|") #regex friendly 
   
+  custom_stop <- append(stop_words$word, c("question", "questionnaire", "answer"))
+  
   data %>%
   mutate(section = row_number()) %>%
   filter(section > 0) %>%
   unnest_tokens(word, text) %>%
-  filter(!word %in% stop_words$word) %>%
+  filter(!word %in% custom_stop) %>%
   mutate(word = stem_words(lemmatize_words(word))) %>%
   group_by(word) %>% 
   filter(n() >= n) %>%
@@ -226,11 +169,13 @@ cooccur_spatial_edit <- function(data, n=5, corr=.15){
   space_match <- stem_words(lemmatize_words(spatial_words$space))
   space_match <- paste(paste("\\b", space_match,"\\b", sep = ""), collapse="|") #regex friendly 
   
+  custom_stop <- append(stop_words$word, c("question", "questionnaire", "answer"))
+  
   data %>%
   mutate(section = row_number()) %>%
   filter(section > 0) %>%
   unnest_tokens(word, text) %>%
-  filter(!word %in% stop_words$word) %>%
+  filter(!word %in% custom_stop) %>%
   mutate(word = stem_words(lemmatize_words(word))) %>%
   group_by(word) %>% 
   filter(n() >= n) %>%
@@ -256,7 +201,7 @@ visualize_cooccur <- function(data, title){
 
 white soldiers short response
 ```{r}
-S32W_short_cors <- cooccur_spatial(S32W_short2, n = 5, corr = 0.15) 
+S32W_short_cors <- cooccur_spatial(S32W_short, n = 5, corr = 0.15) 
 
 #plot
 visualize_cooccur(S32W_short_cors, "White Soldiers' Short Response - Spatial Arrangement Co-occurences")
@@ -266,7 +211,7 @@ visualize_cooccur(S32W_short_cors, "White Soldiers' Short Response - Spatial Arr
 
 white soldiers long response
 ```{r}
-S32W_long_cors <- cooccur_spatial(S32W_long2) 
+S32W_long_cors <- cooccur_spatial(S32W_long) 
 
 #plot
 visualize_cooccur(S32W_long_cors, "White Soldiers' Long Response - Spatial Arrangement Co-occurences")
@@ -275,7 +220,7 @@ visualize_cooccur(S32W_long_cors, "White Soldiers' Long Response - Spatial Arran
 
 black soldiers long response
 ```{r}
-S32N_long_cors <- cooccur_spatial(S32N_long2) 
+S32N_long_cors <- cooccur_spatial(S32N_long) 
 
 #plot
 visualize_cooccur(S32N_long_cors, "Black Soldiers' Long Response - Spatial Arrangement Co-occurences")
@@ -319,26 +264,6 @@ visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arra
 Although these soldiers suported integration there is commentary about conditions in which the Black and White soldiers would share the same space. For the rightmost branch of cooccurrences,  example we see that both sleep and px were associated with separation. 
 
 There is a burst/cluster surrounding the nodes Southern, Northern and live. When talking about possibly integrating outfits, the interactions of southerners and northerners were a significant topic. Perhaps soldiers are talking about the differences in culture between the southerners and northerners on regards to race relations. We also see that other ethnicities such as Chinese and Filipino are mentioned.
-
-
-The same co-occurance plot but with edited dictionary.
-
-```{r}
-seg_short_cors <- cooccur_spatial_edit(seg_short, n = 5, corr = 0.10) 
-
-#plot
-visualize_cooccur(seg_short_cors, "Pro Segregation Short Response - Spatial Arrangement Co-occurrences")
-
-
-#subset data based on question and race
-int_short_cors <- cooccur_spatial_edit(int_short, n = 0, corr = 0.01) 
-
-#plot
-visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arrangement Co-occurrences")
-
-```
-
-When taking out words like north/south, the co-occurrence network is cleaner. however, changing the correlation threshold doesn't do anything for the short pro-integration responses.
 
 
 ##### Co-occurances for long response
