@@ -1,0 +1,68 @@
+---
+title: "Challenges and Limitations"
+author: "Mary Solomon"
+date: "7/30/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr);library(ggplot2);library(data.table);library(tidyr);library(stringr);library(gridExtra)
+library(tidytext);library(textstem);library(SnowballC)
+library("RPostgreSQL")
+# connect to postgresql to get data (in rivanna)
+conn <- dbConnect(drv = PostgreSQL(), 
+                  dbname = "sdad", 
+                  host = "10.250.124.195", 
+                  port = 5432, 
+                  user = Sys.getenv("db_userid"), 
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data  
+data <- dbGetQuery(conn, "SELECT outfits_comment, long_comment, long_comment_cont, racial_group  
+                                 FROM american_soldier.survey_32_combined")
+# disconnect from postgresql
+dbDisconnect(conn)
+#combine continuation of long question into one column
+data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = TRUE) %>% 
+  mutate(long = tolower(ifelse(long=="", NA,long)), outfits_comment = tolower(ifelse(outfits_comment=="", NA,outfits_comment)), index= 1:nrow(data))
+
+```
+
+
+### Data Quality
+Working with text data is never straight forward. There are always typical text mining issues such as misspellings, punctuations, abbreviations, and so on. However, our collection of soldier commentary posed unique challenges.
+
+Our primary challenge was the presence of Metatags within the text. Transcribers on Zooniverse were able to tag attributes of the text such as unclear writing, underlining, deletions, corrections and more. The following response is an example of these tags and how they are used in the soldiers' responses.
+```{r echo= FALSE, warning=FALSE, message=FALSE}
+data$long[2299]
+```
+
+As you can see there's a mix of tags that can be used in one response. Some tags have one component such as [paragraph] while others are meant to wrap around a word or entity that fits that attribute such as [unclear][/unclear]. In this case, the unclear word was unidentifiable, but there can be instances used such as [unclear]text[/unclear]. In other cases, a tag isn't used, but rather a correction is indicated with brackets such as "now[know]". 
+
+The unclear and bracketed tags were the most troublesome because their use heavily depended on the context of the response. When assessing the data quality, we found that there were around 792 unique uses of the unclear tag and around 662 unique cases of bracketed corrections. Therefore, an automated correction could not be made, and manual text cleaning solutions had to be used. 
+
+We’ve set up a text cleaning process to either remove or correct the tags using regex and manual cleaning. The steps are outlined below:
+
+1. Data is read in from the database   
+2. Data undergoes initial processing to lowercase all letters and combine text from same questions into one column    
+3. Noninformative responses converted to NA    
+4. Automated metatag removal for the following tags: underline, deletion, circle, insertion, and empty unclear tags.      
+5. Unclear metatags are manually cleaned     
+6. Bracketed metags are manually cleaned    
+7. Manual spellchecking with the assistance of the hunspell package   
+8. Final processing is performed such as replacing contractions.   
+9. Clean data is stored :)
+
+### Language unique to these time periods and military
+
+The jargon used in the military and from the 1940s are not commonly used in modern everyday language. Therefore, some words may not be recognized by modern NLP libraries. 
+
+### Inconsistent Transcriptions: 
+
+The written transcriptions were scanned on separate pages from the rest of the multiple choice survey responses. Therefore, the transcribed responses cannot be lined up with the soldier’s corresponding demographics or multiple choice survey responses. This creates limitations on being able to compare responses of different groups of soldiers such as age group, hometown, and educational attainment.   
+
+In addition, we do not have transcribed responses about soldiers being in separate outfits from the black soldiers. Therefore we cannot make a direct comparison of extended commentary regarding outfit segregation between black and white soldiers. Luckily all multiple choice responses regarding outfit segregation are available for both soldier groups, which can fill the gaps here.
+
+### LDA Topic Modeling
+
+The popular topic modeling method of LDA did not return meaningful results due to the average length of responses being around 7-10 words. However, other topic modeling methods such as Gibbs were successful on our data. In addition co-occurrence text networks have allowed us to identify clusters of topics.
