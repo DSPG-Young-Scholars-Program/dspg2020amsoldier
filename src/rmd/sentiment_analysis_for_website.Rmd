@@ -538,7 +538,7 @@ radar2(s32_relation_sentiments,
        title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Gender Relations");
 ```
 
-```{r, echo=FALSE, include=FALSE}
+```{r, echo=FALSE}
 radar2(s32_female_and_relation_sentiments,
        group1 = c("black", "long", "black"),
        group2 = c("white", "long", "white"), 
