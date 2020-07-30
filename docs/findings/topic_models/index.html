@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Topic Models</title>
+        <link rel="canonical" href="../../findings/topic_models/">
+        <style>
+
+    html body {
+        font-family: 'Oxygen', sans-serif;
+        background-color: #FFFFFF;
+    }
+
+    :root {
+        --accent: #232D4B;
+        --border-width:  0 ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ascetic.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="../../css/main.css">
+
+
+
+
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+
+
+<script>
+$(document).ready(function(){
+    
+  var input = $('#night-mode-toggle');
+  var container = $('#bigbody');
+  var stat = $('#button-status');
+  
+  container.toggleClass(localStorage.toggled);
+  stat.bootstrapToggle(localStorage.button).change();
+  
+  input.on('click', function() {
+      if (localStorage.toggled != "-nightmode" ) {
+          container.toggleClass("-nightmode", true );
+          localStorage.toggled = "-nightmode";
+          localStorage.button = "on";
+       } else {
+          container.toggleClass("-nightmode", false );
+          localStorage.toggled = "";
+          localStorage.button = "off"
+       }
+  })
+});
+</script>
+ <meta name="generator" content="Hugo 0.74.1" />
+        <link href="" rel="alternate" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        <link href="" rel="feed" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+    <link rel="manifest" href="../../site.webmanifest">
+    <link rel="mask-icon" href="../../img/favicon/safari-pinned-tab.svg" color="#000000">
+    <link rel="shortcut icon" href="../../img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    
+    
+    
+    <meta property="og:title" content="Topic Models">
+    <meta property="og:type" content="article">
+      
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:image" content="/favicon/uva-dspg-logo.jpg" >
+      
+    <meta property="description" content="">
+    <meta property="og:description" content="">
+    
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:site" content="">
+    
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body id = "bigbody">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Topic Models</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="../../">Home</a></li>
+                            
+                                <li><a href="../../overview/">Overview</a></li>
+                            
+                                <li><a href="../../methods/">Data &amp; Methods</a></li>
+                            
+                                <li><a href="../../findings/">Findings</a></li>
+                            
+                                <li><a href="../../team/">Team</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program"><i class="fas fa-globe-americas"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/DSPG-Young-Scholars-Program"><i class="fab fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/UVA_BI"><i class="fab fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="mailto:gkorkmaz@virginia.edu"><i class="far fa-envelope"></i></a></li>
+                            
+                            
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+    
+      
+    
+
+    <h4><a href="../../findings/topic_models/">Topic Models</a></h4>
+    
+    <h5></h5>
+
+    
+    
+
+</div>
+
+
+    <br> <div class="text-justify">
+<script src="../../rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="../../rmarkdown-libs/d3/d3.min.js"></script>
+<script src="../../rmarkdown-libs/forceNetwork-binding/forceNetwork.js"></script>
+
+
+<div id="topic-model-networks" class="section level2">
+<h2>Topic Model Networks</h2>
+<p>A topic model put simply models the topics in a piece of text and the words that are associated with each topic. Naturally, words may fall in multiple topics and the model accounts for this by giving each topic a probability distribution over the words. A Topic Model Network is a useful way to visualize the topics and the words associated with each topic. Here we will explore two different topic models.</p>
+<div id="latent-dirichlet-allocation" class="section level3">
+<h3>Latent Dirichlet Allocation</h3>
+<p>Latent Dirchlet Allocation, or LDA, is the typical go to method for topic modelling. We chose to model the texts with 6 topics. We can see that in the three networks this produces very disconnected topics which intuitively seems to be a poor fit as the corpus is rather small and the soldiers are responding to direct and specific questions. LDA does produce a better connected network for the white soldiers outfits comment but does not do a great job in delineating the topics.</p>
+<div id="black-soldiers-long-comment" class="section level4">
+<h4>Black Soldiers Long Comment</h4>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"links":{"source":[5,1,1,3,3,3,0,0,3,1,2,0,0,1,1,5,5,3,3,5,5,1,1,2,2,5,3,5,5,2,5,3,3,2,1,2,2,2,1,2,3,4,4,1,1,1,3,2,1,0,0,1,1,5,3,5,0,0,0,4,4,5,2,3,0,0,4,5,2,5,2,4,2,2],"target":[6,7,8,8,9,10,11,12,13,14,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,71,72,73,74,75],"value":[0.0129413315320362,0.0156915891036787,0.0215727387405816,0.115964817866873,0.0150600383438162,0.0156486495577007,0.0175973951601027,0.0589115957916783,0.0109397598466247,0.0520012955576012,0.0126653605423306,0.0108071404028339,0.0965443330006381,0.012026524837203,0.0184190787903583,0.0169777748488393,0.0479512990757369,0.0228801587568531,0.0103511486327402,0.010634792493863,0.019366690281233,0.0112594183628243,0.0218284408987079,0.0450872964960036,0.0343377776236628,0.0499283325370282,0.0105193232652787,0.0116233092245086,0.01187043840717,0.0118851535274026,0.0137650954742409,0.0128737681208167,0.0451632975681948,0.0348579156336148,0.0190157171593195,0.0300032942073964,0.0239350174246233,0.0300899838757217,0.0157768231563874,0.0128387398789812,0.0132101173858935,0.228609890654422,0.027262066003766,0.0682809996249702,0.0190157171593195,0.0231069516893389,0.0135464666509704,0.0632054371759974,0.0113446524155331,0.0118706742804784,0.0104798992097125,0.0394718898094167,0.0346987828577273,0.040125541624792,0.0122010695906629,0.0162363873008551,0.0123615360701605,0.0298689399021549,0.190462555426477,0.0607925076806184,0.0267665422351425,0.0112938036476267,0.0121452225323786,0.055842386734385,0.0210334276878774,0.0301143707969959,0.063765650292359,0.0103052869169811,0.0141390849038612,0.016401140089296,0.129262964439898,0.178396815433914,0.0292230871924684,0.0138790158988852],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","american","answer","armi","bad","boi","bu","camp","care","chanc","civilian","color","command","compani","condit","countri","dai","damn","democraci","equal","express","fair","feel","fight","food","forc","freedom","god","govern","hard","home","hope","idea","job","life","live","lot","mind","month","negro","north","offic","opinion","outfit","pass","peopl","person","poor","post","question","questionnair","race","reason","right","separ","servic","soldier","south","southern","stand","stop","time","town","train","treat","u.","unit","war","white","win","world"],"group":[1,2,3,4,5,6,6,2,4,4,4,1,1,4,2,1,1,2,2,6,6,4,4,6,6,2,2,3,6,4,6,6,3,6,4,4,3,2,3,3,3,2,3,4,5,5,2,2,2,4,3,2,1,1,2,2,6,4,6,1,1,1,5,5,6,3,4,1,1,5,6,6,3,5,3,3]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":7,"fontFamily":"serif","clickTextSize":17.5,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="white-soldiers-outfits-comment" class="section level4">
+<h4>White Soldiers Outfits Comment</h4>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"links":{"source":[4,4,2,4,0,3,4,5,1,3,1,1,4,2,5,5,1,0,2,1,1,2,1,2,3,0,2,5,0,4,1,5,3,4,4,3,0,5,3,5,2,3,5,3,4,1,2,0,2,4,2,4,4,2,5,1,2,0,1,5,0,5,3,4,1,2,3,0,2,3,0,1,0,3],"target":[6,7,8,9,10,11,12,13,14,15,16,17,17,18,19,20,21,22,22,23,24,25,26,26,27,28,28,28,29,30,31,32,33,33,34,35,36,36,37,37,38,39,39,40,41,42,42,43,43,44,45,46,47,48,49,50,50,51,52,52,53,53,54,54,55,56,57,58,58,58,59,60,61,61],"value":[0.0589815762538383,0.0269959058341863,0.0401894123360855,0.023157625383828,0.0166117169667766,0.0249526963103122,0.0142016376663255,0.0111848574237955,0.0384107708553326,0.0143093661305582,0.0106916578669483,0.0106916578669483,0.0577021494370522,0.0134774162214667,0.0136430678466077,0.0111848574237955,0.0252111932418163,0.0140755769718488,0.0159057795046139,0.022571277719113,0.0146515311510032,0.0219766877124818,0.0502903907074974,0.0134774162214667,0.0119441816461684,0.0381689069236622,0.0571879553181156,0.0148721730580138,0.0381689069236622,0.0129222108495394,0.0120116156282999,0.017330383480826,0.0214049195837275,0.0551432958034801,0.0308341862845445,0.0131267738883633,0.111716966776566,0.0148721730580138,0.0119441816461684,0.0124139626352016,0.0122632345798931,0.184602649006623,0.306170108161259,0.0107615894039735,0.0308341862845445,0.118928194297782,0.0669014084507042,0.0749429368501141,0.0256192326372025,0.0193193449334698,0.0171199611461875,0.0513050153531218,0.133188331627431,0.0183341427877611,0.0468289085545723,0.0344508975712777,0.116682855755221,0.0292924169414152,0.0555702217529039,0.0837020648967551,0.0204159269591681,0.017330383480826,0.0107615894039735,0.0346724667349028,0.0252111932418163,0.0183341427877611,0.0107615894039735,0.0229520669540959,0.0401894123360855,0.0107615894039735,0.0191478569617043,0.0304910242872228,0.164975906670048,0.225993377483444],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","60","62","armi","bad","black","boi","camp","care","chanc","class","close","color","combat","comment","condit","cooper","differ","eat","effici","equal","feel","fellow","fight","friction","happier","hard","idea","live","lot","lower","mix","moral","natur","negro","not't","offic","outfit","peopl","person","prejudic","question","race","racial","reason","separ","sleep","soldier","south","southern","stai","time","train","troubl","unit","war","white"],"group":[1,2,3,4,5,6,5,5,3,5,1,4,5,6,2,4,2,5,3,6,6,2,3,2,2,3,2,4,3,1,5,2,6,5,5,4,1,6,3,6,4,5,2,1,5,3,5,5,3,6,3,1,6,1,5,2,3,4,3,1,2,4]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":7,"fontFamily":"serif","clickTextSize":17.5,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="white-soldiers-long-comment" class="section level4">
+<h4>White Soldiers Long Comment</h4>
+<div id="htmlwidget-3" style="width:672px;height:480px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"links":{"source":[2,2,0,1,3,1,5,0,4,1,0,2,5,1,3,0,1,3,0,1,4,2,2,0,5,3,2,1,4,2,2,4,5,2,4,3,1,1,4,4,5,4,2,0,3,0,3,0,2,4,3,0,3,3,3,0,1,2,1,1,5,3,5,2,2,1,0,4,2,3,4],"target":[6,7,8,9,10,11,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74],"value":[0.0121006024408348,0.0124458407415719,0.0145380763574766,0.011108924706177,0.0213067916565517,0.066564104398848,0.127871061941933,0.0102566966363247,0.0230063308459981,0.0154022289404483,0.0102566966363247,0.0414458580034869,0.0331517567997604,0.023273286703279,0.0108494705981214,0.0134211946910891,0.0132555768233126,0.010662732722078,0.0106289905251205,0.0100355986476092,0.0270201236977979,0.0243565621170013,0.0107196492378865,0.0191917499674243,0.0144325265345089,0.032697802095199,0.0145172705459944,0.0130766891468847,0.0326759227162431,0.0260827536206867,0.0207315599592619,0.0118771779387349,0.015181295745119,0.0350589494398508,0.0127894035868712,0.0364325596160669,0.0533264163431781,0.0196955331747196,0.0144314097535166,0.0204520990312164,0.028284756930795,0.0111473974202259,0.02332084721479,0.0171441335790473,0.0640697652704898,0.066100779955697,0.0302702097066348,0.0502782896818749,0.0181422727037337,0.0292094652533251,0.0196261507721611,0.0108151374695184,0.0706055909320088,0.0523052790797557,0.0102892569699912,0.0175164274678431,0.0121822507647448,0.0121006024408348,0.0145077905583084,0.0543997424017459,0.129555792665806,0.0104759948460346,0.0116246419947212,0.0682018263106109,0.0110648875386235,0.0443820325217796,0.0147242233018745,0.0908759190673405,0.0158982237489427,0.0368060353681537,0.0155260805312802],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","2","3","abil","air","answer","armi","bad","boi","branch","call","camp","chanc","civilian","color","com","combat","comment","compani","corp","countri","dai","eat","enlist","fair","feel","fellow","field","fight","food","furlough","govern","hard","home","hope","idea","job","life","live","lot","marri","month","moral","negro","offic","opinion","outfit","pass","peopl","person","poor","question","questionnair","race","rate","reason","run","school","servic","soldier","south","stai","time","town","train","treat","war","week","white","win"],"group":[1,2,3,4,5,6,3,3,1,2,4,6,1,5,2,1,3,6,2,4,1,2,4,1,2,5,3,3,1,6,4,3,2,5,3,3,5,6,3,5,4,2,2,5,6,5,3,1,4,1,4,1,3,5,4,1,4,4,4,1,2,3,2,2,6,4,6,3,3,2,1,5,3,4,5]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":7,"fontFamily":"serif","clickTextSize":17.5,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="btm" class="section level3">
+<h3>BTM</h3>
+<p>There are some drawbacks to using LDA for our dataset, namely it doesn't handle short texts well. That is why we also implemented a <a href="https://cran.r-project.org/web/packages/BTM/index.html">Biterm Topic Model</a> that does better on short texts. Overall, it seems that the topic model networks produced this way strike a better balance between effectively delineating the topics and showing interconnectivity.</p>
+<div id="black-soldiers-long-comment-1" class="section level4">
+<h4>Black Soldiers Long Comment</h4>
+<div id="htmlwidget-4" style="width:672px;height:480px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4">{"x":{"links":{"source":[3,4,1,3,0,3,1,1,5,1,5,2,3,5,4,1,3,4,5,5,3,2,4,3,2,4,2,4,4,3,2,1,1,1,2,4,3,4,4,0,1,0,1,0,1,2,2,1,3,2,2,4,4,4,4,0,1,0,1,5,3,4,3,0,1,5,5,5,3,1,1,2,4,5,2,2,4,1,1,4,1,3,5,0,1,5,5,5,4,3,4,3,0,0,1,3,5,3,4,0,2,0,5,2,2,4,3],"target":[6,7,8,9,10,10,11,12,12,13,14,15,16,16,17,18,19,20,21,22,23,24,24,25,26,27,28,29,30,31,32,33,34,35,36,36,37,38,39,40,40,41,41,42,42,43,44,45,46,47,48,49,50,51,52,53,53,54,54,54,55,56,57,58,58,58,59,60,61,62,63,64,65,65,66,67,68,69,70,71,72,73,74,75,75,75,76,77,78,79,80,81,82,83,83,84,85,86,87,88,88,89,89,90,91,92,93],"value":[0.0353067494507482,0.0128502565851079,0.0120151266987835,0.0145912779111802,0.0182496505695254,0.0312220085837912,0.0112142072432486,0.0256307574428778,0.0114984635068676,0.0105467743636361,0.0125011781897524,0.0126163152791173,0.0233442940546597,0.0169131227944455,0.0103795285356736,0.103586917781613,0.0119653730681364,0.0138385478048817,0.0449222862696942,0.0268734219777678,0.0137159762968323,0.0141930262075635,0.0691828561122106,0.0423091623655318,0.0283834245635796,0.025450969637223,0.01077681919593,0.01803878548892,0.0130973293900514,0.0145912779111802,0.011039604350671,0.0304362741760875,0.0262981903224902,0.0265651634743352,0.0194487293023843,0.0664650552578328,0.0291796381503126,0.0207565863432978,0.0303924257360917,0.0215554683972111,0.0528620189310662,0.0109559595630889,0.114933276735025,0.0116441595569565,0.0425835525850343,0.0601804282872452,0.0160325222907508,0.0172211031597607,0.0452268344133583,0.0317996315752131,0.0113023895054121,0.0108736741455605,0.0321219353706957,0.0182858582938635,0.0113678197554473,0.0114659649156872,0.0229610259244279,0.0191774916326863,0.0222935930448154,0.0427831616128733,0.013132441887267,0.0121090381702776,0.0105065370442232,0.0271532379901881,0.03003581444832,0.0625700646884666,0.0121669399621241,0.0480641256093998,0.0142995107063976,0.021893133317048,0.0150853179450009,0.0183975886834201,0.0123561109752211,0.027809289015127,0.0170836629097149,0.01077681919593,0.0111207469505039,0.0172211031597607,0.0228275393485054,0.0116148925603908,0.0160197239764583,0.0332643790172697,0.017782142186279,0.0254696058623333,0.0321715996630799,0.0921835716563309,0.0192527903878434,0.0289456989890631,0.0143326934147685,0.018092484368572,0.0108736741455605,0.0107983042490058,0.0123999506216504,0.017327954149167,0.012682559578396,0.0291796381503126,0.0307505854182557,0.0113818386585711,0.0111207469505039,0.0127624845469914,0.21837709144135,0.0220408951785999,0.123735660344439,0.109846822533301,0.0528224439544961,0.0158151302444291,0.0151748123207455],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","air","american","answer","armed","army","ask","better","break","bus","buy","camp","cause","chance","child","civilian","color","colored","corps","country","crow","defense","democracy","department","die","discrimination","divide","end","equal","express","fair","fight","force","free","freedom","get","give","good","help","hope","idea","jim","job","last","let","life","live","love","make","man","mother","nation","navy","negro","northern","officer","old","opinion","opportunity","part","people","plant","play","problem","question","questionnaire","racial","rights","school","service","soldier","south","southern","speech","stand","state","take","thing","think","training","treat","u.s.","united","war","white","win","work","world","year"],"group":[1,2,3,4,5,6,4,5,2,4,4,2,2,2,6,3,4,5,2,4,5,6,6,4,5,4,3,5,3,5,5,4,3,2,2,2,5,4,5,5,2,2,2,3,3,2,4,3,3,5,5,5,5,2,6,4,5,4,6,6,6,4,2,2,3,6,3,3,5,2,2,5,2,4,6,6,6,6,5,4,5,4,1,1,4,6,4,5,3,6,3,3,5,4]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":7,"fontFamily":"serif","clickTextSize":17.5,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="white-soldiers-outfits-comment-1" class="section level4">
+<h4>White Soldiers Outfits Comment</h4>
+<div id="htmlwidget-5" style="width:672px;height:480px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5">{"x":{"links":{"source":[4,1,2,4,4,2,1,2,1,3,4,0,4,2,4,5,5,4,4,1,2,4,3,2,2,4,2,5,4,2,2,4,1,4,1,3,3,1,2,1,3,4,2,5,4,2,2,5,0,1,1,0,4,2,0,5,3,3,2,5,2,1,2,1,1,0,5,2,3,3,2,3,0,0,5,1,5,4,3,5,0,3,2,1,4,0,5,2,5,0,0,5,5,1,1,4,4,0,1,2,2,1,4,1,3,0,2,2,4,3,2,0,5,5,1,3,1,4,4,2,5,4,0,2,1,4,4,2,3,3,0,5,0,4],"target":[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,39,40,41,42,43,44,45,46,47,48,49,50,51,52,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,68,69,70,71,72,73,74,75,75,76,76,77,78,79,80,81,82,83,84,85,85,86,87,88,89,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,105,106,107,108,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,126,127,128],"value":[0.0116812924972395,0.0108946667753416,0.0250687099192138,0.0174928808043238,0.0233044691114081,0.0250687099192138,0.0326296628358736,0.0417256600316482,0.0136115412829081,0.0197651856480416,0.0349276457255768,0.0312439625659771,0.0174928808043238,0.0167402348629966,0.0407392340326611,0.0222339494771342,0.0305664727040427,0.0291160574184925,0.0233044691114081,0.114135898062868,0.0250687099192138,0.0581739989539141,0.0230539020620252,0.0500541350878654,0.033397184975431,0.0174928808043238,0.0250687099192138,0.0125126723790743,0.0233044691114081,0.0250687099192138,0.033397184975431,0.0581739989539141,0.0136115412829081,0.0465508223397455,0.0190452902980411,0.0329200513039761,0.177623573519255,0.0163284157904746,0.0167402348629966,0.0163284157904746,0.0625184990298287,0.0639855872609984,0.0250687099192138,0.0125126723790743,0.0407392340326611,0.0167402348629966,0.0250687099192138,0.0208451956059828,0.0117033761055059,0.0570815334039721,0.0543646588964056,0.0192104940677208,0.0930435287964201,0.0250687099192138,0.01082018575701,0.0125126723790743,0.0197651856480416,0.0230539020620252,0.0167402348629966,0.0111239185079228,0.0167402348629966,0.0217621648056076,0.033397184975431,0.0108946667753416,0.0516477843888391,0.0104889893763241,0.0388989959309512,0.0250687099192138,0.0658072154438123,0.0427862005459269,0.0250687099192138,0.0460749169599105,0.0121449712797539,0.018327303719225,0.0597303039982224,0.0299127883283071,0.0208451956059828,0.0174928808043238,0.0394974841319433,0.0139014262502257,0.0130281616282497,0.0526523497878778,0.033397184975431,0.0760996549569375,0.0349276457255768,0.0623764223504566,0.0777841043231908,0.0500541350878654,0.0152901801213771,0.024840832539382,0.0151257387059274,0.0833391198077965,0.0125126723790743,0.0353465373434401,0.0299127883283071,0.0291160574184925,0.0349276457255768,0.0154569350866134,0.0652321569266716,0.100024985425169,0.033397184975431,0.0163284157904746,0.0697971755680828,0.0271959138207406,0.0164764692340579,0.0231848506359522,0.0250687099192138,0.0500541350878654,0.0116812924972395,0.0888282303416976,0.0250687099192138,0.0208664759711506,0.100004166261613,0.0222339494771342,0.0108946667753416,0.0460749169599105,0.0244790393131741,0.0233044691114081,0.0116812924972395,0.0167402348629966,0.0458427652867082,0.0233044691114081,0.0197624880355307,0.0167402348629966,0.073382780449371,0.0116812924972395,0.0349276457255768,0.0250687099192138,0.0559410662018614,0.0197651856480416,0.0507845490264482,0.261099615315178,0.0185481013063489,0.0174928808043238],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","ability","account","afford","ague","american","amount","argument","army","avoid","barrack","bear","better","big","billy","black","boy","boys","car","cause","centre","chance","class","classify","code","color","communication","company","competition","connect","corp","corps","create","delaware","difference","different","discrimination","dissatisfaction","disunity","eat","equal","equipment","escort","esprit","experience","familiar","feel","fight","friction","get","give","goat","good","guard","habit","hall","imagine","inferior","instuctor","jealousy","job","learn","less","like","limit","live","living","lost","lower","make","man","many","meaning","mess","military","mix","morale","motion","much","natural","negro","operator","order","outfit","people","police","prejudice","prevent","privileges","prove","race","racial","radio","reception","result","rights","riot","section","separate","service","signal","sleep","smell","soldier","southern","squabbling","standard","start","stripe","suit","suite","take","teaching","think","thorough","trouble","understand","unified","unusual","want","way","white","work","worth"],"group":[1,2,3,4,5,6,5,2,3,5,5,3,2,3,2,4,5,1,5,3,5,6,5,5,2,3,5,4,3,3,5,3,6,5,3,3,5,2,5,4,4,2,3,2,4,5,3,6,5,3,3,6,2,2,1,5,3,1,6,4,4,3,6,3,2,3,2,2,6,3,4,4,3,4,1,6,2,5,4,6,1,4,3,2,5,6,3,6,1,6,6,2,2,5,5,1,2,3,3,2,5,2,4,1,3,3,4,3,6,6,2,4,2,5,5,3,6,5,1,3,2,5,5,3,4,4,6,1,5]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":7,"fontFamily":"serif","clickTextSize":17.5,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="white-soldiers-long-comment-1" class="section level4">
+<h4>White Soldiers Long Comment</h4>
+<div id="htmlwidget-6" style="width:672px;height:480px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6">{"x":{"links":{"source":[5,2,3,2,0,3,1,5,2,5,1,3,5,5,5,2,2,4,2,1,3,4,5,5,1,4,1,4,2,5,5,1,3,5,3,4,2,4,1,2,1,1,0,1,0,1,3,0,3,2,5,4,4,3,4,4,2,1,0,5,0,2,5,3,5,5,5,2,1,1,4,4,3,2,2,2,2,5,3,5,4,1,4,3,4,5,4,2,3,3,3,4,2,3,2,5,0,3,1,4,4,5,4,0,3,1,1,1,2,4,1,4,1,1,3,5,4,0,4,5,5,5],"target":[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,32,33,33,34,35,36,37,38,39,40,41,42,43,44,45,46,46,47,47,47,48,48,49,50,51,52,53,54,55,56,57,58,58,59,59,59,60,60,61,62,63,64,65,65,66,67,68,69,70,71,72,73,74,75,76,77,78,78,79,80,81,82,83,84,85,86,87,88,89,90,90,91,92,93,94,95,96,96,97,98,99,99,100,101,102,103,104,105,106,107,108,108,109,110,111],"value":[0.0106456558855822,0.0476132345341423,0.0177399006153608,0.0146530431208825,0.027852911838632,0.0140208438825808,0.0291633710101294,0.0101619822878729,0.0313365967991992,0.0106456558855822,0.0218734394990359,0.036907346853535,0.0149987182649661,0.0111293294832915,0.0159660654603847,0.0154668750076297,0.0211636982148598,0.0194320327171471,0.0101769677437732,0.0353598127945588,0.0125904374468962,0.0264058460480894,0.0227374958283152,0.0348293357710483,0.0113030388079504,0.0104657012916499,0.0204154531968172,0.0184357736698696,0.0154668750076297,0.0222538222306059,0.0203191278397686,0.0236959223768093,0.0185981444767716,0.0116130030810008,0.0128765187340331,0.0104657012916499,0.0150599590642561,0.023417068906257,0.0171349840168252,0.0227913619883541,0.0102095490812864,0.0211444463479266,0.0210175659657651,0.0550426278745111,0.0109890658165226,0.0160414942901611,0.0586495246759414,0.0144815783063086,0.083824677943991,0.0150599590642561,0.0149987182649661,0.0388590841390578,0.0104657012916499,0.0517835737846552,0.0104657012916499,0.0124582193862048,0.017094538781124,0.0102095490812864,0.0103903493897022,0.0169334126558034,0.0305845555360003,0.0553446374582402,0.196376317405962,0.0120182748726223,0.0420844397366881,0.016449739058094,0.017900759851222,0.0105838836871467,0.0174994805923798,0.0386402819745508,0.0124582193862048,0.0144507374807597,0.0652293942800907,0.0134322952907618,0.0126184634040146,0.0638898722690854,0.0154668750076297,0.0174170862535127,0.0266084205166056,0.0125803502764195,0.0119600898625661,0.0419207511545429,0.0149488670043985,0.0291831521008379,0.0149488670043985,0.0125803502764195,0.015945126051676,0.0105838836871467,0.0432011351705474,0.0443454603190951,0.0151651690311285,0.0204282917644246,0.0341850084028142,0.0114461122983485,0.0878979129281264,0.0135476974718381,0.018572807222915,0.0663737194286384,0.0149480045634971,0.0129563489098435,0.0109638308152886,0.0120966766787101,0.0149488670043985,0.0173878476281662,0.0306135585365226,0.0718094703500261,0.0120320319590597,0.0411917580034336,0.0150599590642561,0.0149488670043985,0.0127610251101691,0.146455061245025,0.0211444463479266,0.0360888059456681,0.048636679626149,0.0149987182649661,0.0597805241318848,0.0103903493897022,0.0154469965280372,0.0227374958283152,0.0169334126558034,0.0111293294832915],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","age","air","answer","armed","army","ask","basic","board","branch","call","camp","chance","child","college","combat","corp","corps","country","crew","day","deal","defense","draft","duty","eat","effort","end","enlist","enlisted","enough","express","extra","fair","farm","field","fight","food","force","free","furlough","get","give","good","ground","guard","help","hope","idea","job","let","limit","long","make","man","many","married","marry","mechanic","money","much","nation","negro","non","noncom","officer","officr","old","opinion","outfit","part","pass","pay","people","place","plant","poor","question","questionnaire","race","red","school","separate","service","single","soldier","spend","stop","strike","take","tape","think","time","train","training","victory","wait","war","waste","week","white","wife","win","work","year","young","younger"],"group":[1,2,3,4,5,6,6,3,4,3,1,4,2,6,3,6,2,4,6,6,6,3,3,5,3,2,4,5,6,6,2,5,2,6,6,2,4,6,4,5,3,5,2,3,2,2,2,4,4,3,6,5,5,4,5,5,3,2,6,6,6,6,6,3,2,2,5,4,3,3,3,3,6,4,6,5,2,5,4,6,5,3,4,4,4,5,3,4,3,6,4,2,5,5,6,5,4,2,2,2,5,2,5,2,2,4,6,5,5,6,6,6]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":7,"fontFamily":"serif","clickTextSize":17.5,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</div>
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+</main>
+
+        <footer id = "bigfooter">
+            <div style = "padding:15px;">
+                <p>Powered by <a href="https://gohugo.io">Hugo</a>. Themed by <a href="https://github.com/nathancday/min_night">min_night_dspg</a>. <a href="https://biocomplexity.virginia.edu/social-decision-analytics">Website by University of Virginia Biocomplexity Institute.</a>
+                </p>
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"
+                title="Creative Commons Attribution 4.0 International license">
+                <i class="fab fa-creative-commons" aria-hidden="true"></i> Attribution 4.0 International license
+                </a>
+            </div>
+        </footer>
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', '');
+        </script>
+       
+    </body>
+
+</html>
+

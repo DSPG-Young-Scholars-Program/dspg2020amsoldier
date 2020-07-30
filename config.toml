@@ -40,7 +40,7 @@ publishDir = "docs"
     weight = 3
 
 [[menu.main]]
-    url = "/findings-alt/"
+    url = "/findings/"
     name = "Findings"
     weight = 4
 

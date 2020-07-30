@@ -1,6 +1,0 @@
-### 2020 NEH American Soldier Summer Project {style=text-align:center}
-### Data {style=text-align:center}
-
-Our data is from a comprehensive surveying project by the US military during World War II. We are particularly interested in Survey 32, 144, and 190 which contain multiple choice questions ranging from demographic information, thoughts on the army, thoughts on the war, career plans, etc. 
-
-Survey 32 was administered to both black and white soldiers in order to studying attitudes of and towards black soldiers. A question of interest on the survey is, "Do you think white and black soldiers should be in separate outfits?" The soldiers gave a response to this as a multiple choice question and we have 7442 responses from black soldiers and 4678 from white soldeiors. The soldiers also had room to elaborate on their responses in a short answer field. Along with this short response, there was room for a longer comment on the overall survey. Sadly, we do not have any short responses to the question from black soldiers. The written responses were transcribed by volunteers through the citizen science platform Zooniverse. Overall, we have 3464 written responses from black soldiers and 2324 written responses of white soldiers. The responese theselves were on the shorter side with the average response length being shorter than 100 words. 

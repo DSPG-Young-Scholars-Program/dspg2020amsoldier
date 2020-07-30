@@ -1,8 +1,17 @@
 ---
-title: "Survey 144 Writeup"
+title: "Demographic Analyses of Black Soldiers"
+description: "This page provides some exploratory data analysis of Survey 144."
+weight: 1
 output:
   html_document: default
 ---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = F, fig.width = 8,fig.height = 6)
@@ -53,7 +62,7 @@ add_demographic_factors = function(df){
 }
 ```
 
-```{r reading, include= F}
+```{r reading, echo=FALSE, include= F}
 s144 = read.csv(here::here('data','working', "AMS0144_answers.csv")) %>% as.data.frame()
 
 demo = add_demographic_factors(s144) %>% select(age, edu, enlist, state, community,better)
@@ -63,58 +72,64 @@ my_cols = c("232d4b","2c4f6b","0e879c","60999a", "9bc0c0","d1e0bf", "ebf094", "d
 my_cols = paste0('#', my_cols)
 ```
 
+### Who Are the Soldiers?
 
-## Who Are the Soldiers?
+Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4,678 black soldiers and focused on post-war plans and aspirations of the soldiers. We were particularly interested in how the soldiers thought their lives would be better after the war.
 
-Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4678 black soldiers and focused on post-war aspirations and plans of the soldiers. Of particular interest to us however, is the soldiers' responses to question if their lives would be better after the war.
-
-```{r}
-sample_n(demo,10)
+```{r, echo=FALSE}
+#sample_n(demo,10)
 ```
 
 ### Age
+
 Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24. 
 
-```{r age}
+```{r age, echo=FALSE}
 demo %>% 
 ggplot(aes(x=age)) +
   geom_bar(position = "dodge", fill = my_cols[4]) +
-  labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count")
+  labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count") +
+  theme_minimal()
 ```
 
-
 ### Education
+
 If we look at education we see that the majority have hade atleast some high school or trade school. This is in contrast with the black soldiers survied in S32 who only had upto a 4th grade education. Here we see the black soldiers education is distributed similarly to the white soldeir survied in S32. 
 
-```{r edu, fig.width=7, fig.height=4}
+```{r edu, fig.width=7, fig.height=6, echo=FALSE}
 demo %>% 
 ggplot(aes(x=edu)) +
   geom_bar(position = "dodge", width = 0.7, fill = my_cols[4]) +
   labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count")+
       labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
 ```
+
 There are no obvious trends between education and age, but we do see that nearly 3/4 of the college educated soldiers are 25 or older which is a larger proportion than the other education levels.
+
 ```{r}
 demo %>%
 ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
+  theme_minimal() +
   labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_manual(values = rev(my_cols[1:12]))
 ```
 
-
 ### Enlistment
+
 The vast majority of the soldiers were drafted into the military with less than 1000 enlisting via other means.
+
 ```{r enlist, fig.width=7, fig.height=4}
 demo %>%
 ggplot(aes(x=enlist)) +
+  theme_minimal() +
   geom_bar(fill = my_cols[4]) +
   labs(title='How Soldiers were Enlisted', x="Enlistment Type", y = "Count") 
 
 ```
-
 
 ### Region
 
@@ -123,6 +138,7 @@ The survey didn't ask for the specific state a soldier was from but rather a reg
 ```{r state, fig.width =10, fig.height= 8}
 demo %>% count(state, sort =T) %>% na.omit() %>%
 ggplot() +
+  theme_minimal() +
   geom_bar(aes(reorder(state,n),n), stat = 'identity', fill = my_cols[4])+
   labs(title="Where the  Soldiers are from", x="Region", y = "Count") +
   coord_flip()
@@ -135,57 +151,65 @@ As expected, most soldiers whose home communities are large cities had the most 
 ```{r community, fig.width =8, fig.height= 6}
 demo %>%
 ggplot(aes(x=community)) +
+  theme_minimal() +
   geom_bar(fill = my_cols[4]) +
   labs(title="Soldiers' Communities", x="Community", y = "Count") 
 ```
+
 Unsurprisingly, we see that soldiers from from high population communities make up a larger portion of soldiers with higher education levels. 
 
 ```{r}
 demo %>%
 ggplot( aes(x=edu, fill = community)) +geom_bar(position= "fill") +
+  theme_minimal() +
   labs(title="Community Distribution over Education Levels of Soldiers", x="Education Level", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_manual(values = rev(my_cols[1:6]), name = "Community")
 ```
 
-
-
 We see that larger portions of soldiers who are more educated come from communities whihc are larger in population.
 
 ```{r, education+community}
-
-
 demo %>%
 ggplot( aes(x=edu, fill = better)) +geom_bar(position= "fill") +
+  theme_minimal() +
   labs(title="Community Distribution over Post-War Outlook of Soldiers", x="Education Level", y = "Proportion")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))+
   scale_fill_manual(values = rev(my_cols[1:6]), name  = "Outlook")
 ```
 
 ### Post-War Outlook 
+
 We can see that a good deal of black soldiers think that after the war, things will be better for them than before. However, about 1500 soldiers are also undecided. A significant amount also don't think anything will change or may change for the worse.
+
 ```{r, fig.width =8, fig.height= 6}
 demo %>%
 ggplot(aes(x=better)) +geom_bar(fill = my_cols[4]) +
+  theme_minimal() +
   labs(title="Black Soldiers Outlook on Post-War Life ", x="Prospects", y = "Proportion")
 
 ```
+
 We also can observe that the age distribution is roughly similar along these outlooks. Interestingly, it seems that as the soldiers education level increases the less likely they are to belive things will be better for them after the war. Similarly, soldiers from more populated areas are less likely to have an optimistic outlook for life after the war.
+
 ```{r}
 
 
 demo %>%
 ggplot(aes(x=better, fill = age)) +geom_bar(position = "fill") +
+  theme_minimal() +
   labs(title='Black Soldiers Outlook on Post-War Life Proportioned by Age', x="Prospects", y = "Proportion")+
   scale_fill_manual(values = rev(my_cols[1:12]), name = "Age Range")
 
 demo %>%
 ggplot(aes(x=better, fill = edu)) +geom_bar(position = "fill") +
+  theme_minimal() +
   labs(title='Black Soldiers Outlook on Post-War Life \nProportion by Education', x="Education", y = "Proportion")+
   scale_fill_manual(values = rev(my_cols[1:11]), name = "Prospects")
 
 demo %>%
 ggplot(aes(x=community, fill = better )) +geom_bar(position = "fill") +
+  theme_minimal() +
   labs(title='Black Soldiers Outlook on Post-War Life\nProportioned by Community', x="Community", y = "Proportion")+
       scale_fill_manual(values = rev(my_cols[1:6]), name = "Prospects") 
 ```

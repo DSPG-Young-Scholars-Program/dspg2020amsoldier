@@ -3,15 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/findings/general-overview/</loc>
-  </url>
-  
-  <url>
-    <loc>/findings/results-section-one/</loc>
-  </url>
-  
-  <url>
-    <loc>/findings/results-section-two/</loc>
+    <loc>/findings/eda_s144/</loc>
   </url>
   
   <url>
@@ -47,15 +39,7 @@
   </url>
   
   <url>
-    <loc>/tags/app/</loc>
-  </url>
-  
-  <url>
     <loc>/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>/tags/collapsibletree/</loc>
   </url>
   
   <url>
@@ -63,19 +47,7 @@
   </url>
   
   <url>
-    <loc>/tags/geospatial/</loc>
-  </url>
-  
-  <url>
-    <loc>/findings/gender_s195/</loc>
-  </url>
-  
-  <url>
     <loc>/tags/networks/</loc>
-  </url>
-  
-  <url>
-    <loc>/findings/s32_website/</loc>
   </url>
   
   <url>
@@ -83,11 +55,19 @@
   </url>
   
   <url>
-    <loc>/findings/eda_s144/</loc>
+    <loc>/findings/race_overall/</loc>
+  </url>
+  
+  <url>
+    <loc>/findings/gender_s195/</loc>
   </url>
   
   <url>
     <loc>/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>/findings/topic_models/</loc>
   </url>
   
   <url>

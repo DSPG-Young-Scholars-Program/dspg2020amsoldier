@@ -19,7 +19,7 @@ h1, h2, h3 {
 ![](/morgan.jpeg) ![](/mary.jpg) ![](/saimun.jpg) ![](/chase.jpg)  
 </center>
 
-##### [Morgan Stockham](https://github.com/morganstockham) (Applied Microeconomics, Claremont Graduate University), [Mary Solomon](https://github.com/marysolomon) (Applied Statistics, Bowling Green State University), [Saimun Habib](https://github.com/saibib) (Statistics/Mathematics, Harvard College), and [Chase Dawson](https://github.com/chasedawson) (Computer Science, University of Virginia) {style=text-align:center}
+##### [Morgan Stockham](https://github.com/morganstockham) (Applied Microeconomics, Claremont Graduate University), [Mary Solomon](https://github.com/marysolomon) (Applied Statistics, Bowling Green State University), [Saimun Habib](https://github.com/saibib) (Statistics & Mathematics, Harvard College), and [Chase Dawson](https://github.com/chasedawson) (Computer Science, University of Virginia) {style=text-align:center}
 ###
 
 ### University of Virginia SDAD Team Members 
