@@ -1,10 +1,6 @@
 ---
 title: "Poster Session"
-output:
-  html_document:
-    toc: true
-    toc_depth: 2
-    number_sections: true
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -12,15 +8,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
+```{css, echo=FALSE}
+/* this chunk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
 
-# Overview
 
-# Survey 32
+### Overview
 
-# Race Relations
+### Approach
 
-# Gender Relations
+### Race Relations
 
-# Spatial Arrangement
+### Gender Relations
 
-# Conclusion
+### Spatial Arrangement
