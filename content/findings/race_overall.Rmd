@@ -1186,9 +1186,9 @@ This plot reveals an interestig pattern because it is perhaps unexpected that pr
 
 ```{r, fig.align='center', echo=FALSE}
 word_props_final %>%
-  as.data.frame(.) %>%
   arrange(signed_prop) %>%
   mutate(word = factor(word, levels = word)) %>%
+  as.data.frame(.) %>%
   top_n(20, diff_prop) %>%
   ggplot(., aes(x = word, y = signed_prop, fill = signed_prop > 0)) +
     geom_bar(stat = "identity") +
