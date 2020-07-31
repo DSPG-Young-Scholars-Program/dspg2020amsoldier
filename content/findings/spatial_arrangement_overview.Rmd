@@ -260,7 +260,7 @@ visualize_bigrams(int_short_bigrams, "Pro Integration Short Response - Spatial A
 There are very few bigrams due to a relatively small dictionary and low volume of responses (under 100). However, we can see that the soldiers wanted different messhalls, barracks and separate px's despite wanting to integrate outfits. There is also commentary on sharing the same barracks, but due to the nature of bigrams, there is a possibility there was negative commentary on this pair of words.     
 
 <center>
-#### Bigrams of Anti-Integration Short Responses
+#### Co-occurrences of Anti-Integration Short Responses
 </center>
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -274,7 +274,7 @@ visualize_cooccur(seg_short_cors, "Pro Segregation Short Response - Spatial Arra
 ```
 
 <center>
-#### Bigrams of Pro-Integration Short Responses
+#### Co-occurrences of Pro-Integration Short Responses
 </center>
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
