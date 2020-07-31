@@ -153,7 +153,7 @@ Latent Dirchlet Allocation, or LDA, is the typical go to method for topic modell
 
 ### Black Soldiers Long Comment
 
-[Need interpretation here]
+It appears that Topic 1 deals with the war itself and what people are fighting for. We see words like democracy, freedom, right, and live. At the same time we see words like race, equal, and unit suggesting the soldiers are thinking about their role in the war and at home. Topic 2 is about the survey itself and makes explicit references to having the chance to answering questions. Topic 3 is about organization in the military while Topic 4 itself is about segregation in the military and transportation. Topic 5 delves further into race relations as well a geographical distinctions of north and south. Topic 6 seems to be generally about life and home. 
 
 ```{r black lda, fig.height=6, echo = F}
 edgelist_n_lda= topics_n_lda %>%
@@ -180,8 +180,7 @@ net_n_lda
 
 ### White Soldiers Outfits Comment
 
-[Need interpretation here]
-
+The topics here are very well connected. As a result, none of the topics are distinctly about one thing. Topics 1 and 2 touch upon race relations within the military. Topic 3 is loosely about units in the military and answering question 60 of the survey. Similarly, Topic 4 is about question 62 and camp. Topic 5 is touching on what seems a varied mix of the other topics. Topic 6 is perhaps about friction in the units and the war. 
 ```{r 77 lda, fig.height=6,echo = F}
 edgelist_77_lda= topics_77_lda %>%
   filter(weight >= .01) %>%
@@ -207,7 +206,7 @@ net_77_lda
 
 ### White Soldiers Long Comment
 
-[Need interpretation here]
+The topics here are well distinguished. Topic 1 seems to be about what civilian life will be like. Topic 2 is on the service experience itself and has elements indicating the soldiers are thinking of a career in the military. Topic 3 is about the questionnaire itself and having the chance to answer questions. Topic 4 is on durations of time, probably refering to the military and/or school. Notably, we see the words waste and time. Topic 5 again touches upon race and the treatment of black people. It refers to treatment but interestingly, the word equal is missing. Topic 6 is about food in the military and how morale is poor. Contrasting these topics with those of the black soldiers' long comments, we see that the black soldiers were more concerned with race relations and what their status is in the military and in civilian life. White soldiers focused more on the mundane things such as food. Nevertheless, both spoke to having the chance to answering questions. 
 
 ```{r 78 lda, fig.height=6, echo=F}
 edgelist_78_lda= topics_78_lda %>%
@@ -271,7 +270,7 @@ colnames(topics_n_btm) = colnames(topics_77_btm) = colnames(topics_78_btm) =  c(
 
 ### Black Soldiers Long Comment
 
-[Need interpretation here]
+Topic 1 differs in the BTM model and seems interconnected with nearly all the topics. Broadly, it touches on war and the chance to fight. It also suggests with the war there being some sort of give and take and expecting to get something better out of it in the end. Topic 2 concretely is about segregation in different spaces within the military. Topic 3 is filled with optimistic words such as better, opportunity, equality, chance, free and fair. At the same time however, it speaks of Jim Crow. Topic 4 about positions within the military and potentially also having black officers. Topic 5 touches upon various parts of the day to day life and seems a bit more mundane. Topic 6 focuses in on race and geography specifically mentioning negro, white, north, and south, etc. One advantage here is that this model sorts together race related terms into one topic as opposed to 3 different ones as seen in the LDA.
 
 ```{r black btm, fig.height=6, echo = F}
 edgelist_n_btm= topics_n_btm %>%
@@ -298,7 +297,7 @@ net_n_btm
 
 ### White Soldiers Outfits Comment
 
-[Need interpretation here]
+Topic 1 here is nebulously connected with the other topics yet is concretely is about seperation of races and how well it would work. Topic 2 seems to be about day to day activities such as eating, sleeping, bathing and interacting with the sergeant. Topic 3 focuses on how the merger of races/class may interfere with morale. Topic 4 is very vaguely about career development and somehow Delaware. T Topic 5 suggests that racial mixing would cause disunity and start race riots. Topic 6 includes the word resent and several other racial terms. However, it also includes the word like. This BTM model fared about as well as the LDA as there were some vague topics. This might be an indication that we fit too many topics to this. However, as we mentioned earlier, we went with 6 topics for all to standardize the comparisons.
 
 ```{r 77 btm, fig.height=6, echo = F}
 edgelist_77_btm= topics_77_btm %>%
@@ -325,7 +324,7 @@ net_77_btm
 
 ### White Soldiers Long Comment
 
-[Need interpretation here]
+Again, Topic 1 intersects with other topics. It is in general about the war/army and includes words such as give and take. Topic 2 is about getting time to eat and getting furloughed. Topic 3 is about positions in the military and also includes terms like valuable, waste, time, and money suggesting they are thinking of career prospects here. Topic 4 identifies the enlistment/service experience and how many of the soldiers are young. Topic 5 focuses on how the questionnaire is a chance to talk about race and whether this opportunity is needed or not. Lastly, Topic 6 is about different branches in the military and the experience needed to transfer. Again we see that in comparison to the black soldiers long comment topics, the white soldiers are more focused on careers. 
 
 ```{r 78 btm, fig.height=6, echo = F}
 edgelist_78_btm= topics_78_btm %>%
