@@ -1,6 +1,6 @@
 ---
 title: "Overall Comparisons of White & Black Soldiers"
-description: "This page provides comparisons of  of Survey 32."
+description: "This page provides comparisons of Survey 32."
 tags: ["R", "EDA", "race relations"]
 weight: 1
 output:
@@ -1185,19 +1185,19 @@ This plot reveals an interestig pattern because it is perhaps unexpected that pr
 
 
 ```{r, fig.align='center', echo=FALSE}
-# word_props_final %>%
-#   as.data.frame(.) %>%
-#   arrange(signed_prop) %>%
-#   mutate(word = factor(word, levels = word)) %>%
-#   top_n(20, diff_prop) %>%
-#   ggplot(., aes(x = word, y = signed_prop, fill = signed_prop > 0)) +
-#     geom_bar(stat = "identity") +
-#     coord_flip() +
-#     labs(title = "Difference in Word Usage\nbetween Black and White Soldiers",
-#          x = "Word",
-#          y = "Difference in Proportion",
-#          fill = "Used More By") +
-#     scale_fill_manual(labels = c("White Soldiers", "Black Soldiers"), values = c(colors[2], colors[1]))
+word_props_final %>%
+  as.data.frame(.) %>%
+  arrange(signed_prop) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(20, diff_prop) %>%
+  ggplot(., aes(x = word, y = signed_prop, fill = signed_prop > 0)) +
+    geom_bar(stat = "identity") +
+    coord_flip() +
+    labs(title = "Difference in Word Usage\nbetween Black and White Soldiers",
+         x = "Word",
+         y = "Difference in Proportion",
+         fill = "Used More By") +
+    scale_fill_manual(labels = c("White Soldiers", "Black Soldiers"), values = c(colors[2], colors[1]))
 ```
 
 This plot looks at the difference in word usage between black and white soldiers. Basically, it takes the proportion the word is used by black soldiers and subtracts it by the proportion that the word is used by white soldiers. Positive values indicate words that are used more by black soldiers, while negative values indicate words that are used more by white soldiers.
