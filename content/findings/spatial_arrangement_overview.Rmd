@@ -202,7 +202,7 @@ Furthermore, spatial arrangements in which the Black soldiers talk about in rega
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 white_long_bigrams <- bigrams_spatial(S32W_long, space_match, count = 2)
-visualize_bigrams(white_long_bigrams, "Black Soldiers' Long Response - Spatial Arrangement Bigrams")
+visualize_bigrams(white_long_bigrams, "White Soldiers' Long Response - Spatial Arrangement Bigrams")
 ```
 
 The white soldiers also have commentary on the integration in regards to spatial arrangement in the army. We see that they want separate messhalls, and to not eat or live with the Black soldiers. However, we also see words such as "with", "same" and "together". Perhaps some white soldiers were okay with integration, but without context we cannot tell if those bigrams are also associated with some negations.    
@@ -227,7 +227,7 @@ white_long_cors <- white_long_cors[!(white_long_cors$item1 == "train" & !white_l
 white_long_cors <- white_long_cors[!(white_long_cors$item2 == "train" & !white_long_cors$item1 %in% keep_space),]
 
 #plot
-visualize_cooccur(white_long_cors, "Pro Integration Short Response - Spatial Arrangement Co-occurrences")
+visualize_cooccur(white_long_cors, "White Soldiers' Long Response - Spatial Arrangement Co-occurrences")
 ```
 
 ### Pro vs. Anti-Integration Viewpoints 
@@ -238,7 +238,7 @@ visualize_cooccur(white_long_cors, "Pro Integration Short Response - Spatial Arr
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 seg_short_bigrams <- bigrams_spatial(seg_short, space_match)
-visualize_bigrams(seg_short_bigrams, "Pro Segregation Short Response - Spatial Arrangement Bigrams")
+visualize_bigrams(seg_short_bigrams, "Anti-Integration Short Response - Spatial Arrangement Bigrams")
 ```
 
 <center>
@@ -254,7 +254,7 @@ int_short_bigrams <-   int_short %>% unnest_tokens(bigram, text, token = "ngrams
   mutate(word1 = stem_words(lemmatize_words(word1)), word2 = stem_words(lemmatize_words(word2))) %>%
   #mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
   count(word1, word2, sort = TRUE)
-visualize_bigrams(int_short_bigrams, "Pro Integration Short Response - Spatial Arrangement Bigrams")
+visualize_bigrams(int_short_bigrams, "Pro-Integration Short Response - Spatial Arrangement Bigrams")
 ```
 
 There are very few bigrams due to a relatively small dictionary and low volume of responses (under 100). However, we can see that the soldiers wanted different messhalls, barracks and separate px's despite wanting to integrate outfits. There is also commentary on sharing the same barracks, but due to the nature of bigrams, there is a possibility there was negative commentary on this pair of words.     
@@ -270,7 +270,7 @@ seg_short_cors <- seg_short_cors[!(seg_short_cors$item2 == "train" & !seg_short_
 
 
 #plot
-visualize_cooccur(seg_short_cors, "Pro Segregation Short Response - Spatial Arrangement Co-occurrences")
+visualize_cooccur(seg_short_cors, "Anti-Integration Short Response - Spatial Arrangement Co-occurrences")
 ```
 
 <center>
@@ -283,7 +283,7 @@ int_short_cors <- int_short_cors[!(int_short_cors$item1 == "train" & !int_short_
 int_short_cors <- int_short_cors[!(int_short_cors$item2 == "train" & !int_short_cors$item1 %in% keep_space),]
 
 #plot
-visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arrangement Co-occurrences")
+visualize_cooccur(int_short_cors, "Pro-Integration Short Response - Spatial Arrangement Co-occurrences")
 ```
 
 Although there were white soldiers who supported integration of army outfits, there was still clear commentary that the soldiers should not be sharing the space in living arrangements or social spaces. An interesting observation is that persons of other ethnicities are associated with living. 

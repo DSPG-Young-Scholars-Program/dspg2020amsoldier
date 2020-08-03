@@ -1,7 +1,7 @@
 ---
 title: "Bigram and Co-Occurrence Text Networks"
 description: "This page documents our use of bigrams and co-occurence to construct text networks."
-tags: ["R", "bigrams", "text networks", "race relations", "gender"]
+tags: ["R", "bigrams", "text networks", "race relations", "gender", "sentiment analysis"]
 weight: 4
 draft: false
 output: html_document
@@ -447,7 +447,7 @@ radar2 <- function(sentiments, group1, group2, title = "Sentiment Analysis Resul
              pcol = colors, # line color
              cglwd = 1, # net width,
              plwd = 3, # line width
-             plty = 1, # plot line type
+             plty = 1 # plot line type
   )
   legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
   title(main = title);
@@ -464,6 +464,123 @@ radar2(s32_female_sentiments,
 ```
 
 To create this plot, we filtered the original corpus to responses that contain gendered words, specifically female. When comparing the sentiment resulsts with the knowledge gaind from co-occurence analysis, this plot becomes very revealing. The average sentiments for Black soliders' responses about women are more fearful and negative and less trusting and joyful than white soldiers' responses. In the co-occurances for Black soldiers we saw a presence of commentary that white women "hollar rape". This observation in the co-occurrences reflects the fear that Black soldiers had in being accused of sexually harassing white women.  
+
+
+
+#### What did soldiers think about women serving in the Army Corps?
+
+In addition to race relations in the Army, we are also focused on perspectives on women and gender within the military. The questions and responses are mostly geared towards WACs, which are Women's Army Corps members. In addition to survey 32, which captures textual data on gender in teh Army, a survey was given out in January of 1945 to capture perspectives of male soldiers on their WAC counterparts. This survey is survey 195B. From survey 32's textual data we have extracted insights into what topics and words male soldiers used to discuss women, and from survey 195 we have been able to identify general persepectives of soldiers on WACs.
+
+
+```{r}
+s195b <- read.csv(here("/data/working/AMS195B_answers.csv"))
+s195c <- read.csv(here("/data/working/AMS195C_answers.csv"))
+s35 <- read.csv(here("/data/working/AMS0035_answers.csv"))
+
+#s195b <- read.csv("~/git/dspg2020amsoldier/data/working/AMS195B_answers.csv")
+#s195c <- read.csv("~/git/dspg2020amsoldier/data/working/AMS195C_answers.csv")
+#s35 <- read.csv("~/git/dspg2020amsoldier/data/working/AMS0035_answers.csv")
+
+colors <- c("#232d4b",
+            # "#2c4f6b",
+            "#0e879c","#60999a","#d1e0bf","#d9e12b","#e6ce3a","#e6a01d","#e57200","#fdfdfd")
+
+my_cols = c("232d4b","2c4f6b","0e879c","60999a", "9bc0c0","d1e0bf", "ebf094", "d9e12b","e6ce3a","e6a01d","e57200","a35200","fdfdfd")
+my_cols = paste0('#', my_cols)
+
+s195b$Q.14A. <- recode_factor(s195b$Q.14A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.14B. <- recode_factor(s195b$Q.14B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
+s195b <- s195b %>%
+  filter(s195b$Q.14A. != "No Answer")
+
+```
+
+
+```{r}
+s195b$Q.22A. <- recode_factor(s195b$Q.22A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.22B. <- recode_factor(s195b$Q.22B.,`1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
+s195b <- s195b %>%
+  filter(s195b$Q.22A. != "No Answer")
+
+s195b %>%
+  ggplot(aes(x=Q.22A.)) +
+  geom_bar(position = "dodge", fill = 'darkslategray4') +
+  labs(title="IS THE ARMY ANY PLACE FOR A GIRL TO BE?", x="Answers", y = "Count")
+```
+
+The clear majority of soldiers believed that women should not be in the army. This sets the tone of the soldiers' overall view that women did not belong in the armed forces. 
+
+##### What view did soldiers have of women who did serve in the armed forces?
+```{r}
+s195b$Q.16A. <- recode_factor(s195b$Q.16A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.16B. <- recode_factor(s195b$Q.16B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
+s195b <- s195b %>%
+  filter(s195b$Q.16A. != "No Answer")
+
+s195b %>%
+  ggplot(aes(x=Q.16A.)) +
+  geom_bar(position = "dodge", fill = 'darkslategray4') +
+  labs(title="IN YOUR OPINION ARE THE JOBS WHICH WOMEN IN \nTHE WAC DO LESS IMPORTANT THAN THE JOBS WHICH ARE DONE \nBY MEN IN THE ARMY WHO ARE NOT ON COMBAT DUTY?", x="Answers", y = "Count")
+```
+
+
+
+
+```{r}
+s195b$Q.23A. <- recode_factor(s195b$Q.23A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.23B. <- recode_factor(s195b$Q.23B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
+s195b <- s195b %>%
+  filter(s195b$Q.23A. != "No Answer")
+
+s195b %>%
+  ggplot(aes(x=Q.23A.)) +
+  geom_bar(position = "dodge", fill = 'darkslategray4') +
+  labs(title="DO WAC OFFICERS DESERVE A SALUTE JUST \nTHE SAME AS MEN OFFICERS?", x="Answers", y = "Count")
+
+```
+
+While the soldiers who responded to the survey believed that women don't belong in the army, the majority of responders believe that the female officers of the WAC are deserving of a solute. Perhaps this implies that the soldiers' respect for military rankings exceeds their prejudice of women in the military.
+
+
+
+##### How did soldiers believe the WAC effected women?
+```{r}
+s195b$Q.21A. <- recode_factor(s195b$Q.21A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.21B. <- recode_factor(s195b$Q.21B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
+s195b <- s195b %>%
+  filter(s195b$Q.21A. != "No Answer")
+
+s195b %>%
+  ggplot(aes(x=Q.21A.)) +
+  geom_bar(position = "dodge", fill = 'darkslategray4') +
+  labs(title="IS BEING A WAC BAD FOR A GIRL'S REPUTATION?", x="Answers", y = "Count")
+```
+
+With this response here, we see another 
+
+
+
+```{r}
+s195b$Q.19A. <- recode_factor(s195b$Q.19A., `1` = "Yes", `2` = "No", `0` = "No Answer")
+s195b$Q.19B. <- recode_factor(s195b$Q.19B., `1` = "Very Strongly", `2` = "Fairly Strongly", `3` = "Not Strongly", `0` = "No Answer")
+
+s195b <- s195b %>%
+  filter(s195b$Q.19A. != "No Answer")
+
+s195b %>%
+  ggplot(aes(x=Q.19A.)) +
+  geom_bar(position = "dodge", fill = 'darkslategray4') +
+  labs(title="WILL THE TRAINING A WOMAN GETS IN THE \nWAC BE USEFUL IN CIVILIAN LIFE?", x="Answers", y = "Count")
+```
+
+The soldiers are closet to half and half on whether the experience in the WAC is helpful to women when they return to civilian life.
+
+
 
 ### Conclusion and Policy Implications 
 
