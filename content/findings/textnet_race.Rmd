@@ -383,5 +383,5 @@ word_cors_77 %>%
   geom_node_point(color = "#E6CE3A", size = 5) +
   geom_node_text(aes(label = name), repel = TRUE) +
   ggtitle("Co-Occurences of Words from White Soldiers' Short \nResponses at the 15 percent Threshold") +
-  theme_minimal()
+  theme_void()
 ```

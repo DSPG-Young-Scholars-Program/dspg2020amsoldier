@@ -721,8 +721,8 @@ title(main = "Sentiment Distribution of Words Used\nUniquely by Pro-Integration 
 
 This plot reveals an interestig pattern because it is perhaps unexpected that pro-segregation white soldiers would be more trusting, more positive, and less fearful than pro-integration white soldiers. It is important to remember however that such a small percentage of white soldiers supported desegregation, so the average is easily influenced by a single response. The spike in fear by pro-integration soliders is very peculiar, and should be looked into more deeply.
 <center>
-![](img.png){width=800px}
-<center>
+![](img.png){width=700px}
+</center>
 
 
 ```{r, fig.align='center', echo=FALSE}
