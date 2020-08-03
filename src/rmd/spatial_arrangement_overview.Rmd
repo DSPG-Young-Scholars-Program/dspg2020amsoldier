@@ -284,3 +284,44 @@ visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arra
 ```
 
 Although there were white soldiers who supported integration of army outfits, there was still clear commentary that the soldiers should not be sharing the space in living arrangements or social spaces. An interesting observation is that persons of other ethnicities are associated with living. 
+
+
+
+```{r edgelists}
+####bigrams black long
+edgelist_S32N_long_bigrams_spatial <- black_long_bigrams %>% 
+  rename(source=word1,target = word2, weight=n)
+fwrite(edgelist_S32N_long_bigrams_spatial, here("/data/edgelist_S32N_long_bigrams_spatial.csv"))
+####bigrams white long
+edgelist_S32W_long_bigrams_spatial <- white_long_bigrams %>% 
+  rename(source=word1,target = word2, weight=n)
+fwrite(edgelist_S32W_long_bigrams_spatial, here("/data/edgelist_S32W_long_bigrams_spatial.csv"))
+
+
+
+#cooccurrence black long
+edgelist_S32N_long_cooccur_spatial <- black_long_cors %>% 
+  rename(source=item1,target = item2, weight=correlation)
+fwrite(edgelist_S32N_long_cooccur_spatial, here("/data/edgelist_S32N_long_cooccur_spatial.csv"))
+####bigrams white long
+edgelist_S32W_long_cooccur_spatial <- white_long_cors %>% 
+  rename(source=item1,target = item2, weight=correlation)
+fwrite(edgelist_S32W_long_cooccur_spatial, here("/data/edgelist_S32W_long_cooccur_spatial.csv"))
+
+
+
+## bigram segregation short
+edgelist_seg_short_bigrams <- seg_short_bigrams %>% rename(source=word1,target = word2, weight=n)
+fwrite(edgelist_seg_short_bigrams, here("/data/edgelist_seg_short_bigrams_spatial.csv"))
+## bigram integration short
+edgelist_int_short_bigrams <- int_short_bigrams %>% rename(source=word1,target = word2, weight=n)
+fwrite(edgelist_int_short_bigrams, here("/data/edgelist_int_short_bigrams_spatial.csv"))
+
+## cooccur segregation short
+edgelist_seg_short_cooccur <- seg_short_cors %>%rename(source=item1,target = item2, weight=correlation)
+fwrite(edgelist_seg_short_cooccur, here("/data/edgelist_seg_short_cooccur_spatial.csv"))
+## cooccur integration short
+edgelist_int_short_cooccur <- int_short_cors %>%  rename(source=item1,target = item2, weight=correlation)
+fwrite(edgelist_int_short_cooccur, here("/data/edgelist_int_short_cooccur_spatial.csv"))
+```
+
