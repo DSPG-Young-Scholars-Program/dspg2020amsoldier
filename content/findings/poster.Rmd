@@ -1,6 +1,13 @@
 ---
 title: "Poster Session"
-output: html_document
+description: "This page provides an overview of our findings."
+tags: ["R", "EDA", "race relations", "gender relations", "sentiment analysis", "sna"]
+weight: 1
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
 ---
 
 ```{r setup, include=FALSE}
