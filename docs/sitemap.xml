@@ -7,6 +7,10 @@
   </url>
   
   <url>
+    <loc>/findings/poster/</loc>
+  </url>
+  
+  <url>
     <loc>/findings/sent_race/</loc>
   </url>
   
@@ -71,6 +75,10 @@
   </url>
   
   <url>
+    <loc>/tags/gender-relations/</loc>
+  </url>
+  
+  <url>
     <loc>/tags/historicized-terms/</loc>
   </url>
   
@@ -80,10 +88,6 @@
   
   <url>
     <loc>/tags/messy-data/</loc>
-  </url>
-  
-  <url>
-    <loc>/findings/poster/</loc>
   </url>
   
   <url>

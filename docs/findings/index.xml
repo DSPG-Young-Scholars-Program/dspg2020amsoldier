@@ -20,6 +20,16 @@
     </item>
     
     <item>
+      <title>Poster Session</title>
+      <link>/findings/poster/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/poster/</guid>
+      <description> /* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  [not done yet] ### Overview
+Approach  Race Relations  Gender Relations  Spatial Arrangement  </description>
+    </item>
+    
+    <item>
       <title>Sentiment Analysis of White &amp; Black Soldiers</title>
       <link>/findings/sent_race/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -91,16 +101,6 @@
       <guid>/findings/project_challenges/</guid>
       <description>Data Quality Working with text data is never straight forward. There are always typical text mining issues such as misspellings, punctuations, abbreviations, and so on. However, our collection of soldier commentary posed unique challenges.
 Our primary challenge was the presence of metatags within the text. Transcribers on Zooniverse were able to tag attributes of the text such as unclear writing, underlining, deletions, corrections and more. The following response is an example of these tags and how they are used in the soldiers&#39; responses.</description>
-    </item>
-    
-    <item>
-      <title>Poster Session</title>
-      <link>/findings/poster/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/findings/poster/</guid>
-      <description> /* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  [not done yet] ### Overview
-Approach  Race Relations  Gender Relations  Spatial Arrangement  </description>
     </item>
     
   </channel>

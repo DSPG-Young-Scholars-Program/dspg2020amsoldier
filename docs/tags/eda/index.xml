@@ -20,6 +20,16 @@
     </item>
     
     <item>
+      <title>Poster Session</title>
+      <link>/findings/poster/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/poster/</guid>
+      <description> /* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  [not done yet] ### Overview
+Approach  Race Relations  Gender Relations  Spatial Arrangement  </description>
+    </item>
+    
+    <item>
       <title>Demographic Analyses of Black Soldiers</title>
       <link>/findings/eda_s144/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

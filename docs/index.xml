@@ -20,6 +20,16 @@
     </item>
     
     <item>
+      <title>Poster Session</title>
+      <link>/findings/poster/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/poster/</guid>
+      <description> /* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  [not done yet] ### Overview
+Approach  Race Relations  Gender Relations  Spatial Arrangement  </description>
+    </item>
+    
+    <item>
       <title>Sentiment Analysis of White &amp; Black Soldiers</title>
       <link>/findings/sent_race/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -119,16 +129,6 @@ Our data is from a comprehensive surveying project by the US military during Wor
       
       <guid>/team/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  UVA Data Science for the Public Good The Data Science for the Public Good (DSPG) Young Scholars program is a summer immersive program held at the Biocomplexity Institute’s Social and Decision Analytics division (SDAD). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today.</description>
-    </item>
-    
-    <item>
-      <title>Poster Session</title>
-      <link>/findings/poster/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/findings/poster/</guid>
-      <description> /* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  [not done yet] ### Overview
-Approach  Race Relations  Gender Relations  Spatial Arrangement  </description>
     </item>
     
   </channel>
