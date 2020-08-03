@@ -21,8 +21,9 @@ Why we care about this topic and what we would like to learn
 
 ```
 
-plots on distributions
-words used
+## Differences in Sets - Non-Stemmed with Sentiment
+
+## Differences in Sets - Stemmed
 
 # Sentiment Analysis
 
@@ -30,9 +31,7 @@ words used
 
 ```
 
-Radar Charts?
-Plots of words by sentiment and number of uses
-
+## Differences in Sets - Non-Stemmed with Sentiment
 
 # Social Network Analysis
 
@@ -41,6 +40,8 @@ Plots of words by sentiment and number of uses
 ```
 
 overall networks
+
+## Social Networks with Unionized Terminology
 
 ## Identifying Topics
 

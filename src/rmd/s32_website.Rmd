@@ -1,0 +1,312 @@
+---
+title: "Profiling S32 Respondents"
+author: "Saimun"
+date: "7/27/2020"
+output: html_document
+---
+```{r, include = F}
+library(readxl)
+library(tidyverse)
+library(data.table)
+library(stringi)
+library(RColorBrewer)
+library(usmap)
+library(viridis)
+```
+
+```{r functions, include = F}
+# modifies the survey data to factor the multiple choice responses into interpretable variables
+string ="01. US UNSPECIFIED 02. FOREIGN ALLY 11. MAINE 12. NEW HAMPSHIRE 13. VERMONT 14. MASSACHUSETTS 15. RHODE ISLAND 16. CONNECTICUT 21. NEW YORK 22. NEW JERSEY 23. PENNSYLVANIA 31. OHIO 32. INDIANA 33. ILLINOIS 34. MICHIGAN 35. WISCONSIN 41. MINNESOTA 42. IOWA 43. MISSOURI 44. NORTH DAKOTA 45. SOUTH DAKOTA 46. NEBRASKA 47. KANSAS 51. DELAWARE 52. MARYLAND 53. DC. 54. VIRGINIA 55. WEST VIRGINIA 56. NORTH CAROLINA 57. SOUTH CAROLINA 58. GEORGIA 59. FLORIDA 61. KENTUCKY 62. TENNESSEE 63. ALABAMA 64. MISSISSIPPI 71. ARKANSAS 72. LOUISIANA 73. OKLAHOMA 74. TEXAS 81. MONTANA 82. IDAHO 83. WYOMING 84. COLORADO 85. NEW MEXICO 86. ARIZONA 87. UTAH 88. NEVADA 91. WASHINGTON 92. OREGON 93. CALIFORNIA 00. NA"
+
+state_codes = unlist(stri_extract_all_regex(string, "[:digit:]+"))
+state = unlist(stri_extract_all_regex(string, "[:alpha:]+.[:alpha:]+|NA|DC"))
+
+add_demographic_factors = function(df){
+  if (length(df) == 130){
+    df$age= factor(df$`Q.1.`,
+                             levels = c(0:7),
+                labels = c(NA, "<=19", "20", "21-24","25-27","28-29","30-34","35+"))
+    df$edu = factor(df$`Q.2.`,
+                 levels = c(0:10),
+                 labels = c(NA,"< 4TH GRADE","4TH GRADE", "5TH GRADE", "6TH GRADE",
+                            "7TH GRADE", "8TH GRADE", "SOME HIGH/TRADE SCHOOL",
+                            "HIGH SCHOOL", "SOME COLLEGE",
+                            "COLLEGE"))
+    df$enlist = factor(df$`Q.3.`,
+                 levels = c(0:3),
+                 labels = c(NA, "DRAFTED","VOLUNTEERED", "NATIONAL GUARD"))
+    df$post_war_rights = factor(df$Q.44.,
+                            levels = c(0:4),
+                            labels = c(NA, 'More Rights', 'Less Rights', 'Same Rights', 'Undecided' ))
+    df$black_rights_should = factor(df$Q.58.,
+                                levels = c(0:5),
+                                labels = c(NA,"More","Less","No Change","Undecided",NA)) 
+    df$black_rights_will = factor(df$Q.57.,
+                             levels = c(0:5),
+                             labels = c(NA,"More","Less","No Change","Undecided",NA))    
+    df$outfits = factor(df$Q.63.,
+                     levels = c( 0:5),
+                     labels = c(NA , "Seperated", "Together",
+                                "Doesn't Matter", "Undecided", NA))
+    df$pxs = factor(df$Q.60.,
+                levels = c(0:4),
+                labels = c(NA, "Good Idea", "Bad Idea", "Undecided", NA))
+    
+    df$serviceclubs = factor(df$Q.62.,
+                    levels = c(0:4),
+                    labels = c(NA, "Good Idea", "Bad Idea", "Undecided", NA))    
+    
+    df$state = factor(df$Q.13.,
+                   levels = state_codes,
+                   labels = state)
+    df$community = factor(df$Q.14.,
+                       levels = c(0:5),
+                       labels = c(NA,"Farm", "Small Town", "Town" ,"City", "Large City"))
+  }
+  else if (length(df) == 151){
+    df$age= factor(df$R11,
+                levels = c(0:7),
+                labels = c(NA,"<=19", "20", "21-24","25-27","28-29","30-34","35+"))
+    df$edu = factor(df$R12,
+                 levels = c(0:10),
+                 labels = c(NA, "< 4TH GRADE","4TH GRADE", "5TH GRADE", "6TH GRADE",
+                            "7TH GRADE", "8TH GRADE", "SOME HIGH/TRADE SCHOOL",
+                            "HIGH SCHOOL", "SOME COLLEGE",
+                            "COLLEGE"))
+    df$enlist = factor(df$R14,
+                    levels = c(0:3),
+                    labels = c(NA,"DRAFTED","VOLUNTEERED", "NATIONAL GUARD" ))
+    df$post_war_rights = factor(df$R97,
+                                levels = c(0:4),
+                                labels = c(NA, 'More Rights', 'Less Rights', 'Same Rights', 'Undecided' ))
+    df$black_treatment = factor(df$R104,
+                                levels = c(0:5),
+                                labels = c(NA, "Better", "Same", "Worse","Undecided",NA))
+    df$black_rights_will = factor(df$R108,
+                             levels = c(0:5),
+                             labels = c(NA,"More","Less","No Change","Undecided",NA))
+    df$outfits = factor(df$R134,
+                     levels = c( 0:5),
+                     labels = c("NA" , "Seperated", "Together",
+                                "Doesn't Matter", "Undecided", NA))
+    df$pxs = factor(df$R129,
+                    levels = c(0:3),
+                    labels = c(NA, "Good Idea", "Bad Idea", "Undecided"))
+    df$serviceclubs = factor(df$R132,
+                    levels = c(0:4),
+                    labels = c(NA, "Good Idea", "Bad Idea", "Undecided", NA))
+    df$state = factor(df$R47,
+                   levels = state_codes,
+                   labels = state)
+    df$community = factor(df$R48,
+                       levels = c(0:5),
+                       labels = c(NA,"Farm", "Small Town", "Town" ,"City", "Large City"))
+  }
+  return(df)
+}
+```
+
+```{r reading, include= F}
+w_ans = read_xlsx(here::here('data',"AMS032W_answers.xlsx")) %>% as.data.frame() %>% add_demographic_factors()
+b_ans = read_xlsx(here::here('data',"AMS032N_answers.xlsx")) %>% as.data.frame() %>% add_demographic_factors()
+w_ans$race = "White"; b_ans$race = "Black"
+#tidifying the dataset
+ans = w_ans[, (ncol(w_ans)-11):ncol(w_ans)] %>% full_join(b_ans[, (ncol(b_ans)-11):ncol(b_ans)])
+my_cols = c("232d4b","2c4f6b","0e879c","60999a", "9bc0c0","d1e0bf", "ebf094", "d9e12b","e6ce3a","e6a01d","e57200","a35200","fdfdfd")
+my_cols = paste0('#', my_cols)
+```
+
+## Who Are the Soldiers?
+
+Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits. Our questions of interest are regarding age, education, enlistment, state, community type, and of course their opinions on outfits. On the survey these questions were asked in Questions 1,2,3,13,14, and 77 (63 for white soldiers), respectively. We also looked at questions regarding what their thoughts were about the future and how black rights and treatment will change after the war. 
+
+### Age
+Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24. 
+
+```{r}
+w_ans %>% 
+  count(age, sort =T) %>% 
+  na.omit() %>% 
+  left_join(b_ans %>% count(age, sort =T) %>% na.omit(),by = "age") %>%
+  melt(id.vars= "age") %>%
+  ggplot(aes(fill=variable)) +
+  geom_bar(aes(reorder(age,value),value), stat='identity', position='dodge')+
+  labs(title='Age Groups of Soldiers', x="Age Groups", y = "Count")+
+  scale_fill_manual(values =  c(my_cols[10], my_cols[4]), name = 'Race', labels = c("White", "Black"))
+```
+
+### Education
+If we look at education now we see that again black soldiers have little spread in their education. Remarkably, all of the black soldiers survied have less than a 5th grade education at the time. Meanwhile, the bulk of the white soldiers have had a high school/some high school. 
+
+```{r}
+w_ans %>% 
+  count(edu, sort =T) %>% 
+  na.omit() %>% 
+  left_join(b_ans %>% count(edu, sort =T) %>% na.omit(),by = "edu") %>%
+  melt(id.vars= "edu") %>%
+  ggplot(aes(fill=variable)) +
+  geom_bar(aes(reorder(edu,value),value), stat='identity', position='dodge')+
+  labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values =  c(my_cols[10], my_cols[4]), name = 'Race', labels = c("White", "Black"))
+```
+
+When we overlay the distribution of education levels with age ranges, we see that older white soldiers made up a larger porportion of white soldiers with less education compared to soldiers with some high school. As a contingent, it appears that soldiers between 21 and 24 with a high school education make up the largest contingent of white white soldiers when grouped by education and age. 
+
+```{r}
+ans %>%
+ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:7]))
+```
+
+### Enlistment
+Something interesting arises here were we find that vast majority of the black soldiers actually volunteered to join the military whereas about 3/4 of the survied white soldiers were drafted and the remaining soldiers were mostly volunteers and a few were from the National Guard.
+```{r}
+w_ans %>% 
+  count(enlist, sort =T) %>% 
+  na.omit() %>% 
+  left_join(b_ans %>% count(enlist, sort =T) %>% na.omit(),by = "enlist") %>%
+  melt(id.vars= "enlist") %>%
+  ggplot(aes(fill=variable)) +
+  geom_bar(aes(reorder(enlist,value),value), stat='identity', position='dodge')+
+  labs(title='How Soldiers were Enlisted', x="Enlistment", y = "Count")+
+  scale_fill_manual(values =  c(my_cols[10], my_cols[4]), name = 'Race', labels = c("White", "Black"))
+
+```
+
+### Location
+Expectedly, most of the soldiers hailed from the most populous states at the time. White soldiers were mostly from Illionois, Pennsylvania, Ney York, Texas, and Michigan while black soldiers were mostly from Texas, New York, Illinois, Pennsylvania, and Ohio. Note that the top 4 states for white soldiers had similar amounts of soldiers but there was a sever drop off in representation of black soldiers from other states after Texas and New York.  
+
+```{r}
+b_ans %>% 
+  count(state, sort =T) %>% 
+  na.omit() %>% 
+  left_join(w_ans %>% count(state, sort =T) %>% na.omit(),by = "state") %>%
+  melt(id.vars= "state") %>%
+  ggplot() +
+  geom_bar(aes(reorder(state,value),value, fill = variable), stat='identity', position='dodge')+
+  facet_grid(cols = vars(variable))+
+  scale_fill_manual(values =  c(my_cols[4], my_cols[10]), name = 'Race', labels = c("Black", "White"))+
+  labs(title="Where are the Soldiers from", x="State", y = "Count") +
+  coord_flip()+
+  theme(strip.text.x = element_blank())
+
+w_state <- w_ans %>%
+  group_by(state) %>%
+  summarise (n = n()) %>%
+  mutate(freq = n / sum(n))
+plot_usmap(data = w_state, values = "freq", regions = "state") + 
+  labs(title = "Heat Map of Relative Frequency of White US Soldiers by State") + 
+  scale_fill_continuous(low = "white", high = "red", name = "Frequency", label = scales::comma) +
+  theme(legend.position = "right")
+b_state <- b_ans %>%
+  group_by(state) %>%
+  summarise (n = n()) %>%
+  mutate(freq = n / sum(n))
+plot_usmap(data = b_state, values = "freq", regions = "state") + 
+  labs(title = "Heat Map of Relative Frequency of Black US Soldiers by State") + 
+  scale_fill_continuous(low = "white", high = "red", name = "Frequency", label = scales::comma) +
+  theme(legend.position = "right")
+```
+
+### Communities
+As expected, most soldiers whose home communities are large cities had the most representation across both groups. White soldiers saw roughly equal representation from soldiers who came from a farm, town, or city with actually slightly less people from cities. On the otherhand, the next community with the largest representation for black soldiers was a city followed by farms and towns which had approximately similar contributions. 
+
+```{r}
+ans %>% group_by(race) %>% count(community) %>% na.omit() %>%
+  ggplot() +
+  geom_bar(aes(reorder(community,n),n, fill = race), stat='identity', position='dodge')+
+  facet_grid(rows = vars(race))+
+  labs(title='Community Type of Soldiers', x="Community", y = "Count")+
+  scale_fill_manual(values =  c(my_cols[4], my_cols[10]), guide=FALSE)
+```
+
+We see that larger portions of soldiers who are more educated come from communities which are larger in population.
+
+```{r, education+community}
+ans %>%
+ggplot( aes(x=edu, fill = community)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Community Distribution over Education Levels of Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:7]))
+```
+
+### Integrating Outfits
+Our key variable of interest from this survey is the soldiers opinions on integrating their outfits. Expectedly, we see the vast majority of white soldiers are against integrating however the black soldeirs seem to be divided on whether they want integration or not. They are rougly evenly split on keeping outfits seperated and integrating them and a good amount are also undecided or indifferent. 
+```{r outfits}
+ans %>% filter(outfits!="NA") %>%
+  ggplot(aes(x=outfits, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle("Soldiers' Opinions on Outfits")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values =  c(my_cols[4], my_cols[10]), guide=FALSE)
+```
+
+If we look at the proportion of ages who elected for each category we see that the proportions are relatively stable across all opinions towards integration.
+
+```{r, outfits+age }
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = age)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Age Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  scale_fill_manual(values = rev(my_cols[1:7]))
+```
+
+Now if we are to overlay the education distribution over the integration opinions we see something more interesting. It appears that the white soldiers that voted for the outfits to be together skew towards being more educated. In fact, over 50% of the soldiers who did vote for integrated units have atleast finished high school. This is not the case for any of the other responses. 
+
+```{r, outfits + edu}
+
+
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = edu)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Education Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:10]))
+```
+
+Across both races we also see that of those who choose integration a greater portion were from large cities and soldiers who came from more populated voted for sepration less proportionally. 
+
+```{r}
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = community)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Community Type Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:5]))
+```
+
+### Thoughts on the future
+The majority of the white soldiers believed that their rights will not change after the war and roughly equal amoutns thought they would increase or decrease. About 40% of the black soldiers thought their rights would increase following the war. A slightly smaller amount expected no change at all. Interestingly, the black soldiers answers to whether black people will have more rights after the war was nearly identical, but now there are more white soldiers who think black people will get more rights. The majority of black soldiers thought that after the war white people would treat them the same but about 30% were optimistic that they'd recieve better treatment. Interestingly,
+
+```{r}
+ans %>% 
+  ggplot(aes(x=post_war_rights, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle("Soldiers' Opinions on If They Will Have More Rights After the War")+
+  scale_fill_manual(values = c(my_cols[4], my_cols[10]), name = 'Race', guide = F)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(x="Rights After the War", y = "Prop") 
+
+ans %>% 
+  ggplot(aes(x=black_rights_will, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle("Soldiers' Opinions on If Blacks Will Have More Rights After the War")+
+  scale_fill_manual(values = c(my_cols[4], my_cols[10]), name = 'Race', guide = F)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(x="Rights After the War", y = "Prop") 
+
+b_ans %>%
+  ggplot(aes(black_treatment))+
+  geom_bar(aes(y = ..prop.., group = 1), fill = my_cols[4])+
+  labs(x="Treatment by White People", y = "Prop", title = 'Black Soldiers Opinions on Post-War Treatment by White People ') 
+
+
+```
+
+
+

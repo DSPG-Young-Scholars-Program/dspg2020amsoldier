@@ -32,7 +32,7 @@ main {
 .intro > h1 {
     font-size: 4em;
     font-weight: bold;
-    
+
 }
 
 .intro > h2 {
@@ -52,7 +52,7 @@ a:link, a:visited {
 }
 
 #bigbody main a {
-    color: var(--accent) !important;
+    color: #0E879C !important;
 }
 
 #bigfooter a:link, a:visited {
@@ -87,7 +87,7 @@ a:link, a:visited {
 }
 
 .item-tag {
-    background-color: #60999A;
+    background-color: #232D4B;
     margin:1px;
 }
 
@@ -179,7 +179,7 @@ img {
     font-size: 100%;
     padding-top:10px;
 }
-/* built on-top of Custom Style .ios 
+/* built on-top of Custom Style .ios
    from: http://www.bootstraptoggle.com/ */
 .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px}
 .toggle.ios .toggle-handle { border-radius: 20px;}

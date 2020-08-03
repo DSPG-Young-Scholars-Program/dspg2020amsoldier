@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# load necessary libraries
 library(tidytext)
 library(ggplot2)
 # to install ggradar, run the line commented out below
@@ -18,21 +19,53 @@ library(fmsb)
 library(data.table)
 library(tidyverse)
 library(here)
+library(wordcloud)
 ```
 
-```{r }
+```{r, include=FALSE}
 source(here::here("src", "load_data.R"));
-source(here::here("src", "sentiment_analysis.R"))
+source(here::here("src", "sentiment_analysis.R"));
+
+colors <- c("#e57200", "#232d4b");
 ```
 
-## Useful Functions
+<!-- ## Useful Functions -->
 
-```{r}
+```{r, include=FALSE}
 remove_words <- function(text, words) {
   pattern <- paste(words, collapse = "|");
   text <- str_replace_all(text, pattern, "");
   return(text);
 }
+
+get_nrc_sentiments <- function(data) {
+  # tokenize and join with nrc sentiment lexicon
+  tokens <- data %>%
+    unnest_tokens(word, text) %>%
+    inner_join(get_sentiments("nrc"));
+
+  # compute sentiments
+  sentiments <- tokens %>%
+    group_by(index, racial_group, response_type, outfits, sentiment) %>%
+    count() %>%
+    spread(sentiment, n, fill = 0);
+ 
+   # normalize sentiments
+  sentiments <- sentiments %>%
+    mutate(word_count = anger + anticipation + disgust + fear + joy + negative + positive + sadness + surprise + trust) %>%
+    filter(word_count > 0) %>%
+    mutate(anger = anger / word_count,
+           anticipation = anticipation / word_count,
+           disgust = disgust / word_count,
+           fear = fear / word_count,
+           joy = joy / word_count,
+           negative = negative / word_count,
+           positive = positive / word_count,
+           sadness = sadness / word_count,
+           surprise = surprise / word_count,
+           trust = trust / word_count);
+  return(sentiments);
+};
 
 radar <- function(sentiments, race, res_type) {
   group_mean <- dplyr::as_data_frame(sentiments) %>%
@@ -110,27 +143,29 @@ radar2 <- function(sentiments, group1, group2, title = "Sentiment Analysis Resul
   legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
   title(main = title);
 }
+
 ```
 
-## Removing biased words
+## Removing Racially-Biased Words
 
 Words referring to race are biased within the sentiment libraries. For example, within the NRC lexicon, "black" and "negro" are associated with the negative and sadness sentiments, while "white" is associated with the anticipation, joy, positive, and trust sentiments.
 
-```{r}
+```{r, echo=FALSE}
 nrc_sentiments <- get_sentiments("nrc");
-nrc_sentiments %>% filter(word == "black" | word == "negro" | word == "white")
+biased_words <- nrc_sentiments %>% filter(word == "black" | word == "negro" | word == "white")
+knitr::kable(biased_words)
 ```
 
-These words are removed from the text before sentiments are analyzed to mitigate racial bias.
+These words are removed from the text before sentiments are analyzed to remove racial bias.
 
-```{r}
+```{r, include=FALSE}
 words <- c("white", "black", "negro");
 s32$text <- remove_words(s32$text, words);
 ```
 
 ## Computing Sentiments 
 
-The Bing and Afinn lexicons compute sentiments by associated a word with positivity or negativity. Bing classifies words in a binary fasion as positive or negative, and Afinn ranks a word on a scale from -5 to +5 with -5 being the most negative and +5 being the most positive.
+The BING and AFINN lexicons compute sentiments by associated a word with positivity or negativity. Bing classifies words in a binary fasion as positive or negative, and Afinn ranks a word on a scale from -5 to +5 with -5 being the most negative and +5 being the most positive.
 
 Computing the overall sentiment of a response varies by the underlying lexicon. For Bing, the overall sentiment is computed by subtracting the number of positive words by the number of negative words. For Afinn, the overall sentiment is computed by summing the sentiment values for individual words.
 
@@ -151,10 +186,10 @@ s32_afinn <- tidy_s32 %>%
   summarise(sentiment = sum(value));
 ```
 
-## Comparing Sentiments Across Groups
+## Comparing BING and AFINN Sentiments Across Groups
 
 Compare BING sentiments of long responses for white and Black soldiers.
-```{r, fig.align="center"}
+```{r, fig.align="center", echo=FALSE}
 black_long <- s32_bing %>% 
   filter(racial_group == "black" & response_type == "long") %>%
   arrange(desc(sentiment));
@@ -263,7 +298,8 @@ tmp <- data %>%
   inner_join(nrc_sentiments)
 ```
 
-```{r}
+```{r echo=FALSE}
+# not used rn but probably should
 plot_words <- function(sentiment) {
   plot_data <- tmp %>%
   filter(sentiment == sentiment) %>%
@@ -276,73 +312,163 @@ plot_words <- function(sentiment) {
     ggplot(., aes(x = word, y = n)) +
     geom_bar(stat = "identity")
 }
-
-plot_words("positive")
 ```
-```{r}
+
+# What words contribute to various sentiments within this text corpus?
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "positive") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Positive Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
 tmp %>%
   filter(sentiment == "negative") %>%
   count(word, sort = TRUE) %>%
-  top_n(10)
-```
-```{r}
-tmp %>%
-  filter(sentiment == "joy") %>%
-  count(word, sort = TRUE) %>% 
-  top_n(10)
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Negative Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-```{r}
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "joy") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Joy Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
 tmp %>%
   filter(sentiment == "fear") %>%
   count(word, sort = TRUE) %>%
-    top_n(10)
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Fear Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-```{r}
+```{r echo=FALSE, fig.align='center'}
 tmp %>%
   filter(sentiment == "disgust") %>%
   count(word, sort = TRUE) %>%
-    top_n(10)
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Disgust Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-```{r}
+```{r echo=FALSE, fig.align='center'}
 tmp %>%
   filter(sentiment == "anticipation") %>%
   count(word, sort = TRUE) %>%
-    top_n(10)
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Anticipation Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-```{r}
+```{r echo=FALSE, fig.align='center'}
 tmp %>%
   filter(sentiment == "anger") %>%
   count(word, sort = TRUE) %>%
-  top_n(10)
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Anger Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-```{r}
+```{r echo=FALSE, fig.align='center'}
 tmp %>%
   filter(sentiment == "trust") %>%
   count(word, sort = TRUE) %>%
-  top_n(10)
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Trust Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-```{r}
+```{r echo=FALSE, fig.align='center'}
 tmp %>%
   filter(sentiment == "surprise") %>%
   count(word, sort = TRUE) %>%
-  top_n(10)
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Surprise Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-```{r}
+```{r echo=FALSE, fig.align='center'}
 tmp %>%
   filter(sentiment == "sadness") %>%
   count(word, sort = TRUE) %>%
-  top_n(10)
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Sadness Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-```{r}
+# Exploring different sentiment distributions across groups.
 
+```{r}
 sentiments <- tmp %>% 
   group_by(index, racial_group, response_type, outfits, sentiment) %>% 
   count() %>%
@@ -364,7 +490,7 @@ sentiments <- sentiments %>%
             trust = trust / word_count)
 ```
 
-```{r, fig.align='center'}
+```{r}
 # black, long reponse
 black_long_mean <- dplyr::as_data_frame(sentiments) %>%
   filter(racial_group == "black" & response_type == "long") %>%
@@ -378,17 +504,10 @@ black_long_mean <- dplyr::as_data_frame(sentiments) %>%
            "sadness",
            "surprise",
            "trust")) %>%
-  summarise_all(mean)
-
-bl_mean_melted <- melt(black_long_mean)
-plot_data <- rbind(rep(max(bl_mean_melted$value), 10), rep(min(bl_mean_melted$value), 10), black_long_mean)
-
-radarchart(plot_data,
-           cglcol = "grey",
-           cglty = 1)
+  summarise_all(mean);
 ```
 
-```{r, fig.align='center'}
+```{r}
 white_long_mean <- dplyr::as_data_frame(sentiments) %>%
   filter(racial_group == "white" & response_type == "long") %>%
   select(c("anger",
@@ -401,14 +520,7 @@ white_long_mean <- dplyr::as_data_frame(sentiments) %>%
            "sadness",
            "surprise",
            "trust")) %>%
-  summarise_all(mean)
-
-wl_mean_melted <- melt(white_long_mean)
-plot_data <- rbind(rep(max(wl_mean_melted$value), 10), rep(min(wl_mean_melted$value), 10), white_long_mean)
-
-radarchart(plot_data,
-           cglcol = "grey",
-           cglty = 1)
+  summarise_all(mean);
 ```
 
 ```{r, fig.align='center'}
@@ -417,7 +529,7 @@ white_long <- copy(white_long_mean)
 
 # combine repsonses
 long <- rbind(black_long, white_long)
-rownames(long) <- c("Black", "white")
+rownames(long) <- c("black", "white")
 
 # get min and max for plotting
 long_melted <- melt(long)
@@ -437,7 +549,7 @@ radarchart(plot_data,
            plty = 1, # plot line type
 )
 legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
-title(main = "General Response to S32");
+title(main = "Average sentiments for Black and white soliders' long response.");
 
 ```
 
@@ -479,7 +591,7 @@ for_mean <- dplyr::as_data_frame(ws_for) %>%
   summarise_all(mean)
 
 comb <- rbind(against_mean, for_mean)
-rownames(comb) <- c("segregationist", "integrationist")
+rownames(comb) <- c("pro-segregation", "pro-integration")
 
 # get min and max for plotting
 comb_melted <- melt(comb)
@@ -499,25 +611,25 @@ radarchart(plot_data,
 );
 
 legend(x = 1, y = 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors);
-title(main = "White Soliders'\n Comment on Outfit Integration");
+title(main = "Average sentiments for pro-integration and pro-segregation\n white soliders' outfits comment");
 ```
 
-## Gender
+## Looking at Sentiments in Responses that Discuss Gender
 
-```{r}
+```{r, fig.align='center'}
 radar2(s32_gender_sentiments,
        group1 = c("black", "long", "Black"),
        group2 = c("white", "long", "white"), 
        title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss women");
 ```
 
-```{r}
+```{r, fig.align='center'}
 radar2(s32_female_sentiments,
        group1 = c("black", "long", "Black"),
        group2 = c("white", "long", "white"), 
        title = "Difference in sentiments between white and Black soldiers\nin long responses that discuss women");
 ```
-```{r}
+```{r, fig.align='center'}
 radar2(s32_male_sentiments,
        group1 = c("black", "long", "Black"),
        group2 = c("white", "long", "white"), 
@@ -541,4 +653,156 @@ radar2(s32_female_and_relation_sentiments,
        group1 = c("black", "long", "Black"),
        group2 = c("white", "long", "white"), 
        title = "");
+```
+
+## Examining Words Used Uniquely by Different Groups
+
+```{r}
+source(here::here("src", "word_selection.R"))
+```
+What words are used uniquely across race?
+```{r, fig.align='center'}
+tot_black_words <- sum(unique_black_words$n)
+tot_white_words <- sum(unique_white_words$n)
+
+unique_black_words <- unique_black_words %>% mutate(prop = n / tot_black_words)
+unique_white_words <- unique_white_words %>% mutate(prop = n / tot_white_words)
+
+unique_black_words$color <- rep(colors[1], nrow(unique_black_words))
+unique_white_words$color <- rep(colors[2], nrow(unique_white_words))
+
+unique_words <- rbind(unique_black_words, unique_white_words) %>% 
+  arrange(desc(prop)) %>%
+  mutate(n = n / 10)
+
+unique_black_words %>% with(wordcloud(word, n, random.order = FALSE, colors=unique_black_words$color, max.words = 20, ordered.colors = TRUE))
+```
+```{r, fig.align='center'}
+unique_black_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) +
+    labs(title = "Frequency for Unique Words in Black Soldiers' Long Response",
+         x = "Word", 
+         y = "Frequency") + 
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+  
+```
+
+```{r, fig.align='center'}
+unique_white_words %>% with(wordcloud(word, n, random.order = FALSE, colors=unique_white_words$color, max.words = 20, ordered.colors = TRUE))
+```
+
+```{r, fig.align='center'}
+unique_white_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[2]) + 
+    labs(title = "Frequency for Unique Words in White Soldiers' Long Response",
+         x = "Word", 
+         y = "Frequency") + 
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+What words are used uniquely across opinion on outfit integration?
+```{r, fig.align='center'}
+unique_seg_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) +
+    labs(title = "Frequency for Unique Words in Pro-Segregation Soldiers' Outift Response",
+         x = "Word", 
+         y = "Frequency") + 
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+```{r, fig.align='center'}
+unique_int_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[2]) +
+    labs(title = "Frequency for Unique Words in Pro-Integration Soldiers' Outift Response",
+         x = "Word", 
+         y = "Frequency") + 
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r, fig.align='center'}
+group1_mean <- unique_black_words_sentiments
+group2_mean <- unique_white_words_sentiments
+
+# combine repsonses
+groups <- rbind(group1_mean, group2_mean)
+rownames(groups) <- c("Black", "White")
+
+# get min and max for plotting
+groups_melted <- melt(groups)
+minval <- min(groups_melted$value)
+maxval <- max(groups_melted$value)
+
+plot_data <- rbind(rep(maxval, 10), rep(minval, 10), groups)
+
+colors <- c("#e57200", "#232d4b")
+
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+title(main = "Sentiments of Words Used Uniquely by Each Group");
+```
+
+```{r, fig.align='center'}
+group1_mean <- unique_seg_words_sentiments
+group2_mean <- unique_int_words_sentiments
+
+# combine repsonses
+groups <- rbind(group1_mean, group2_mean)
+rownames(groups) <- c("pro-segregation", "pro-integration")
+
+# get min and max for plotting
+groups_melted <- melt(groups)
+minval <- min(groups_melted$value)
+maxval <- max(groups_melted$value)
+
+plot_data <- rbind(rep(maxval, 10), rep(minval, 10), groups)
+
+colors <- c("#e57200", "#232d4b")
+
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+title(main = "Sentiments of Words Used Uniquely by Each Group");
+```
+
+```{r, fig.align='center'}
+word_props_final %>%
+  top_n(20, diff_prop) %>%
+  ggplot(., aes(x = word, y = signed_prop, fill = signed_prop > 0)) + 
+    geom_bar(stat = "identity") + 
+    coord_flip() + 
+    labs(title = "Difference in proportion of word use in long\nresponse for white and Black soldiers.", 
+         x = "Word",
+         y = "Difference in Proportion")
 ```

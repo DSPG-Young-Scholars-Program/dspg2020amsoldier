@@ -1,11 +1,18 @@
 ---
-title: "Results Section Three: Cooccurrence and Bigrams"
-description: "Project description here"
-tags: ["R", "networks"]
+title: "Bigram and Co-Occurrence Text Networks"
+description: "This page documents our use of bigrams and co-occurence to construct text networks."
+tags: ["R", "bigrams", "text networks", "race relations", "gender"]
 weight: 4
 draft: false
 output: html_document
 ---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
 
 ```{r setup, include=FALSE}
 #libraries
@@ -21,6 +28,19 @@ library(igraph)
 library(ggraph)
 library(widyr)
 library(stringr)
+
+# load necessary libraries
+library(ggplot2)
+# to install ggradar, run the line commented out below
+# devtools::install_github("ricardo-bion/ggradar", dependencies = TRUE)
+#library(ggradar)
+library(tibble)
+library(scales)
+library(fmsb)
+library(data.table)
+library(tidyverse)
+library(here)
+library(wordcloud)
 knitr::opts_chunk$set(fig.width=12, fig.height=8)
 ```
 
@@ -105,11 +125,15 @@ data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$or
 custom_stop <- append(stop_words$word, c("question", "questionnaire", "answer"))
 ```
 
-# How do Black and White soldiers talk about gender roles?
+### How do Black and White soldiers talk about gender?
+
 In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers. Our particular focus is on women's gender roles during the time of 1943 and at the intersection of race relations.
 
-A dictionary of gender words are loaded to identy which responses relate to gender topics. 
-```{r dictionaryload, echo = FALSE, warning=FALSE, message=FALSE}
+A dictionary of gender words are loaded to identy which responses relate to gender topics. This dictionary was created using terms included in the the [Oxford University Press Dictionary of Gender Studies](https://www.oxfordreference.com/view/10.1093/acref/9780191834837.001.0001/acref-9780191834837?btog=chap&hide=true&pageSize=20&skipEditions=true&sort=titlesort&source=%2F10.1093%2Facref%2F9780191834837.001.0001%2Facref-9780191834837). In addition, there is consideration of how women were referred to in the 1940s such as "lady" and "sweetheart".
+
+Furthermore, phrases such as "colored women" and "negro women" are collapsed and pre-stemmed/pre-lemmed to "colorwoman" and "negrowoman" in both the dictionary and the text. The purpose of this is to treat these references to women as a single entity as opposed to the text being analyzed as colored and negro being frequent adjectives for women.
+
+```{r dictionaryload, echo = FALSE, warning=FALSE, message=FALSE, include=FALSE}
 #load dictionary csv
 gender_words <- fread("~/git/dspg2020amsoldier/data/dictionary/gender.csv", sep = ",");head(gender_words) 
 gender_match <- paste(paste("\\b", gender_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
@@ -139,7 +163,10 @@ S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
 
 ### Main Findings 
 
+<center>
 #### Which words do soldiers use to pair with female relating words? 
+</center>
+
 In the long response question, soldiers are asked to give their feedback on any part of the questionnaire. Any and all aspects of the war were free to talk about. In this section we will be analyzing the bigrams of the soldier responses. bigrams are the consecutive pairings of words in a corpus of text.
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -171,8 +198,8 @@ Another interesting addition to the network with relationship words is the chain
 
 Otherwise, themes of family are prevelant for women's role in the commentary of the soldiers. We can also see the different pairings with the word woman, seeming to talk about their roles as workers amongst other attributes  (worker, waac, auxiliary)
 
-
 Lets see how these pairings differ between the white and black soldiers:
+
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
@@ -200,7 +227,6 @@ visualize_bigrams(black_long_bigrams_female, "Black Soldiers' Long Response - Fe
 
 Commentary on women are racialized with explicit mention of 'colorwoman' and 'whitewoman'.
   
-
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
@@ -226,14 +252,14 @@ visualize_bigrams(white_long_bigrams_female, "White Soldiers' Long Response - Fe
 
 We see a complete lack of narrative in black women specifically. Conversations about women are mostly about their role in the family as a mother, wife or sister. Another common conversation is about working women, with pairings to WAAC, auxiliary (referring to WAAC) and worker.
 
-
-
-
+<center>
 #### Which words that soldiers use are correlated with female relating words?
+</center>
+
 An alternative to the method of bigrams, Co-occurrences measure the correlation of two words appearing with one another in a body of text. Unlike bigrams, these words do not have to appear directly next to one another, and their strength of association is measured.
 
-
 First, we will look at which words are correlated with female words in all soldiers' long responses.   
+
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
@@ -245,10 +271,7 @@ long_fem_co <- long_fem_co[!(long_fem_co$item2 == "like" & !long_fem_co$item1 %i
 visualize_cooccur(long_fem_co, "Female related co-occurrences for long soldier response")
 ```
 
-
-
 Themes of family are still prevelant. Negrowoman are associated with some negative words like filthy and invade. Whitewomen associations with the words intercourse, cry and molest are related to the controversy of black men having sexual realtions with whitemen. In addition, whitewomen is associated with negroman. This is shows that there is commentary of the association of black and white women which was controversial at the time. 
-
 
 Next, we will break it down by race.   
 
@@ -263,12 +286,8 @@ black_long_fem_co <- black_long_fem_co[!(black_long_fem_co$item2 == "like" & !bl
 visualize_cooccur(black_long_fem_co, "Female related co-occurrences for long Black soldiers' responses")
 ```
 
-
-
 One of the strongest correlations are between negrowoman and negroman as well as negroman and whitewoman. This is indicative that interracial relations are one the most heavily correlated topics to women in the Black soldiers' responses. 
 In addition, mother, sister and father have some of the strongest correlations, showing that women's most prevalent role for the soldiers was in their families.     
-
-
 
 ```{r echo= FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
@@ -281,41 +300,170 @@ white_long_fem_co <- white_long_fem_co[!(white_long_fem_co$item2 == "like" & !wh
 visualize_cooccur(white_long_fem_co, "Female related co-occurrences for long White soldiers' responses")
 ```
 
-
 These words correlated with female words seem inherently random. This could be due to the fact that commentary about women were included in responses that talked about other various topics regarding the war and soldier life. However, we again see an absence of discussion about Black women as a whole. 
 
-
-
 *NOTE*  Use gephi to visualize the differences in commentary on gender by race in one network. Use community detection 
+
 ```{r include = FALSE, message = FALSE, warning = FALSE}
 #create edgelists to make this in gephi
-edgelist_long_bigrams_gender <- rbind(mutate(black_long_bigrams_female, racial_group = "black"),
-                                      mutate(white_long_bigrams_female, racial_group = "white")) %>%
-  rename(source=word1,target=word2, weight=n)
-long_bigrams_network <- simplify(graph.data.frame(edgelist_long_bigrams_gender), 
-                         remove.loops = FALSE, 
-                         edge.attr.comb = igraph_opt("edge.attr.comb"))
-nodelist_long_bigrams_gender <- data.frame(id = c(1:(igraph::vcount(long_bigrams_network))), word = igraph::V(long_bigrams_network)$name)
-#fwrite(edgelist_long_bigrams_gender, "~/git/dspg2020amsoldier/data/edgelist_long_bigrams_gender.csv")
-#fwrite(nodelist_long_bigrams_gender, "~/git/dspg2020amsoldier/data/nodelist_long_bigrams_gender.csv")
-
-edgelist_long_cooccur_gender <- rbind(mutate(black_long_fem_co, racial_group = "black"),
-                                      mutate(white_long_fem_co, racial_group = "white")) %>%
-  rename(source=item1,target=item2, weight=correlation)
-long_cooccur_network <- simplify(graph.data.frame(edgelist_long_cooccur_gender), 
-                         remove.loops = FALSE, 
-                         edge.attr.comb = igraph_opt("edge.attr.comb"))
-nodelist_long_cooccur_gender <- data.frame(id = c(1:(igraph::vcount(long_cooccur_network))), word = igraph::V(long_cooccur_network)$name)
+# edgelist_long_bigrams_gender <- rbind(mutate(black_long_bigrams_female, racial_group = "black"),
+#                                       mutate(white_long_bigrams_female, racial_group = "white")) %>%
+#   rename(source=word1,target=word2, weight=n)
+# long_bigrams_network <- simplify(graph.data.frame(edgelist_long_bigrams_gender), 
+#                          remove.loops = FALSE, 
+#                          edge.attr.comb = igraph_opt("edge.attr.comb"))
+# nodelist_long_bigrams_gender <- data.frame(id = c(1:(igraph::vcount(long_bigrams_network))), word = igraph::V(long_bigrams_network)$name)
+# #fwrite(edgelist_long_bigrams_gender, "~/git/dspg2020amsoldier/data/edgelist_long_bigrams_gender.csv")
+# #fwrite(nodelist_long_bigrams_gender, "~/git/dspg2020amsoldier/data/nodelist_long_bigrams_gender.csv")
+# 
+# edgelist_long_cooccur_gender <- rbind(mutate(black_long_fem_co, racial_group = "black"),
+#                                       mutate(white_long_fem_co, racial_group = "white")) %>%
+#   rename(source=item1,target=item2, weight=correlation)
+# long_cooccur_network <- simplify(graph.data.frame(edgelist_long_cooccur_gender), 
+#                          remove.loops = FALSE, 
+#                          edge.attr.comb = igraph_opt("edge.attr.comb"))
+# nodelist_long_cooccur_gender <- data.frame(id = c(1:(igraph::vcount(long_cooccur_network))), word = igraph::V(long_cooccur_network)$name)
 #fwrite(edgelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/edgelist_long_cooccur_gender.csv")
 #fwrite(nodelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/nodelist_long_cooccur_gender.csv")
 ```
 
+<center>
+#### What are the sentiments that are associated with gender?
+</center>
 
-### What are the sentiments that are associated with gender?
+```{r, include=FALSE, message = FALSE, warning = FALSE}
+source(here::here("src", "load_data.R"));
+source(here::here("src", "sentiment_analysis.R"));
+source(here::here("src", "word_selection.R"))
+
+colors <- c("#e57200", "#232d4b");
+```
 
 
+```{r, include=FALSE, message = FALSE, warning = FALSE}
+remove_words <- function(text, words) {
+  pattern <- paste(words, collapse = "|");
+  text <- str_replace_all(text, pattern, "");
+  return(text);
+}
+
+get_nrc_sentiments <- function(data) {
+  # tokenize and join with nrc sentiment lexicon
+  tokens <- data %>%
+    unnest_tokens(word, text) %>%
+    inner_join(get_sentiments("nrc"));
+
+  # compute sentiments
+  sentiments <- tokens %>%
+    group_by(index, racial_group, response_type, outfits, sentiment) %>%
+    count() %>%
+    spread(sentiment, n, fill = 0);
+ 
+   # normalize sentiments
+  sentiments <- sentiments %>%
+    mutate(word_count = anger + anticipation + disgust + fear + joy + negative + positive + sadness + surprise + trust) %>%
+    filter(word_count > 0) %>%
+    mutate(anger = anger / word_count,
+           anticipation = anticipation / word_count,
+           disgust = disgust / word_count,
+           fear = fear / word_count,
+           joy = joy / word_count,
+           negative = negative / word_count,
+           positive = positive / word_count,
+           sadness = sadness / word_count,
+           surprise = surprise / word_count,
+           trust = trust / word_count);
+  return(sentiments);
+};
+
+radar <- function(sentiments, race, res_type) {
+  group_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == race & response_type == res_type) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+group_mean_melted <- melt(group_mean)
+plot_data <- rbind(rep(max(group_mean_melted$value), 10), rep(min(group_mean_melted$value), 10), group_mean);
+
+radarchart(plot_data,
+           cglcol = "grey",
+           cglty = 1);
+}
+
+radar2 <- function(sentiments, group1, group2, title = "Sentiment Analysis Results") {
+  group1_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == group1[1] & response_type == group1[2]) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+  
+  group2_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == group2[1] & response_type == group2[2]) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+  
+  # combine repsonses
+  groups <- rbind(group1_mean, group2_mean)
+  rownames(groups) <- c(group1[3], group2[3])
+  
+  # get min and max for plotting
+  groups_melted <- melt(groups)
+  minval <- min(groups_melted$value)
+  maxval <- max(groups_melted$value)
+  
+  plot_data <- rbind(rep(maxval, 10), rep(minval, 10), groups)
+  
+  colors <- c("#e57200", "#232d4b")
+  
+  radarchart(plot_data,
+             cglcol = "grey", # color of net
+             cglty = 1, # net line type
+             pcol = colors, # line color
+             cglwd = 1, # net width,
+             plwd = 3, # line width
+             plty = 1, # plot line type
+  )
+  legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+  title(main = title);
+}
+
+```
 
 
+```{r, fig.align='center', echo=FALSE, message = FALSE, warning = FALSE}
+radar2(s32_female_sentiments,
+       group1 = c("black", "long", "black"),
+       group2 = c("white", "long", "white"), 
+       title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Women")
+```
+
+To create this plot, we filtered the original corpus to responses that contain gendered words, specifically female. When comparing the sentiment resulsts with the knowledge gaind from co-occurence analysis, this plot becomes very revealing. The average sentiments for Black soliders' responses about women are more fearful and negative and less trusting and joyful than white soldiers' responses. In the co-occurances for Black soldiers we saw a presence of commentary that white women "hollar rape". This observation in the co-occurrences reflects the fear that Black soldiers had in being accused of sexually harassing white women.  
 
 ### Conclusion and Policy Implications 
 

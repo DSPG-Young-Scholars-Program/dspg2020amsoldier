@@ -1,7 +1,7 @@
 ---
-title: "Challenges and Limitations"
-author: "Mary Solomon"
-date: "7/30/2020"
+title: "Challenges & Limitations"
+weight: 7
+tags: ["messy data", "historicized terms", "topic modeling"]
 output: html_document
 ---
 
@@ -30,9 +30,11 @@ data <- data %>% unite(long, long_comment:long_comment_cont, sep = " ", na.rm = 
 
 
 ### Data Quality
+
 Working with text data is never straight forward. There are always typical text mining issues such as misspellings, punctuations, abbreviations, and so on. However, our collection of soldier commentary posed unique challenges.
 
-Our primary challenge was the presence of Metatags within the text. Transcribers on Zooniverse were able to tag attributes of the text such as unclear writing, underlining, deletions, corrections and more. The following response is an example of these tags and how they are used in the soldiers' responses.
+Our primary challenge was the presence of metatags within the text. Transcribers on Zooniverse were able to tag attributes of the text such as unclear writing, underlining, deletions, corrections and more. The following response is an example of these tags and how they are used in the soldiers' responses.
+
 ```{r echo= FALSE, warning=FALSE, message=FALSE}
 data$long[2299]
 ```

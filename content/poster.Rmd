@@ -1,0 +1,27 @@
+---
+title: "Poster Session"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{css, echo=FALSE}
+/* this chunk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
+
+[not done yet]
+### Overview
+
+### Approach
+
+### Race Relations
+
+### Gender Relations
+
+### Spatial Arrangement

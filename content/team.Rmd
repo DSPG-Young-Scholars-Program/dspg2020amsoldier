@@ -1,0 +1,42 @@
+---
+output: html_document
+---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
+
+### UVA Data Science for the Public Good 
+
+[The Data Science for the Public Good (DSPG) Young Scholars program](https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program) is a summer immersive program held at the [Biocomplexity Institute’s Social and Decision Analytics division (SDAD)](https://biocomplexity.virginia.edu/social-decision-analytics). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program highlights, how to apply, and our annual symposium, please visit the official [Biocomplexity DSPG website]((https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program)).
+
+### American Soldier 2020 DSPG Team Members 
+
+<center>
+![](/morgan.jpeg) ![](/mary.jpg) ![](/saimun.jpg) ![](/chase.jpg)  
+</center>
+
+##### [Morgan Stockham](https://github.com/morganstockham) (Applied Microeconomics, Claremont Graduate University), [Mary Solomon](https://github.com/marysolomon) (Applied Statistics, Bowling Green State University), [Saimun Habib](https://github.com/saibib) (Statistics & Mathematics, Harvard College), and [Chase Dawson](https://github.com/chasedawson) (Computer Science, University of Virginia) {style=text-align:center}
+###
+
+### University of Virginia SDAD Team Members 
+
+<center>
+![](/gizem.jpg) ![](/brandon.jpg)
+</center>
+
+##### [Gizem Korkmaz](https://biocomplexity.virginia.edu/gizem-korkmaz) (Research Associate Professor) and [Brandon Kramer](https://biocomplexity.virginia.edu/brandon-kramer) (Postdoctoral Research Associate) {style=text-align:center}
+
+### Virginia Tech Team Members
+
+<center>
+![](/ed-gitre.jpg) ![](/mark-embree.jpg)
+</center>
+
+##### [Ed Gitre](https://liberalarts.vt.edu/departments-and-schools/department-of-history/faculty/edward-gitre.html) (Assistant Professor, Department of History) and [Mark Embree](https://www.math.vt.edu/people/faculty/embree-mark.html) (Professor of Mathematics and Director of Computational Modeling & Data Analytics) {style=text-align:center}
+
+##### Savannah Amos, Drew H Klaubert, and Yash Joshi (Computational Modeling & Data Analytics) {style=text-align:center}
+

@@ -1,0 +1,30 @@
+---
+output: html_document
+---
+
+```{css, echo=FALSE}
+/* this chunk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
+
+### Data & Methods
+
+[not done yet]
+
+Our data is from a comprehensive surveying project by the US military during World War II. We are particularly interested in Survey 32, 144, and 190 which contain multiple choice questions ranging from demographic information, thoughts on the army, thoughts on the war, career plans, etc. 
+
+Survey 32 was administered to both black and white soldiers in order to studying attitudes of and towards black soldiers. A question of interest on the survey is, "Do you think white and black soldiers should be in separate outfits?" The soldiers gave a response to this as a multiple choice question and we have 7442 responses from black soldiers and 4678 from white soldeiors. The soldiers also had room to elaborate on their responses in a short answer field. Along with this short response, there was room for a longer comment on the overall survey. Sadly, we do not have any short responses to the question from black soldiers. The written responses were transcribed by volunteers through the citizen science platform Zooniverse. Overall, we have 3464 written responses from black soldiers and 2324 written responses of white soldiers. The responese theselves were on the shorter side with the average response length being shorter than 100 words.  
+
+is to use a novel data source to garner new insights into race, gender, and spacial relationships among Army soldiers during World War II. The project uses transcribed data from a crowdsourcing platform to create textual data. The survey that we are focusing on is Survey 32 which is a survey that includes one multiple choice question on whether or not soldiers want separated or integrated outfits and two response questions giving space for them to extend on their multiple choice answer and their sentiments on the survey as a whole. This data is divided by race, and we only have text data on the multiple choice answer for white soldiers.  
+
+In addition to Survey 32 we also have data from Survey 144 and Survey 195 which include more educated black soldiers and multiple choice answers on women in the army corps, respectively. From these three surveys we are extracting insights into race relations, gender relations, and the relationship between race and spatial arrangement. We are creating a website that outlines the exploratory data analysis, sentiments, text networks, and topics included in soldier's responses for these three broad topics. 
+
+Our analysis is completed using three different tools: sentiment analysis, text networks, and topic modelling. These three tools help us glean insights into the feelings of soldiers, the frequencies of terms they used, and which overall topics they discussed. The analysis is completed on Survey 32 text data and separates soldiers into four main groups of text: black soldiers' long responses, white soldiers' long responses, pro-segregation white soldier's short responses, and anti-segregation white soldier's short responses. Black and white soldiers' long responses are compared and pro- and anti-segregation white soldiers' short responses are compared.
+
+Our sentiment analysis utilizes the NRC dictionary which includes a library of 14,182 words across eight emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and two sentiments (negative and positive). This dictionary was compiled using crowd-sourcing. Sentiemnt analysis, at a high level, matches words used by soldiers to sentiments and gives us a general, understanding of their emotions based off of the words they chose.It is important to note that we made changes to the dictionary because some word-sentiment pairs were biased. For example, the word "black" was a negative sentiment word, which biases text that may be talking about black soldiers in a favorable way. Therefore, for terms such as black, white, and negro, we made their sentiments neutral.
+
+Text networks were created using bigrams and co-occurences. A bigram is a set of two words that are used immediately following eachother, wherein a co-occurence is created by developing correlations of words that are used together within the same response rather than next to eachother within a response. These networks gave us a general understanding of terms that were used together frequently.
+
+From these text networks we were able to map out topics used by soldiers. Topic modelling techniques, such as Latent Dirichlet Allocation, were unsuccessful in parsing out topics because those techniques required long responses wherein the average length of a long response was approximately INSERT for black soliders and INSERT for white soldiers. Therefore, text networks were a way for us to determine topics without LDA.
