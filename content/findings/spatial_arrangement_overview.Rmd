@@ -14,7 +14,7 @@ h1, h2, h3 {
 }
 ```
 
-An aspect of racial segregation that we want to analyze is segregation related to spatial arrangement. Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century. [include more context].
+An aspect of racial segregation that we want to analyze is segregation related to spatial arrangement. Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century.
 
 We are interested to see if themes of spatial segregation are prevelant in the soldiers' responses and experiences in the army during WWII.
 
@@ -33,6 +33,7 @@ library(ggraph)
 library(widyr)
 library(stringr)
 library(here)
+library(DT)
 knitr::opts_chunk$set(fig.width=12, fig.height=8)
 ```
 
@@ -142,7 +143,9 @@ data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, word_remove
 ```
 
 
-```{r dictionaryload, include = FALSE, warning=FALSE, message=FALSE}
+A dictionary of words that relate to spatial arrnagement in the context of the military during World War II was created to filter for releveant responses. We included words like "bus", "seat", "train" which in historical context were segregated spaces. Furthermore, we added military specific spaces such as "barrac", "px", and "camp". You can view the dictionary below:
+
+```{r dictionaryload, echo = FALSE, warning=FALSE, message=FALSE}
 #load dictionary csv
 spatial_words <- fread(here("/data/dictionary/spatial_arrangement.csv"), sep = ",") 
 space_match <- paste(paste("\\b", spatial_words$space,"\\b", sep = ""), collapse="|") #regex friendly
@@ -157,6 +160,7 @@ custom_stop <- append(stop_words$word, c("question", "questionnaire", "answer"))
 
 #### words to keep with train
 keep_space <- c(collapse$collapse, spatial_words$space, "soldier", "with")
+DT::datatable(spatial_words, rownames = FALSE)
 ```
 
 
@@ -273,6 +277,12 @@ seg_short_cors <- seg_short_cors[!(seg_short_cors$item2 == "train" & !seg_short_
 visualize_cooccur(seg_short_cors, "Anti-Integration Short Response - Spatial Arrangement Co-occurrences")
 ```
 
+At the top of the network we can see a group of words that relate to the living situation in the army such as "live", "eat", and "sleep". Many of the associated words seem to be related to the conditions of those spaces such as odor, undesir (stemmed/lemmed version of undesireable), hell and bad. These adjectives could either have been used to talk about the physical conditions of the living space or to point out adjectives describing why the white soldiers would not want to be in the same space as a Black soldier.
+
+The more obvious spatial segregation associations are words such as "apart", "differ", "with", and "same" which show that the soldiers were discussing integration in relation to "live", "eat", and "sleep".
+
+Another interesting observation is we see the word "habit" being correlated to the words "live" and "eat". Some of the soldiers cited difference in habits regarding to lifestyle as a reason to stay in separate outfits.
+
 <center>
 #### Co-occurrences of Pro-Integration Short Responses
 </center>
@@ -286,4 +296,12 @@ int_short_cors <- int_short_cors[!(int_short_cors$item2 == "train" & !int_short_
 visualize_cooccur(int_short_cors, "Pro-Integration Short Response - Spatial Arrangement Co-occurrences")
 ```
 
-Although there were white soldiers who supported integration of army outfits, there was still clear commentary that the soldiers should not be sharing the space in living arrangements or social spaces. An interesting observation is that persons of other ethnicities are associated with living. 
+Although there were white soldiers who supported integration of army outfits, there was still clear commentary that the soldiers should not be sharing the same space in living arrangements or social spaces. An interesting observation is that persons of other ethnicities are associated with living. 
+
+An example of why Chinese and Filipino are mentioned along with live amongst the soldiers comments on integration is below:
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+data$outfits_comment[5523]
+```
+
+They use these two demographics of people to compare integration of Black soldiers to the acceptance of integration between white men and other races.
+
