@@ -11,13 +11,31 @@
     
     
     <item>
-      <title>Overall Comparisons of White &amp; Black Soldiers</title>
-      <link>/findings/race_overall/</link>
+      <title>Demographic Analyses of White &amp; Black Soldiers</title>
+      <link>/findings/eda_s32/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/race_overall/</guid>
-      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Approach Why we care about this topic and what we would like to learn. Also explain you are using EDA
-Who Are the Soldiers? Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits.</description>
+      <guid>/findings/eda_s32/</guid>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Who Are the Soldiers? Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits.</description>
+    </item>
+    
+    <item>
+      <title>Sentiment Analysis of White &amp; Black Soldiers</title>
+      <link>/findings/sent_race/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/sent_race/</guid>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Sentiment Analysis Removing Racially-Biased Words Words referring to race are biased within the sentiment libraries. For example, within the NRC lexicon, &amp;quot;black&amp;quot; and &amp;quot;negro&amp;quot; are associated with the negative and sadness sentiments, while &amp;quot;white&amp;quot; is associated with the anticipation, joy, positive, and trust sentiments.
+  word sentiment    black negative  black sadness  negro negative  negro sadness  white anticipation  white joy  white positive  white trust    These words are removed from the text before sentiments are analyzed to remove racial bias.</description>
+    </item>
+    
+    <item>
+      <title>Text-Network Analysis of White &amp; Black Soldiers</title>
+      <link>/findings/textnet_race/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/textnet_race/</guid>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Social Network Analysis Gephi Networks  Social Networks with Unionized Terminology Something that is important to us is soldiers&#39; dicussions of inner-outer groups of people. A way that we decided to look at that was by unionizing biterms. For example, a naive co-occurence with &amp;quot;black&amp;quot; may be &amp;quot;people&amp;quot; but we care about the dicussion of &amp;quot;black people&amp;quot; rather than just the identification of &amp;quot;people&amp;quot; as co-occurring with the word &amp;quot;black&amp;quot;.</description>
     </item>
     
     <item>
@@ -44,17 +62,16 @@ Who Are the Soldiers? Survey 32 was given out to soldiers in 1943, approximately
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/spatial_arrangement_overview/</guid>
-      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  An aspect of racial segregation that we want to analyze is segregation related to spatial arrangement. Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century. [include more context].</description>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  An aspect of racial segregation that we want to analyze is segregation related to spatial arrangement. Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century.</description>
     </item>
     
     <item>
-      <title>Bigram and Co-Occurrence Text Networks</title>
+      <title>Gender </title>
       <link>/findings/results-gender-analysis/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/results-gender-analysis/</guid>
-      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  How do Black and White soldiers talk about gender? In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers. Our particular focus is on women&#39;s gender roles during the time of 1943 and at the intersection of race relations.
-A dictionary of gender words are loaded to identy which responses relate to gender topics.</description>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  How do Black and White soldiers talk about gender? In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers. Our particular focus is on women&#39;s gender roles during the time of 1943 and at the intersection of race relations.</description>
     </item>
     
     <item>
@@ -74,6 +91,16 @@ A dictionary of gender words are loaded to identy which responses relate to gend
       <guid>/findings/project_challenges/</guid>
       <description>Data Quality Working with text data is never straight forward. There are always typical text mining issues such as misspellings, punctuations, abbreviations, and so on. However, our collection of soldier commentary posed unique challenges.
 Our primary challenge was the presence of metatags within the text. Transcribers on Zooniverse were able to tag attributes of the text such as unclear writing, underlining, deletions, corrections and more. The following response is an example of these tags and how they are used in the soldiers&#39; responses.</description>
+    </item>
+    
+    <item>
+      <title>Poster Session</title>
+      <link>/findings/poster/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/poster/</guid>
+      <description> /* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  [not done yet] ### Overview
+Approach  Race Relations  Gender Relations  Spatial Arrangement  </description>
     </item>
     
   </channel>
