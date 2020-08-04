@@ -60,6 +60,8 @@ visualize_bigrams <- function(bigrams, title) {
 
 cooccur_spatial <- function(data, dictionary,  n=5, corr=.15){
   dictionary <- stem_words(lemmatize_words(dictionary))
+  dictionary <- paste(paste("\\b", dictionary,"\\b", sep = ""), collapse="|")
+  
   data %>%
   mutate(section = row_number()) %>%
   filter(section > 0) %>%
@@ -208,7 +210,7 @@ The white soldiers also have commentary on the integration in regards to spatial
 # Co-occurrences for spatial arrangement words.
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
-black_long_cors <- cooccur_spatial(S32N_long, space_match, n = 5, corr = 0.15) 
+black_long_cors <- cooccur_spatial(S32N_long, spatial_words$space, n = 5, corr = 0.15) 
 black_long_cors <- black_long_cors[!(black_long_cors$item1 == "train" & !black_long_cors$item2 %in% keep_space),]
 black_long_cors <- black_long_cors[!(black_long_cors$item2 == "train" & !black_long_cors$item1 %in% keep_space),]
 
@@ -220,7 +222,7 @@ visualize_cooccur(black_long_cors, "Black Soldiers' Long Response - Spatial Arra
    
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
-white_long_cors <- cooccur_spatial(S32W_long, space_match, n = 5, corr = .15) 
+white_long_cors <- cooccur_spatial(S32W_long, spatial_words$space, n = 5, corr = .15) 
 white_long_cors <- white_long_cors[!(white_long_cors$item1 == "train" & !white_long_cors$item2 %in% keep_space),]
 white_long_cors <- white_long_cors[!(white_long_cors$item2 == "train" & !white_long_cors$item1 %in% keep_space),]
 
@@ -261,7 +263,7 @@ There are very few bigrams due to a relatively small dictionary and low volume o
 
 Co-ocurrences for pro segregationists
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
-seg_short_cors <- cooccur_spatial(seg_short, space_match, n = 2, corr = .10) 
+seg_short_cors <- cooccur_spatial(seg_short, spatial_words$space, n = 2, corr = .10) 
 seg_short_cors <- seg_short_cors[!(seg_short_cors$item1 == "train" & !seg_short_cors$item2 %in% keep_space),]
 seg_short_cors <- seg_short_cors[!(seg_short_cors$item2 == "train" & !seg_short_cors$item1 %in% keep_space),]
 
@@ -275,7 +277,7 @@ visualize_cooccur(seg_short_cors, "Pro Segregation Short Response - Spatial Arra
     
 Bigrams of pro integrationists.
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
-int_short_cors <- cooccur_spatial(int_short, space_match, n = 0, corr = 0) 
+int_short_cors <- cooccur_spatial(int_short, spatial_words$space, n = 0, corr = 0) 
 int_short_cors <- int_short_cors[!(int_short_cors$item1 == "train" & !int_short_cors$item2 %in% keep_space),]
 int_short_cors <- int_short_cors[!(int_short_cors$item2 == "train" & !int_short_cors$item1 %in% keep_space),]
 
@@ -287,7 +289,7 @@ Although there were white soldiers who supported integration of army outfits, th
 
 
 
-```{r edgelists}
+```
 ####bigrams black long
 edgelist_S32N_long_bigrams_spatial <- black_long_bigrams %>% 
   rename(source=word1,target = word2, weight=n)

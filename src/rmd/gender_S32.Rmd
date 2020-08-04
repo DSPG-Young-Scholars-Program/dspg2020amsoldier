@@ -24,9 +24,13 @@ library(igraph)
 library(ggraph)
 library(widyr)
 library(stringr)
+
+knitr::opts_chunk$set(fig.width=12, fig.height=8)
 ```
 
 ```{r functions}
+# Visualizing Bigrams functions
+# From tidytext documentation
 # Visualizing Bigrams functions
 # From tidytext documentation
 visualize_bigrams <- function(bigrams, title) {
@@ -45,6 +49,8 @@ visualize_bigrams <- function(bigrams, title) {
 }
 
 cooccur_gender <- function(data, dictionary, n=5, corr=.15){
+  dictionary <- stem_words(lemmatize_words(dictionary))
+  dictionary <- paste(paste("\\b", dictionary,"\\b", sep = ""), collapse="|")
   
   data %>%
   mutate(section = row_number()) %>%
@@ -69,6 +75,7 @@ visualize_cooccur <- function(data, title){
   theme_void() + ggtitle(title)
 }
 
+
 ```
 
 ```{r dataload}
@@ -89,11 +96,23 @@ data$long <- str_replace_all(data$long, "'s", "")
 
 data$outfits_comment <- str_replace_all(data$outfits_comment, "\\+", "and")
 data$long <- str_replace_all(data$long, "\\+", "and")
+# some abbreviations to fix
+data$outfits_comment <- str_replace_all(data$outfits_comment, "\\bm.p\\b", "mp")
+data$long <- str_replace_all(data$long, "\\bm.p\\b", "mp")
+data$outfits_comment <- str_replace_all(data$outfits_comment, "\\bp.x\\b", "px")
+data$long <- str_replace_all(data$long, "\\bp.x\\b", "px")
+
 
 #remove all symbols except periods.
 data$outfits_comment <- str_replace_all(data$outfits_comment, "[^[:alnum:][:space:].]", "")
 data$long <- str_replace_all(data$long, "[^[:alnum:][:space:].]", "")
 
+collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",") 
+collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
+
+#make sure replace with collapsed words
+data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse, vectorize_all = FALSE)
+data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse, vectorize_all = FALSE)
 
 #### create custom stop words 
 custom_stop <- append(stop_words$word, c("question", "questionnaire", "answer"))
@@ -446,36 +465,48 @@ When talking about whitemen specifically, the correlated words show that the sol
 
 
 # FEMALE WORDS ONLY
-```{r}
-#split the dictionary so we can analyze male and female separately
-female_words <- gender_words %>% filter(category == "female") 
-female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
+```{r include = FALSE, warning=FALSE, message=FALSE}
+#subset data on quesiton
+S32_short <- data %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
+S32_short <- tibble(nrow=1:nrow(S32_short), text = S32_short$outfits_comment)
 
-male_words <- gender_words %>% filter(category == "male") 
-male_match <- paste(paste("\\b", male_words$gender,"\\b", sep = ""), collapse="|") #regex friendly
+S32_long <- data %>% select(long) %>% filter(!is.na(long))
+S32_long <- tibble(nrow=1:nrow(S32_long), text = S32_long$long)
 
-collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",") 
-collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
 
-#make sure replace with collapsed words
-data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse, vectorize_all = FALSE)
-data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse, vectorize_all = FALSE)
+#subset data based on question and race
+S32W_short <- data %>% filter(racial_group== "white") %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
+S32W_short <- tibble(nrow=1:nrow(S32W_short), text = S32W_short$outfits_comment)
+
+S32W_long <- data %>% filter(racial_group== "white") %>% select(long) %>% filter(!is.na(long))
+S32W_long <- tibble(nrow=1:nrow(S32W_long), text = S32W_long$long)
+
+S32N_long <- data %>% filter(racial_group== "black") %>% select(long) %>% filter(!is.na(long))
+S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
+
 ```
 
 
 ### long-All soldiers
-```{r}
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
+female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
+keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "white", "negro"))
+
+
 S32_long <- data %>% select(long) %>% filter(!is.na(long))
 S32_long <- tibble(nrow=1:nrow(S32_long), text = S32_long$long)
 
 long_bigrams_female <- S32_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
   count(bigram, sort =TRUE) %>% filter(grepl(female_match, bigram)) %>%
   separate(bigram, c("word1", "word2"), sep = " ") %>%
-  filter(!word1 %in% stop_words$word) %>%
-  filter(!word2 %in% stop_words$word) %>% 
+  filter(!word1 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word) %>%
+  filter(!word2 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word)  %>% 
   mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
   mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
-  count(word1, word2, sort = TRUE)
+  count(word1, word2, sort = TRUE) 
+long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word1 == "like" & !long_bigrams_female$word2 %in% keep_female),]
+long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word2 == "like" & !long_bigrams_female$word1 %in% keep_female),]
 
 visualize_bigrams(long_bigrams_female, "Soldiers' Long Response - Female Words Bigrams")
 ```
@@ -499,7 +530,7 @@ This response shows that despite the segregation of black and white Americans, t
 
 
 Try above analysis again but with dictionary including relationship words
-```{r}
+```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
 keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "white", "negro"))
@@ -533,8 +564,11 @@ In similarity with the previous versions of the bigram networks, th
 
 
 create coocurrance of same data
-```{r}
-long_fem_co <- cooccur_gender(S32_long, female_match, n=5, corr=.12)
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
+female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
+
+long_fem_co <- cooccur_gender(S32_long, female_words$gender, n=5, corr=.12)
 long_fem_co <- long_fem_co[!(long_fem_co$item1 == "like" & !long_fem_co$item2 %in% keep_female),]
 long_fem_co <- long_fem_co[!(long_fem_co$item2 == "like" & !long_fem_co$item1 %in% keep_female),]
 
@@ -545,7 +579,7 @@ Themes of family are still prevelant. Negrowoman are associated with some negati
 
 
 ### long - Black
-```{r}
+```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
 keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "white", "negro"))
@@ -554,30 +588,36 @@ keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "whit
 S32N_long <- data %>% select(racial_group,long) %>% filter(!is.na(long), racial_group == "black")
 S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
 
-long_bigrams_female <- S32N_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+black_long_bigrams_female <- S32N_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
   count(bigram, sort =TRUE) %>% filter(grepl(female_match, bigram)) %>%
   separate(bigram, c("word1", "word2"), sep = " ") %>%
+  #include stopwords that relate to relationships.
   filter(!word1 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word) %>%
   filter(!word2 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word)  %>% 
   mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
   mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
   count(word1, word2, sort = TRUE) 
-long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word1 == "like" & !long_bigrams_female$word2 %in% keep_female),]
-long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word2 == "like" & !long_bigrams_female$word1 %in% keep_female),]
+#remove the irrelevant words that are paired with "like"
+black_long_bigrams_female <- black_long_bigrams_female[!(black_long_bigrams_female$word1 == "like" & !black_long_bigrams_female$word2 %in% keep_female),]
+black_long_bigrams_female <- black_long_bigrams_female[!(black_long_bigrams_female$word2 == "like" & !black_long_bigrams_female$word1 %in% keep_female),]
 
-visualize_bigrams(long_bigrams_female, "Black Soldiers' Long Response - Female Words Bigrams")
+visualize_bigrams(black_long_bigrams_female, "Black Soldiers' Long Response - Female Words Bigrams")
 ```
 
 
 
 
 create coocurrance of same data
-```{r}
-long_fem_co <- cooccur_gender(S32N_long, female_match, n=5, corr=.12)
-long_fem_co <- long_fem_co[!(long_fem_co$item1 == "like" & !long_fem_co$item2 %in% keep_female),]
-long_fem_co <- long_fem_co[!(long_fem_co$item2 == "like" & !long_fem_co$item1 %in% keep_female),]
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
+female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
 
-visualize_cooccur(long_fem_co, "Female related co-occurrences for long Black soldiers' responses")
+black_long_fem_co <- cooccur_gender(S32N_long, female_words$gender, n=5, corr=.12)
+black_long_fem_co <- black_long_fem_co[!(black_long_fem_co$item1 == "like" & !black_long_fem_co$item2 %in% keep_female),]
+black_long_fem_co <- black_long_fem_co[!(black_long_fem_co$item2 == "like" & !black_long_fem_co$item1 %in% keep_female),]
+black_long_fem_co <- black_long_fem_co[black_long_fem_co$item2 != "p.",]
+
+visualize_cooccur(black_long_fem_co, "Female related co-occurrences for long Black soldiers' responses")
 ```
 
 One of the strongest correlations are between negrowoman and negroman as well as negroman and whitewoman. This is indicative that interracial relations are one the most heavily correlated topics to women in the Black soldiers' responses. 
@@ -585,7 +625,7 @@ In addition, mother, sister and father have some of the strongest correlations, 
 
 ### long - White
 
-```{r}
+```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
 keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "white", "negro"))
@@ -594,7 +634,7 @@ keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "whit
 S32W_long <- data %>% select(racial_group,long) %>% filter(!is.na(long), racial_group == "white")
 S32W_long <- tibble(nrow=1:nrow(S32W_long), text = S32W_long$long)
 
-long_bigrams_female <- S32W_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+white_long_bigrams_female <- S32W_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
   count(bigram, sort =TRUE) %>% filter(grepl(female_match, bigram)) %>%
   separate(bigram, c("word1", "word2"), sep = " ") %>%
   filter(!word1 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word) %>%
@@ -602,21 +642,24 @@ long_bigrams_female <- S32W_long %>% unnest_tokens(bigram, text, token = "ngrams
   mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
   mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
   count(word1, word2, sort = TRUE) 
-long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word1 == "like" & !long_bigrams_female$word2 %in% keep_female),]
-long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word2 == "like" & !long_bigrams_female$word1 %in% keep_female),]
+white_long_bigrams_female <- white_long_bigrams_female[!(white_long_bigrams_female$word1 == "like" & !white_long_bigrams_female$word2 %in% keep_female),]
+white_long_bigrams_female <- white_long_bigrams_female[!(white_long_bigrams_female$word2 == "like" & !white_long_bigrams_female$word1 %in% keep_female),]
 
-visualize_bigrams(long_bigrams_female, "White Soldiers' Long Response - Female Words Bigrams")
+visualize_bigrams(white_long_bigrams_female, "White Soldiers' Long Response - Female Words Bigrams")
 ```
 
 We see a complete lack of narrative in black women specifically. Conversations about women are mostly about their role in the family as a mother, wife or sister. Another common conversation is about working women, with pairings to WAAC, auxiliary (referring to WAAC) and worker.
 
 
-```{r}
-long_fem_co <- cooccur_gender(S32W_long, female_match, n=5, corr=.15)
-long_fem_co <- long_fem_co[!(long_fem_co$item1 == "like" & !long_fem_co$item2 %in% keep_female),]
-long_fem_co <- long_fem_co[!(long_fem_co$item2 == "like" & !long_fem_co$item1 %in% keep_female),]
+```{r echo= FALSE, warning=FALSE, message=FALSE}
+female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
+female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
 
-visualize_cooccur(long_fem_co, "Female related co-occurrences for long White soldiers' responses")
+white_long_fem_co <- cooccur_gender(S32W_long, female_words$gender, n=5, corr=.15)
+white_long_fem_co <- white_long_fem_co[!(white_long_fem_co$item1 == "like" & !white_long_fem_co$item2 %in% keep_female),]
+white_long_fem_co <- white_long_fem_co[!(white_long_fem_co$item2 == "like" & !white_long_fem_co$item1 %in% keep_female),]
+
+visualize_cooccur(white_long_fem_co, "Female related co-occurrences for long White soldiers' responses")
 ```
 
 
@@ -647,11 +690,11 @@ visualize_bigrams(short_bigrams_female, "Soldiers' Short Response - Female Words
 
 
 ```{r}
-short_fem_co <- cooccur_gender(S32_short, female_match, n=5, corr=.12)
+short_fem_co <- cooccur_gender(S32_short, female_words$gender, n=5, corr=.12)
 short_fem_co <- short_fem_co[!(short_fem_co$item1 == "like" & !short_fem_co$item2 %in% keep_female),]
 short_fem_co <- short_fem_co[!(short_fem_co$item2 == "like" & !short_fem_co$item1 %in% keep_female),]
 
-visualize_cooccur(long_fem_co, "Female related co-occurrences for short soldier response")
+visualize_cooccur(short_fem_co, "Female related co-occurrences for short soldier response")
 ```
 
 
