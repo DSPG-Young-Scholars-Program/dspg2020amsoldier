@@ -27,6 +27,7 @@ library(here)
 library(wordcloud)
 library(SnowballC)
 library(igraph)
+library(ggraph)
 ```
 
 ```{r, include=FALSE}
@@ -242,7 +243,7 @@ radar2(s32_female_sentiments,
        title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Women");
 ```
 
-```{r}
+```{r, fig.align='center', echo=FALSE}
 gender_words <- fread("~/git/dspg2020amsoldier/data/dictionary/gender.csv", sep = ",") 
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
