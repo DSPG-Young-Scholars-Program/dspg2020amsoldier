@@ -17,26 +17,6 @@ dates <- read_csv(here::here("src", "timeline", "dates.csv"))
 bars = c(10, 20, 30)
 ```
 
-```{d3 data=bars, options=list(color= 'orange' ), out.width="100%"}
-transformedData = data.map(function(d) {
-  return d * 10;
-});
-
-function draw() {
- var height = 2;
-svg.selectAll('rect')
-  .data(data)
-  .enter()
-    .append('rect')
-      .attr('width', function(d) { return d * 10; })
-      .attr('height', '20px')
-      .attr('y', function(d, i) { return i * 22; })
-      .attr('fill', options.color);
-};
-draw();
-
-```
-
 ```{d3 data=dates, out.width="100%"}
 
 # width, var provided as the width of the container
@@ -45,7 +25,7 @@ draw();
 var vw = width;
 var vh = height;
 
-var minDate, maxDate;
+var minDate, maxDate, xScale, xAxis, drawArea;
 var startX = 0;
         
 var margin = {
@@ -106,7 +86,7 @@ function draw() {
   drawArea = svg.append('g')
       .attr('clip-path', 'url(#clip)');
   drawBaseLines();
-  connectToBaseLines(xScale);
+  # connectToBaseLines(xScale);
   
   # var zoom = d3.zoom()
   #     .scaleExtent([.5, 20])
@@ -117,12 +97,12 @@ function draw() {
   # drawWW2Box(xScale);
   # drawLegend();
   
-  drawArea.append('rect')
-      .attr('width', draw_width)
-      .attr('height', draw_height)
-      .style('fill', 'none')
-      .style('pointer-events', 'all')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`)
+  # drawArea.append('rect')
+  #     .attr('width', draw_width)
+  #     .attr('height', draw_height)
+  #     .style('fill', 'none')
+  #     .style('pointer-events', 'all')
+  #     .attr('transform', `translate(${margin.left}, ${margin.top})`)
       # .call(zoom);
   
   # drawCircles();
@@ -151,8 +131,11 @@ function drawBaseLines() {
     # append civil rights base line to chart
     drawArea.append('path')
         .attr("d", cvPath)
-        .attr("class", "groupLine cvLine");
-    
+        .attr("fill", "none")
+        .attr("opacity", 0.8)
+        .attr("stroke-width", 5)
+        .attr("stroke", "blue");
+        
     # draw military base line
     var miStart = [margin.left, mi_Y];
     var miEnd = [draw_width - margin.right, mi_Y];
@@ -162,41 +145,44 @@ function drawBaseLines() {
     # append military base line to chart
     drawArea.append('path')
         .attr("d", miPath)
-        .attr("class", "groupLine miLine");
+        .attr("fill", "none")
+        .attr("opacity", 0.8)
+        .attr("stroke-width", 5)
+        .attr("stroke", "red");
 }
 
-function connectToBaseLines(scale) {
-    var connectionOffset = 0;
-    var lineGenerator = d3.line().curve(d3.curveCatmullRom);
-    data.forEach(d => {
-        var group = d['Group'];
-        if (group === groups.INTERSECTION) {
-            var eventX = scale(new Date(d["Date"]));
-
-            # connect to cv line
-            var cvConnectionPoints = [
-                [eventX - connectionOffset, cv_Y],
-                [eventX - connectionOffset/2, cv_Y + 10],
-                [eventX, in_Y]
-            ];
-            var cvConnectionPath = lineGenerator(cvConnectionPoints);
-            drawArea.append('path')
-                .attr("d", cvConnectionPath)
-                .attr("class", "groupLine cvConnectionLine");
-
-            # connect to mi line
-            var miConnectionPoints = [
-                [eventX - connectionOffset, mi_Y],
-                [eventX - connectionOffset/2, mi_Y - 10],
-                [eventX, in_Y]
-            ];
-            var miConnectionPath = lineGenerator(miConnectionPoints);
-            drawArea.append('path')
-                .attr("d", miConnectionPath)
-                .attr("class", "groupLine miConnectionLine");
-        }
-    });
-}
+# function connectToBaseLines(scale) {
+#     var connectionOffset = 0;
+#     var lineGenerator = d3.line().curve(d3.curveCatmullRom);
+#     data.forEach(d => {
+#         var group = d['Group'];
+#         if (group === groups.INTERSECTION) {
+#             var eventX = scale(new Date(d["Date"]));
+# 
+#             # connect to cv line
+#             var cvConnectionPoints = [
+#                 [eventX - connectionOffset, cv_Y],
+#                 [eventX - connectionOffset/2, cv_Y + 10],
+#                 [eventX, in_Y]
+#             ];
+#             var cvConnectionPath = lineGenerator(cvConnectionPoints);
+#             drawArea.append('path')
+#                 .attr("d", cvConnectionPath)
+#                 .attr("class", "groupLine cvConnectionLine");
+# 
+#             # connect to mi line
+#             var miConnectionPoints = [
+#                 [eventX - connectionOffset, mi_Y],
+#                 [eventX - connectionOffset/2, mi_Y - 10],
+#                 [eventX, in_Y]
+#             ];
+#             var miConnectionPath = lineGenerator(miConnectionPoints);
+#             drawArea.append('path')
+#                 .attr("d", miConnectionPath)
+#                 .attr("class", "groupLine miConnectionLine");
+#         }
+#     });
+# }
 
 draw();
 ```
