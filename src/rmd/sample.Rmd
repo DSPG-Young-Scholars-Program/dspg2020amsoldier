@@ -1,0 +1,56 @@
+---
+title: "Sample"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Why we care about this topic and what we would like to learn
+
+# Exploratory Data Analysis
+
+```{r eda, echo=FALSE}
+
+```
+
+## Differences in Sets - Non-Stemmed with Sentiment
+
+## Differences in Sets - Stemmed
+
+# Sentiment Analysis
+
+```{r sent, echo=FALSE}
+
+```
+
+## Differences in Sets - Non-Stemmed with Sentiment
+
+# Social Network Analysis
+
+```{r sna, echo=FALSE}
+
+```
+
+overall networks
+
+## Social Networks with Unionized Terminology
+
+## Identifying Topics
+
+```{r topic, echo=FALSE}
+
+```
+
+networks in the context of networks
+
+# Conclusion
+
+what we learned, why it matters

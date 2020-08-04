@@ -1,0 +1,1800 @@
+---
+title: "Overall Comparisons of White & Black Soldiers"
+description: "This page provides comparisons of Survey 32."
+tags: ["R", "EDA", "race relations"]
+weight: 1
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = F, fig.width = 8, fig.height = 6)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) ;
+
+library(stringi)
+library(data.table)
+library(tidyverse)
+library(tidytext)
+library(textstem)
+library(readxl)
+library(SnowballC)
+library(rvest)
+library(tm)
+library(topicmodels)
+library(tidyr)
+library(textdata)
+library(wordcloud)
+library(RColorBrewer)
+library(igraph)
+library(ggraph)
+library(widyr)
+library(stringr)
+library(networkD3)
+library(RColorBrewer)
+library(usmap) 
+library(viridis)
+library(ggplot2)
+library(BTM)
+library(udpipe)
+library(networkD3)
+library(topicmodels)
+library(concaveman)
+library(textplot)
+library(stopwords)
+library(dplyr)
+# to install ggradar, run the line commented out below
+#devtools::install_github("ricardo-bion/ggradar", dependencies = TRUE)
+#library(ggradar)
+library(tibble)
+library(scales)
+library(fmsb)
+library(sentimentr)
+library(syn)
+
+data(stop_words)
+colors <- c("#e57200", "#232d4b")
+collapse <- fread("/sfs/qumulo/qhome/kb7hp/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",")
+#collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",")
+collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
+#replace with collapsed words
+source(here::here("src", "load_data.R"))
+source(here::here("src", "sentiment_analysis.R"))
+source(here::here("src", "word_selection.R"))
+
+data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse_union, vectorize_all = FALSE)
+data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse_union, vectorize_all = FALSE)
+
+S32N <- filter(data, racial_group == "black")
+S32W <- filter(data, racial_group == "white")
+
+text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment, outfits = S32W$outfits) #Written response to "should soldiers be in separate outfits?"
+text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long) #Written response on overall thoughts on the survey
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long)
+```
+```{r useful functions, echo = F, message=F, warning=F, include = F}
+remove_words <- function(text, words) {
+  pattern <- paste(words, collapse = "|");
+  text <- str_replace_all(text, pattern, "");
+  return(text);
+}
+
+get_nrc_sentiments <- function(data) {
+  # tokenize and join with nrc sentiment lexicon
+  tokens <- data %>%
+    unnest_tokens(word, text) %>%
+    inner_join(get_sentiments("nrc"));
+
+  # compute sentiments
+  sentiments <- tokens %>%
+    group_by(index, racial_group, response_type, outfits, sentiment) %>%
+    count() %>%
+    spread(sentiment, n, fill = 0);
+ 
+   # normalize sentiments
+  sentiments <- sentiments %>%
+    mutate(word_count = anger + anticipation + disgust + fear + joy + negative + positive + sadness + surprise + trust) %>%
+    filter(word_count > 0) %>%
+    mutate(anger = anger / word_count,
+           anticipation = anticipation / word_count,
+           disgust = disgust / word_count,
+           fear = fear / word_count,
+           joy = joy / word_count,
+           negative = negative / word_count,
+           positive = positive / word_count,
+           sadness = sadness / word_count,
+           surprise = surprise / word_count,
+           trust = trust / word_count);
+  return(sentiments);
+};
+
+radar <- function(sentiments, race, res_type) {
+  group_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == race & response_type == res_type) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+group_mean_melted <- melt(group_mean)
+plot_data <- rbind(rep(max(group_mean_melted$value), 10), rep(min(group_mean_melted$value), 10), group_mean);
+
+radarchart(plot_data,
+           cglcol = "grey",
+           cglty = 1);
+}
+
+radar2 <- function(sentiments, group1, group2, title = "Sentiment Analysis Results") {
+  group1_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == group1[1] & response_type == group1[2]) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+  
+  group2_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == group2[1] & response_type == group2[2]) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+  
+  # combine repsonses
+  groups <- rbind(group1_mean, group2_mean)
+  rownames(groups) <- c(group1[3], group2[3])
+  
+  # get min and max for plotting
+  groups_melted <- melt(groups)
+  minval <- min(groups_melted$value)
+  maxval <- max(groups_melted$value)
+  
+  plot_data <- rbind(rep(maxval, 10), rep(minval, 10), groups)
+  
+  colors <- c("#e57200", "#232d4b")
+  
+  radarchart(plot_data,
+             cglcol = "grey", # color of net
+             cglty = 1, # net line type
+             pcol = colors, # line color
+             cglwd = 1, # net width,
+             plwd = 3, # line width
+             plty = 1, # plot line type
+  )
+  legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+  title(main = title);
+}
+```
+
+# Approach
+
+Why we care about this topic and what we would like to learn. Also explain you are using EDA 
+
+```{r functions, include = F, echo=FALSE, message=FALSE, warning=FALSE}
+# modifies the survey data to factor the multiple choice responses into interpretable variables
+string ="01. US UNSPECIFIED 02. FOREIGN ALLY 11. MAINE 12. NEW HAMPSHIRE 13. VERMONT 14. MASSACHUSETTS 15. RHODE ISLAND 16. CONNECTICUT 21. NEW YORK 22. NEW JERSEY 23. PENNSYLVANIA 31. OHIO 32. INDIANA 33. ILLINOIS 34. MICHIGAN 35. WISCONSIN 41. MINNESOTA 42. IOWA 43. MISSOURI 44. NORTH DAKOTA 45. SOUTH DAKOTA 46. NEBRASKA 47. KANSAS 51. DELAWARE 52. MARYLAND 53. DC. 54. VIRGINIA 55. WEST VIRGINIA 56. NORTH CAROLINA 57. SOUTH CAROLINA 58. GEORGIA 59. FLORIDA 61. KENTUCKY 62. TENNESSEE 63. ALABAMA 64. MISSISSIPPI 71. ARKANSAS 72. LOUISIANA 73. OKLAHOMA 74. TEXAS 81. MONTANA 82. IDAHO 83. WYOMING 84. COLORADO 85. NEW MEXICO 86. ARIZONA 87. UTAH 88. NEVADA 91. WASHINGTON 92. OREGON 93. CALIFORNIA 00. NA"
+
+state_codes = unlist(stri_extract_all_regex(string, "[:digit:]+"))
+state = unlist(stri_extract_all_regex(string, "[:alpha:]+.[:alpha:]+|NA|DC"))
+
+add_demographic_factors = function(df){
+  if (length(df) == 130){
+    df$age= factor(df$`Q.1.`,
+                             levels = c(0:7),
+                labels = c(NA, "<=19", "20", "21-24","25-27","28-29","30-34","35+"))
+    df$edu = factor(df$`Q.2.`,
+                 levels = c(0:10),
+                 labels = c(NA,"< 4TH GRADE","4TH GRADE", "5TH GRADE", "6TH GRADE",
+                            "7TH GRADE", "8TH GRADE", "SOME HIGH/TRADE SCHOOL",
+                            "HIGH SCHOOL", "SOME COLLEGE",
+                            "COLLEGE"))
+    df$enlist = factor(df$`Q.3.`,
+                 levels = c(0:3),
+                 labels = c(NA, "DRAFTED","VOLUNTEERED", "NATIONAL GUARD"))
+    df$post_war_rights = factor(df$Q.44.,
+                            levels = c(0:4),
+                            labels = c(NA, 'More Rights', 'Less Rights', 'Same Rights', 'Undecided' ))
+    df$black_rights_should = factor(df$Q.58.,
+                                levels = c(0:5),
+                                labels = c(NA,"More","Less","No Change","Undecided",NA)) 
+    df$black_rights_will = factor(df$Q.57.,
+                             levels = c(0:5),
+                             labels = c(NA,"More","Less","No Change","Undecided",NA))    
+    df$outfits = factor(df$Q.63.,
+                     levels = c( 0:5),
+                     labels = c(NA , "Seperated", "Together",
+                                "Doesn't Matter", "Undecided", NA))
+    df$pxs = factor(df$Q.60.,
+                levels = c(0:4),
+                labels = c(NA, "Good Idea", "Bad Idea", "Undecided", NA))
+    
+    df$serviceclubs = factor(df$Q.62.,
+                    levels = c(0:4),
+                    labels = c(NA, "Good Idea", "Bad Idea", "Undecided", NA))    
+    
+    df$state = factor(df$Q.13.,
+                   levels = state_codes,
+                   labels = state)
+    df$community = factor(df$Q.14.,
+                       levels = c(0:5),
+                       labels = c(NA,"Farm", "Small Town", "Town" ,"City", "Large City"))
+  }
+  else if (length(df) == 151){
+    df$age= factor(df$R11,
+                levels = c(0:7),
+                labels = c(NA,"<=19", "20", "21-24","25-27","28-29","30-34","35+"))
+    df$edu = factor(df$R12,
+                 levels = c(0:10),
+                 labels = c(NA, "< 4TH GRADE","4TH GRADE", "5TH GRADE", "6TH GRADE",
+                            "7TH GRADE", "8TH GRADE", "SOME HIGH/TRADE SCHOOL",
+                            "HIGH SCHOOL", "SOME COLLEGE",
+                            "COLLEGE"))
+    df$enlist = factor(df$R14,
+                    levels = c(0:3),
+                    labels = c(NA,"DRAFTED","VOLUNTEERED", "NATIONAL GUARD" ))
+    df$post_war_rights = factor(df$R97,
+                                levels = c(0:4),
+                                labels = c(NA, 'More Rights', 'Less Rights', 'Same Rights', 'Undecided' ))
+    df$black_treatment = factor(df$R104,
+                                levels = c(0:5),
+                                labels = c(NA, "Better", "Same", "Worse","Undecided",NA))
+    df$black_rights_will = factor(df$R108,
+                             levels = c(0:5),
+                             labels = c(NA,"More","Less","No Change","Undecided",NA))
+    df$outfits = factor(df$R134,
+                     levels = c( 0:5),
+                     labels = c("NA" , "Seperated", "Together",
+                                "Doesn't Matter", "Undecided", NA))
+    df$pxs = factor(df$R129,
+                    levels = c(0:3),
+                    labels = c(NA, "Good Idea", "Bad Idea", "Undecided"))
+    df$serviceclubs = factor(df$R132,
+                    levels = c(0:4),
+                    labels = c(NA, "Good Idea", "Bad Idea", "Undecided", NA))
+    df$state = factor(df$R47,
+                   levels = state_codes,
+                   labels = state)
+    df$community = factor(df$R48,
+                       levels = c(0:5),
+                       labels = c(NA,"Farm", "Small Town", "Town" ,"City", "Large City"))
+  }
+  return(df)
+}
+```
+
+```{r reading, include= F, echo=FALSE, message=FALSE, warning=FALSE}
+w_ans = read_xlsx(here::here('data',"AMS032W_answers.xlsx")) %>% as.data.frame() %>% add_demographic_factors()
+b_ans = read_xlsx(here::here('data',"AMS032N_answers.xlsx")) %>% as.data.frame() %>% add_demographic_factors()
+w_ans$race = "White"; b_ans$race = "Black"
+#tidifying the dataset
+ans = w_ans[, (ncol(w_ans)-11):ncol(w_ans)] %>% full_join(b_ans[, (ncol(b_ans)-11):ncol(b_ans)])
+my_cols = c("232d4b","2c4f6b","0e879c","60999a", "9bc0c0","d1e0bf", "ebf094", "d9e12b","e6ce3a","e6a01d","e57200","a35200","fdfdfd")
+my_cols = paste0('#', my_cols)
+```
+
+## Who Are the Soldiers?
+
+Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits. Our questions of interest are regarding age, education, enlistment, state, community type, and of course their opinions on outfits. On the survey these questions were asked in Questions 1,2,3,13,14, and 77 (63 for white soldiers), respectively. We also looked at questions regarding what their thoughts were about the future and how black rights and treatment will change after the war. 
+
+### Age
+Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+w_ans %>% 
+  count(age, sort =T) %>% 
+  na.omit() %>% 
+  left_join(b_ans %>% count(age, sort =T) %>% na.omit(),by = "age") %>%
+  melt(id.vars= "age") %>%
+  ggplot(aes(fill=variable)) +
+  geom_bar(aes(reorder(age,value),value), stat='identity', position='dodge')+
+  labs(title='Age Groups of Soldiers', x="Age Groups", y = "Count")+
+  scale_fill_manual(values =  c(my_cols[10], my_cols[4]), name = 'Race', labels = c("White", "Black"))
+```
+
+### Education
+If we look at education now we see that again black soldiers have little spread in their education. Remarkably, all of the black soldiers survied have less than a 5th grade education at the time. Meanwhile, the bulk of the white soldiers have had a high school/some high school. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+w_ans %>% 
+  count(edu, sort =T) %>% 
+  na.omit() %>% 
+  left_join(b_ans %>% count(edu, sort =T) %>% na.omit(),by = "edu") %>%
+  melt(id.vars= "edu") %>%
+  ggplot(aes(fill=variable)) +
+  geom_bar(aes(reorder(edu,value),value), stat='identity', position='dodge')+
+  labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values =  c(my_cols[10], my_cols[4]), name = 'Race', labels = c("White", "Black"))
+```
+
+When we overlay the distribution of education levels with age ranges, we see that older white soldiers made up a larger porportion of white soldiers with less education compared to soldiers with some high school. As a contingent, it appears that soldiers between 21 and 24 with a high school education make up the largest contingent of white white soldiers when grouped by education and age. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ans %>%
+ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:7]))
+```
+
+### Enlistment
+Something interesting arises here were we find that vast majority of the black soldiers actually volunteered to join the military whereas about 3/4 of the survied white soldiers were drafted and the remaining soldiers were mostly volunteers and a few were from the National Guard.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+w_ans %>% 
+  count(enlist, sort =T) %>% 
+  na.omit() %>% 
+  left_join(b_ans %>% count(enlist, sort =T) %>% na.omit(),by = "enlist") %>%
+  melt(id.vars= "enlist") %>%
+  ggplot(aes(fill=variable)) +
+  geom_bar(aes(reorder(enlist,value),value), stat='identity', position='dodge')+
+  labs(title='How Soldiers were Enlisted', x="Enlistment", y = "Count")+
+  scale_fill_manual(values =  c(my_cols[10], my_cols[4]), name = 'Race', labels = c("White", "Black"))
+
+```
+
+### Location
+Expectedly, most of the soldiers hailed from the most populous states at the time. White soldiers were mostly from Illionois, Pennsylvania, Ney York, Texas, and Michigan while black soldiers were mostly from Texas, New York, Illinois, Pennsylvania, and Ohio. Note that the top 4 states for white soldiers had similar amounts of soldiers but there was a sever drop off in representation of black soldiers from other states after Texas and New York.  
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+b_ans %>% 
+  count(state, sort =T) %>% 
+  na.omit() %>% 
+  left_join(w_ans %>% count(state, sort =T) %>% na.omit(),by = "state") %>%
+  melt(id.vars= "state") %>%
+  ggplot() +
+  geom_bar(aes(reorder(state,value),value, fill = variable), stat='identity', position='dodge')+
+  facet_grid(cols = vars(variable))+
+  scale_fill_manual(values =  c(my_cols[4], my_cols[10]), name = 'Race', labels = c("Black", "White"))+
+  labs(title="Where are the Soldiers from", x="State", y = "Count") +
+  coord_flip()+
+  theme(strip.text.x = element_blank())
+
+w_state <- w_ans %>%
+  group_by(state) %>%
+  summarise (n = n()) %>%
+  mutate(freq = n / sum(n))
+plot_usmap(data = w_state, values = "freq", regions = "state") + 
+  labs(title = "Heat Map of Relative Frequency of White US Soldiers by State") + 
+  scale_fill_continuous(low = "white", high = "#E6A01D", name = "Frequency", label = scales::comma) +
+  theme(legend.position = "right")
+b_state <- b_ans %>%
+  group_by(state) %>%
+  summarise (n = n()) %>%
+  mutate(freq = n / sum(n))
+plot_usmap(data = b_state, values = "freq", regions = "state") + 
+  labs(title = "Heat Map of Relative Frequency of Black US Soldiers by State") + 
+  scale_fill_continuous(low = "white", high = "#60999A", name = "Frequency", label = scales::comma) +
+  theme(legend.position = "right")
+```
+
+### Communities
+As expected, most soldiers whose home communities are large cities had the most representation across both groups. White soldiers saw roughly equal representation from soldiers who came from a farm, town, or city with actually slightly less people from cities. On the otherhand, the next community with the largest representation for black soldiers was a city followed by farms and towns which had approximately similar contributions. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ans %>% group_by(race) %>% count(community) %>% na.omit() %>%
+  ggplot() +
+  geom_bar(aes(reorder(community,n),n, fill = race), stat='identity', position='dodge')+
+  facet_grid(rows = vars(race))+
+  labs(title='Community Type of Soldiers', x="Community", y = "Count")+
+  scale_fill_manual(values =  c(my_cols[4], my_cols[10]), guide=FALSE)
+```
+
+We see that larger portions of soldiers who are more educated come from communities which are larger in population.
+
+```{r, education+community, echo=FALSE, message=FALSE, warning=FALSE}
+ans %>%
+ggplot( aes(x=edu, fill = community)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Community Distribution over Education Levels of Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:7]))
+```
+
+### Integrating Outfits
+Our key variable of interest from this survey is the soldiers opinions on integrating their outfits. Expectedly, we see the vast majority of white soldiers are against integrating however the black soldeirs seem to be divided on whether they want integration or not. They are rougly evenly split on keeping outfits seperated and integrating them and a good amount are also undecided or indifferent. 
+```{r outfits, echo=FALSE, message=FALSE, warning=FALSE}
+ans %>% filter(outfits!="NA") %>%
+  ggplot(aes(x=outfits, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle("Soldiers' Opinions on Outfits")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values =  c(my_cols[4], my_cols[10]), guide=FALSE)
+```
+
+If we look at the proportion of ages who elected for each category we see that the proportions are relatively stable across all opinions towards integration.
+
+```{r, outfits+age , echo=FALSE, message=FALSE, warning=FALSE}
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = age)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Age Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  scale_fill_manual(values = rev(my_cols[1:7]))
+```
+
+Now if we are to overlay the education distribution over the integration opinions we see something more interesting. It appears that the white soldiers that voted for the outfits to be together skew towards being more educated. In fact, over 50% of the soldiers who did vote for integrated units have atleast finished high school. This is not the case for any of the other responses. 
+
+```{r, outfits + edu, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = edu)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Education Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:10]))
+```
+
+Across both races we also see that of those who choose integration a greater portion were from large cities and soldiers who came from more populated voted for sepration less proportionally. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ans %>% filter(outfits!="NA") %>%
+ggplot( aes(x=outfits, fill = community)) +geom_bar(position= "fill") +
+  facet_grid(rows = vars(race), scales="free_y")+
+  labs(title="Community Type Distribution over Integration of Outfits Opinions", x="Opinion", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:5]))
+```
+
+### Thoughts on the future
+The majority of the white soldiers believed that their rights will not change after the war and roughly equal amoutns thought they would increase or decrease. About 40% of the black soldiers thought their rights would increase following the war. A slightly smaller amount expected no change at all. Interestingly, the black soldiers answers to whether black people will have more rights after the war was nearly identical, but now there are more white soldiers who think black people will get more rights. The majority of black soldiers thought that after the war white people would treat them the same but about 30% were optimistic that they'd recieve better treatment. Interestingly,
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+ans %>% 
+  ggplot(aes(x=post_war_rights, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle("Soldiers' Opinions on If They Will Have More Rights After the War")+
+  scale_fill_manual(values = c(my_cols[4], my_cols[10]), name = 'Race', guide = F)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(x="Rights After the War", y = "Prop") 
+
+ans %>% 
+  ggplot(aes(x=black_rights_will, fill = race)) +geom_bar(aes(y = ..prop.., group = 1)) +
+  facet_grid(~race)+
+  ggtitle("Soldiers' Opinions on If Blacks Will Have More Rights After the War")+
+  scale_fill_manual(values = c(my_cols[4], my_cols[10]), name = 'Race', guide = F)+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(x="Rights After the War", y = "Prop") 
+
+b_ans %>%
+  ggplot(aes(black_treatment))+
+  geom_bar(aes(y = ..prop.., group = 1), fill = my_cols[4])+
+  labs(x="Treatment by White People", y = "Prop", title = 'Black Soldiers Opinions on Post-War Treatment by White People ') 
+```
+
+## Unique Terms
+When we are completing analysis on two different groups of people's textual data something we have been curious about is the unique words each group uses. So, for example, there are terms black soldiers use that white soldiers do not and what is the frequency of those words. In the following section we report differences in unique words and their frequencies in long responses and in short responses across our four samples of interest: black soldiers, white soldiers, pro-segregation white soldiers, and anti-segregation white soldiers.
+
+### Long Responses
+The following sub-section reports differences across black and white soldiers' long responses. We include word clouds to better visualize unique terms.
+
+```{r stem sets, echo=FALSE, message=FALSE, warning=FALSE}
+word_counts <- s32 %>%
+  filter(response_type == "long") %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(racial_group, response_type, word) %>%
+  count() %>%
+  arrange(desc(n))
+
+black_words <- word_counts %>% filter(racial_group == "black")
+white_words <- word_counts %>% filter(racial_group == "white")
+unique_black_words <- anti_join(black_words, white_words, by = "word")
+unique_white_words <- anti_join(white_words, black_words, by = "word")
+
+word_totals <- word_counts %>%
+  group_by(racial_group) %>%
+  summarize(sum = sum(n))
+
+word_props <- word_counts %>%
+  inner_join(word_totals) %>%
+  mutate(prop = n / sum) %>%
+  arrange(desc(prop))
+
+black_props <- word_props %>%
+  ungroup() %>%
+  filter(racial_group == "black") %>%
+  rename(black_prop = prop) %>%
+  select(c("word", "black_prop"))
+
+white_props <- word_props %>%
+  ungroup() %>%
+  filter(racial_group == "white") %>%
+  rename(white_prop = prop) %>%
+  select(c("word", "white_prop"))
+
+word_props_joined <- full_join(black_props, white_props, by = "word") %>%
+  replace_na(replace = list(black_props = 0, white_props = 0))
+
+word_props_joined$rel_prop <- abs(word_props_joined$black_prop - word_props_joined$white_prop)
+word_props_final <- word_props_joined %>% arrange(desc(rel_prop))
+
+# unique word frequency plots
+
+unique_black_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Unique Words in Black Soldiers' Long Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()
+
+unique_white_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Unique Words in White Soldiers' Long Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()
+
+# word clouds
+white_props %>%
+  with(wordcloud(word, white_prop, max.words = 20))
+
+black_props %>%
+  with(wordcloud(word, black_prop, max.words = 20))
+```
+
+### Short Responses
+The following sub-section reports differences across pro-segregation and anti-segregation white soldiers' short responses. We include word clouds to better visualize unique terms.
+
+```{r stemmed seg int, echo = FALSE, message=FALSE, warning=FALSE}
+word_counts_short <- s32 %>%
+  filter(response_type == "short") %>%
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(racial_group, response_type, word, outfits) %>%
+  filter(outfits == "['They should be in separate outfits']" | outfits == "['They should be together in the same outfits']") %>%
+  count() %>%
+  arrange(desc(n))
+
+seg_words <- word_counts_short %>% filter(outfits == "['They should be in separate outfits']")
+int_words <- word_counts_short %>% filter(outfits == "['They should be together in the same outfits']")
+unique_seg_words <- anti_join(seg_words, int_words, by = "word")
+unique_int_words <- anti_join(int_words, seg_words, by = "word")
+
+word_totals_short <- word_counts_short %>%
+  group_by(outfits) %>%
+  summarize(sum = sum(n))
+
+word_props_short <- word_counts_short %>%
+  inner_join(word_totals_short) %>%
+  mutate(prop = n / sum) %>%
+  arrange(desc(prop))
+
+seg_props <- word_props_short %>%
+  ungroup() %>%
+  filter(outfits == "['They should be in separate outfits']") %>%
+  rename(seg_prop = prop) %>%
+  select(c("word", "seg_prop"))
+
+int_props <- word_props_short %>%
+  ungroup() %>%
+  filter(outfits == "['They should be together in the same outfits']") %>%
+  rename(int_prop = prop) %>%
+  select(c("word", "int_prop"))
+
+word_props_short_joined <- full_join(seg_props, int_props, by = "word") %>%
+  replace_na(replace = list(seg_props = 0, int_props = 0))
+
+word_props_short_joined$rel_prop <- abs(word_props_short_joined$seg_prop - word_props_short_joined$int_prop)
+word_props_final_short <- word_props_short_joined %>% arrange(desc(rel_prop))
+
+# unique word frequency plots
+
+unique_seg_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Unique Words in Pro-Segregation White Soldiers' Short Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()
+
+unique_int_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(4, n) %>%
+  ggplot(., aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Frequency of Unique Words in Anti-Segregation White Soldiers' Short Responses",
+       x = "Word",
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  coord_flip()
+
+# word clouds
+seg_props %>%
+  with(wordcloud(word, seg_prop, max.words = 20))
+
+int_props %>%
+  with(wordcloud(word, int_prop, max.words = 20))
+```
+
+# Sentiment Analysis
+
+## Removing Racially-Biased Words
+
+Words referring to race are biased within the sentiment libraries. For example, within the NRC lexicon, "black" and "negro" are associated with the negative and sadness sentiments, while "white" is associated with the anticipation, joy, positive, and trust sentiments.
+
+```{r, echo=FALSE}
+nrc_sentiments <- get_sentiments("nrc");
+biased_words <- nrc_sentiments %>% filter(word == "black" | word == "negro" | word == "white")
+knitr::kable(biased_words)
+```
+
+These words are removed from the text before sentiments are analyzed to remove racial bias.
+
+```{r, include=FALSE}
+words <- c("white", "black", "negro");
+s32$text <- remove_words(s32$text, words);
+```
+
+## NRC Lexicon
+
+The NRC lexicon uses a dictionary to associates a word with the following sentiments: positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust. The sentiment of a body of text equals the number of words contributing to that sentiment. A word may contribute to multiple sentiments, yet each word is weighted equally in its contribution.
+
+```{r, include=FALSE}
+# read in the data
+# data <- read.csv("../../data/s32_neg_bigrams_removed.csv") %>% subset(select = -c(X));
+data <- data.table::copy(s32);
+```
+
+```{r, include=FALSE}
+nrc_sentiments <- get_sentiments("nrc")
+
+# compute sentiments for each response
+tmp <- data %>% 
+  unnest_tokens(word, text) %>%
+  inner_join(nrc_sentiments)
+```
+
+```{r echo=FALSE}
+# not used rn but probably should
+plot_words <- function(sentiment) {
+  plot_data <- tmp %>%
+  filter(sentiment == sentiment) %>%
+  count(word, sort = TRUE) %>%
+  top_n(10)
+  
+  # use to set order of words
+  plot_data$word <- factor(plot_data$word, levels = plot_data$word)
+  plot_data %>%
+    ggplot(., aes(x = word, y = n)) +
+    geom_bar(stat = "identity")
+}
+```
+
+### What words primarily contribute to each sentiment?
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "positive") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Positive Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "negative") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Negative Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "joy") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Joy Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "fear") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Fear Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "disgust") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Disgust Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "anticipation") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Anticipation Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "anger") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Anger Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "trust") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Trust Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "surprise") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Surprise Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+```{r echo=FALSE, fig.align='center'}
+tmp %>%
+  filter(sentiment == "sadness") %>%
+  count(word, sort = TRUE) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) + 
+    labs(title = "Top 10 Words Contributing to Sadness Sentiment", 
+         x = "Word", 
+         y = "Frequency") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+### Exploring different sentiment distributions across groups.
+
+```{r, include=FALSE}
+sentiments <- tmp %>% 
+  group_by(index, racial_group, response_type, outfits, sentiment) %>% 
+  count() %>%
+  spread(sentiment, n, fill = 0)
+
+# normalize sentiments by the number of words contributing to that sentiment
+sentiments <- sentiments %>% 
+  mutate(word_count = anger + anticipation + disgust + fear + joy + negative + positive + sadness + surprise + trust) %>%
+  filter(word_count > 0) %>%
+  mutate(anger = anger / word_count,
+            anticipation = anticipation / word_count,
+            disgust = disgust / word_count,
+            fear = fear / word_count,
+            joy = joy / word_count,
+            negative = negative / word_count,
+            positive = positive / word_count,
+            sadness = sadness / word_count,
+            surprise = surprise / word_count,
+            trust = trust / word_count)
+```
+
+```{r, include=FALSE}
+# black, long reponse
+black_long_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == "black" & response_type == "long") %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean);
+```
+
+```{r, include=FALSE}
+white_long_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == "white" & response_type == "long") %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean);
+```
+
+```{r, fig.align='center', echo=FALSE}
+black_long <- copy(black_long_mean)
+white_long <- copy(white_long_mean)
+
+# combine repsonses
+long <- rbind(black_long, white_long)
+rownames(long) <- c("black", "white")
+
+# get min and max for plotting
+long_melted <- melt(long)
+minval <- min(long_melted$value)
+maxval <- max(long_melted$value)
+
+plot_data <- rbind(rep(maxval, 10), rep(minval, 10), long)
+
+colors <- c("#e57200", "#232d4b")
+
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+title(main = "Average Sentiments for Black and\n White Soliders' Long Response");
+```
+
+Since black and white soliders are largely dicussing similar topics related to the war there isn't much difference between the distribution of average sentiments. However, black soliders tend to be more angry, more fearful, and less positive in their responses than white soldiers.
+
+```{r, fig.align='center', echo=FALSE}
+# against desegregation
+ws_against <- sentiments %>%
+  filter(racial_group == "white" & response_type == "short") %>%
+  filter(outfits == "['They should be in separate outfits']")
+
+# for desegregation
+ws_for <- sentiments %>%
+  filter(racial_group == "white" & response_type == "short") %>% 
+  filter(outfits == "['They should be together in the same outfits']")
+
+against_mean <- dplyr::as_data_frame(ws_against) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+for_mean <- dplyr::as_data_frame(ws_for) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+comb <- rbind(against_mean, for_mean)
+rownames(comb) <- c("pro-segregation", "pro-integration")
+
+# get min and max for plotting
+comb_melted <- melt(comb)
+minval <- min(comb_melted$value)
+maxval <- max(comb_melted$value)
+
+plot_data <- rbind(rep(maxval, 10), rep(minval, 10), comb)
+
+colors <- c("#e57200", "#232d4b")
+
+radarchart(plot_data,
+           cglcol = "grey",
+           cglty = 1,
+           pcol = colors,
+           plty = 1, 
+           plwd = 3, # line width
+);
+
+legend(x = 1, y = 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors);
+title(main = "Average Sentiments for Pro-Segregation and\nPro-Integration White Soliders' Outfits Comment");
+```
+
+In their responses to whether army outfits should be integrated, white soldiers who thought the outfits should remain segregated tended to show more anger and anticipation in their repsonses. Perhaps unexpectedly, white soldiers in favor of desegregating outfits were signficantly more fearful. Also, it's important to note that a very small percentage of soldiers were in favor of desegregating outfits, so the average sentiments are more sensitive to small changes in a single repsonse.
+
+## Unique Terms
+
+Since Survey 32 is generally about the war and experience within the military, many soldiers write about the same topics and use the same words, which adds noise and makes it harder to differentiate the sentiment distribution between different groups. In this section, we look at words that are used uniquely by certain groups.
+
+The wordclouds below show the words used uniquely by black and white soldiers, in orange and navy blue, respectively.
+
+
+```{r, include=FALSE}
+tot_black_words <- sum(unique_black_words$n)
+tot_white_words <- sum(unique_white_words$n)
+
+unique_black_words <- unique_black_words %>% mutate(prop = n / tot_black_words)
+unique_white_words <- unique_white_words %>% mutate(prop = n / tot_white_words)
+
+unique_black_words$color <- rep(colors[1], nrow(unique_black_words))
+unique_white_words$color <- rep(colors[2], nrow(unique_white_words))
+
+unique_seg_words$color <- rep(colors[1], nrow(unique_seg_words))
+unique_int_words$color <- rep(colors[2], nrow(unique_int_words))
+
+unique_words <- rbind(unique_black_words, unique_white_words) %>% 
+  arrange(desc(prop)) %>%
+  mutate(n = n / 10)
+```
+
+
+```{r, fig.align='center', include=FALSE}
+unique_black_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) +
+    labs(title = "Frequency for Unique Words in Black Soldiers' Long Response",
+         x = "Word", 
+         y = "Frequency") + 
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+  
+```
+
+
+```{r, fig.show='hold', fig.height=8, out.width="50%", echo=FALSE}
+
+unique_black_words %>% with(wordcloud(word, n, random.order = FALSE, colors=unique_black_words$color, max.words = 20, ordered.colors = TRUE))
+
+unique_white_words %>% with(wordcloud(word, n, random.order = FALSE, colors = unique_white_words$color, max.words = 20, ordered.colors = TRUE))
+```
+
+
+```{r, fig.align='center', include=FALSE}
+unique_white_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[2]) + 
+    labs(title = "Frequency for Unique Words in White Soldiers' Long Response",
+         x = "Word", 
+         y = "Frequency") + 
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+
+```{r, fig.align='center', echo=FALSE, include=FALSE}
+unique_seg_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[1]) +
+    labs(title = "Frequency for Unique Words in Pro-Segregation Soldiers' Outift Response",
+         x = "Word", 
+         y = "Frequency") + 
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+
+What words are used uniquely across opinion on outfit integration? The wordclouds below show the words used uniquely by pro-segregation and pro-integration white soldiers, in orange and navy blue, respectively.
+
+```{r, fig.height=8, out.width="50%", echo=FALSE}
+unique_seg_words %>% with(wordcloud(word, n, random.order = FALSE, colors = unique_seg_words$color, max.words = 20, ordered.colors = TRUE))
+
+unique_int_words %>% with(wordcloud(word, n, min.freq=1, random.order = FALSE, colors = unique_int_words$color, max.words = 21, ordered.colors = TRUE))
+```
+
+
+```{r, fig.align='center', echo=FALSE, include=FALSE}
+unique_int_words %>%
+  as.data.frame(.) %>%
+  arrange(desc(n)) %>%
+  mutate(word = factor(word, levels = word)) %>%
+  top_n(10, n) %>%
+  ggplot(., aes(x = word, y = n)) + 
+    geom_bar(stat = "identity", fill = colors[2]) +
+    labs(title = "Frequency for Unique Words in Pro-Integration Soldiers' Outift Response",
+         x = "Word", 
+         y = "Frequency") + 
+      theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+```
+
+
+```{r, fig.align='center', echo=FALSE}
+group1_mean <- unique_black_words_sentiments
+group2_mean <- unique_white_words_sentiments
+
+# combine repsonses
+groups <- rbind(group1_mean, group2_mean)
+rownames(groups) <- c("black", "white")
+
+# get min and max for plotting
+groups_melted <- melt(groups)
+minval <- min(groups_melted$value)
+maxval <- max(groups_melted$value)
+
+plot_data <- rbind(rep(maxval, 10), rep(minval, 10), groups)
+
+colors <- c("#e57200", "#232d4b")
+
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+title(main = "Sentiment Distribution of Words Used\nUniquely by Black and White Soldiers");
+```
+
+
+This plot was created from the words used uniquely by each group, so the words used to evaluate sentiment for black soldiers were never used by white soldiers and vice versa. The unique words of black soldiers corresponded with more fear, disgust, anger, and sadness than those of white soldiers. 
+
+
+```{r, fig.align='center', echo=FALSE}
+group1_mean <- unique_seg_words_sentiments
+group2_mean <- unique_int_words_sentiments
+
+# combine repsonses
+groups <- rbind(group1_mean, group2_mean)
+rownames(groups) <- c("pro-segregation", "pro-integration")
+
+# get min and max for plotting
+groups_melted <- melt(groups)
+minval <- min(groups_melted$value)
+maxval <- max(groups_melted$value)
+
+plot_data <- rbind(rep(maxval, 10), rep(minval, 10), groups)
+
+colors <- c("#e57200", "#232d4b")
+
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+title(main = "Sentiment Distribution of Words Used\nUniquely by Pro-Integration and Pro-Segregation Soldiers");
+```
+
+This plot reveals an interestig pattern because it is perhaps unexpected that pro-segregation white soldiers would be more trusting, more positive, and less fearful than pro-integration white soldiers. It is important to remember however that such a small percentage of white soldiers supported desegregation, so the average is easily influenced by a single response. The spike in fear by pro-integration soliders is very peculiar, and should be looked into more deeply.
+
+![](img.png){width=400px}
+
+
+```{r, fig.align='center', echo=FALSE}
+
+# word_props_final %>%
+#   arrange(signed_prop) %>%
+#   mutate(word = factor(word, levels = word)) %>%
+#   as.data.frame(.) %>%
+#   top_n(20, diff_prop) %>%
+#   ggplot(., aes(x = word, y = signed_prop, fill = signed_prop > 0)) +
+#     geom_bar(stat = "identity") +
+#     coord_flip() +
+#     labs(title = "Difference in Word Usage\nbetween Black and White Soldiers",
+#          x = "Word",
+#          y = "Difference in Proportion",
+#          fill = "Used More By") +
+#     scale_fill_manual(labels = c("White Soldiers", "Black Soldiers"), values = c(colors[2], colors[1]))
+
+```
+
+This plot looks at the difference in word usage between black and white soldiers. Basically, it takes the proportion the word is used by black soldiers and subtracts it by the proportion that the word is used by white soldiers. Positive values indicate words that are used more by black soldiers, while negative values indicate words that are used more by white soldiers.
+
+Arguably the most important takeaway from this chart is that black soldiers are discussing race more often than their white counterparts. For black soldiers in the military during WW2, their race was a central to their experience and was at the forefront of their minds in a way that it was not for white soldiers. 
+
+
+
+# Social Network Analysis
+
+## Gephi Networks
+```{r sna, echo=FALSE, message=FALSE, warning=FALSE}
+
+```
+
+## Social Networks with Unionized Terminology
+Something that is important to us is soldiers' dicussions of inner-outer groups of people. A way that we decided to look at that was by unionizing biterms. For example, a naive co-occurence with "black" may be "people" but we care about the dicussion of "black people" rather than just the identification of "people" as co-occurring with the word "black". To do this we complete several unionizations of biterms to create co-occurrence networks of dicussions of groups of people.
+
+### Long Responses
+We complete unionized term co-occurences and social networks using long response textual data. We separate our analysis by race and report co-occurences and co-occurence networks for both black and white soldiers.
+
+```{r unions, echo = FALSE, message=FALSE, warning=FALSE}
+row_n_words <- textn_df %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word= wordStem(word))
+
+# count words co-occuring within sections
+word_pairs_n <- row_n_words %>%
+  pairwise_count(word, section, sort = TRUE)
+
+word_cors_n <- row_n_words %>%
+  group_by(word) %>%
+  filter(n() >= 20) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(correlation > .1)
+# write.csv(word_cors_n, "clean_black_long_edge_occur.csv")
+#visualizes correlation network
+# word_cors_n %>%
+#   simpleNetwork(fontSize = 12, zoom =T)
+
+# colorman, whiteman, coloredsoldi, negrosoldi, whitesoldi
+word_cors_n %>%
+  filter(item1 %in% c("blackmal", "whitemal")) %>%
+  group_by(item1) %>%
+  filter(item2 != "blackmal") %>%
+  filter(item2 != "whitemal") %>%
+  filter(item2 != "negro") %>%
+  filter(item2 != "white") %>%
+  filter(item2 != "color") %>%
+  filter(item2 != "south") %>%
+  filter(item2 != "southern") %>%
+  top_n(6) %>%
+  ungroup() %>%
+  mutate(item2 = reorder(item2, correlation)) %>%
+  mutate(item1 = reorder(item1, correlation)) %>%
+  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = "identity", fill = "#E57200") +
+  xlab("Co-Occurring Word") +
+  facet_wrap(~ item1, scales = "free") +
+  ggtitle("Co-Occurences with Terms for Black Males and White Males \nfrom Black Soldiers' Long Responses") +
+  coord_flip() +
+  theme_minimal()
+
+set.seed(2016)
+word_cors_n %>%
+  filter(correlation > .2) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
+  geom_node_point(color = "#E57200", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  ggtitle("Co-Occurences of Words from Black Soldiers' Long \nResponses at the 15 percent Threshold") +
+  theme_void()
+
+# white long response
+row_78_words <- text78_df %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word= wordStem(word))
+
+word_pairs_78 <- row_78_words %>%
+  pairwise_count(word, section, sort = TRUE)
+
+word_cors_78 <- row_78_words %>%
+  group_by(word) %>%
+  filter(n() >= 20) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(correlation > .1)
+# write.csv(word_cors_78, "clean_white_long_edge_occur.csv")
+#visualizes correlation network
+# word_cors_78 %>%
+#   simpleNetwork(fontSize = 12, zoom =T)
+
+# whiteman,
+
+word_cors_78 %>%
+  filter(item1 %in% c("whitemal", "blackmal")) %>%
+  group_by(item1) %>%
+  filter(item2 != "blackmal") %>%
+  filter(item2 != "whitemal") %>%
+  filter(item2 != "negro") %>%
+  filter(item2 != "white") %>%
+  filter(item2 != "color") %>%
+  filter(item2 != "south") %>%
+  filter(item2 != "southern") %>%
+  top_n(6) %>%
+  ungroup() %>%
+  mutate(item2 = reorder(item2, correlation)) %>%
+  mutate(item1 = reorder(item1, correlation)) %>%
+  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = "identity", fill = "#2C4F6B") +
+  xlab("Co-Occurring Word") +
+  facet_wrap(~ item1, scales = "free") +
+  ggtitle("Co-Occurences with Terms for Black Males and White Males \nfrom White Soldiers' Long Responses") +
+  coord_flip() +
+  theme_minimal()
+
+set.seed(2016)
+word_cors_78 %>%
+  filter(correlation > .2) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
+  geom_node_point(color = "#2C4F6B", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  ggtitle("Co-Occurences of Words from White Soldiers' Long \nResponses at the 15 percent Threshold") +
+  theme_void()
+```
+
+### Short Responses
+
+We complete the same unionized-analysis above but using only short-response data from white soldiers. We are unable to get enough data to create plots for the two different groups of white soldiers: pro-segregation and anti-segregation. The following analysis reflects terms used in the entire group of white soldiers.
+
+```{r short, echo = FALSE, message=FALSE, warning=FALSE}
+
+# for v against -------------------------------------------
+# white for seg (w4)
+
+# row_w4_words <- text77_df %>%
+#   filter(outfits == "['They should be in separate outfits']") %>%
+#   mutate(section = row_number()) %>%
+#   filter(section > 0) %>%
+#   unnest_tokens(word, text) %>%
+#   filter(!word %in% stop_words$word) %>%
+#   mutate(word= textstem::lemmatize_words(word)) %>%
+#   mutate(word= wordStem(word))
+# 
+# word_pairs_w4 <- row_w4_words %>%
+#   pairwise_count(word, section, sort = TRUE)
+# 
+# word_cors_w4 <- row_w4_words %>%
+#   group_by(word) %>%
+#   filter(n() >= 20) %>%
+#   pairwise_cor(word, section, sort = TRUE)  %>%
+#   filter(correlation > 0)
+# #visualizes correlation network
+# # word_cors_w4 %>%
+# #   simpleNetwork(fontSize = 12, zoom =T)
+# 
+# # whiteman, negrosoldi
+# word_cors_w4 %>%
+#   filter(item1 %in% c("whitemal", "blackmal")) %>%
+#   group_by(item1) %>%
+#   filter(item2 != "blackmal") %>%
+#   filter(item2 != "whitemal") %>%
+#   filter(item2 != "negro") %>%
+#   filter(item2 != "white") %>%
+#   filter(item2 != "color") %>%
+#   filter(item2 != "south") %>%
+#   filter(item2 != "southern") %>%
+#   top_n(6) %>%
+#   ungroup() %>%
+#   mutate(item2 = reorder(item2, correlation)) %>%
+#   mutate(item1 = reorder(item1, correlation)) %>%
+#   ggplot(aes(item2, correlation)) +
+#   geom_bar(stat = "identity", fill = "#0E879C") +
+#   xlab("Co-Occurring Word") +
+#   facet_wrap(~ item1, scales = "free") +
+#   ggtitle("Co-Occurences with 'Negro' and 'White' from Pro-segregation White Soldier's Short Comments") +
+#   coord_flip()  +
+#   theme_minimal()
+# 
+# set.seed(2016)
+# word_cors_w4 %>%
+#   filter(correlation > .15) %>%
+#   graph_from_data_frame() %>%
+#   ggraph(layout = "fr") +
+#   geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
+#   geom_node_point(color = "#2C4F6B", size = 5) +
+#   geom_node_text(aes(label = name), repel = TRUE) +
+#   ggtitle("Co-Occurences of Words from White Soldiers' Pro-Segregation \nShort Responses at the 15 percent Threshold") +
+#   theme_void()
+# 
+# # white against segregation (wag)
+# row_wag_words <- text77_df %>%
+#   filter(outfits == "['They should be together in the same outfits']") %>%
+#   mutate(section = row_number()) %>%
+#   filter(section > 0) %>%
+#   unnest_tokens(word, text) %>%
+#   filter(!word %in% stop_words$word) %>%
+#   mutate(word= textstem::lemmatize_words(word)) %>%
+#   mutate(word= wordStem(word))
+# 
+# word_pairs_wag <- row_wag_words %>%
+#   pairwise_count(word, section, sort = TRUE)
+# 
+# word_cors_wag <- row_wag_words %>%
+#   group_by(word) %>%
+#   filter(n() >= 5) %>%
+#   pairwise_cor(word, section, sort = TRUE) %>%
+#   filter(correlation > 0)
+# #visualizes correlation network
+# # word_cors_wag %>%
+# #   simpleNetwork(fontSize = 12, zoom =T)
+# 
+# # there arent any combos
+# 
+# word_cors_wag %>%
+#   filter(item1 %in% c("whitemal", "blackmal")) %>%
+#   group_by(item1) %>%
+#   # filter(item2 != "blackmal") %>%
+#   # filter(item2 != "whitemal") %>%
+#   # filter(item2 != "negro") %>%
+#   # filter(item2 != "white") %>%
+#   # filter(item2 != "color") %>%
+#   # filter(item2 != "south") %>%
+#   # filter(item2 != "southern") %>%
+#   top_n(6) %>%
+#   ungroup() %>%
+#   mutate(item2 = reorder(item2, correlation)) %>%
+#   mutate(item1 = reorder(item1, correlation)) %>%
+#   ggplot(aes(item2, correlation)) +
+#   geom_bar(stat = "identity", fill = "#E6CE3A") +
+#   xlab("Co-Occurring Word") +
+#   facet_wrap(~ item1, scales = "free") +
+#   ggtitle("Co-Occurences with 'Negro' and 'White' from Anti-segregation White Soldier's Short Comments") +
+#   coord_flip()  +
+#   theme_minimal()
+# 
+# set.seed(2016)
+# word_cors_wag %>%
+#   filter(correlation > .15) %>%
+#   graph_from_data_frame() %>%
+#   ggraph(layout = "fr") +
+#   geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
+#   geom_node_point(color = "#E57200", size = 5) +
+#   geom_node_text(aes(label = name), repel = TRUE) +
+#   ggtitle("Co-Occurences of Words from Anti-Segregation White Soldiers' Short Responses at the 15 percent Threshold") +
+#   theme_void()
+
+row_77_words <- text77_df %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word) %>%
+  mutate(word= textstem::lemmatize_words(word)) %>%
+  mutate(word= wordStem(word))
+
+word_pairs_77 <- row_77_words %>%
+  pairwise_count(word, section, sort = TRUE)
+
+word_cors_77 <- row_77_words %>%
+  group_by(word) %>%
+  filter(n() >= 5) %>%
+  pairwise_cor(word, section, sort = TRUE)
+# write.csv(word_cors_77, "clean_white_short_occur.csv")
+#visualizes correlation network
+# word_cors_77 %>%
+#   simpleNetwork(fontSize = 12, zoom =T)
+
+word_cors_77 %>%
+  filter(item1 %in% c("blackmal", "whitemal")) %>%
+  group_by(item1) %>%
+  filter(item2 != "blackmal") %>%
+  filter(item2 != "whitemal") %>%
+  filter(item2 != "negro") %>%
+  filter(item2 != "white") %>%
+  filter(item2 != "color") %>%
+  filter(item2 != "south") %>%
+  filter(item2 != "southern") %>%
+  top_n(6) %>%
+  ungroup() %>%
+  mutate(item2 = reorder(item2, correlation)) %>%
+  mutate(item1 = reorder(item1, correlation)) %>%
+  ggplot(aes(item2, correlation)) +
+  geom_bar(stat = "identity", fill = "#E6CE3A") +
+  xlab("Co-Occurring Word") +
+  facet_wrap(~ item1, scales = "free") +
+  ggtitle("Co-Occurences with 'Negro' and 'White' from White Soldier's Short Comments") +
+  coord_flip()  +
+  theme_minimal()
+
+set.seed(2016)
+word_cors_77 %>%
+  filter(correlation > .15) %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = TRUE) +
+  geom_node_point(color = "#E6CE3A", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  ggtitle("Co-Occurences of Words from White Soldiers' Short \nResponses at the 15 percent Threshold") +
+  theme_minimal()
+```
+
+## Identifying Topics
+
+```{r, include = FALSE, echo = FALSE, message=FALSE, warning=FALSE}
+tidy_topic_probs = function(model){
+  df <- cbind(source = rownames(model$phi), model$phi)
+  rownames(df) <- 1:nrow(df)
+  df = as.data.frame(df)
+  edge_list = reshape2::melt(df, id.vars=c("source"), variable.name = "target", value.name = "weight")
+}
+
+biterms_n = read.csv(here::here("data","biterms_n.csv"))
+biterms_77 = read.csv(here::here("data","biterms_77.csv"))
+biterms_78 = read.csv(here::here("data","biterms_78.csv"))
+
+traindata_n = read.csv(here::here("data","traindata_n.csv"))
+traindata_77 = read.csv(here::here("data","traindata_77.csv"))
+traindata_78 = read.csv(here::here("data","traindata_78.csv"))
+
+row.names(traindata_n) <- traindata_n$X
+row.names(traindata_77) <- traindata_77$X
+row.names(traindata_78) <- traindata_78$X
+
+```
+
+
+```{r lda, include = FALSE, echo = FALSE, message=FALSE, warning=FALSE}
+text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment, outfits = S32W$outfits) #Written response to "should soldiers be in separate outfits?"
+text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long) #Written response on overall thoughts on the survey
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long) #Written response to "should soldiers be in separate outfits?"
+
+# laod in stop words: words without any true meaning
+data(stop_words)
+
+# Bunch of useless one word responses
+useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]","gujfujuj", "None.", "I", NA)
+
+tidy_77 <- text77_df %>%
+  filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(row) %>%
+  dplyr::count(word, sort = T) %>%
+  mutate(response = "short", race = "white")
+
+tidy_78 <- text78_df %>%
+  filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(row) %>%
+  dplyr::count(word, sort = T) %>%
+  mutate(response = "long", race = "white")
+
+tidy_n <- textn_df %>%
+  filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(row) %>%
+  dplyr::count(word, sort = T) %>%
+  mutate(response = "long", race = "black")
+
+
+# lda ---------------------------------------------------------------
+# LDA finds topics depending on the number of clusters you want
+# number of clusters we want
+
+dtm_77 <- cast_dtm(tidy_77, term = word, document = row, value = n)
+dtm_78 <- cast_dtm(tidy_78, term = word, document = row, value = n)
+dtm_n <- cast_dtm(tidy_n, term = word, document = row, value = n)
+
+num_clusters <- 6
+weight_strength = .01
+lda_77 <- LDA(dtm_77, k = num_clusters, method = "Gibbs", control = NULL)
+lda_78 <- LDA(dtm_78, k = num_clusters, method = "Gibbs", control = NULL)
+lda_n <- LDA(dtm_n, k = num_clusters, method = "Gibbs", control = NULL)
+
+# this will separate out topics and have a weighted probability
+topics_77_lda <- tidy(lda_77, matrix = "beta")
+topics_78_lda <- tidy(lda_78, matrix = "beta")
+topics_n_lda <- tidy(lda_n, matrix = "beta")
+
+#takes word topic betas and graphs them as a network
+colnames(topics_n_lda) = colnames(topics_77_lda) = colnames(topics_78_lda) =  c("source", "target", "weight")
+```
+
+## Topic Model Networks
+
+A topic model put simply models the topics in a piece of text and the words that are associated with each topic. Naturally, words may fall in multiple topics and the model accounts for this by giving each topic a probability distribution over the words. A Topic Model Network is a useful way to visualize the topics and the words associated with each topic. Here we will explore two different topic models.
+
+### Latent Dirichlet Allocation
+
+Latent Dirchlet Allocation, or LDA, is the typical go to method for topic modelling. We chose to model the texts with 6 topics. We can see that in the three networks this produces very disconnected topics which intuitively seems to be a poor fit as the corpus is rather small and the soldiers are responding to direct and specific questions. LDA does produce a better connected network for the white soldiers outfits comment but does not do a great job in delineating the topics.
+
+#### Black Soldiers Long Comment
+```{r black lda, echo = F, echo = FALSE, message=FALSE, warning=FALSE}
+edgelist_n_lda= topics_n_lda %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- paste("Topic", edgelist_n_lda$source)
+targets <- edgelist_n_lda$target
+node_names <- factor(unique(c(sort(unique(sources)), as.character(targets))))
+
+
+
+groups = edgelist_n_lda %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_n_lda$weight)
+net_n_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T)
+net_n_lda
+```
+
+#### White Soldiers Outfits Comment
+```{r 77 lda, echo = F, echo = FALSE, message=FALSE, warning=FALSE}
+edgelist_77_lda= topics_77_lda %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- paste("Topic", edgelist_77_lda$source)
+targets <- edgelist_77_lda$target
+node_names <- factor(unique(c(sort(unique(sources)), as.character(targets))))
+
+
+
+groups = edgelist_77_lda %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_77_lda$weight)
+net_77_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T)
+net_77_lda
+```
+
+#### White Soldiers Long Comment
+```{r 78 lda, echo=F, echo = FALSE, message=FALSE, warning=FALSE}
+edgelist_78_lda= topics_78_lda %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- paste("Topic", edgelist_78_lda$source)
+targets <- edgelist_78_lda$target
+node_names <- factor(unique(c(sort(unique(sources)), as.character(targets))))
+
+
+
+groups = edgelist_78_lda %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_78_lda$weight)
+net_78_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T)
+net_78_lda
+```
+
+### BTM
+
+There are some drawbacks to using LDA for our dataset, namely it doesn't handle short texts well. That is why we also implemented a [Biterm Topic Model](https://cran.r-project.org/web/packages/BTM/index.html) that does better on short texts. Overall, it seems that the topic model networks produced this way strike a better balance between effectively delineating the topics and showing interconnectivity. 
+```{r btm, include = FALSE, echo = FALSE, message=FALSE, warning=FALSE}
+
+K = 6
+modeln      <- BTM(traindata_n[-1], biterms = biterms_n[-1], k = K, iter = 2000, background = TRUE, trace = 100)
+model77     <- BTM(traindata_77[-1], biterms = biterms_77[-1], k = K, iter = 2000, background = TRUE, trace = 100)
+model78     <- BTM(traindata_78[-1], biterms = biterms_78[-1], k = K, iter = 2000, background = TRUE, trace = 100)
+```
+
+```{r, include = FALSE, echo = FALSE, message=FALSE, warning=FALSE}
+library(plyr)
+
+V = c("V2","V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10")
+topics = c("Topic 1","Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", "Topic 7", "Topic 8", "Topic 9")
+
+topics_n_btm = tidy_topic_probs(modeln)
+topics_n_btm$weight = as.numeric(topics_n_btm$weight)
+topics_n_btm$target = topics_n_btm$target %>%
+  mapvalues(from = V, to = topics)
+topics_n_btm = topics_n_btm[, c(2, 1, 3)]
+
+topics_77_btm = tidy_topic_probs(model77)
+topics_77_btm$weight = as.numeric(topics_77_btm$weight)
+topics_77_btm$target = topics_77_btm$target %>%
+  mapvalues(from = V, to = topics)
+topics_77_btm = topics_77_btm[, c(2, 1, 3)]
+
+topics_78_btm = tidy_topic_probs(model78)
+topics_78_btm$weight = as.numeric(topics_78_btm$weight)
+topics_78_btm$target = topics_78_btm$target %>%
+  mapvalues(from = V, to = topics)
+topics_78_btm = topics_78_btm[, c(2, 1, 3)]
+
+
+colnames(topics_n_btm) = colnames(topics_77_btm) = colnames(topics_78_btm) =  c("source", "target", "weight")
+```
+
+#### Black Soldiers Long Comment
+```{r black btm, echo = F, echo = FALSE, message=FALSE, warning=FALSE}
+edgelist_n_btm= topics_n_btm %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- edgelist_n_btm$source
+targets <- edgelist_n_btm$target
+node_names <- factor(unique(c(sort(unique(as.character(sources))), as.character(targets))))
+
+
+
+groups = edgelist_n_btm %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_n_btm$weight)
+net_n_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T)
+net_n_btm
+```
+
+#### White Soldiers Outfits Comment
+```{r 77 btm, echo = F, echo = FALSE, message=FALSE, warning=FALSE}
+edgelist_77_btm= topics_77_btm %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- edgelist_77_btm$source
+targets <- edgelist_77_btm$target
+node_names <- factor(unique(c(sort(unique(as.character(sources))), as.character(targets))))
+
+
+
+groups = edgelist_77_btm %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_77_btm$weight)
+net_77_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T)
+net_77_btm
+```
+
+#### White Soldiers Long Comment
+```{r 78 btm, echo = F, echo = FALSE, message=FALSE, warning=FALSE}
+edgelist_78_btm= topics_78_btm %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- edgelist_78_btm$source
+targets <- edgelist_78_btm$target
+node_names <- factor(unique(c(sort(unique(as.character(sources))), as.character(targets))))
+
+
+
+groups = edgelist_78_btm %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_78_btm$weight)
+net_78_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T)
+net_78_btm
+```
+
+```
+
+networks in the context of networks
+
+# Conclusion
+
+what we learned, why it matters

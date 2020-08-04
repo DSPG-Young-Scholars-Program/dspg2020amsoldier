@@ -1,0 +1,24 @@
+---
+output: html_document
+---
+
+
+
+<style type="text/css">
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+</style>
+<div id="project-overview" class="section level3">
+<h3>Project Overview</h3>
+<p>Our work is part of the broader <a href="https://www.zooniverse.org/projects/tkotwim/the-american-soldier/about/research">American Soldier in World War II</a> initiative, based out of Virginia Tech, striving to make available to scholars and to the public a <a href="https://catalog.archives.gov/id/2521127">remarkable collection of written reflections</a> on war and military service by American soldiers who served during the Second World War. In its efforts to mobilize, train, equip, and lead the largest fighting force in the nation's history, the US War Department created an in-house Army Research Branch (ARB) staffed and advised by the country's leading social and behavioral scientists. To help create a more efficient and effective fighting force, the Branch surveyed approximately half a million individuals over the course of the war. Tens of thousands of these men and women not only filled out the Branch's surveys, but they were eager to offer additional advice, praise, and criticism, and to share their personal stories of serving in America's &quot;citizen-soldier&quot; Army.</p>
+</div>
+<div id="project-goals" class="section level3">
+<h3>Project Goals</h3>
+<p>This project is devoted to giving the public insight into WWII survey data collected in 1943. More specifically, we are interested in exploring what the open-ended text data that was collected in these surveys can tell us about race, gender and family relations among and between Black and White soldiers. WWII changed gender and race relations in the US in transformative ways by allowing women to work outside the home (not only in war industries but also in the military) and by helping to sound the death knell for racial segregation. The DSPG project aims to analyze textual data produced as part of The American Soldier in World War II, a federally funded, multi-institutional digital history project which is designed to raise public awareness on the experiences of World War II American GIs. The project harvests data from a unique and historic collection of “attitude surveys” that were administered to hundreds of thousands of American Army troops during the war. The DSPG team analyzed soldiers’ handwritten responses by using computational text analysis and social network analysis to dive into soldiers’ attitudes about racial and ethnic relations as well as gender relations.</p>
+</div>
+<div id="our-approach" class="section level3">
+<h3>Our Approach</h3>
+<p>To analyze US soldiers' attitudes, we employed various strategies from computational text analysis and social network analysis to examine Survey 32. This is a survey that includes one multiple choice question on whether or not soldiers want separated or integrated outfits and two response questions giving space for them to extend on their multiple choice answer and their sentiments on the survey as a whole. After an initial phase of data wrangling and cleaning, we first conducted some exploratory data analysis to find out more about the backgrounds of the soldiers that completed the survey. Next, we used the <a href="https://www.tidytextmining.com/">tidytext</a>, a package available in the R open-source software environment, to conduct word frequency analyses as well as stemming and lemmatization to control for variations in the text corpus. Second, we conducted sentiment analysis to gain a better understand of what emotionally-charged words soldiers used to weigh in on racial and gender relations. Next, we used topic modeling to capture prominent themes that emerged within the survey. Lastly, we combined computational text analysis and social network analysis to identify bigram and co-occurence relations within the text, which we then graphed using the open-source software program Gephi to visualize how different terms within in the text are used together.</p>
+</div>

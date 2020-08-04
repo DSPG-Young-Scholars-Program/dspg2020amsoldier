@@ -1,0 +1,327 @@
+---
+title: "Spatial_Arrangement_Overview"
+author: "Mary Solomon"
+date: "7/28/2020"
+output: html_document
+---
+
+An aspect of racial segregation that we want to analyze is segregation related to spatial arrangement. Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century. [include more context].
+
+We are interested to see if themes of spatial segregation are prevelant in the soldiers' responses and experiences in the army during WWII.
+
+
+
+```{r setup, include=FALSE}
+#libraries
+library(tidytext)
+library(data.table)
+library("RPostgreSQL")
+library(stringi)
+library(textstem)
+library(dplyr)
+library(tidyr)
+library(SnowballC)
+library(igraph)
+library(ggraph)
+library(widyr)
+library(stringr)
+library(here)
+knitr::opts_chunk$set(fig.width=12, fig.height=8)
+```
+
+```{r functions, include = FALSE, warning=FALSE, message=FALSE}
+# Visualizing Bigrams functions
+# From tidytext documentation
+bigrams_spatial <- function(data, dictionary, count = 0)
+  data %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(dictionary, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% custom_stop) %>%
+  filter(!word2 %in% custom_stop) %>% 
+  mutate(word1 = stem_words(lemmatize_words(word1)), word2 = stem_words(lemmatize_words(word2))) %>%
+  #mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
+  count(word1, word2, sort = TRUE) %>%
+  filter(n >= count)
+
+visualize_bigrams <- function(bigrams, title) {
+  set.seed(2020)
+  a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+  
+  bigrams %>%
+    graph_from_data_frame() %>%
+    ggraph(layout = "fr") +
+    geom_edge_link(aes(edge_alpha = n), show.legend = FALSE, arrow = a) +
+    geom_node_point(color = "lightblue", size = 5) +
+    geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+    theme_void() + theme(legend.position = "none",
+                      plot.title = element_text(hjust = 0.5)) +
+    ggtitle(title)
+}
+
+cooccur_spatial <- function(data, dictionary,  n=5, corr=.15){
+  dictionary <- stem_words(lemmatize_words(dictionary))
+  data %>%
+  mutate(section = row_number()) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% custom_stop) %>%
+  mutate(word = stem_words(lemmatize_words(word))) %>%
+  group_by(word) %>% 
+  filter(n() >= n) %>%
+  pairwise_cor(word, section, sort = TRUE) %>%
+  filter(grepl(dictionary, item1))%>%
+  filter(correlation > corr) 
+}
+
+
+visualize_cooccur <- function(data, title){
+  set.seed(2020)
+  data %>%
+  graph_from_data_frame() %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
+  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_text(aes(label = name), repel = TRUE) +
+  theme_void() + ggtitle(title)
+}
+```
+
+```{r dataload, include = FALSE, warning=FALSE, message=FALSE}
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+data <- dbGetQuery(conn, "SELECT * FROM american_soldier.survey_32_clean")
+dbDisconnect(conn)
+```
+
+
+```{r include = FALSE, warning=FALSE, message=FALSE}
+#alterations to data
+##### some data cleaning
+#remove possessive 's
+data$outfits_comment <- str_replace_all(data$outfits_comment, "'s", "")
+data$long <- str_replace_all(data$long, "'s", "")
+
+data$outfits_comment <- str_replace_all(data$outfits_comment, "\\+", "and")
+data$long <- str_replace_all(data$long, "\\+", "and")
+
+# some abbreviations to fix
+data$outfits_comment <- str_replace_all(data$outfits_comment, "\\bm.p\\b", "mp")
+data$long <- str_replace_all(data$long, "\\bm.p\\b", "mp")
+data$outfits_comment <- str_replace_all(data$outfits_comment, "\\bp.x\\b", "px")
+data$long <- str_replace_all(data$long, "\\bp.x\\b", "px")
+
+#remove all symbols except periods.
+data$outfits_comment <- str_replace_all(data$outfits_comment, "[^[:alnum:][:space:].]", "")
+data$long <- str_replace_all(data$long, "[^[:alnum:][:space:].]", "")
+
+
+####collapse certain two word phrases like white man --> whiteman
+#read the csv file of correct spellings back in.
+collapse <- fread(here("/data/dictionary/collapse_words.csv"), sep = ",") # (n=274)
+collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
+
+#replace with collapsed words
+data$long <- stri_replace_all_regex(data$long, collapse$original, collapse$collapse, vectorize_all = FALSE)
+data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, collapse$original, collapse$collapse, vectorize_all = FALSE)
+#remove these words: 
+word_remove = c("question", "questionnaire", "answer")
+data$long <- stri_replace_all_regex(data$long, word_remove, "", vectorize_all = FALSE)
+data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, word_remove, "", vectorize_all = FALSE)
+```
+
+
+```{r dictionaryload, include = FALSE, warning=FALSE, message=FALSE}
+#load dictionary csv
+spatial_words <- fread(here("/data/dictionary/spatial_arrangement.csv"), sep = ",") 
+space_match <- paste(paste("\\b", spatial_words$space,"\\b", sep = ""), collapse="|") #regex friendly
+
+
+#### create custom stop words 
+stop_words <- stop_words %>% filter(word != " no" & word != "with" & word != "cannot" & word != "not"& 
+                                      word != "different"& word != "differently" & word !="against"& word !="same"
+                                    & word !="between"& word !="together"& word !="apart"& word !="place"& word !="places") # 
+custom_stop <- append(stop_words$word, c("question", "questionnaire", "answer"))
+
+
+#### words to keep with train
+keep_space <- c(collapse$collapse, spatial_words$space, "soldier", "with")
+```
+
+
+```{r data_subset, include = FALSE, warning=FALSE, message=FALSE}
+#try removing stop words before everthing....
+# data$long <- stri_replace_all_regex(data$long, paste("\\b", custom_stop,"\\b", sep = ""), "", vectorize_all = FALSE)
+# data$outfits_comment <- stri_replace_all_regex(data$outfits_comment, paste("\\b", custom_stop,"\\b", sep = ""), "", vectorize_all = FALSE)
+
+
+#subset data based on question and race
+S32W_short <- data %>% filter(racial_group== "white") %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
+S32W_short <- tibble(nrow=1:nrow(S32W_short), text = S32W_short$outfits_comment)
+
+segregation <- filter(data, outfits == "['They should be in separate outfits']")
+integration  <- filter(data, outfits == "['They should be together in the same outfits']")
+segregation_short <- segregation %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
+seg_short <- tibble(nrow=1:nrow(segregation_short), text = segregation_short$outfits_comment)
+integration_short <- integration %>% select(outfits_comment) %>% filter(!is.na(outfits_comment))
+int_short <- tibble(nrow=1:nrow(integration_short), text = integration_short$outfits_comment)
+
+
+S32W_long <- data %>% filter(racial_group== "white") %>% select(long) %>% filter(!is.na(long))
+S32W_long <- tibble(nrow=1:nrow(S32W_long), text = S32W_long$long)
+
+S32N_long <- data %>% filter(racial_group== "black") %>% select(long) %>% filter(!is.na(long))
+S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
+
+```
+
+
+### Black versus white Long question
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+black_long_bigrams <- bigrams_spatial(S32N_long, space_match, count = 2)
+visualize_bigrams(black_long_bigrams, "Black soldiers' long response - spatial arrangement bigrams")
+```
+
+When Black soldiers are talking about spatial arrangements, we see that there's a greater amount of commentary from black soldiers than white soldiers (below). 
+
+Seating arrangements pop up in conversation with bigrams of "set seat", "front seat" as well as "cafe sit". 
+
+Furthermore, spatial arrangements in which the Black soldiers talk about in regards to integration include camp, living, eating, px, service club, barrack and theater. All of these words are paired with words such as "mix", "together", "same", "separate", and "individual."    
+
+
+
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+white_long_bigrams <- bigrams_spatial(S32W_long, space_match, count = 2)
+visualize_bigrams(white_long_bigrams, "Black Soldiers' Long Response - Spatial Arrangement Bigrams")
+```
+
+The white soldiers also have commentary on the integration in regards to spatial arrangement in the army. We see that they want separate messhalls, and to not eat or live with the Black soldiers. However, we also see words such as "with", "same" and "together". Perhaps some white soldiers were okay with integration, but without context we cannot tell if those bigrams are also associated with some negations.    
+
+
+
+
+# Co-occurrences for spatial arrangement words.
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+black_long_cors <- cooccur_spatial(S32N_long, space_match, n = 5, corr = 0.15) 
+black_long_cors <- black_long_cors[!(black_long_cors$item1 == "train" & !black_long_cors$item2 %in% keep_space),]
+black_long_cors <- black_long_cors[!(black_long_cors$item2 == "train" & !black_long_cors$item1 %in% keep_space),]
+
+#plot
+visualize_cooccur(black_long_cors, "Black Soldiers' Long Response - Spatial Arrangement Co-occurrences")
+```
+   
+   
+   
+
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+white_long_cors <- cooccur_spatial(S32W_long, space_match, n = 5, corr = .15) 
+white_long_cors <- white_long_cors[!(white_long_cors$item1 == "train" & !white_long_cors$item2 %in% keep_space),]
+white_long_cors <- white_long_cors[!(white_long_cors$item2 == "train" & !white_long_cors$item1 %in% keep_space),]
+
+#plot
+visualize_cooccur(white_long_cors, "Pro Integration Short Response - Spatial Arrangement Co-occurrences")
+```
+
+
+
+### Pro segregation vs Pro integration Outfits question
+
+Bigrams white soldiers who were pro segregation.
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+seg_short_bigrams <- bigrams_spatial(seg_short, space_match)
+visualize_bigrams(seg_short_bigrams, "Pro Segregation Short Response - Spatial Arrangement Bigrams")
+```
+
+    
+    
+bigrams of white soldiers who were pro integration.
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+int_short_bigrams <-   int_short %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(space_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% custom_stop) %>%
+  filter(!word2 %in% custom_stop) %>% 
+  mutate(word1 = stem_words(lemmatize_words(word1)), word2 = stem_words(lemmatize_words(word2))) %>%
+  #mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>% 
+  count(word1, word2, sort = TRUE)
+visualize_bigrams(int_short_bigrams, "Pro Integration Short Response - Spatial Arrangement Bigrams")
+```
+
+There are very few bigrams due to a relatively small dictionary and low volume of responses (under 100). However, we can see that the soldiers wanted different messhalls, barracks and separate px's despite wanting to integrate outfits. There is also commentary on sharing the same barracks, but due to the nature of bigrams, there is a possibility there was negative commentary on this pair of words.     
+
+
+
+
+
+Co-ocurrences for pro segregationists
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+seg_short_cors <- cooccur_spatial(seg_short, space_match, n = 2, corr = .10) 
+seg_short_cors <- seg_short_cors[!(seg_short_cors$item1 == "train" & !seg_short_cors$item2 %in% keep_space),]
+seg_short_cors <- seg_short_cors[!(seg_short_cors$item2 == "train" & !seg_short_cors$item1 %in% keep_space),]
+
+
+#plot
+visualize_cooccur(seg_short_cors, "Pro Segregation Short Response - Spatial Arrangement Co-occurrences")
+```
+
+    
+    
+    
+Bigrams of pro integrationists.
+```{r echo = FALSE, warning=FALSE, message=FALSE}
+int_short_cors <- cooccur_spatial(int_short, space_match, n = 0, corr = 0) 
+int_short_cors <- int_short_cors[!(int_short_cors$item1 == "train" & !int_short_cors$item2 %in% keep_space),]
+int_short_cors <- int_short_cors[!(int_short_cors$item2 == "train" & !int_short_cors$item1 %in% keep_space),]
+
+#plot
+visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arrangement Co-occurrences")
+```
+
+Although there were white soldiers who supported integration of army outfits, there was still clear commentary that the soldiers should not be sharing the space in living arrangements or social spaces. An interesting observation is that persons of other ethnicities are associated with living. 
+
+
+
+```{r edgelists}
+####bigrams black long
+edgelist_S32N_long_bigrams_spatial <- black_long_bigrams %>% 
+  rename(source=word1,target = word2, weight=n)
+fwrite(edgelist_S32N_long_bigrams_spatial, here("/data/edgelist_S32N_long_bigrams_spatial.csv"))
+####bigrams white long
+edgelist_S32W_long_bigrams_spatial <- white_long_bigrams %>% 
+  rename(source=word1,target = word2, weight=n)
+fwrite(edgelist_S32W_long_bigrams_spatial, here("/data/edgelist_S32W_long_bigrams_spatial.csv"))
+
+
+
+#cooccurrence black long
+edgelist_S32N_long_cooccur_spatial <- black_long_cors %>% 
+  rename(source=item1,target = item2, weight=correlation)
+fwrite(edgelist_S32N_long_cooccur_spatial, here("/data/edgelist_S32N_long_cooccur_spatial.csv"))
+####bigrams white long
+edgelist_S32W_long_cooccur_spatial <- white_long_cors %>% 
+  rename(source=item1,target = item2, weight=correlation)
+fwrite(edgelist_S32W_long_cooccur_spatial, here("/data/edgelist_S32W_long_cooccur_spatial.csv"))
+
+
+
+## bigram segregation short
+edgelist_seg_short_bigrams <- seg_short_bigrams %>% rename(source=word1,target = word2, weight=n)
+fwrite(edgelist_seg_short_bigrams, here("/data/edgelist_seg_short_bigrams_spatial.csv"))
+## bigram integration short
+edgelist_int_short_bigrams <- int_short_bigrams %>% rename(source=word1,target = word2, weight=n)
+fwrite(edgelist_int_short_bigrams, here("/data/edgelist_int_short_bigrams_spatial.csv"))
+
+## cooccur segregation short
+edgelist_seg_short_cooccur <- seg_short_cors %>%rename(source=item1,target = item2, weight=correlation)
+fwrite(edgelist_seg_short_cooccur, here("/data/edgelist_seg_short_cooccur_spatial.csv"))
+## cooccur integration short
+edgelist_int_short_cooccur <- int_short_cors %>%  rename(source=item1,target = item2, weight=correlation)
+fwrite(edgelist_int_short_cooccur, here("/data/edgelist_int_short_cooccur_spatial.csv"))
+```
+
