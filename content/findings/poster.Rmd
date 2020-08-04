@@ -11,14 +11,166 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE);
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) ;
+# load necessary libraries
+library(tidytext)
+library(ggplot2)
+# to install ggradar, run the line commented out below
+# devtools::install_github("ricardo-bion/ggradar", dependencies = TRUE)
+library(ggradar)
+library(tibble)
+library(scales)
+library(fmsb)
+library(data.table)
+library(tidyverse)
+library(here)
+library(wordcloud)
+library(SnowballC)
+library(igraph)
+```
 
+```{r, include=FALSE}
+source(here::here("src", "load_data.R"));
+source(here::here("src", "sentiment_analysis.R"));
+source(here::here("src", "word_selection.R"))
+
+colors <- c("#e57200", "#232d4b");
 ```
 
 ```{css, echo=FALSE}
 /* this chunk of code centers all of the headings */
 h1, h2, h3 {
   text-align: center;
+}
+```
+
+```{r, include=FALSE}
+remove_words <- function(text, words) {
+  pattern <- paste(words, collapse = "|");
+  text <- str_replace_all(text, pattern, "");
+  return(text);
+}
+
+get_nrc_sentiments <- function(data) {
+  # tokenize and join with nrc sentiment lexicon
+  tokens <- data %>%
+    unnest_tokens(word, text) %>%
+    inner_join(get_sentiments("nrc"));
+
+  # compute sentiments
+  sentiments <- tokens %>%
+    group_by(index, racial_group, response_type, outfits, sentiment) %>%
+    count() %>%
+    spread(sentiment, n, fill = 0);
+ 
+   # normalize sentiments
+  sentiments <- sentiments %>%
+    mutate(word_count = anger + anticipation + disgust + fear + joy + negative + positive + sadness + surprise + trust) %>%
+    filter(word_count > 0) %>%
+    mutate(anger = anger / word_count,
+           anticipation = anticipation / word_count,
+           disgust = disgust / word_count,
+           fear = fear / word_count,
+           joy = joy / word_count,
+           negative = negative / word_count,
+           positive = positive / word_count,
+           sadness = sadness / word_count,
+           surprise = surprise / word_count,
+           trust = trust / word_count);
+  return(sentiments);
+};
+
+radar <- function(sentiments, race, res_type) {
+  group_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == race & response_type == res_type) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+
+group_mean_melted <- melt(group_mean)
+plot_data <- rbind(rep(max(group_mean_melted$value), 10), rep(min(group_mean_melted$value), 10), group_mean);
+
+radarchart(plot_data,
+           cglcol = "grey",
+           cglty = 1);
+}
+
+radar2 <- function(sentiments, group1, group2, title = "Sentiment Analysis Results") {
+  group1_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == group1[1] & response_type == group1[2]) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+  
+  group2_mean <- dplyr::as_data_frame(sentiments) %>%
+  filter(racial_group == group2[1] & response_type == group2[2]) %>%
+  select(c("anger",
+           "anticipation",
+           "disgust",
+           "fear",
+           "joy",
+           "negative",
+           "positive",
+           "sadness",
+           "surprise",
+           "trust")) %>%
+  summarise_all(mean)
+  
+  # combine repsonses
+  groups <- rbind(group1_mean, group2_mean)
+  rownames(groups) <- c(group1[3], group2[3])
+  
+  # get min and max for plotting
+  groups_melted <- melt(groups)
+  minval <- min(groups_melted$value)
+  maxval <- max(groups_melted$value)
+  
+  plot_data <- rbind(rep(maxval, 10), rep(minval, 10), groups)
+  
+  colors <- c("#e57200", "#232d4b")
+  
+  radarchart(plot_data,
+             cglcol = "grey", # color of net
+             cglty = 1, # net line type
+             pcol = colors, # line color
+             cglwd = 1, # net width,
+             plwd = 3, # line width
+             plty = 1, # plot line type
+  )
+  legend(x= 1, y= 1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+  title(main = title);
+}
+
+visualize_bigrams <- function(bigrams, title) {
+  set.seed(2020)
+  a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+  
+  bigrams %>%
+    graph_from_data_frame() %>%
+    ggraph(layout = "fr") +
+    geom_edge_link(aes(edge_alpha = n), show.legend = FALSE, arrow = a) +
+    geom_node_point(color = "lightblue", size = 5) +
+    geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+    theme_void() + theme(legend.position = "none",
+                      plot.title = element_text(hjust = 0.5)) +
+    ggtitle(title)
 }
 ```
 
@@ -29,6 +181,90 @@ h1, h2, h3 {
 
 ### Race Relations
 
+```{r, include=FALSE}
+tot_black_words <- sum(unique_black_words$n)
+tot_white_words <- sum(unique_white_words$n)
+
+unique_black_words <- unique_black_words %>% mutate(prop = n / tot_black_words)
+unique_white_words <- unique_white_words %>% mutate(prop = n / tot_white_words)
+
+unique_black_words$color <- rep(colors[1], nrow(unique_black_words))
+unique_white_words$color <- rep(colors[2], nrow(unique_white_words))
+
+unique_seg_words$color <- rep(colors[1], nrow(unique_seg_words))
+unique_int_words$color <- rep(colors[2], nrow(unique_int_words))
+
+unique_words <- rbind(unique_black_words, unique_white_words) %>% 
+  arrange(desc(prop)) %>%
+  mutate(n = n / 10)
+```
+
+```{r, fig.show='hold', fig.height=8, out.width="50%", echo=FALSE}
+unique_black_words %>% with(wordcloud(word, n, random.order = FALSE, colors=unique_black_words$color, max.words = 20, ordered.colors = TRUE))
+
+unique_white_words %>% with(wordcloud(word, n, random.order = FALSE, colors = unique_white_words$color, max.words = 20, ordered.colors = TRUE))
+```
+
+```{r, echo=FALSE, fig.align='center'}
+group1_mean <- unique_black_words_sentiments
+group2_mean <- unique_white_words_sentiments
+
+# combine repsonses
+groups <- rbind(group1_mean, group2_mean)
+rownames(groups) <- c("black", "white")
+
+# get min and max for plotting
+groups_melted <- melt(groups)
+minval <- min(groups_melted$value)
+maxval <- max(groups_melted$value)
+
+plot_data <- rbind(rep(maxval, 10), rep(minval, 10), groups)
+
+colors <- c("#e57200", "#232d4b")
+
+radarchart(plot_data,
+           cglcol = "grey", # color of net
+           cglty = 1, # net line type
+           pcol = colors, # line color
+           cglwd = 1, # net width,
+           plwd = 3, # line width
+           plty = 1, # plot line type
+)
+legend(x=1, y=1, legend = rownames(plot_data)[-c(1,2)], bty = "n", pch = 20, col = colors );
+title(main = "Sentiment Distribution of Words Used\nUniquely by Black and White Soldiers");
+```
+
 ### Gender Relations
+
+```{r, fig.align='center', echo=FALSE}
+radar2(s32_female_sentiments,
+       group1 = c("black", "long", "black"),
+       group2 = c("white", "long", "white"), 
+       title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Women");
+```
+
+```{r}
+gender_words <- fread("~/git/dspg2020amsoldier/data/dictionary/gender.csv", sep = ",") 
+female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
+female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
+keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "white", "negro"))
+
+
+S32_long <- data %>% select(long) %>% filter(!is.na(long))
+S32_long <- tibble(nrow=1:nrow(S32_long), text = S32_long$long)
+
+long_bigrams_female <- S32_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(female_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word) %>%
+  filter(!word2 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word)  %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
+  count(word1, word2, sort = TRUE) 
+long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word1 == "like" & !long_bigrams_female$word2 %in% keep_female),]
+long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word2 == "like" & !long_bigrams_female$word1 %in% keep_female),]
+
+visualize_bigrams(long_bigrams_female, "Soldiers' Long Response - Female Words Bigrams")
+```
 
 ### Spatial Arrangement
