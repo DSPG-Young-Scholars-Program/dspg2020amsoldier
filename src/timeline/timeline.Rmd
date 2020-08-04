@@ -1,0 +1,202 @@
+---
+title: "American Soldier Timeline"
+author: "Chase Dawson"
+date: "8/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(r2d3)
+library(readr)
+```
+
+```{r}
+# load data
+dates <- read_csv(here::here("src", "timeline", "dates.csv"))
+bars = c(10, 20, 30)
+```
+
+```{d3 data=bars, options=list(color= 'orange' ), out.width="100%"}
+transformedData = data.map(function(d) {
+  return d * 10;
+});
+
+function draw() {
+ var height = 2;
+svg.selectAll('rect')
+  .data(data)
+  .enter()
+    .append('rect')
+      .attr('width', function(d) { return d * 10; })
+      .attr('height', '20px')
+      .attr('y', function(d, i) { return i * 22; })
+      .attr('fill', options.color);
+};
+draw();
+
+```
+
+```{d3 data=dates, out.width="100%"}
+
+# width, var provided as the width of the container
+# height, var provided as the height of the container
+
+var vw = width;
+var vh = height;
+
+var minDate, maxDate;
+var startX = 0;
+        
+var margin = {
+    top: 20, 
+    bottom: 20, 
+    left: 50, 
+    right: 50,
+};
+
+var draw_width = width - margin.left - margin.right - 200;
+var draw_height = height - margin.top - margin.bottom;
+
+var cv_Y = margin.top + 25;  # y value of civil rights line
+var mi_Y = draw_height - margin.bottom - 25; # y value of military line
+var in_Y = (cv_Y + mi_Y)/2; # y value of intersection line
+
+var groups = {
+    CIVIL_RIGHTS: "Civil Rights",
+    MILITARY: "Military",
+    INTERSECTION: "Intersection"
+}
+        
+function reformatData() {
+    var startDates = data.map(d => {
+        var date = new Date(d['Date']);
+        return date;
+    }); 
+
+    var endDates = data.map(d => {
+        var date = new Date(d['End']);
+        return date;
+    });
+    
+    minDate = new Date(Math.min(...startDates));
+    maxDate = new Date(Math.max(...endDates));
+}
+
+function draw() {
+  # createTooltip();
+  # createSVG();
+  reformatData();   
+  
+  # create x scale
+  xScale = d3.scaleTime()
+      .domain([minDate, maxDate])
+      .range([margin.left, draw_width - margin.right]);
+  
+  xAxis = svg.append('g')
+      .attr("transform", `translate(0, ${30})`)
+      .attr('class', 'xAxis')
+      .call(d3.axisTop(xScale));
+  
+  d3.select('.xAxis')
+      .selectAll("text")
+      .style('font-size', '20px');
+  
+  createClipPath();
+  drawArea = svg.append('g')
+      .attr('clip-path', 'url(#clip)');
+  drawBaseLines();
+  connectToBaseLines(xScale);
+  
+  # var zoom = d3.zoom()
+  #     .scaleExtent([.5, 20])
+  #     .extent([[0, 0], [draw_width, draw_height]])
+  #     .on("zoom", updateChart);
+  
+  # createWW2Box();
+  # drawWW2Box(xScale);
+  # drawLegend();
+  
+  drawArea.append('rect')
+      .attr('width', draw_width)
+      .attr('height', draw_height)
+      .style('fill', 'none')
+      .style('pointer-events', 'all')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`)
+      # .call(zoom);
+  
+  # drawCircles();
+}
+
+function createClipPath() {
+    var clip = svg.append('defs').append("SVG:clipPath")
+        .attr('id', 'clip')
+        .append('SVG:rect')
+        .attr('width', draw_width)
+        .attr('height', draw_height)
+        .attr('x', 0)
+        .attr('y', 0);
+    return clip;
+}
+
+function drawBaseLines() {
+    var baseLineGenerator = d3.line();
+    
+    # draw civil rights base line
+    var cvStart = [margin.left, cv_Y];
+    var cvEnd = [width - margin.right, cv_Y];
+    var cvBasePoints = [cvStart, cvEnd];
+    var cvPath = baseLineGenerator(cvBasePoints);
+    
+    # append civil rights base line to chart
+    drawArea.append('path')
+        .attr("d", cvPath)
+        .attr("class", "groupLine cvLine");
+    
+    # draw military base line
+    var miStart = [margin.left, mi_Y];
+    var miEnd = [draw_width - margin.right, mi_Y];
+    var miBasePoints = [miStart, miEnd];
+    var miPath = baseLineGenerator(miBasePoints);
+    
+    # append military base line to chart
+    drawArea.append('path')
+        .attr("d", miPath)
+        .attr("class", "groupLine miLine");
+}
+
+function connectToBaseLines(scale) {
+    var connectionOffset = 0;
+    var lineGenerator = d3.line().curve(d3.curveCatmullRom);
+    data.forEach(d => {
+        var group = d['Group'];
+        if (group === groups.INTERSECTION) {
+            var eventX = scale(new Date(d["Date"]));
+
+            # connect to cv line
+            var cvConnectionPoints = [
+                [eventX - connectionOffset, cv_Y],
+                [eventX - connectionOffset/2, cv_Y + 10],
+                [eventX, in_Y]
+            ];
+            var cvConnectionPath = lineGenerator(cvConnectionPoints);
+            drawArea.append('path')
+                .attr("d", cvConnectionPath)
+                .attr("class", "groupLine cvConnectionLine");
+
+            # connect to mi line
+            var miConnectionPoints = [
+                [eventX - connectionOffset, mi_Y],
+                [eventX - connectionOffset/2, mi_Y - 10],
+                [eventX, in_Y]
+            ];
+            var miConnectionPath = lineGenerator(miConnectionPoints);
+            drawArea.append('path')
+                .attr("d", miConnectionPath)
+                .attr("class", "groupLine miConnectionLine");
+        }
+    });
+}
+
+draw();
+```
