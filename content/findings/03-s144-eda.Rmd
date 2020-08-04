@@ -1,0 +1,216 @@
+---
+title: "Demographic Analyses of Black Soldiers"
+description: "This page provides some exploratory data analysis of Survey 144."
+weight: 3
+tags: ["R", "EDA", "race relations"]
+output:
+  html_document: default
+---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, fig.width = 8,fig.height = 6)
+knitr::opts_knit$set(root.dir = "/sfs/qumulo/qhome/sh5rp/git/dspg2020amsoldier")
+```
+
+```{r, include = F}
+library(tidyverse)
+library(data.table)
+library(stringi)
+library(RColorBrewer)
+library(usmap)
+library(viridis)
+```
+
+```{r functions, include = F}
+# modifies the survey data to factor the multiple choice responses into interpretable variables
+# string ="01. US UNSPECIFIED 02. FOREIGN ALLY 11. MAINE 12. NEW HAMPSHIRE 13. VERMONT 14. MASSACHUSETTS 15. RHODE ISLAND 16. CONNECTICUT 21. NEW YORK 22. NEW JERSEY 23. PENNSYLVANIA 31. OHIO 32. INDIANA 33. ILLINOIS 34. MICHIGAN 35. WISCONSIN 41. MINNESOTA 42. IOWA 43. MISSOURI 44. NORTH DAKOTA 45. SOUTH DAKOTA 46. NEBRASKA 47. KANSAS 51. DELAWARE 52. MARYLAND 53. DC. 54. VIRGINIA 55. WEST VIRGINIA 56. NORTH CAROLINA 57. SOUTH CAROLINA 58. GEORGIA 59. FLORIDA 61. KENTUCKY 62. TENNESSEE 63. ALABAMA 64. MISSISSIPPI 71. ARKANSAS 72. LOUISIANA 73. OKLAHOMA 74. TEXAS 81. MONTANA 82. IDAHO 83. WYOMING 84. COLORADO 85. NEW MEXICO 86. ARIZONA 87. UTAH 88. NEVADA 91. WASHINGTON 92. OREGON 93. CALIFORNIA 00. NA"
+# 
+# state_codes = unlist(stri_extract_all_regex(string, "[:digit:]+"))
+# state = unlist(stri_extract_all_regex(string, "[:alpha:]+.[:alpha:]+|NA|DC"))
+
+add_demographic_factors = function(df){
+  df$age= factor(df$`Q.2.`,
+                             levels = c(0:11),
+                labels = c(NA, "<=18", "19", "20","21","22","23", "24", "25", "26-29","30-34","35+"))
+  df$edu = factor(df$`Q.6.`,
+                 levels = c(0:10),
+                 labels = c(NA,"< 4TH GRADE","4TH GRADE", "5TH GRADE", "6TH GRADE",
+                            "7TH GRADE", "8TH GRADE", "SOME HIGH/TRADE SCHOOL",
+                            "HIGH SCHOOL", "SOME COLLEGE",
+                            "COLLEGE"))
+  df$enlist = factor(df$`Q.9.`,
+               levels = c(0:5),
+               labels = c(NA, "DRAFTED","VOLUNTEERED","VOLUNTEERED","NATIONAL GUARD", "RESERVES"))
+  df$state = factor(df$Q.63.,
+                 levels = c(0:12),
+                 labels = c(NA, "NEW ENGLAND", "MIDDLE ATLANTIC", "EAST NORTH ATLANTIC", "WEST NORTH ATLANTIC", "SOUTH ATLANTIC",
+                            "EAST SOUTH ATLANTIC", "WEST SOUTH ATLANTIC", "MOUNTAIN", 'PACIFIC', "FOREIGN - U.S. POSSESSIONS",
+                            "FOREIGN - NOT U.S.", "U.S. - STATE NOT SPECIFIED"))
+  df$community = factor(df$Q.10.,
+                     levels = c(0:6),
+                     labels = c(NA,"Farm", "Countryside", "Village", "Small City" ,"City", "Large City"))
+  df$better = factor(df$Q.84.,
+                     levels = c(0:4),
+                     labels = c(NA, "Better", "Same", "Worse", "Undecided"))
+  return(df)
+}
+```
+
+```{r reading, echo=FALSE, include= F}
+s144 = read.csv(here::here('data','working', "AMS0144_answers.csv")) %>% as.data.frame()
+
+demo = add_demographic_factors(s144) %>% select(age, edu, enlist, state, community,better)
+#tidifying the dataset
+# ans = w_ans[, (ncol(w_ans)-10):ncol(w_ans)] %>% full_join(b_ans[, (ncol(b_ans)-10):ncol(b_ans)])
+my_cols = c("232d4b","2c4f6b","0e879c","60999a", "9bc0c0","d1e0bf", "ebf094", "d9e12b","e6ce3a","e6a01d","e57200","a35200","fdfdfd")
+my_cols = paste0('#', my_cols)
+```
+
+### Who Are the Soldiers?
+
+Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4,678 black soldiers and focused on post-war plans and aspirations of the soldiers. We were particularly interested in how the soldiers thought their lives would be better after the war.
+
+```{r, echo=FALSE}
+#sample_n(demo,10)
+```
+
+### Age
+
+Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24. 
+
+```{r age, echo=FALSE}
+demo %>% 
+ggplot(aes(x=age)) +
+  geom_bar(position = "dodge", fill = my_cols[4]) +
+  labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count") +
+  theme_minimal()
+```
+
+### Education
+
+If we look at education we see that the majority have hade atleast some high school or trade school. This is in contrast with the black soldiers survied in S32 who only had upto a 4th grade education. Here we see the black soldiers education is distributed similarly to the white soldeir survied in S32. 
+
+```{r edu, fig.width=7, fig.height=6, echo=FALSE}
+demo %>% 
+ggplot(aes(x=edu)) +
+  geom_bar(position = "dodge", width = 0.7, fill = my_cols[4]) +
+  labs(title="Age Groups of Soldiers", x="Age Groups", y = "Count")+
+      labs(title='Education Levels of Soldiers', x="Education", y = "Count")+
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+```
+
+There are no obvious trends between education and age, but we do see that nearly 3/4 of the college educated soldiers are 25 or older which is a larger proportion than the other education levels.
+
+```{r}
+demo %>%
+ggplot( aes(x=edu, fill = age)) +geom_bar(position= "fill") +
+  theme_minimal() +
+  labs(title="Age Distribution over Education Levels of Black Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:12]))
+```
+
+### Enlistment
+
+The vast majority of the soldiers were drafted into the military with less than 1000 enlisting via other means.
+
+```{r enlist, fig.width=7, fig.height=4}
+demo %>%
+ggplot(aes(x=enlist)) +
+  theme_minimal() +
+  geom_bar(fill = my_cols[4]) +
+  labs(title='How Soldiers were Enlisted', x="Enlistment Type", y = "Count") 
+
+```
+
+### Region
+
+The survey didn't ask for the specific state a soldier was from but rather a region. It appears that most of the soldiers survied where from the East Coast with the most coming from the South Atlantic states.
+
+```{r state, fig.width =10, fig.height= 8}
+demo %>% count(state, sort =T) %>% na.omit() %>%
+ggplot() +
+  theme_minimal() +
+  geom_bar(aes(reorder(state,n),n), stat = 'identity', fill = my_cols[4])+
+  labs(title="Where the  Soldiers are from", x="Region", y = "Count") +
+  coord_flip()
+```
+
+### Community
+ 
+As expected, most soldiers whose home communities are large cities had the most representation. What suprising however is that there are more black soldiers from communities which are farms than those from the countryside or village like places.
+
+```{r community, fig.width =8, fig.height= 6}
+demo %>%
+ggplot(aes(x=community)) +
+  theme_minimal() +
+  geom_bar(fill = my_cols[4]) +
+  labs(title="Soldiers' Communities", x="Community", y = "Count") 
+```
+
+Unsurprisingly, we see that soldiers from from high population communities make up a larger portion of soldiers with higher education levels. 
+
+```{r}
+demo %>%
+ggplot( aes(x=edu, fill = community)) +geom_bar(position= "fill") +
+  theme_minimal() +
+  labs(title="Community Distribution over Education Levels of Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:6]), name = "Community")
+```
+
+We see that larger portions of soldiers who are more educated come from communities whihc are larger in population.
+
+```{r, education+community}
+demo %>%
+ggplot( aes(x=edu, fill = better)) +geom_bar(position= "fill") +
+  theme_minimal() +
+  labs(title="Community Distribution over Post-War Outlook of Soldiers", x="Education Level", y = "Proportion")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_fill_manual(values = rev(my_cols[1:6]), name  = "Outlook")
+```
+
+### Post-War Outlook 
+
+We can see that a good deal of black soldiers think that after the war, things will be better for them than before. However, about 1500 soldiers are also undecided. A significant amount also don't think anything will change or may change for the worse.
+
+```{r, fig.width =8, fig.height= 6}
+demo %>%
+ggplot(aes(x=better)) +geom_bar(fill = my_cols[4]) +
+  theme_minimal() +
+  labs(title="Black Soldiers Outlook on Post-War Life ", x="Prospects", y = "Proportion")
+
+```
+
+We also can observe that the age distribution is roughly similar along these outlooks. Interestingly, it seems that as the soldiers education level increases the less likely they are to belive things will be better for them after the war. Similarly, soldiers from more populated areas are less likely to have an optimistic outlook for life after the war.
+
+```{r}
+
+
+demo %>%
+ggplot(aes(x=better, fill = age)) +geom_bar(position = "fill") +
+  theme_minimal() +
+  labs(title='Black Soldiers Outlook on Post-War Life Proportioned by Age', x="Prospects", y = "Proportion")+
+  scale_fill_manual(values = rev(my_cols[1:12]), name = "Age Range")
+
+demo %>%
+ggplot(aes(x=better, fill = edu)) +geom_bar(position = "fill") +
+  theme_minimal() +
+  labs(title='Black Soldiers Outlook on Post-War Life \nProportion by Education', x="Education", y = "Proportion")+
+  scale_fill_manual(values = rev(my_cols[1:11]), name = "Prospects")
+
+demo %>%
+ggplot(aes(x=community, fill = better )) +geom_bar(position = "fill") +
+  theme_minimal() +
+  labs(title='Black Soldiers Outlook on Post-War Life\nProportioned by Community', x="Community", y = "Proportion")+
+      scale_fill_manual(values = rev(my_cols[1:6]), name = "Prospects") 
+```

@@ -3,43 +3,43 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/findings/eda_s32/</loc>
+    <loc>/findings/01-poster/</loc>
   </url>
   
   <url>
-    <loc>/findings/poster/</loc>
+    <loc>/findings/07-race-text-networks/</loc>
   </url>
   
   <url>
-    <loc>/findings/sent_race/</loc>
+    <loc>/findings/02-s32-eda/</loc>
   </url>
   
   <url>
-    <loc>/findings/textnet_race/</loc>
+    <loc>/findings/03-s144-eda/</loc>
   </url>
   
   <url>
-    <loc>/findings/eda_s144/</loc>
+    <loc>/findings/04-s195-eda/</loc>
   </url>
   
   <url>
-    <loc>/findings/gender_s195/</loc>
+    <loc>/findings/05-sentiment-analysis/</loc>
   </url>
   
   <url>
-    <loc>/findings/spatial_arrangement_overview/</loc>
+    <loc>/findings/06-gender-text-networks/</loc>
   </url>
   
   <url>
-    <loc>/findings/results-gender-analysis/</loc>
+    <loc>/findings/08-race-and-space/</loc>
   </url>
   
   <url>
-    <loc>/findings/topic_models/</loc>
+    <loc>/findings/09-topic-modeling/</loc>
   </url>
   
   <url>
-    <loc>/findings/project_challenges/</loc>
+    <loc>/findings/10-project-challenges/</loc>
   </url>
   
   <url>
@@ -72,10 +72,6 @@
   
   <url>
     <loc>/tags/gender/</loc>
-  </url>
-  
-  <url>
-    <loc>/tags/gender-relations/</loc>
   </url>
   
   <url>

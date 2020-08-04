@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Race &amp; Space</title>
+        <link rel="canonical" href="../../findings/08-race-and-space/">
+        <style>
+
+    html body {
+        font-family: 'Oxygen', sans-serif;
+        background-color: #FFFFFF;
+    }
+
+    :root {
+        --accent: #232D4B;
+        --border-width:  0 ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ascetic.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="../../css/main.css">
+
+
+
+
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+
+
+<script>
+$(document).ready(function(){
+    
+  var input = $('#night-mode-toggle');
+  var container = $('#bigbody');
+  var stat = $('#button-status');
+  
+  container.toggleClass(localStorage.toggled);
+  stat.bootstrapToggle(localStorage.button).change();
+  
+  input.on('click', function() {
+      if (localStorage.toggled != "-nightmode" ) {
+          container.toggleClass("-nightmode", true );
+          localStorage.toggled = "-nightmode";
+          localStorage.button = "on";
+       } else {
+          container.toggleClass("-nightmode", false );
+          localStorage.toggled = "";
+          localStorage.button = "off"
+       }
+  })
+});
+</script>
+ <meta name="generator" content="Hugo 0.74.1" />
+        <link href="" rel="alternate" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        <link href="" rel="feed" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+    <link rel="manifest" href="../../site.webmanifest">
+    <link rel="mask-icon" href="../../img/favicon/safari-pinned-tab.svg" color="#000000">
+    <link rel="shortcut icon" href="../../img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    
+    
+    
+    <meta property="og:title" content="Race &amp; Space">
+    <meta property="og:type" content="article">
+      
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:image" content="/favicon/uva-dspg-logo.jpg" >
+      
+    <meta property="description" content="This page documents our use of text analysis to examine how race relations are spatially constituted.">
+    <meta property="og:description" content="This page documents our use of text analysis to examine how race relations are spatially constituted.">
+    
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:site" content="">
+    
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body id = "bigbody">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Race &amp; Space</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="../../">Home</a></li>
+                            
+                                <li><a href="../../overview/">Overview</a></li>
+                            
+                                <li><a href="../../methods/">Data &amp; Methods</a></li>
+                            
+                                <li><a href="../../findings/">Findings</a></li>
+                            
+                                <li><a href="../../team/">Team</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program"><i class="fas fa-globe-americas"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/DSPG-Young-Scholars-Program"><i class="fab fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/UVA_BI"><i class="fab fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="mailto:gkorkmaz@virginia.edu"><i class="far fa-envelope"></i></a></li>
+                            
+                            
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+      
+      
+    
+
+    <h4><a href="../../findings/08-race-and-space/">Race &amp; Space</a></h4>
+    
+    <h5>This page documents our use of text analysis to examine how race relations are spatially constituted.</h5>
+
+    
+    
+    <a href="../../tags/r">
+        <kbd class="item-tag"> R </kbd>
+    </a>
+    
+    <a href="../../tags/bigrams">
+        <kbd class="item-tag"> bigrams </kbd>
+    </a>
+    
+    <a href="../../tags/text-networks">
+        <kbd class="item-tag"> text networks </kbd>
+    </a>
+    
+    <a href="../../tags/race-relations">
+        <kbd class="item-tag"> race relations </kbd>
+    </a>
+    
+    <a href="../../tags/space">
+        <kbd class="item-tag"> space </kbd>
+    </a>
+    
+
+</div>
+
+
+    <br> <div class="text-justify">
+<script src="../../rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="../../rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="../../rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="../../rmarkdown-libs/datatables-binding/datatables.js"></script>
+<link href="../../rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="../../rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="../../rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="../../rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="../../rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+</style>
+<p>An aspect of racial segregation that we want to analyze is segregation related to spatial arrangement. Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century.</p>
+<p>We are interested to see if themes of spatial segregation are prevelant in the soldiers' responses and experiences in the army during WWII.</p>
+<p>A dictionary of words that relate to spatial arrnagement in the context of the military during World War II was created to filter for releveant responses. We included words like &quot;bus&quot;, &quot;seat&quot;, &quot;train&quot; which in historical context were segregated spaces. Furthermore, we added military specific spaces such as &quot;barrac&quot;, &quot;px&quot;, and &quot;camp&quot;. You can view the dictionary below:</p>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","data":[["armycamp","armyexchange","barrack","barracks","bed","beds","bunkbed","bus","cafe","cafeteria","camp","depot","eat","fort","home","house","housing","latrine","live","messhall","post","postexchange","px","ride","sc","sit","seat","serviceclub","sleep","station","stationed","theater","toilet","toilets","town","train","transport"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>space<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="black-versus-white-long-question" class="section level3">
+<h3>Black versus White Long Question</h3>
+<p><img src="../../findings/08-race-and-space_files/figure-html/unnamed-chunk-3-1.png" width="1152" /></p>
+<p>When Black soldiers are talking about spatial arrangements, we see that there's a greater amount of commentary from black soldiers than white soldiers (below).</p>
+<p>Seating arrangements pop up in conversation with bigrams of &quot;set seat&quot;, &quot;front seat&quot; as well as &quot;cafe sit&quot;.</p>
+<p>Furthermore, spatial arrangements in which the Black soldiers talk about in regards to integration include camp, living, eating, px, service club, barrack and theater. All of these words are paired with words such as &quot;mix&quot;, &quot;together&quot;, &quot;same&quot;, &quot;separate&quot;, and &quot;individual.&quot;</p>
+<p><img src="../../findings/08-race-and-space_files/figure-html/unnamed-chunk-4-1.png" width="1152" /></p>
+<p>The white soldiers also have commentary on the integration in regards to spatial arrangement in the army. We see that they want separate messhalls, and to not eat or live with the Black soldiers. However, we also see words such as &quot;with&quot;, &quot;same&quot; and &quot;together&quot;. Perhaps some white soldiers were okay with integration, but without context we cannot tell if those bigrams are also associated with some negations.</p>
+</div>
+<div id="co-occurrence-networks-for-spatial-terms" class="section level3">
+<h3>Co-Occurrence Networks for Spatial Terms</h3>
+<p><img src="../../findings/08-race-and-space_files/figure-html/unnamed-chunk-5-1.png" width="1152" /></p>
+<p><img src="../../findings/08-race-and-space_files/figure-html/unnamed-chunk-6-1.png" width="1152" /></p>
+</div>
+<div id="pro-vs.-anti-integration-viewpoints" class="section level3">
+<h3>Pro vs. Anti-Integration Viewpoints</h3>
+<center>
+<div id="bigrams-of-anti-integration-white-soldiers-responses" class="section level4">
+<h4>Bigrams of Anti-Integration White Soldiers' Responses</h4>
+</center>
+<p><img src="../../findings/08-race-and-space_files/figure-html/unnamed-chunk-7-1.png" width="1152" /></p>
+<center>
+</div>
+<div id="bigrams-of-pro-integration-white-soldiers-responses" class="section level4">
+<h4>Bigrams of Pro-Integration White Soldiers' Responses</h4>
+</center>
+<p><img src="../../findings/08-race-and-space_files/figure-html/unnamed-chunk-8-1.png" width="1152" /></p>
+<p>There are very few bigrams due to a relatively small dictionary and low volume of responses (under 100). However, we can see that the soldiers wanted different messhalls, barracks and separate px's despite wanting to integrate outfits. There is also commentary on sharing the same barracks, but due to the nature of bigrams, there is a possibility there was negative commentary on this pair of words.</p>
+<center>
+</div>
+<div id="co-occurrences-of-anti-integration-short-responses" class="section level4">
+<h4>Co-occurrences of Anti-Integration Short Responses</h4>
+</center>
+<p><img src="../../findings/08-race-and-space_files/figure-html/unnamed-chunk-9-1.png" width="1152" /></p>
+<p>At the top of the network we can see a group of words that relate to the living situation in the army such as &quot;live&quot;, &quot;eat&quot;, and &quot;sleep&quot;. Many of the associated words seem to be related to the conditions of those spaces such as odor, undesir (stemmed/lemmed version of undesireable), hell and bad. These adjectives could either have been used to talk about the physical conditions of the living space or to point out adjectives describing why the white soldiers would not want to be in the same space as a Black soldier.</p>
+<p>The more obvious spatial segregation associations are words such as &quot;apart&quot;, &quot;differ&quot;, &quot;with&quot;, and &quot;same&quot; which show that the soldiers were discussing integration in relation to &quot;live&quot;, &quot;eat&quot;, and &quot;sleep&quot;.</p>
+<p>Another interesting observation is we see the word &quot;habit&quot; being correlated to the words &quot;live&quot; and &quot;eat&quot;. Some of the soldiers cited difference in habits regarding to lifestyle as a reason to stay in separate outfits.</p>
+<center>
+</div>
+<div id="co-occurrences-of-pro-integration-short-responses" class="section level4">
+<h4>Co-occurrences of Pro-Integration Short Responses</h4>
+</center>
+<p><img src="../../findings/08-race-and-space_files/figure-html/unnamed-chunk-10-1.png" width="1152" /></p>
+<p>Although there were white soldiers who supported integration of army outfits, there was still clear commentary that the soldiers should not be sharing the same space in living arrangements or social spaces. An interesting observation is that persons of other ethnicities are associated with living.</p>
+<p>An example of why Chinese and Filipino are mentioned along with live amongst the soldiers comments on integration is below:</p>
+<pre><code>## [1] &quot;i realize however that my s to the last few s are impractical because of the hostile attitude southern whites  some northern whites take toward living with negro. but if chinese or filipinos are accepted into the same ranks as the whites why not the negro.&quot;</code></pre>
+<p>They use these two demographics of people to compare integration of Black soldiers to the acceptance of integration between white men and other races.</p>
+</div>
+</div>
+</div>
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+</main>
+
+        <footer id = "bigfooter">
+            <div style = "padding:15px;">
+                <p>Powered by <a href="https://gohugo.io">Hugo</a>. Themed by <a href="https://github.com/nathancday/min_night">min_night_dspg</a>. <a href="https://biocomplexity.virginia.edu/social-decision-analytics">Website by University of Virginia Biocomplexity Institute.</a>
+                </p>
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"
+                title="Creative Commons Attribution 4.0 International license">
+                <i class="fab fa-creative-commons" aria-hidden="true"></i> Attribution 4.0 International license
+                </a>
+            </div>
+        </footer>
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', '');
+        </script>
+       
+    </body>
+
+</html>
+

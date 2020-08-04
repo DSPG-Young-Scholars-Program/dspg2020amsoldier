@@ -12,10 +12,10 @@
     
     <item>
       <title>Challenges &amp; Limitations</title>
-      <link>/findings/project_challenges/</link>
+      <link>/findings/10-project-challenges/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/project_challenges/</guid>
+      <guid>/findings/10-project-challenges/</guid>
       <description>Data Quality Working with text data is never straight forward. There are always typical text mining issues such as misspellings, punctuations, abbreviations, and so on. However, our collection of soldier commentary posed unique challenges.
 Our primary challenge was the presence of metatags within the text. Transcribers on Zooniverse were able to tag attributes of the text such as unclear writing, underlining, deletions, corrections and more. The following response is an example of these tags and how they are used in the soldiers&#39; responses.</description>
     </item>
