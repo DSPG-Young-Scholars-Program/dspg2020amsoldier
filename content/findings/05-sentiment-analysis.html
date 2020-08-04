@@ -1,0 +1,111 @@
+---
+title: "Sentiment Analysis of White & Black Soldiers"
+description: "This page provides sentiment of race relations from Survey 32."
+tags: ["R", "sentiment analysis", "race relations"]
+weight: 5
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+---
+
+
+
+<style type="text/css">
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+</style>
+<div id="sentiment-analysis" class="section level1">
+<h1>Sentiment Analysis</h1>
+<div id="removing-racially-biased-words" class="section level2">
+<h2>Removing Racially-Biased Words</h2>
+<p>Words referring to race are biased within the sentiment libraries. For example, within the NRC lexicon, &quot;black&quot; and &quot;negro&quot; are associated with the negative and sadness sentiments, while &quot;white&quot; is associated with the anticipation, joy, positive, and trust sentiments.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">word</th>
+<th align="left">sentiment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">black</td>
+<td align="left">negative</td>
+</tr>
+<tr class="even">
+<td align="left">black</td>
+<td align="left">sadness</td>
+</tr>
+<tr class="odd">
+<td align="left">negro</td>
+<td align="left">negative</td>
+</tr>
+<tr class="even">
+<td align="left">negro</td>
+<td align="left">sadness</td>
+</tr>
+<tr class="odd">
+<td align="left">white</td>
+<td align="left">anticipation</td>
+</tr>
+<tr class="even">
+<td align="left">white</td>
+<td align="left">joy</td>
+</tr>
+<tr class="odd">
+<td align="left">white</td>
+<td align="left">positive</td>
+</tr>
+<tr class="even">
+<td align="left">white</td>
+<td align="left">trust</td>
+</tr>
+</tbody>
+</table>
+<p>These words are removed from the text before sentiments are analyzed to remove racial bias.</p>
+</div>
+<div id="nrc-lexicon" class="section level2">
+<h2>NRC Lexicon</h2>
+<p>The NRC lexicon uses a dictionary to associates a word with the following sentiments: positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust. The sentiment of a body of text equals the number of words contributing to that sentiment. A word may contribute to multiple sentiments, yet each word is weighted equally in its contribution.</p>
+<div id="what-words-primarily-contribute-to-each-sentiment" class="section level3">
+<h3>What words primarily contribute to each sentiment?</h3>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-9-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-10-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-11-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-12-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-13-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-14-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="exploring-different-sentiment-distributions-across-groups." class="section level3">
+<h3>Exploring different sentiment distributions across groups.</h3>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-20-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Since black and white soliders are largely dicussing similar topics related to the war there isn't much difference between the distribution of average sentiments. However, black soliders tend to be more angry, more fearful, and less positive in their responses than white soldiers.</p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>In their responses to whether army outfits should be integrated, white soldiers who thought the outfits should remain segregated tended to show more anger and anticipation in their repsonses. Perhaps unexpectedly, white soldiers in favor of desegregating outfits were signficantly more fearful. Also, it's important to note that a very small percentage of soldiers were in favor of desegregating outfits, so the average sentiments are more sensitive to small changes in a single repsonse.</p>
+</div>
+</div>
+<div id="unique-terms" class="section level2">
+<h2>Unique Terms</h2>
+<p>Since Survey 32 is generally about the war and experience within the military, many soldiers write about the same topics and use the same words, which adds noise and makes it harder to differentiate the sentiment distribution between different groups. In this section, we look at words that are used uniquely by certain groups.</p>
+<p>The wordclouds below show the words used uniquely by black and white soldiers, in orange and navy blue, respectively.</p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-24-1.png" width="50%" /><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-24-2.png" width="50%" /></p>
+<p>What words are used uniquely across opinion on outfit integration? The wordclouds below show the words used uniquely by pro-segregation and pro-integration white soldiers, in orange and navy blue, respectively.</p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-27-1.png" width="50%" /><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-27-2.png" width="50%" /></p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>This plot was created from the words used uniquely by each group, so the words used to evaluate sentiment for black soldiers were never used by white soldiers and vice versa. The unique words of black soldiers corresponded with more fear, disgust, anger, and sadness than those of white soldiers.</p>
+<p><img src="/findings/05-sentiment-analysis_files/figure-html/unnamed-chunk-30-1.png" width="768" style="display: block; margin: auto;" /></p>
+This plot reveals an interestig pattern because it is perhaps unexpected that pro-segregation white soldiers would be more trusting, more positive, and less fearful than pro-integration white soldiers. It is important to remember however that such a small percentage of white soldiers supported desegregation, so the average is easily influenced by a single response. The spike in fear by pro-integration soliders is very peculiar, and should be looked into more deeply.
+<center>
+<img src="img.png" width="700" />
+</center>
+<p>This plot looks at the difference in word usage between black and white soldiers. Basically, it takes the proportion the word is used by black soldiers and subtracts it by the proportion that the word is used by white soldiers. Positive values indicate words that are used more by black soldiers, while negative values indicate words that are used more by white soldiers.</p>
+<p>Arguably the most important takeaway from this chart is that black soldiers are discussing race more often than their white counterparts. For black soldiers in the military during WW2, their race was a central to their experience and was at the forefront of their minds in a way that it was not for white soldiers.</p>
+</div>
+</div>

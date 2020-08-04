@@ -16,8 +16,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/01-poster/</guid>
-      <description> /* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  [not done yet] ### Overview
-Approach  Race Relations  Gender Relations  Spatial Arrangement  </description>
+      <description>/* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Overview The American Soldier project is a digital history project funded by the National Endowment of Humanities and is led by Ed Gitre of Virginia Tech. The goal of the overall project is to take a range of surveys and commentaries by WW2 soldiers and a wide range of topics from race and gender relations, career plans, thoughts on South East Asia, and much more.</description>
     </item>
     
     <item>
