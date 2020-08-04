@@ -56,15 +56,15 @@ h1, h2, h3, h4 {
 }
 
 p {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 li {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .emphasized {
-  font-size: 28px;
+  font-size: 26px;
 }
 
 ```
@@ -241,6 +241,9 @@ topics_78_btm = topics_78_btm[, c(2, 1, 3)]
 colnames(topics_n_btm) = colnames(topics_78_btm) =  c("source", "target", "weight")
 ```
 
+# American Soldier Overview
+# Project Goals
+_dspg team, sdad team, stakeholders_
 
 # Overview
 
@@ -256,8 +259,10 @@ This summer, our primary goal has been to understand and analyze
 
 using a collection surveys that discuss these issues.
 
-# Data
+_reformat this section, look at the midterm presentation_
+_insert picture of powerpoint slide to inlcude about the team_
 
+# Data & Methods 
 The surveys have been transcribed through Zooniverse, which is a crowdsourced trascription site.
 
 * Survey 32
@@ -271,6 +276,7 @@ The surveys have been transcribed through Zooniverse, which is a crowdsourced tr
         - 3,464 responses from black soldiers
         - 2,324 responses from white soldiers
         - average response length was shorter than 100 words
+_include photo to show what the survey looks like before it is transcribed_
 * Survey 144
     + post-war career plans of black soliders
     + don't have transcriptions for free form questions
@@ -279,6 +285,14 @@ The surveys have been transcribed through Zooniverse, which is a crowdsourced tr
     + don't have transcriptions for free form questions
     + question examples
         - "Is the army any place for a girl to be?" 
+        
+_methods could be the ones from the slids, very basic_
+## Summary Statistics
+_add info / stats about soceioeconomic info_
+
+## Text Cleaning
+_how many responses to we have? what is the size of the data_
+_what did we do to clean the data? how many words did we start with? how many words did we end up with after we finished cleaning?_
 
 # Methods
 
@@ -309,6 +323,9 @@ These three tools help us glean insights into the feelings of soldiers, the freq
 * anti-segregation white soldier's short responses. 
 
 ## Race Relations
+_sentiment analysis_
+_start with radar chart_
+_then unique word clouds_
 
 ```{r, include=FALSE}
 tot_black_words <- sum(unique_black_words$n)
@@ -382,8 +399,12 @@ title(main = "Sentiment Distribution of Words Used\nUniquely by Black and White 
 ```
 
 The plot was created from the words used uniquely by each group, so the words used to evaluate sentiment for black soldiers were never used by white soldiers and vice versa. The unique words of black soldiers corresponded with more fear, disgust, anger, and sadness than those of white soldiers.
+### Co-Occurence Networks
+_community detection algorithms to see certain patterns, take graphs from midterm presentation_
 
-### Topic Model Network for Black Soldiers' Long Comment
+### Topic Modeling
+_bullets describing what we are doing_
+#### Topic Model Network for Black Soldiers' Long Comment
 
 ```{r black btm, fig.height=6, echo = F}
 num_clusters = 6
@@ -409,8 +430,9 @@ net_n_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
 net_n_btm
 ```
 
-### Topic Model Network for White Soldiers' Long Comment
-
+#### Topic Model Network for White Soldiers' Long Comment
+_different colors for each racial group_
+_use those colors to make color coded text_
 ```{r 78 btm, fig.height=6, echo = F}
 edgelist_78_btm= topics_78_btm %>%
   filter(weight >= .01) %>%
@@ -451,6 +473,11 @@ gender_match <- paste(paste("\\b", gender_words$gender,"\\b", sep = ""), collaps
 DT::datatable(gender_words, rownames = FALSE)
 ```
 
+
+We wanted to understand the relationship between women and black and white soldiers. To create this plot, we filtered the original corpus to responses that contain gendered words (specifically female words), then proceeded to compute average sentiments for both black and white soliders in the same manner discussed previously. 
+
+_take out gender sentiment radar_
+
 ```{r, fig.align='center', echo=FALSE, out.width="100%"}
 radar2(s32_female_sentiments,
        group1 = c("black", "long", "black"),
@@ -458,16 +485,45 @@ radar2(s32_female_sentiments,
        title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Women");
 ```
 
-```{r, fig.align='center', echo=FALSE}
+When comparing the sentiment results with the knowledge gained from the co-occurence and bigram analysis of gender resposnes, this plot becomes very revealing. The average sentiments for black soliders' responses about women are more fearful, more negative, less trusting and less joyful than white soldiers' responses. In the female words bigrams plot for black soldiers we see that black soldiers often write that "white woman holler rape". This observation in the bigram analysis reflects the fear that black soldiers had in being accused of sexually harassing white women. 
+
+```{r echo = FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width="100%"}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
 keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "white", "negro"))
 
 
-S32_long <- data %>% select(long) %>% filter(!is.na(long))
-S32_long <- tibble(nrow=1:nrow(S32_long), text = S32_long$long)
+S32N_long <- data %>% select(racial_group,long) %>% filter(!is.na(long), racial_group == "black")
+S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
 
-long_bigrams_female <- S32_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+black_long_bigrams_female <- S32N_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
+  count(bigram, sort =TRUE) %>% filter(grepl(female_match, bigram)) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  #include stopwords that relate to relationships.
+  filter(!word1 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word) %>%
+  filter(!word2 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word)  %>% 
+  mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
+  mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
+  count(word1, word2, sort = TRUE) 
+#remove the irrelevant words that are paired with "like"
+black_long_bigrams_female <- black_long_bigrams_female[!(black_long_bigrams_female$word1 == "like" & !black_long_bigrams_female$word2 %in% keep_female),]
+black_long_bigrams_female <- black_long_bigrams_female[!(black_long_bigrams_female$word2 == "like" & !black_long_bigrams_female$word1 %in% keep_female),]
+
+visualize_bigrams(black_long_bigrams_female, "Black Soldiers' Long Response - Female Words Bigrams")
+```
+
+_add key takeaways_
+
+```{r echo = FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width="100%"}
+female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
+female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
+keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "white", "negro"))
+
+
+S32W_long <- data %>% select(racial_group,long) %>% filter(!is.na(long), racial_group == "white")
+S32W_long <- tibble(nrow=1:nrow(S32W_long), text = S32W_long$long)
+
+white_long_bigrams_female <- S32W_long %>% unnest_tokens(bigram, text, token = "ngrams", n=2) %>% 
   count(bigram, sort =TRUE) %>% filter(grepl(female_match, bigram)) %>%
   separate(bigram, c("word1", "word2"), sep = " ") %>%
   filter(!word1 %in% filter(stop_words, word != "like" & word != "with" & word != "liked")$word) %>%
@@ -475,13 +531,17 @@ long_bigrams_female <- S32_long %>% unnest_tokens(bigram, text, token = "ngrams"
   mutate(word1 = textstem::lemmatize_words(word1), word2 = textstem::lemmatize_words(word2)) %>%
   mutate(word1 = wordStem(word1), word2 = wordStem(word2)) %>%
   count(word1, word2, sort = TRUE) 
-long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word1 == "like" & !long_bigrams_female$word2 %in% keep_female),]
-long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word2 == "like" & !long_bigrams_female$word1 %in% keep_female),]
+white_long_bigrams_female <- white_long_bigrams_female[!(white_long_bigrams_female$word1 == "like" & !white_long_bigrams_female$word2 %in% keep_female),]
+white_long_bigrams_female <- white_long_bigrams_female[!(white_long_bigrams_female$word2 == "like" & !white_long_bigrams_female$word1 %in% keep_female),]
 
-visualize_bigrams(long_bigrams_female, "Soldiers' Long Response - Female Words Bigrams")
+visualize_bigrams(white_long_bigrams_female, "White Soldiers' Long Response - Female Words Bigrams")
 ```
 
+_add key takeaways_
+
 ## Spatial Arrangement
+_display spatial dictionary like gender one_
+_add descriptoin of methods_
 
 ```{r, spatial , include= F}
 
@@ -683,3 +743,10 @@ visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arra
 
 ```
 
+## Conclusion
+_data from a unique and historic collection that was produced by the U.S. Army during the war_
+_unique, historic data collection_
+_novel dataset_
+_summarize key findings_
+_analyze soldiers’ handwritten responses by using natural language processing methods and social network analysis to dive into soldiers’ attitudes about racial and gender relations_
+_one or two bullets for each topic: race, gender, space_
