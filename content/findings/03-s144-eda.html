@@ -1,0 +1,59 @@
+---
+title: "Demographic Analyses of Black Soldiers"
+description: "This page provides some exploratory data analysis of Survey 144."
+weight: 3
+tags: ["R", "EDA", "race relations"]
+output:
+  html_document: default
+---
+
+
+
+<style type="text/css">
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+</style>
+<div id="who-are-the-soldiers" class="section level3">
+<h3>Who Are the Soldiers?</h3>
+<p>Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4,678 black soldiers and focused on post-war plans and aspirations of the soldiers. We were particularly interested in how the soldiers thought their lives would be better after the war.</p>
+</div>
+<div id="age" class="section level3">
+<h3>Age</h3>
+<p>Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/age-1.png" width="768" /></p>
+</div>
+<div id="education" class="section level3">
+<h3>Education</h3>
+<p>If we look at education we see that the majority have hade atleast some high school or trade school. This is in contrast with the black soldiers survied in S32 who only had upto a 4th grade education. Here we see the black soldiers education is distributed similarly to the white soldeir survied in S32.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/edu-1.png" width="672" /></p>
+<p>There are no obvious trends between education and age, but we do see that nearly 3/4 of the college educated soldiers are 25 or older which is a larger proportion than the other education levels.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
+</div>
+<div id="enlistment" class="section level3">
+<h3>Enlistment</h3>
+<p>The vast majority of the soldiers were drafted into the military with less than 1000 enlisting via other means.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/enlist-1.png" width="672" /></p>
+</div>
+<div id="region" class="section level3">
+<h3>Region</h3>
+<p>The survey didn't ask for the specific state a soldier was from but rather a region. It appears that most of the soldiers survied where from the East Coast with the most coming from the South Atlantic states.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/state-1.png" width="960" /></p>
+</div>
+<div id="community" class="section level3">
+<h3>Community</h3>
+<p>As expected, most soldiers whose home communities are large cities had the most representation. What suprising however is that there are more black soldiers from communities which are farms than those from the countryside or village like places.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/community-1.png" width="768" /></p>
+<p>Unsurprisingly, we see that soldiers from from high population communities make up a larger portion of soldiers with higher education levels.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
+<p>We see that larger portions of soldiers who are more educated come from communities whihc are larger in population.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/education+community-1.png" width="768" /></p>
+</div>
+<div id="post-war-outlook" class="section level3">
+<h3>Post-War Outlook</h3>
+<p>We can see that a good deal of black soldiers think that after the war, things will be better for them than before. However, about 1500 soldiers are also undecided. A significant amount also don't think anything will change or may change for the worse.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/unnamed-chunk-6-1.png" width="768" /></p>
+<p>We also can observe that the age distribution is roughly similar along these outlooks. Interestingly, it seems that as the soldiers education level increases the less likely they are to belive things will be better for them after the war. Similarly, soldiers from more populated areas are less likely to have an optimistic outlook for life after the war.</p>
+<p><img src="/findings/03-s144-eda_files/figure-html/unnamed-chunk-7-1.png" width="768" /><img src="/findings/03-s144-eda_files/figure-html/unnamed-chunk-7-2.png" width="768" /><img src="/findings/03-s144-eda_files/figure-html/unnamed-chunk-7-3.png" width="768" /></p>
+</div>

@@ -1,0 +1,96 @@
+---
+title: "Demographic Analyses of White & Black Soldiers"
+description: "This page provides exploratory data analysis of Survey 32."
+tags: ["R", "EDA", "race relations"]
+weight: 2
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+---
+
+
+
+<style type="text/css">
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+</style>
+<div id="who-are-the-soldiers" class="section level1">
+<h1>Who Are the Soldiers?</h1>
+<p>Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits. Our questions of interest are regarding age, education, enlistment, state, community type, and of course their opinions on outfits. On the survey these questions were asked in Questions 1,2,3,13,14, and 77 (63 for white soldiers), respectively. We also looked at questions regarding what their thoughts were about the future and how black rights and treatment will change after the war.</p>
+<div id="age" class="section level2">
+<h2>Age</h2>
+<p>Age was not collected on a continuous scale and was discretized into a few different age groups. We see that the overwhelming bulk of black soldiers who were survied were 20 years old with a small portion who were 19 or younger. In the meanwhile, the white soldiers had more spread to their ages with most soldiers being between the ages of 21 and 24.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-2-1.png" width="768" /></p>
+</div>
+<div id="education" class="section level2">
+<h2>Education</h2>
+<p>If we look at education now we see that again black soldiers have little spread in their education. Remarkably, all of the black soldiers survied have less than a 5th grade education at the time. Meanwhile, the bulk of the white soldiers have had a high school/some high school.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-3-1.png" width="768" /></p>
+<p>When we overlay the distribution of education levels with age ranges, we see that older white soldiers made up a larger porportion of white soldiers with less education compared to soldiers with some high school. As a contingent, it appears that soldiers between 21 and 24 with a high school education make up the largest contingent of white white soldiers when grouped by education and age.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
+</div>
+<div id="enlistment" class="section level2">
+<h2>Enlistment</h2>
+<p>Something interesting arises here were we find that vast majority of the black soldiers actually volunteered to join the military whereas about 3/4 of the survied white soldiers were drafted and the remaining soldiers were mostly volunteers and a few were from the National Guard.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
+</div>
+<div id="location" class="section level2">
+<h2>Location</h2>
+<p>Expectedly, most of the soldiers hailed from the most populous states at the time. White soldiers were mostly from Illionois, Pennsylvania, Ney York, Texas, and Michigan while black soldiers were mostly from Texas, New York, Illinois, Pennsylvania, and Ohio. Note that the top 4 states for white soldiers had similar amounts of soldiers but there was a sever drop off in representation of black soldiers from other states after Texas and New York.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-6-1.png" width="768" /><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-6-2.png" width="768" /><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-6-3.png" width="768" /></p>
+</div>
+<div id="communities" class="section level2">
+<h2>Communities</h2>
+<p>As expected, most soldiers whose home communities are large cities had the most representation across both groups. White soldiers saw roughly equal representation from soldiers who came from a farm, town, or city with actually slightly less people from cities. On the otherhand, the next community with the largest representation for black soldiers was a city followed by farms and towns which had approximately similar contributions.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-7-1.png" width="768" /></p>
+<p>We see that larger portions of soldiers who are more educated come from communities which are larger in population.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/education+community-1.png" width="768" /></p>
+</div>
+<div id="integrating-outfits" class="section level2">
+<h2>Integrating Outfits</h2>
+<p>Our key variable of interest from this survey is the soldiers opinions on integrating their outfits. Expectedly, we see the vast majority of white soldiers are against integrating however the black soldeirs seem to be divided on whether they want integration or not. They are rougly evenly split on keeping outfits seperated and integrating them and a good amount are also undecided or indifferent. <img src="/findings/02-s32-eda_files/figure-html/outfits-1.png" width="768" /></p>
+<p>If we look at the proportion of ages who elected for each category we see that the proportions are relatively stable across all opinions towards integration.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/outfits+age%20-1.png" width="768" /></p>
+<p>Now if we are to overlay the education distribution over the integration opinions we see something more interesting. It appears that the white soldiers that voted for the outfits to be together skew towards being more educated. In fact, over 50% of the soldiers who did vote for integrated units have atleast finished high school. This is not the case for any of the other responses.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/outfits%20+%20edu-1.png" width="768" /></p>
+<p>Across both races we also see that of those who choose integration a greater portion were from large cities and soldiers who came from more populated voted for sepration less proportionally.</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-8-1.png" width="768" /></p>
+</div>
+<div id="thoughts-on-the-future" class="section level2">
+<h2>Thoughts on the future</h2>
+<p>The majority of the white soldiers believed that their rights will not change after the war and roughly equal amoutns thought they would increase or decrease. About 40% of the black soldiers thought their rights would increase following the war. A slightly smaller amount expected no change at all. Interestingly, the black soldiers answers to whether black people will have more rights after the war was nearly identical, but now there are more white soldiers who think black people will get more rights. The majority of black soldiers thought that after the war white people would treat them the same but about 30% were optimistic that they'd recieve better treatment. Interestingly,</p>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-9-1.png" width="768" /><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-9-2.png" width="768" /><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-9-3.png" width="768" /></p>
+</div>
+</div>
+<div id="unique-terms" class="section level1">
+<h1>Unique Terms</h1>
+<p>When we are completing analysis on two different groups of people's textual data something we have been curious about is the unique words each group uses. So, for example, there are terms black soldiers use that white soldiers do not and what is the frequency of those words. In the following section we report differences in unique words and their frequencies in long responses and in short responses across our four samples of interest: black soldiers, white soldiers, pro-segregation white soldiers, and anti-segregation white soldiers.</p>
+<div id="long-responses" class="section level2">
+<h2>Long Responses</h2>
+<p>The following sub-section reports differences across black and white soldiers' long responses. We include word clouds to better visualize unique terms.</p>
+<div id="black-soldiers-unique-words" class="section level3">
+<h3>Black Soldiers' Unique Words</h3>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-10-1.png" width="768" /><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-10-2.png" width="768" /></p>
+</div>
+<div id="white-soldiers-unique-words" class="section level3">
+<h3>White Soldiers' Unique Words</h3>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-11-1.png" width="768" /><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-11-2.png" width="768" /></p>
+</div>
+</div>
+<div id="short-responses" class="section level2">
+<h2>Short Responses</h2>
+<p>The following sub-section reports differences across pro-segregation and anti-segregation white soldiers' short responses. We include word clouds to better visualize unique terms.</p>
+<div id="pro-segregation-white-soldiers-unique-words" class="section level3">
+<h3>Pro-Segregation White Soldiers' Unique Words</h3>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-12-1.png" width="768" /><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-12-2.png" width="768" /></p>
+</div>
+<div id="anti-segregation-white-soldiers-unique-words" class="section level3">
+<h3>Anti-Segregation White Soldiers' Unique Words</h3>
+<p><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-13-1.png" width="768" /><img src="/findings/02-s32-eda_files/figure-html/unnamed-chunk-13-2.png" width="768" /></p>
+</div>
+</div>
+</div>

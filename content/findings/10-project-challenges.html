@@ -1,0 +1,50 @@
+---
+title: "Challenges & Limitations"
+weight: 10
+tags: ["messy data", "historicized terms", "topic modeling"]
+output: html_document
+---
+
+
+
+<div id="data-quality" class="section level3">
+<h3>Data Quality</h3>
+<p>Working with text data is never straight forward. There are always typical text mining issues such as misspellings, punctuations, abbreviations, and so on. However, our collection of soldier commentary posed unique challenges.</p>
+<p>Our primary challenge was the presence of metatags within the text. Transcribers on Zooniverse were able to tag attributes of the text such as unclear writing, underlining, deletions, corrections and more. The following response is an example of these tags and how they are used in the soldiers' responses.</p>
+<pre><code>## [1] &quot;when the war going to quit? [paragraph] will filling in these questions do any good? [paragraph] now it ant[ain&#39;t] no good if [unclear][/unclear] dond doe as i hope but you small help the poor culler[colored] people cause we dont now[know] what we are doing [by the man who that was interviewed]&quot;</code></pre>
+<p>As you can see there's a mix of tags that can be used in one response. Some tags have one component such as [paragraph] while others are meant to wrap around a word or entity that fits that attribute such as [unclear][/unclear]. In this case, the unclear word was unidentifiable, but there can be instances used such as [unclear]text[/unclear]. In other cases, a tag isn't used, but rather a correction is indicated with brackets such as &quot;now[know]&quot;.</p>
+<p>The unclear and bracketed tags were the most troublesome because their use heavily depended on the context of the response. When assessing the data quality, we found that there were around 792 unique uses of the unclear tag and around 662 unique cases of bracketed corrections. Therefore, an automated correction could not be made, and manual text cleaning solutions had to be used.</p>
+<p>We’ve set up a text cleaning process to either remove or correct the tags using regex and manual cleaning. The steps are outlined below:</p>
+<ol style="list-style-type: decimal">
+<li>Data is read in from the database<br />
+</li>
+<li>Data undergoes initial processing to lowercase all letters and combine text from same questions into one column<br />
+</li>
+<li>Noninformative responses converted to NA<br />
+</li>
+<li>Automated metatag removal for the following tags: underline, deletion, circle, insertion, and empty unclear tags.<br />
+</li>
+<li>Unclear metatags are manually cleaned<br />
+</li>
+<li>Bracketed metags are manually cleaned<br />
+</li>
+<li>Manual spellchecking with the assistance of the hunspell package<br />
+</li>
+<li>Final processing is performed such as replacing contractions.<br />
+</li>
+<li>Clean data is stored :)</li>
+</ol>
+</div>
+<div id="language-unique-to-these-time-periods-and-military" class="section level3">
+<h3>Language unique to these time periods and military</h3>
+<p>The jargon used in the military and from the 1940s are not commonly used in modern everyday language. Therefore, some words may not be recognized by modern NLP libraries.</p>
+</div>
+<div id="inconsistent-transcriptions" class="section level3">
+<h3>Inconsistent Transcriptions:</h3>
+<p>The written transcriptions were scanned on separate pages from the rest of the multiple choice survey responses. Therefore, the transcribed responses cannot be lined up with the soldier’s corresponding demographics or multiple choice survey responses. This creates limitations on being able to compare responses of different groups of soldiers such as age group, hometown, and educational attainment.</p>
+<p>In addition, we do not have transcribed responses about soldiers being in separate outfits from the black soldiers. Therefore we cannot make a direct comparison of extended commentary regarding outfit segregation between black and white soldiers. Luckily all multiple choice responses regarding outfit segregation are available for both soldier groups, which can fill the gaps here.</p>
+</div>
+<div id="lda-topic-modeling" class="section level3">
+<h3>LDA Topic Modeling</h3>
+<p>The popular topic modeling method of LDA did not return meaningful results due to the average length of responses being around 7-10 words. However, other topic modeling methods such as Gibbs were successful on our data. In addition co-occurrence text networks have allowed us to identify clusters of topics.</p>
+</div>

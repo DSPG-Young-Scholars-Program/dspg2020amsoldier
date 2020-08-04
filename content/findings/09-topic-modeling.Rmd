@@ -1,0 +1,350 @@
+---
+title: "Topic Modeling with Networks"
+description: "This page documents our use of biterm topic modelings and interactive text networks."
+tags: ["R", "topic modeling", "interactive text networks", "race relations"]
+weight: 9
+output: html_document
+---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+```
+
+```{r setup, include=FALSE, echo = F}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(data.table)
+library(tidyr)
+library(BTM)
+library(udpipe)
+library(networkD3)
+library(plyr)
+library(SnowballC)
+library(tidytext)
+library(topicmodels)
+
+# require(devtools) 
+# install_version("igraph", version = "1.2.4", repos = "http://cran.us.r-project.org")
+library(igraph)
+library(ggraph)
+library(concaveman)
+library(textplot)
+library(stopwords)
+library(dplyr)
+```
+
+```{r function, include = FALSE}
+tidy_topic_probs = function(model){
+  df <- cbind(source = rownames(model$phi), model$phi)
+  rownames(df) <- 1:nrow(df)
+  df = as.data.frame(df)
+  edge_list = reshape2::melt(df, id.vars=c("source"), variable.name = "target", value.name = "weight")
+}
+```
+
+
+```{r data, include = FALSE}
+library("RPostgreSQL")
+# connect to postgresql to get data (in rivanna)
+conn <- dbConnect(drv = PostgreSQL(),
+                  dbname = "sdad",
+                  host = "10.250.124.195",
+                  port = 5432,
+                  user = Sys.getenv("db_userid"),
+                  password = Sys.getenv("db_pwd"))
+# query the bipartite edgelist data from github data
+data <- dbGetQuery(conn, "SELECT *
+                   FROM american_soldier.survey_32_clean")
+# disconnect from postgresql
+dbDisconnect(conn)
+S32N = data %>% filter(racial_group == "black")
+S32W = data %>% filter(racial_group == "white")
+```
+```{r, include = FALSE}
+biterms_n = read.csv(here::here("data","biterms_n.csv"))
+biterms_77 = read.csv(here::here("data","biterms_77.csv"))
+biterms_78 = read.csv(here::here("data","biterms_78.csv"))
+
+
+
+traindata_n = read.csv(here::here("data","traindata_n.csv"))
+traindata_77 = read.csv(here::here("data","traindata_77.csv"))
+traindata_78 = read.csv(here::here("data","traindata_78.csv"))
+
+row.names(traindata_n) <- traindata_n$X
+row.names(traindata_77) <- traindata_77$X
+row.names(traindata_78) <- traindata_78$X
+
+```
+
+
+```{r lda, include = FALSE}
+text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment, outfits = S32W$outfits) #Written response to "should soldiers be in separate outfits?"
+text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long) #Written response on overall thoughts on the survey
+textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long) #Written response to "should soldiers be in separate outfits?"
+
+# laod in stop words: words without any true meaning
+data(stop_words)
+
+# Bunch of useless one word responses
+useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]","gujfujuj", "None.", "I", NA)
+
+tidy_77 <- text77_df %>%
+  filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(row) %>%
+  dplyr::count(word, sort = T) %>%
+  mutate(response = "short", race = "white")
+
+tidy_78 <- text78_df %>%
+  filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(row) %>%
+  dplyr::count(word, sort = T) %>%
+  mutate(response = "long", race = "white")
+
+tidy_n <- textn_df %>%
+  filter(!text %in% useless_responses) %>% #filtering out useless 1 word responses
+  unnest_tokens(word, text) %>%
+  anti_join(stop_words) %>%
+  mutate(word = wordStem(word)) %>%
+  group_by(row) %>%
+  dplyr::count(word, sort = T) %>%
+  mutate(response = "long", race = "black")
+
+
+# lda ---------------------------------------------------------------
+# LDA finds topics depending on the number of clusters you want
+# number of clusters we want
+
+dtm_77 <- cast_dtm(tidy_77, term = word, document = row, value = n)
+dtm_78 <- cast_dtm(tidy_78, term = word, document = row, value = n)
+dtm_n <- cast_dtm(tidy_n, term = word, document = row, value = n)
+
+num_clusters <- 6
+weight_strength = .01
+lda_77 <- LDA(dtm_77, k = num_clusters, method = "Gibbs", control = NULL)
+lda_78 <- LDA(dtm_78, k = num_clusters, method = "Gibbs", control = NULL)
+lda_n <- LDA(dtm_n, k = num_clusters, method = "Gibbs", control = NULL)
+
+# this will separate out topics and have a weighted probability
+topics_77_lda <- tidy(lda_77, matrix = "beta")
+topics_78_lda <- tidy(lda_78, matrix = "beta")
+topics_n_lda <- tidy(lda_n, matrix = "beta")
+
+#takes word topic betas and graphs them as a network
+colnames(topics_n_lda) = colnames(topics_77_lda) = colnames(topics_78_lda) =  c("source", "target", "weight")
+```
+
+### Topic Model Networks
+
+A topic model put simply models the topics in a piece of text and the words that are associated with each topic. Naturally, words may fall in multiple topics and the model accounts for this by giving each topic a probability distribution over the words. A Topic Model Network is a useful way to visualize the topics and the words associated with each topic. Here we will explore two different topic models.
+
+### Latent Dirichlet Allocation
+
+Latent Dirchlet Allocation, or LDA, is the typical go to method for topic modelling. We chose to model the texts with 6 topics. We can see that in the three networks this produces very disconnected topics which intuitively seems to be a poor fit as the corpus is rather small and the soldiers are responding to direct and specific questions. LDA does produce a better connected network for the white soldiers outfits comment but does not do a great job in delineating the topics.
+
+### Black Soldiers Long Comment
+
+It appears that Topic 1 deals with the war itself and what people are fighting for. We see words like democracy, freedom, right, and live. At the same time we see words like race, equal, and unit suggesting the soldiers are thinking about their role in the war and at home. Topic 2 is about the survey itself and makes explicit references to having the chance to answering questions. Topic 3 is about organization in the military while Topic 4 itself is about segregation in the military and transportation. Topic 5 delves further into race relations as well a geographical distinctions of north and south. Topic 6 seems to be generally about life and home. 
+
+```{r black lda, fig.height=6, echo = F}
+edgelist_n_lda= topics_n_lda %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- paste("Topic", edgelist_n_lda$source)
+targets <- edgelist_n_lda$target
+node_names <- factor(unique(c(sort(unique(sources)), as.character(targets))))
+
+
+
+groups = edgelist_n_lda %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_n_lda$weight)
+net_n_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+net_n_lda
+```
+
+### White Soldiers Outfits Comment
+
+The topics here are very well connected. As a result, none of the topics are distinctly about one thing. Topics 1 and 2 touch upon race relations within the military. Topic 3 is loosely about units in the military and answering question 60 of the survey. Similarly, Topic 4 is about question 62 and camp. Topic 5 is touching on what seems a varied mix of the other topics. Topic 6 is perhaps about friction in the units and the war. 
+```{r 77 lda, fig.height=6,echo = F}
+edgelist_77_lda= topics_77_lda %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- paste("Topic", edgelist_77_lda$source)
+targets <- edgelist_77_lda$target
+node_names <- factor(unique(c(sort(unique(sources)), as.character(targets))))
+
+
+
+groups = edgelist_77_lda %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_77_lda$weight)
+net_77_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+net_77_lda
+```
+
+### White Soldiers Long Comment
+
+The topics here are well distinguished. Topic 1 seems to be about what civilian life will be like. Topic 2 is on the service experience itself and has elements indicating the soldiers are thinking of a career in the military. Topic 3 is about the questionnaire itself and having the chance to answer questions. Topic 4 is on durations of time, probably refering to the military and/or school. Notably, we see the words waste and time. Topic 5 again touches upon race and the treatment of black people. It refers to treatment but interestingly, the word equal is missing. Topic 6 is about food in the military and how morale is poor. Contrasting these topics with those of the black soldiers' long comments, we see that the black soldiers were more concerned with race relations and what their status is in the military and in civilian life. White soldiers focused more on the mundane things such as food. Nevertheless, both spoke to having the chance to answering questions. 
+
+```{r 78 lda, fig.height=6, echo=F}
+edgelist_78_lda= topics_78_lda %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- paste("Topic", edgelist_78_lda$source)
+targets <- edgelist_78_lda$target
+node_names <- factor(unique(c(sort(unique(sources)), as.character(targets))))
+
+
+
+groups = edgelist_78_lda %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_78_lda$weight)
+net_78_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+net_78_lda
+```
+
+### Biterm Topic Modeling (BTM)
+
+There are some drawbacks to using LDA for our dataset, namely it doesn't handle short texts well. That is why we also implemented a [Biterm Topic Model](https://cran.r-project.org/web/packages/BTM/index.html) that does better on short texts. Overall, it seems that the topic model networks produced this way strike a better balance between effectively delineating the topics and showing interconnectivity. 
+
+```{r btm, include = FALSE}
+
+K = 6
+modeln      <- BTM(traindata_n[-1], biterms = biterms_n[-1], k = K, iter = 2000, background = TRUE, trace = 100)
+model77     <- BTM(traindata_77[-1], biterms = biterms_77[-1], k = K, iter = 2000, background = TRUE, trace = 100)
+model78     <- BTM(traindata_78[-1], biterms = biterms_78[-1], k = K, iter = 2000, background = TRUE, trace = 100)
+```
+```{r, include = FALSE}
+V = c("V2","V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10")
+topics = c("Topic 1","Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6", "Topic 7", "Topic 8", "Topic 9")
+
+topics_n_btm = tidy_topic_probs(modeln)
+topics_n_btm$weight = as.numeric(topics_n_btm$weight)
+topics_n_btm$target = topics_n_btm$target %>%
+  mapvalues(from = V, to = topics)
+topics_n_btm = topics_n_btm[, c(2, 1, 3)]
+
+topics_77_btm = tidy_topic_probs(model77)
+topics_77_btm$weight = as.numeric(topics_77_btm$weight)
+topics_77_btm$target = topics_77_btm$target %>%
+  mapvalues(from = V, to = topics)
+topics_77_btm = topics_77_btm[, c(2, 1, 3)]
+
+topics_78_btm = tidy_topic_probs(model78)
+topics_78_btm$weight = as.numeric(topics_78_btm$weight)
+topics_78_btm$target = topics_78_btm$target %>%
+  mapvalues(from = V, to = topics)
+topics_78_btm = topics_78_btm[, c(2, 1, 3)]
+
+
+colnames(topics_n_btm) = colnames(topics_77_btm) = colnames(topics_78_btm) =  c("source", "target", "weight")
+```
+
+### Black Soldiers Long Comment
+
+Topic 1 differs in the BTM model and seems interconnected with nearly all the topics. Broadly, it touches on war and the chance to fight. It also suggests with the war there being some sort of give and take and expecting to get something better out of it in the end. Topic 2 concretely is about segregation in different spaces within the military. Topic 3 is filled with optimistic words such as better, opportunity, equality, chance, free and fair. At the same time however, it speaks of Jim Crow. Topic 4 about positions within the military and potentially also having black officers. Topic 5 touches upon various parts of the day to day life and seems a bit more mundane. Topic 6 focuses in on race and geography specifically mentioning negro, white, north, and south, etc. One advantage here is that this model sorts together race related terms into one topic as opposed to 3 different ones as seen in the LDA.
+
+```{r black btm, fig.height=6, echo = F}
+edgelist_n_btm= topics_n_btm %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- edgelist_n_btm$source
+targets <- edgelist_n_btm$target
+node_names <- factor(unique(c(sort(unique(as.character(sources))), as.character(targets))))
+
+
+
+groups = edgelist_n_btm %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_n_btm$weight)
+net_n_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+net_n_btm
+```
+
+### White Soldiers Outfits Comment
+
+Topic 1 here is nebulously connected with the other topics yet is concretely is about seperation of races and how well it would work. Topic 2 seems to be about day to day activities such as eating, sleeping, bathing and interacting with the sergeant. Topic 3 focuses on how the merger of races/class may interfere with morale. Topic 4 is very vaguely about career development and somehow Delaware. T Topic 5 suggests that racial mixing would cause disunity and start race riots. Topic 6 includes the word resent and several other racial terms. However, it also includes the word like. This BTM model fared about as well as the LDA as there were some vague topics. This might be an indication that we fit too many topics to this. However, as we mentioned earlier, we went with 6 topics for all to standardize the comparisons.
+
+```{r 77 btm, fig.height=6, echo = F}
+edgelist_77_btm= topics_77_btm %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- edgelist_77_btm$source
+targets <- edgelist_77_btm$target
+node_names <- factor(unique(c(sort(unique(as.character(sources))), as.character(targets))))
+
+
+
+groups = edgelist_77_btm %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_77_btm$weight)
+net_77_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+net_77_btm
+```
+
+### White Soldiers Long Comment
+
+Again, Topic 1 intersects with other topics. It is in general about the war/army and includes words such as give and take. Topic 2 is about getting time to eat and getting furloughed. Topic 3 is about positions in the military and also includes terms like valuable, waste, time, and money suggesting they are thinking of career prospects here. Topic 4 identifies the enlistment/service experience and how many of the soldiers are young. Topic 5 focuses on how the questionnaire is a chance to talk about race and whether this opportunity is needed or not. Lastly, Topic 6 is about different branches in the military and the experience needed to transfer. Again we see that in comparison to the black soldiers long comment topics, the white soldiers are more focused on careers. 
+
+```{r 78 btm, fig.height=6, echo = F}
+edgelist_78_btm= topics_78_btm %>%
+  filter(weight >= .01) %>%
+  arrange(target)
+
+sources <- edgelist_78_btm$source
+targets <- edgelist_78_btm$target
+node_names <- factor(unique(c(sort(unique(as.character(sources))), as.character(targets))))
+
+
+
+groups = edgelist_78_btm %>% group_by(target) %>% top_n(1, weight)
+groups = groups$source
+nodes <- data.frame(name = node_names, group = c(1:num_clusters, groups), size = 8)
+links <- data.frame(source = match(sources, node_names) - 1, 
+                    target = match(targets, node_names) - 1, 
+                    value = edgelist_78_btm$weight)
+net_78_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+net_78_btm
+```
