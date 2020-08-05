@@ -238,46 +238,32 @@ li {
 </style>
 <div id="american-soldier-overview" class="section level1">
 <h1>American Soldier Overview</h1>
-</div>
-<div id="project-goals" class="section level1">
-<h1>Project Goals</h1>
-<p><em>dspg team, sdad team, stakeholders</em></p>
-</div>
-<div id="overview" class="section level1">
-<h1>Overview</h1>
 <ul>
 <li>American Soldier is a project headed by Ed Gitre and is funded by the National Endowment for the Humanities as a digital history project.</li>
 <li>Data set includes 65,000 pages of uncensored commentaries written by U.S. soldiers stationed around the globe during WWII.</li>
 <li>This data set was transcribed by Volunteer citizen-archivists on Zooniverse.</li>
-<li>Our focus is on using this data to give insights into the soldier's different perspectives for three different topics.</li>
-<li>Race relations</li>
-<li>Gender relations</li>
-<li>Intersection between race and space</li>
 </ul>
 <center>
 <img src="../../findings/01-poster_files/the_gang.png" />
 </center>
 </div>
-<div id="data-methods" class="section level1">
-<h1>Data &amp; Methods</h1>
-<p>The surveys have been transcribed through Zooniverse, which is a crowdsourced trascription site.</p>
+<div id="project-goals" class="section level1">
+<h1>Project Goals</h1>
 <ul>
-<li>Survey 32
+<li>Our main topics of focus from the data:</li>
+<li>Race relations (S32: attitudes of and towards Negroess, Mar 1943)</li>
+<li>Gender relations (S90: attitudes toward Women's Army Corps, Nov-Dec. 1943)</li>
+<li>Race and Spatial arragements</li>
+</ul>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
 <ul>
-<li>administered to both black and white soldiers</li>
-<li>goal: to study the attitudes of and towards black soliders, specifically within the context of desegregating the military</li>
-<li>a question of interest: &quot;Do you think white and black soldiers should be in separate outfits?&quot;
+<li>Survey 32:
 <ul>
-<li>multiple choice</li>
-<li>7,442 responses from black soldiers</li>
-<li>4,678 responses from white soliders, who could also provide free form commentary</li>
-</ul></li>
-<li>longer comment on the overall survey
-<ul>
-<li>3,464 responses from black soldiers</li>
-<li>2,324 responses from white soldiers</li>
-<li>average response length was shorter than 100 words</li>
-</ul></li>
+<li>Outfits Question (Multiple Choice): &quot;Do you think white and black soldiers should be in separate outfits?&quot;</li>
+<li>Short Response (Text): Any comments on their answer to question 63 (shown above).</li>
+<li>Long Response (Text): Any comments they had on any aspect of the questionnaire.</li>
 </ul></li>
 </ul>
 <div class="figure">
@@ -287,20 +273,24 @@ li {
 <ul>
 <li>Survey 144
 <ul>
-<li>post-war career plans of black soliders</li>
-<li>don't have transcriptions for free form questions</li>
+<li>Post-war career plans of black soliders.</li>
+<li>No text data.</li>
 </ul></li>
 <li>Survey 190
 <ul>
-<li>attitudes towards women</li>
-<li>don't have transcriptions for free form questions</li>
-<li>question examples
-<ul>
-<li>&quot;Is the army any place for a girl to be?&quot;</li>
-</ul></li>
+<li>Attitudes towards the Women's Army Corps (WAC): Is the army any place for a girl to be?&quot;</li>
+<li>No text data.</li>
 </ul></li>
 </ul>
-<p><em>methods could be the ones from the slids, very basic</em></p>
+</div>
+<div id="methods" class="section level1">
+<h1>Methods</h1>
+<ul>
+<li>Language Embeddings (CMDA)</li>
+<li>Topic Modeling</li>
+<li>Sentiment Analysis</li>
+<li>Text Networks</li>
+</ul>
 <div id="summary-statistics" class="section level2">
 <h2>Summary Statistics</h2>
 <ul>
@@ -317,9 +307,9 @@ li {
 <img src="../../findings/01-poster_files/edu.png" />
 </center>
 <ul>
-<li>White soldiers were predominately against integrating outfits while Black soldiers where mostly split or didn't care.
-<center></li>
+<li>White soldiers were predominately against integrating outfits while Black soldiers where mostly split or didn't care.</li>
 </ul>
+<center>
 <img src="../../findings/01-poster_files/outfits.png" />
 </center>
 </div>
@@ -333,56 +323,17 @@ li {
 <li>Long Response Average: 73.04 words</li>
 <li>Total: 8,102 text responses</li>
 </ul>
-<p><em>what did we do to clean the data? how many words did we start with? how many words did we end up with after we finished cleaning?</em></p>
+<p>Text Sample: <em>&quot;when the war going to quit? [paragraph] will filling in these questions do any good? [paragraph] now it ant[ain't] no good if [unclear][/unclear] dond doe as i hope but you small help the poor culler[colored] people cause we dont now[know] what we are doing [by the man who that was interviewed]&quot;</em></p>
 <ul>
 <li>Cleaning the text:</li>
-<li>Manual Cleaning of tags</li>
+<li>Manual cleaning of tags</li>
 <li>Stemming</li>
 <li>Spell Check</li>
 <li>Lemmatizing</li>
 </ul>
+<!-- _how many words did we start with_ -->
+<!-- _how many words did we end with_ -->
 </div>
-</div>
-<div id="methods" class="section level1">
-<h1>Methods</h1>
-<p>To analyze the text data, we focused on three techniques:</p>
-<ul>
-<li>sentiment analysis
-<ul>
-<li><a href="https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm">NRC dictionary</a> sentiment lexicon
-<ul>
-<li>anger, fear, anticipation, trust, surprise, sadness, joy, disgust, negative, positive</li>
-</ul></li>
-<li>comparing sentiment distributions across different groups
-<ul>
-<li>black and white soldiers</li>
-<li>pro-segregation and anti-segegration white soldiers</li>
-<li>unique words</li>
-<li>responses that dicuss gender</li>
-</ul></li>
-</ul></li>
-<li>text networks
-<ul>
-<li>bigrams and co-occurences used across different groups
-<ul>
-<li>black and white soldiers</li>
-<li>pro-segregation and anti-segregation white soldiers</li>
-<li>responses that discuss gender</li>
-<li>repsonses that discuss race and space</li>
-</ul></li>
-</ul></li>
-<li>topic modeling
-<ul>
-<li>LDA, biterm topic modeling, and GEPHI</li>
-</ul></li>
-</ul>
-<p>These three tools help us glean insights into the feelings of soldiers, the frequencies of terms they used, and which overall topics they discussed. The text analysis is completed on Survey 32 text data and separates soldiers into four main groups of text</p>
-<ul>
-<li>black soldiers' long responses</li>
-<li>white soldiers' long responses</li>
-<li>pro-segregation white soldier's short responses</li>
-<li>anti-segregation white soldier's short responses.</li>
-</ul>
 <div id="race-relations" class="section level2">
 <h2>Race Relations</h2>
 <p><em>sentiment analysis</em> <em>start with radar chart</em> <em>then unique word clouds</em></p>
@@ -432,12 +383,13 @@ li {
 <div id="topic-model-network-for-black-soldiers-long-comment" class="section level4">
 <h4>Topic Model Network for Black Soldiers' Long Comment</h4>
 <div id="htmlwidget-1" style="width:672px;height:576px;" class="forceNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"links":{"source":[4,5,4,5,0,4,5,0,3,4,5,4,5,1,5,2,4,5,1,1,3,5,2,3,2,2,2,4,4,4,3,2,5,3,3,0,2,4,5,0,4,0,4,2,3,3,4,5,3,3,2,3,0,4,0,1,4,2,2,2,0,1,4,1,1,2,4,4,3,2,1,3,5,5,4,4,1,5,4,2,5,5,4,5,0,1,4,1,1,2,2,0,0,2,2,5,5,5,5,1,0,3,2,0,1,2,3,2,3,3,2],"target":[6,7,8,9,10,11,12,13,13,13,14,15,16,17,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,38,38,38,39,39,40,40,41,42,43,44,45,46,47,48,49,50,50,51,51,51,52,53,54,55,55,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,77,77,78,79,80,81,82,83,84,85,85,86,87,88,89,90,90,91,92,92,93,94,95,95,96,97],"value":[0.0124771701586592,0.0256572016175329,0.0120419706414406,0.0103061999120997,0.0193275407012376,0.0129123696758779,0.0155633922769741,0.0100438187905421,0.0103277420315909,0.0229219585719073,0.0143016661094043,0.011896904135701,0.0588826573635391,0.012705517811143,0.0311246816770023,0.0168840316762364,0.103433869257361,0.0286012293418626,0.0464935009638503,0.0306296308250792,0.0480770695687943,0.0298629555094325,0.0232875835129885,0.017098921858892,0.0104804798394843,0.0184364078790854,0.0153316554733874,0.0313358159048016,0.0295950178359269,0.0307555498818433,0.0580645598140634,0.0139733262958945,0.0222925985040133,0.0113434190056861,0.0167603628675269,0.0203639507927564,0.0681124463702534,0.0365582101114256,0.0124090768580495,0.0116832311171263,0.109381595992683,0.0116769498438444,0.0515000602025999,0.0112566679409088,0.0426601257069535,0.0130362139625114,0.0219064930317304,0.033858421706737,0.0155754063977493,0.0230237042077804,0.011644761991621,0.0103277420315909,0.0117272000300999,0.0194403624341579,0.0191516650493435,0.0466995252513668,0.0288696853072291,0.0149435614226752,0.0100923857887721,0.0128090441437578,0.0273361641357009,0.066546531615457,0.0375736756516025,0.011744071136066,0.051644108151763,0.0104804798394843,0.0253880891694797,0.0187150299054602,0.0143904499279716,0.0252280537665498,0.0345440922878928,0.0111741395100036,0.0195588584742787,0.0103061999120997,0.0252430226637402,0.027273953744094,0.0140103382987476,0.0140913784148093,0.0185699633997206,0.0126149971184017,0.0115679260796696,0.0693970420932878,0.010591305584045,0.0136708030256193,0.0262369413113628,0.0948405337677241,0.0300302173531455,0.0214958874118474,0.0302175822500462,0.0133911852198262,0.0242578186397692,0.0126756722956716,0.0175059714494773,0.0423041919978888,0.0124209500930455,0.0159839676661641,0.0208205846418485,0.0124090768580495,0.0151428168877842,0.0355742137254754,0.0127698913949006,0.148121251517167,0.0118388090169772,0.0220284882124683,0.132611653145751,0.0151376084480313,0.0734689939211733,0.0153316554733874,0.0275942505912086,0.0130362139625114,0.0141673733212507],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","ability","air","answer","armed","army","ask","back","better","branch","break","bus","camp","care","chance","club","color","colored","country","crow","day","defense","duty","eat","enough","equal","express","fair","fight","food","force","free","freedom","get","give","good","hard","help","hope","idea","jim","job","life","little","live","make","man","medical","money","mother","negro","northern","officer","old","opinion","opportunity","part","pass","people","plant","poor","post","question","questionnaire","race","ride","rights","see","separate","service","show","sit","soldier","south","southern","stand","take","thing","think","time","town","train","training","transportation","treat","war","week","white","wife","win","work","world","year"],"group":[1,2,3,4,5,6,5,6,5,6,1,5,6,5,6,5,6,6,3,5,6,2,2,4,6,3,4,3,3,3,5,5,5,4,3,6,4,4,3,5,5,3,4,4,5,6,4,4,3,4,5,2,3,3,3,2,2,2,3,5,5,4,3,2,4,6,6,5,5,2,6,5,3,6,6,5,6,2,2,2,3,3,1,1,3,6,6,6,6,2,4,3,2,3,4,4,4,3]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":30,"fontFamily":"sans-serif","clickTextSize":75,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-10,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"links":{"source":[3,0,3,2,3,2,3,1,3,5,2,3,1,1,4,1,5,4,4,4,5,5,5,2,2,2,4,3,4,4,5,0,2,3,5,0,2,0,2,4,4,2,1,2,4,4,4,5,4,0,2,0,1,2,5,5,5,0,1,2,5,1,1,2,2,4,5,5,1,4,3,4,3,2,1,3,2,5,3,3,2,3,5,0,1,2,1,1,5,5,0,0,5,3,5,3,3,3,1,4,0,4,5,5,0,1,5,4,4,5,4,5],"target":[6,7,8,9,10,11,12,13,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,36,36,36,37,37,38,38,39,40,41,42,43,43,44,45,46,47,48,48,49,49,49,50,51,52,53,53,53,54,55,56,57,58,59,60,61,62,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,76,76,77,78,79,80,81,82,83,84,84,85,86,87,88,89,90,90,91,92,93,93,94,95,96,96,97,98],"value":[0.0236699916454093,0.0192292225238769,0.0137577654200862,0.0352987547412341,0.0159829590625057,0.0141203843285942,0.0614982835665404,0.0100265543771654,0.0331776372084743,0.0163624582650757,0.113099851604335,0.0295364112481516,0.048364833560327,0.030431273868756,0.0487706993102911,0.0104501817714544,0.0210983361999746,0.0140566499418328,0.0111779238966436,0.0113472607228312,0.0105502444358816,0.0204525346633975,0.0155013895496395,0.0379460510428141,0.0285334419705297,0.0277980818867575,0.0565601933149208,0.0188150236983123,0.0123632816799568,0.0191367547274608,0.0101197100781635,0.0195291899211704,0.0483881642323797,0.0252883142944417,0.0699639858009769,0.011398823590361,0.120600524458812,0.0120487529511636,0.0420640675119386,0.0418278894365994,0.0187980810750856,0.0208856970992986,0.0119328776514662,0.0101494398762242,0.011855271201394,0.0125326185061444,0.0240475226869013,0.0103349772570226,0.0149033340727708,0.0115800538928925,0.0220622732333342,0.0193542089394159,0.0449758144060144,0.0285334419705297,0.0137792521187672,0.0131334505821901,0.0142097864764853,0.0276970521766416,0.0600145869032767,0.0438289317129919,0.0120571146878949,0.0124271096114701,0.053871989686085,0.0213269131495619,0.014708672395612,0.0147339972465832,0.0254036797771554,0.0105502444358816,0.0330436428002053,0.0138873131156452,0.0147692170757314,0.010161902939518,0.0192196043605704,0.0158852485296475,0.0139098054914819,0.01294860409557,0.0182384007977186,0.0176540613382299,0.0133531847578281,0.0701967678050892,0.0113260160102597,0.0119371524399248,0.0114113131513178,0.0261659685862893,0.0934811510521139,0.0373577629757964,0.0237238401258456,0.0305724830001857,0.0111960459724587,0.0251884125982964,0.0126111918210889,0.0177918787451789,0.0409029166550064,0.0145669267446024,0.0133487177610491,0.0204333463473446,0.0155783784002476,0.0137577654200862,0.0338908975887835,0.0108392502442684,0.0126424384249737,0.149864784544289,0.0101197100781635,0.0146403208342034,0.0224788693278899,0.129771897829545,0.0170082598016528,0.0756952546741197,0.0238781858607137,0.0155013895496395,0.0137179762894576,0.0114113131513178],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","air","army","back","better","branch","break","bus","camp","care","chance","club","color","colored","country","crow","day","defense","democracy","die","divide","eat","enough","equal","express","fair","fight","force","free","freedom","furlough","get","give","good","help","hope","idea","jim","job","let","life","little","live","make","man","medical","money","mother","negro","night","northern","officer","opinion","opportunity","part","pass","pay","people","place","plant","poor","questionnaire","race","ride","rights","see","separate","service","show","sit","sleep","soldier","south","southern","stand","take","thing","think","time","town","train","training","transportation","treat","united","war","wear","week","white","wife","win","work","world","year"],"group":[1,2,3,4,5,6,4,1,4,3,4,3,4,4,6,3,4,2,2,5,2,6,5,5,5,6,6,6,3,3,3,5,4,5,5,6,6,3,3,5,5,3,2,5,5,5,6,5,3,2,6,6,6,2,6,2,2,3,3,5,6,6,2,4,5,4,3,2,4,3,6,4,4,3,4,6,2,2,2,6,6,1,1,6,4,4,4,4,2,5,5,6,6,2,6,5,5,5,6]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":30,"fontFamily":"sans-serif","clickTextSize":75,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-10,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="topic-model-network-for-white-soldiers-long-comment" class="section level4">
 <h4>Topic Model Network for White Soldiers' Long Comment</h4>
-<p><em>different colors for each racial group</em> <em>use those colors to make color coded text</em> <div id="htmlwidget-2" style="width:672px;height:576px;" class="forceNetwork html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2">{"x":{"links":{"source":[1,4,1,0,1,4,2,1,3,2,4,5,4,3,5,1,1,5,1,2,4,5,3,1,2,5,2,5,1,3,3,2,5,4,4,5,1,1,1,2,1,0,2,0,2,4,0,4,5,1,1,5,2,4,5,1,5,3,2,3,0,3,3,3,1,2,2,1,2,4,3,3,3,3,3,4,1,2,5,4,5,5,1,1,1,4,4,4,1,2,4,3,1,0,4,2,5,1,0,4,2,2,2,5,2,5,2,2,4,5,5,5,3],"target":[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,32,33,33,34,35,36,37,38,39,40,41,42,43,44,45,45,46,46,46,47,47,48,49,50,51,52,53,54,55,56,57,58,59,60,60,61,62,63,64,65,66,66,67,68,69,70,71,72,73,74,75,76,77,77,78,79,80,81,82,83,84,85,86,87,88,89,90,90,91,92,93,94,94,95,96,97,98,99,100,101,102,103,104,105,106,107],"value":[0.0745318915665241,0.0166324673126435,0.0215046828757945,0.0276501182337535,0.0114725082586295,0.0175233332640438,0.0327593496120754,0.0114725082586295,0.022040085160529,0.0118110386172591,0.0359345629263165,0.0408829629928691,0.0103964056528414,0.0103109638849693,0.0116123562333776,0.0250876023819249,0.0336866091966378,0.0156496813036523,0.0172051794684381,0.0289505657948361,0.0145537800927094,0.0297803190496137,0.0124435313896165,0.0179217633696641,0.0270461738862164,0.0111076905995932,0.017905092724842,0.0111076905995932,0.0100393404561773,0.0255943643349411,0.0170640943163522,0.0133345521441548,0.0116123562333776,0.0207898417525115,0.0112872716042417,0.0156496813036523,0.0100393404561773,0.0186383472708902,0.035836360900316,0.0259035387410446,0.0121890921598555,0.0211741007343903,0.0479944848810326,0.0107357015910572,0.0270461738862164,0.0570183904427901,0.0149457320877752,0.0733509328851288,0.0171636782050053,0.0250876023819249,0.0157720116659859,0.0459296193307124,0.0152389440527745,0.0481097309287871,0.0232196658104173,0.0100393404561773,0.033312978486104,0.0120881034721753,0.0114301602355352,0.0263052201698235,0.0310552899590401,0.172741522155599,0.0391006251977068,0.0103109638849693,0.0172051794684381,0.0171433359613942,0.0144771872893266,0.0594836296407765,0.0160007008162224,0.0736478882022622,0.0113772476372929,0.0106663918024105,0.014931526811705,0.0632697235837086,0.0159978105640286,0.0311832778521816,0.0107559243574034,0.0411386740100019,0.0121170218671619,0.0237593949238458,0.0116123562333776,0.02120100327528,0.0157720116659859,0.0193549311721163,0.0107559243574034,0.0504853734658546,0.0397949820490511,0.014256824775576,0.025804186283151,0.0239991468324249,0.0127720481899089,0.0700228540150915,0.0179217633696641,0.0189328786170198,0.0570183904427901,0.0186668494882899,0.0111076905995932,0.025804186283151,0.017471750385806,0.0279167693637138,0.0712280661661925,0.0121919169989831,0.0719898229296403,0.0146403500360836,0.0144771872893266,0.14686274608758,0.0205712413969096,0.0407577956282779,0.0531579713200555,0.0565275976401835,0.0514809413023401,0.0111076905995932,0.0142206709768225],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","air","answer","armed","army","artillery","ask","basic","big","branch","camp","chance","civilian","color","commissioned","complete","corp","corps","country","crew","day","deal","defense","draft","drill","duty","effort","end","enlist","enlisted","enough","experience","express","fair","farm","favoritism","field","force","furlough","germany","get","give","good","government","ground","hall","help","hour","idea","job","keep","life","limit","line","make","man","many","marry","mess","money","month","much","negro","non","non-com","noncom","officer","officr","opinion","partiality","pass","pay","people","plant","play","politics","power","question","questionnaire","race","red","school","separate","service","show","soldier","spend","strike","tape","think","time","train","training","victory","wait","war","waste","week","white","win","work","worker","young"],"group":[1,2,3,4,5,6,2,5,2,1,2,5,3,2,4,3,5,6,5,4,6,2,2,6,2,3,5,6,4,2,3,6,3,4,4,3,6,5,5,6,2,2,2,3,2,3,5,5,6,2,2,6,3,5,6,2,6,4,3,4,4,4,4,2,3,3,2,5,4,4,4,4,4,5,2,3,6,5,6,2,2,2,5,5,5,2,3,5,4,2,5,3,6,2,5,3,3,3,6,3,6,3,3,5,6,6,6,4]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":30,"fontFamily":"sans-serif","clickTextSize":75,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-10,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script></p>
+<p><em>different colors for each racial group</em> <em>use those colors to make color coded text</em></p>
+<div id="htmlwidget-2" style="width:672px;height:576px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"links":{"source":[1,2,5,0,2,1,5,5,1,2,3,2,4,3,1,1,3,1,2,3,2,4,1,1,5,3,1,3,4,4,5,2,2,3,1,3,2,5,5,1,3,0,1,0,1,2,0,2,3,1,1,5,3,2,3,3,5,5,1,0,4,0,4,5,4,4,5,1,5,5,5,3,2,4,4,4,4,4,2,1,3,2,3,4,3,5,5,4,2,2,2,4,5,1,4,2,5,5,0,2,5,3,5,0,2,5,1,3,1,3,5,1,2,3,1,3,4],"target":[6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,46,47,47,47,48,48,49,50,51,52,53,54,55,56,57,58,59,60,60,61,61,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,79,80,81,82,83,84,85,86,87,88,89,90,90,91,92,93,94,94,95,96,97,98,98,99,100,101,102,103,104,105,106,107,108,108,109],"value":[0.0492283382488594,0.0144935579048623,0.0207012319561256,0.0275511844550325,0.0144935579048623,0.0335096855855819,0.0316238480951532,0.010353490350731,0.0103453553449624,0.0425495836300798,0.0297054908221118,0.0107938622048337,0.0107420489279044,0.0111428738113296,0.0161364379051172,0.0186183304308979,0.0164464786715531,0.027718603025427,0.011102170179836,0.0286447698500671,0.011102170179836,0.0153441405785596,0.0132408966250398,0.0248230617453495,0.010928364884364,0.0127339552693966,0.020272925448085,0.014855397213486,0.0233978009672063,0.0172616787663326,0.0161022356870613,0.0188098695548958,0.0144935579048623,0.0116732342973519,0.0132408966250398,0.0228108045038212,0.0104855542298313,0.011503239417997,0.0207012319561256,0.0140681941336334,0.0111428738113296,0.0217645979599383,0.0297868467969109,0.0112031522460777,0.012827247870743,0.0588899063052064,0.0148429028133545,0.0773883848053497,0.0116732342973519,0.0144818428879301,0.0103453553449624,0.0149524866197952,0.0419037820006258,0.0493323590801323,0.0100821528392849,0.0328876537382459,0.0224258555570247,0.0126529884852631,0.0157227891508205,0.010068043594588,0.0241648162423155,0.0311045680596959,0.146503752622233,0.0523193313059425,0.0387381064693903,0.0103585412903498,0.011503239417997,0.0124135991164463,0.0161022356870613,0.0201263574224925,0.0695655673149335,0.0127339552693966,0.0773883848053497,0.0145771253034504,0.0157276482161142,0.020713247504324,0.088210591713934,0.018795709316551,0.0289840327299746,0.0293731980426141,0.013264315755419,0.0268258769049579,0.0111428738113296,0.0103585412903498,0.0206893625597319,0.010928364884364,0.0178268592879604,0.0115090642030136,0.0548819026301753,0.0376166560300415,0.0175766376548862,0.0145771253034504,0.0218509810233916,0.0235821154824592,0.0118925718405682,0.0123354020798456,0.115555530005576,0.010928364884364,0.0183222575929207,0.0727637651803139,0.0155273611534283,0.0122035947833743,0.0189766083552265,0.0173228684541091,0.0311421885549914,0.0661163201131353,0.0595695571062788,0.0159161181855307,0.0107590040992592,0.164947414757811,0.0350730952969514,0.0409553631629238,0.0570400584551921,0.0594056780393634,0.0198592766937882,0.0228108045038212,0.0134266023907866],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["Topic 1","Topic 2","Topic 3","Topic 4","Topic 5","Topic 6","air","answer","armed","army","ask","basic","branch","bus","cadet","chance","civilian","color","commissioned","complete","corp","corps","country","day","deal","defense","different","draft","drill","duty","eat","effort","end","enlist","enlisted","enough","express","fair","farm","field","fight","find","food","force","furlough","germany","get","give","good","government","ground","guard","hall","help","idea","job","life","limit","limited","line","make","man","many","marry","meal","mechanic","mess","money","much","nation","negro","non","non-com","noncom","officer","officr","opinion","pass","peace","people","pick","plant","play","politics","private","question","questionnaire","race","rating","red","school","separate","service","show","soldier","spend","strike","tape","think","time","training","victory","wait","war","waste","week","white","win","work","young"],"group":[1,2,3,4,5,6,2,3,6,1,3,2,6,6,2,3,4,3,5,4,2,2,4,2,3,4,3,5,2,2,6,4,2,5,5,6,3,3,4,2,4,3,6,6,2,4,2,3,3,4,2,2,6,4,3,4,4,6,6,2,5,5,5,5,6,2,6,6,6,4,3,5,5,5,5,5,3,2,4,3,5,4,6,6,5,3,3,3,5,6,2,3,6,6,3,6,4,6,3,6,2,4,2,4,6,2,3,4,4,5]},"options":{"NodeID":"name","Group":"group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":30,"fontFamily":"sans-serif","clickTextSize":75,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-10,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":false,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":0,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -450,12 +402,17 @@ li {
 <div id="htmlwidget-3" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-3">{"x":{"filter":"none","data":[["androgynous","blackboi","blackgirl","blackman","blackwoman","boy","boys","bride","brother","engage","engaged","father","fem","female","females","feminine","femme","gender","gendered","gal","gals","girl","girlfriend","girl friend","girls","husband","intercourse","lady","ladies","male","males","man","marriage","married","marries","marry","marrying","masculine","men","misogynous","mother","patriarchal","patrilineal","rape","sex","sexed","sexes","sexism","sexist","sister","sweetheart","sexual relations","transgender","transgendered","transman","transmen","transphobic","transsexual","transsexuals","transwoman","transwomen","wife","wives","woman","women","whitewoman","whiteman","whiteboi","whitegirl","negrowoman","negroman","negroboi","negrogirl","colorboi","colorgirl","colorwoman","colorman"],["identity","male","female","male","female","male","male","female","male","relation","relation","male","female","female","female","female","female","construct","construct","female","female","female","female","female","female","male","relation","female","female","male","male","male","relation","relation","relation","relation","relation","male","male","construct","female","construct","male","relation","relation","construct","construct","construct","construct","female","relation","relation","identity","identity","identity","identity","identity","identity","identity","identity","identity","relation","relation","female","female","female","male","male","female","female","male","male","female","male","female","female","male"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>gender<\/th>\n      <th>category<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>We wanted to understand the relationship between women and black and white soldiers. To create this plot, we filtered the original corpus to responses that contain gendered words (specifically female words), then proceeded to compute average sentiments for both black and white soliders in the same manner discussed previously.</p>
-<p><em>take out gender sentiment radar</em></p>
-<p><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<!-- _take out gender sentiment radar_ -->
+<!-- ```{r, fig.align='center', echo=FALSE, out.width="100%"} -->
+<!-- radar2(s32_female_sentiments, -->
+<!--        group1 = c("black", "long", "black"), -->
+<!--        group2 = c("white", "long", "white"),  -->
+<!--        title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Women"); -->
+<!-- ``` -->
 <p>When comparing the sentiment results with the knowledge gained from the co-occurence and bigram analysis of gender resposnes, this plot becomes very revealing. The average sentiments for black soliders' responses about women are more fearful, more negative, less trusting and less joyful than white soldiers' responses. In the female words bigrams plot for black soldiers we see that black soldiers often write that &quot;white woman holler rape&quot;. This observation in the bigram analysis reflects the fear that black soldiers had in being accused of sexually harassing white women.</p>
-<p><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p><em>add key takeaways</em></p>
-<p><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" /></p>
 <p><em>add key takeaways</em></p>
 </div>
 <div id="spatial-arrangement" class="section level2">
@@ -472,19 +429,37 @@ li {
 <li>The white soldiers also have commentary on the integration suggests they want separate messhalls, and to not eat or live with the Black soldiers.</li>
 <li>It seems some white soldiers were okay with integration, but these bigrams maybe preceeded by negating words.</li>
 </ul>
-<p><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-13-1.png" width="1152" /><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-13-2.png" width="1152" /></p>
+<p><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-12-1.png" width="1152" /><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-12-2.png" width="1152" /></p>
 <ul>
 <li>We also looked at how white soldiers talked about spatial arrangments by sorting if they were pro integration of outfits or opposed.</li>
 <li>Although some white soldiers were in favor of integrating outfits, there was still clear commentary from the soldiers should not be sharing the space in living arrangements or social space with black soldiers.</li>
 <li>Also see commentary suggesting Southern and Northern soldiers be seperated.</li>
 <li>Also mentions the Chinese and Filipinos.</li>
 </ul>
-<p><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-14-1.png" width="1152" /><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-14-2.png" width="1152" /></p>
+<p><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-13-1.png" width="1152" /><img src="../../findings/01-poster_files/figure-html/unnamed-chunk-13-2.png" width="1152" /></p>
 </div>
-<div id="conclusion" class="section level2">
-<h2>Conclusion</h2>
-<p><em>data from a unique and historic collection that was produced by the U.S. Army during the war</em> <em>unique, historic data collection</em> <em>novel dataset</em> <em>summarize key findings</em> <em>analyze soldiers’ handwritten responses by using natural language processing methods and social network analysis to dive into soldiers’ attitudes about racial and gender relations</em> <em>one or two bullets for each topic: race, gender, space</em></p>
 </div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<ul>
+<li>Novel dataset from a unique, historic collection by the U.S. Army during WW2</li>
+<li>Analyze soldiers' handwritten responses by using natural language processing methods and social network analysis to dive into soldiers' attitudes about:
+<ul>
+<li>Race relations
+<ul>
+<li>Black soldiers discussed their position with in the military and society in the context of their race more frequently than white soldiers. White soldiers more frequently discussed the war or their career plans.</li>
+</ul></li>
+<li>Gender relations
+<ul>
+<li>The majority of male soldiers did not think that women belonged or could contribute to the military.</li>
+<li>Tension due to interracial relationships.</li>
+</ul></li>
+<li>Race and spatial arragement
+<ul>
+<li>While some white soldiers wanted to desegregate the military outfits, they did not view their black counterparts as equals and didn't want to live, eat or sleep alongside them.</li>
+</ul></li>
+</ul></li>
+</ul>
 </div>
 </div>
 
