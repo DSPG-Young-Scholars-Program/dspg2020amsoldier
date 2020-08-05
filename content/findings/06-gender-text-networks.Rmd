@@ -65,6 +65,8 @@ visualize_bigrams <- function(bigrams, title) {
 }
 
 cooccur_gender <- function(data, dictionary, n=5, corr=.15){
+  dictionary <- stem_words(lemmatize_words(dictionary))
+  dictionary <- paste(paste("\\b", dictionary,"\\b", sep = ""), collapse="|")
   
   data %>%
   mutate(section = row_number()) %>%
@@ -109,6 +111,11 @@ data$long <- str_replace_all(data$long, "'s", "")
 
 data$outfits_comment <- str_replace_all(data$outfits_comment, "\\+", "and")
 data$long <- str_replace_all(data$long, "\\+", "and")
+# some abbreviations to fix
+data$outfits_comment <- str_replace_all(data$outfits_comment, "\\bm.p\\b", "mp")
+data$long <- str_replace_all(data$long, "\\bm.p\\b", "mp")
+data$outfits_comment <- str_replace_all(data$outfits_comment, "\\bp.x\\b", "px")
+data$long <- str_replace_all(data$long, "\\bp.x\\b", "px")
 
 #remove all symbols except periods.
 data$outfits_comment <- str_replace_all(data$outfits_comment, "[^[:alnum:][:space:].]", "")
@@ -265,9 +272,9 @@ First, we will look at which words are correlated with female words in all soldi
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
-female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
+#female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
 
-long_fem_co <- cooccur_gender(S32_long, female_match, n=5, corr=.12)
+long_fem_co <- cooccur_gender(S32_long, female_words$gender, n=5, corr=.12)
 long_fem_co <- long_fem_co[!(long_fem_co$item1 == "like" & !long_fem_co$item2 %in% keep_female),]
 long_fem_co <- long_fem_co[!(long_fem_co$item2 == "like" & !long_fem_co$item1 %in% keep_female),]
 
@@ -280,11 +287,12 @@ Next, we will break it down by race.
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
-female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
+#female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
 
-black_long_fem_co <- cooccur_gender(S32N_long, female_match, n=5, corr=.12)
+black_long_fem_co <- cooccur_gender(S32N_long, female_words$gender, n=5, corr=.12)
 black_long_fem_co <- black_long_fem_co[!(black_long_fem_co$item1 == "like" & !black_long_fem_co$item2 %in% keep_female),]
 black_long_fem_co <- black_long_fem_co[!(black_long_fem_co$item2 == "like" & !black_long_fem_co$item1 %in% keep_female),]
+black_long_fem_co <- black_long_fem_co[black_long_fem_co$item2 != "p.",]
 
 visualize_cooccur(black_long_fem_co, "Female related co-occurrences for long Black soldiers' responses")
 ```
@@ -294,9 +302,9 @@ In addition, mother, sister and father have some of the strongest correlations, 
 
 ```{r echo= FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
-female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
+#female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
 
-white_long_fem_co <- cooccur_gender(S32W_long, female_match, n=5, corr=.15)
+white_long_fem_co <- cooccur_gender(S32W_long, female_words$gender, n=5, corr=.15)
 white_long_fem_co <- white_long_fem_co[!(white_long_fem_co$item1 == "like" & !white_long_fem_co$item2 %in% keep_female),]
 white_long_fem_co <- white_long_fem_co[!(white_long_fem_co$item2 == "like" & !white_long_fem_co$item1 %in% keep_female),]
 
@@ -309,25 +317,27 @@ These words correlated with female words seem inherently random. This could be d
 
 ```{r include = FALSE, message = FALSE, warning = FALSE}
 #create edgelists to make this in gephi
-# edgelist_long_bigrams_gender <- rbind(mutate(black_long_bigrams_female, racial_group = "black"),
-#                                       mutate(white_long_bigrams_female, racial_group = "white")) %>%
-#   rename(source=word1,target=word2, weight=n)
-# long_bigrams_network <- simplify(graph.data.frame(edgelist_long_bigrams_gender), 
-#                          remove.loops = FALSE, 
+edgelist_long_bigrams_gender <- rbind(mutate(black_long_bigrams_female, racial_group = "black"),
+                                      mutate(white_long_bigrams_female, racial_group = "white")) %>%
+  rename(source=word1,target=word2, weight=n)
+# long_bigrams_network <- simplify(graph.data.frame(edgelist_long_bigrams_gender),
+#                          remove.loops = FALSE,
 #                          edge.attr.comb = igraph_opt("edge.attr.comb"))
-# nodelist_long_bigrams_gender <- data.frame(id = c(1:(igraph::vcount(long_bigrams_network))), word = igraph::V(long_bigrams_network)$name)
-# #fwrite(edgelist_long_bigrams_gender, "~/git/dspg2020amsoldier/data/edgelist_long_bigrams_gender.csv")
-# #fwrite(nodelist_long_bigrams_gender, "~/git/dspg2020amsoldier/data/nodelist_long_bigrams_gender.csv")
-# 
-# edgelist_long_cooccur_gender <- rbind(mutate(black_long_fem_co, racial_group = "black"),
-#                                       mutate(white_long_fem_co, racial_group = "white")) %>%
-#   rename(source=item1,target=item2, weight=correlation)
-# long_cooccur_network <- simplify(graph.data.frame(edgelist_long_cooccur_gender), 
-#                          remove.loops = FALSE, 
+nodes_bigram<- unique(c(unique(edgelist_long_bigrams_gender$source), unique(edgelist_long_bigrams_gender$target)))
+nodelist_long_bigrams_gender <- data.frame(id = c(1:length(nodes_bigram)), word = nodes_bigram)
+#fwrite(edgelist_long_bigrams_gender, "~/git/dspg2020amsoldier/data/edgelist_long_bigrams_gender.csv")
+#fwrite(nodelist_long_bigrams_gender, "~/git/dspg2020amsoldier/data/nodelist_long_bigrams_gender.csv")
+
+edgelist_long_cooccur_gender <- rbind(mutate(black_long_fem_co, racial_group = "black"),
+                                      mutate(white_long_fem_co, racial_group = "white")) %>%
+  rename(source=item1,target=item2, weight=correlation)
+# long_cooccur_network <- simplify(graph.data.frame(edgelist_long_cooccur_gender),
+#                          remove.loops = FALSE,
 #                          edge.attr.comb = igraph_opt("edge.attr.comb"))
-# nodelist_long_cooccur_gender <- data.frame(id = c(1:(igraph::vcount(long_cooccur_network))), word = igraph::V(long_cooccur_network)$name)
-#fwrite(edgelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/edgelist_long_cooccur_gender.csv")
-#fwrite(nodelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/nodelist_long_cooccur_gender.csv")
+nodes_cooccur<- unique(c(unique(edgelist_long_cooccur_gender$source), unique(edgelist_long_cooccur_gender$target)))
+nodelist_long_cooccur_gender <- data.frame(id = c(1:length(nodes_cooccur)), word = nodes_cooccur)
+fwrite(edgelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/edgelist_long_cooccur_gender.csv")
+fwrite(nodelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/nodelist_long_cooccur_gender.csv")
 ```
 
 <center>
