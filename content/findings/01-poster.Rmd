@@ -197,6 +197,7 @@ visualize_bigrams <- function(bigrams, title) {
     ggtitle(title)
 }
 ```
+
 ```{r, include = F}
 tidy_topic_probs = function(model){
   df <- cbind(source = rownames(model$phi), model$phi)
@@ -237,55 +238,48 @@ topics_78_btm$target = topics_78_btm$target %>%
   plyr::mapvalues(from = V, to = topics)
 topics_78_btm = topics_78_btm[, c(2, 1, 3)]
 
-
 colnames(topics_n_btm) = colnames(topics_78_btm) =  c("source", "target", "weight")
 ```
 
 # American Soldier Overview
-# Project Goals
-_dspg team, sdad team, stakeholders_
-
-# Overview
 
 * American Soldier is a project headed by Ed Gitre and is funded by the National Endowment for the Humanities as a digital history project.
 * Data set includes 65,000 pages of uncensored commentaries written by U.S. soldiers stationed around the globe during WWII.
 * This data set was transcribed by Volunteer citizen-archivists on Zooniverse.
-* Our focus is on using this data to give insights into the soldier's different perspectives for three different topics.
-  + Race relations 
-  + Gender relations
-  + Intersection between race and space
 
 <center>
 ![](/findings/01-poster_files/the_gang.png)
 </center>
 
-# Data & Methods 
-The surveys have been transcribed through Zooniverse, which is a crowdsourced trascription site.
+# Project Goals
 
-* Survey 32
-    + administered to both black and white soldiers
-    + goal: to study the attitudes of and towards black soliders, specifically within the context of desegregating the military
-    + a question of interest: "Do you think white and black soldiers should be in separate outfits?"
-        - multiple choice
-        - 7,442 responses from black soldiers
-        - 4,678 responses from white soliders, who could also provide free form commentary
-    + longer comment on the overall survey
-        - 3,464 responses from black soldiers
-        - 2,324 responses from white soldiers
-        - average response length was shorter than 100 words
-        
+* Our main topics of focus from the data:
+  + Race relations (S32: attitudes of and towards Negroess, Mar 1943) 
+  + Gender relations (S90: attitudes toward Women's Army Corps, Nov-Dec. 1943)
+  + Race and Spatial arragements
+
+# Data
+
+* Survey 32:
+    + Outfits Question (Multiple Choice): "Do you think white and black soldiers should be in separate outfits?"
+    + Short Response (Text): Any comments on their answer to question 63 (shown above).
+    + Long Response (Text): Any comments they had on any aspect of the questionnaire.
+    
 ![](/findings/01-poster_files/survey.png)
 
 * Survey 144
-    + post-war career plans of black soliders
-    + don't have transcriptions for free form questions
+    + Post-war career plans of black soliders.
+    + No text data.
 * Survey 190
-    + attitudes towards women
-    + don't have transcriptions for free form questions
-    + question examples
-        - "Is the army any place for a girl to be?" 
+    + Attitudes towards the Women's Army Corps (WAC): Is the army any place for a girl to be?"
+    + No text data.
         
-_methods could be the ones from the slids, very basic_
+# Methods
+
+* Language Embeddings (CMDA)
+* Topic Modeling
+* Sentiment Analysis
+* Text Networks 
 
 ## Summary Statistics
 
@@ -294,18 +288,18 @@ _methods could be the ones from the slids, very basic_
 * Overall the soldiers are on the younger side.
 
 <center>
-![](/findings/01-poster_files/Age.png) 
+![](/findings/01-poster_files/Age.png)
 </center>
 
 * The Black soldiers surveyed were not well educated in contrast with the white soldiers where most had atleast some highschool.
 
 <center>
-![](/findings/01-poster_files/edu.png) 
+![](/findings/01-poster_files/edu.png)
 </center>
 
 * White soldiers were predominately against integrating outfits while Black soldiers where mostly split or didn't care. 
-<center>
 
+<center>
 ![](/findings/01-poster_files/outfits.png)
 </center>
 
@@ -318,42 +312,17 @@ _methods could be the ones from the slids, very basic_
   + Long Response Average: 73.04 words
 * Total: 8,102 text responses
 
-
-_what did we do to clean the data? how many words did we start with? how many words did we end up with after we finished cleaning?_
+Text Sample:
+_"when the war going to quit? [paragraph] will filling in these questions do any good? [paragraph] now it ant[ain't] no good if [unclear][/unclear] dond doe as i hope but you small help the poor culler[colored] people cause we dont now[know] what we are doing [by the man who that was interviewed]"_
 
 * Cleaning the text:
-  + Manual Cleaning of tags
+  + Manual cleaning of tags
   + Stemming 
   + Spell Check 
   + Lemmatizing 
-
-# Methods
-
-To analyze the text data, we focused on three techniques: 
-
-* sentiment analysis
-    + [NRC dictionary](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm) sentiment lexicon 
-        - anger, fear, anticipation, trust, surprise, sadness, joy, disgust, negative, positive 
-    + comparing sentiment distributions across different groups
-        - black and white soldiers
-        - pro-segregation and anti-segegration white soldiers
-        - unique words 
-        - responses that dicuss gender
-* text networks
-    + bigrams and co-occurences used across different groups
-        - black and white soldiers
-        - pro-segregation and anti-segregation white soldiers
-        - responses that discuss gender
-        - repsonses that discuss race and space
-* topic modeling
-    + LDA, biterm topic modeling, and GEPHI 
-
-These three tools help us glean insights into the feelings of soldiers, the frequencies of terms they used, and which overall topics they discussed. The text analysis is completed on Survey 32 text data and separates soldiers into four main groups of text
-
-* black soldiers' long responses
-* white soldiers' long responses
-* pro-segregation white soldier's short responses 
-* anti-segregation white soldier's short responses. 
+  
+<!-- _how many words did we start with_ -->
+<!-- _how many words did we end with_ -->
 
 ## Race Relations
 _sentiment analysis_
@@ -485,6 +454,7 @@ net_n_btm
 #### Topic Model Network for White Soldiers' Long Comment
 _different colors for each racial group_
 _use those colors to make color coded text_
+
 ```{r 78 btm, fig.height=6, echo = F}
 edgelist_78_btm= topics_78_btm %>%
   filter(weight >= .01) %>%
@@ -528,14 +498,14 @@ DT::datatable(gender_words, rownames = FALSE)
 
 We wanted to understand the relationship between women and black and white soldiers. To create this plot, we filtered the original corpus to responses that contain gendered words (specifically female words), then proceeded to compute average sentiments for both black and white soliders in the same manner discussed previously. 
 
-_take out gender sentiment radar_
+<!-- _take out gender sentiment radar_ -->
 
-```{r, fig.align='center', echo=FALSE, out.width="100%"}
-radar2(s32_female_sentiments,
-       group1 = c("black", "long", "black"),
-       group2 = c("white", "long", "white"), 
-       title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Women");
-```
+<!-- ```{r, fig.align='center', echo=FALSE, out.width="100%"} -->
+<!-- radar2(s32_female_sentiments, -->
+<!--        group1 = c("black", "long", "black"), -->
+<!--        group2 = c("white", "long", "white"),  -->
+<!--        title = "Average Sentiments for Black and White Soliders'\nLong Responses that Discuss Women"); -->
+<!-- ``` -->
 
 When comparing the sentiment results with the knowledge gained from the co-occurence and bigram analysis of gender resposnes, this plot becomes very revealing. The average sentiments for black soliders' responses about women are more fearful, more negative, less trusting and less joyful than white soldiers' responses. In the female words bigrams plot for black soldiers we see that black soldiers often write that "white woman holler rape". This observation in the bigram analysis reflects the fear that black soldiers had in being accused of sexually harassing white women. 
 
@@ -751,8 +721,6 @@ S32N_long <- data %>% filter(racial_group== "black") %>% select(long) %>% filter
 S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
 
 ```
-  
-
 
 * Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century.
 * Are themes of spatial segregation prevelant in the soldiers' responses and experiences in the military during WWII?
@@ -769,7 +737,7 @@ visualize_bigrams(black_long_bigrams, "Black Soldiers' Long Response - Spatial A
 
 
 white_long_bigrams <- bigrams_spatial(S32W_long, space_match, count = 2)
-visualize_bigrams(white_long_bigrams, "Wlack Soldiers' Long Response - Spatial Arrangement Bigrams")
+visualize_bigrams(white_long_bigrams, "White Soldiers' Long Response - Spatial Arrangement Bigrams")
 
 ```
 
@@ -796,10 +764,13 @@ visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arra
 
 ```
 
-## Conclusion
-_data from a unique and historic collection that was produced by the U.S. Army during the war_
-_unique, historic data collection_
-_novel dataset_
-_summarize key findings_
-_analyze soldiers’ handwritten responses by using natural language processing methods and social network analysis to dive into soldiers’ attitudes about racial and gender relations_
-_one or two bullets for each topic: race, gender, space_
+# Conclusion
+* Novel dataset from a unique, historic collection by the U.S. Army during WW2
+* Analyze soldiers' handwritten responses by using natural language processing methods and social network analysis to dive into soldiers' attitudes about:
+    + Race relations
+        - Black soldiers discussed their position with in the military and society in the context of their race more frequently than white soldiers. White soldiers more frequently discussed the war or their career plans.
+    + Gender relations
+        - The majority of male soldiers did not think that women belonged or could contribute to the military. 
+        - Tension due to interracial relationships. 
+    + Race and spatial arragement
+        - While some white soldiers wanted to desegregate the military outfits, they did not view their black counterparts as equals and didn't want to live, eat or sleep alongside them.
