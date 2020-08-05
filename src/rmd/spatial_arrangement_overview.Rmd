@@ -303,7 +303,7 @@ fwrite(edgelist_S32W_long_bigrams_spatial, here("/data/edgelist_S32W_long_bigram
 edgelist_S32N_long_cooccur_spatial <- black_long_cors %>% 
   rename(source=item1,target = item2, weight=correlation)
 fwrite(edgelist_S32N_long_cooccur_spatial, here("/data/edgelist_S32N_long_cooccur_spatial.csv"))
-####bigrams white long
+####cooccurrence white long
 edgelist_S32W_long_cooccur_spatial <- white_long_cors %>% 
   rename(source=item1,target = item2, weight=correlation)
 fwrite(edgelist_S32W_long_cooccur_spatial, here("/data/edgelist_S32W_long_cooccur_spatial.csv"))

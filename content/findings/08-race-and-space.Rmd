@@ -305,3 +305,23 @@ data$outfits_comment[5523]
 
 They use these two demographics of people to compare integration of Black soldiers to the acceptance of integration between white men and other races.
 
+
+
+```{r include = FALSE, message = FALSE, warning = FALSE}
+# #cooccurrence black long
+# edgelist_S32N_long_cooccur_spatial <- black_long_cors %>% 
+#   rename(source=item1,target = item2, weight=correlation)
+# fwrite(edgelist_S32N_long_cooccur_spatial, here::here("/data/edgelist_S32N_long_cooccur_spatial.csv"))
+# ####cooccurrence white long
+# edgelist_S32W_long_cooccur_spatial <- white_long_cors %>% 
+#   rename(source=item1,target = item2, weight=correlation)
+# fwrite(edgelist_S32W_long_cooccur_spatial, here::here("/data/edgelist_S32W_long_cooccur_spatial.csv"))
+# 
+# ## cooccur segregation short
+# edgelist_seg_short_cooccur <- seg_short_cors %>%rename(source=item1,target = item2, weight=correlation)
+# fwrite(edgelist_seg_short_cooccur, here::here("/data/edgelist_seg_short_cooccur_spatial.csv"))
+# ## cooccur integration short
+# edgelist_int_short_cooccur <- int_short_cors %>%  rename(source=item1,target = item2, weight=correlation)
+# fwrite(edgelist_int_short_cooccur, here::here("/data/edgelist_int_short_cooccur_spatial.csv"))
+```
+

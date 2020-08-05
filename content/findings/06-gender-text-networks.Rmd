@@ -336,8 +336,8 @@ edgelist_long_cooccur_gender <- rbind(mutate(black_long_fem_co, racial_group = "
 #                          edge.attr.comb = igraph_opt("edge.attr.comb"))
 nodes_cooccur<- unique(c(unique(edgelist_long_cooccur_gender$source), unique(edgelist_long_cooccur_gender$target)))
 nodelist_long_cooccur_gender <- data.frame(id = c(1:length(nodes_cooccur)), word = nodes_cooccur)
-fwrite(edgelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/edgelist_long_cooccur_gender.csv")
-fwrite(nodelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/nodelist_long_cooccur_gender.csv")
+# fwrite(edgelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/edgelist_long_cooccur_gender.csv")
+# fwrite(nodelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/nodelist_long_cooccur_gender.csv")
 ```
 
 <center>
