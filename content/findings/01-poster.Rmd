@@ -38,6 +38,7 @@ library(stringr)
 library(BTM)
 library(udpipe)
 library(networkD3)
+library(DT)
 ```
 
 ```{r, include=FALSE}
@@ -241,66 +242,74 @@ topics_78_btm = topics_78_btm[, c(2, 1, 3)]
 colnames(topics_n_btm) = colnames(topics_78_btm) =  c("source", "target", "weight")
 ```
 
-# American Soldier Overview
+# The American Soldier in WWII: Extracting Insights From Historical Textual Data
 
-* American Soldier is a project headed by Ed Gitre and is funded by the National Endowment for the Humanities as a digital history project.
-* Data set includes 65,000 pages of uncensored commentaries written by U.S. soldiers stationed around the globe during WWII.
-* This data set was transcribed by Volunteer citizen-archivists on Zooniverse.
+* DSPG Team
+    + Morgan Elain Stockham, Fellow, Claremont Graduate University
+    + Mary Solomon, Fellow, Bowling Green State University
+    + Saimun Habib, Intern, Harvard College
+    + Chase Dawson, Intern, University of Virginia
+    
+# Background
 
-<!-- <center> -->
-<!-- ![](/findings/01-poster_files/the_gang.png) -->
-<!-- </center> -->
+* Our DSPG project complements the American Soldier project which is headed by Ed Gitre (Virginia Tech Dept. of History) and is funded by the National Endowment for the Humanities as a digital history project.
+* To make widely available, for the first time since WWII, a truly unique collection of historical records, 65,000 pages of uncensored commentaries written by U.S. soldiers stationed around the globe
+* This data set was transcribed by volunteer citizen-archivists through an online, crowdsourced platform knonw as Zooniverse.
 
-# Project Goals
+# DSPG Project Goals
 
+* We aim to analyze textual data to extract insights about soldiers' attitudes during WWII.
 * Our main topics of focus from the data:
-  + Race relations (S32: attitudes of and towards Negroess, Mar 1943) 
-  + Gender relations (S90: attitudes toward Women's Army Corps, Nov-Dec. 1943)
-  + Race and Spatial arragements
+    + Race relations (S32: attitudes of and towards Negroes, Mar 1943) 
+    + Gender relations (S195)
+    + Race and spatial arrangements
+* We use the following methods:
+    + Sentiment Analysis
+        - To study soldiers' general attitudes towards race and gender relations.
+    + Topic Modeling
+        - To identify various topics dicussed in the text between groups. 
+    + Text Networks 
+        - Co-occurrence and bigram networks to extract context within responses.
 
 # Data
 
 * Survey 32:
-    + Outfits Question (Multiple Choice): "Do you think white and black soldiers should be in separate outfits?"
+    + Outfits Question (Multiple Choice): Do you think white and black soldiers should be in separate outfits?
     + Short Response (Text): Any comments on their answer to question 63 (shown above).
     + Long Response (Text): Any comments they had on any aspect of the questionnaire.
     
-<!-- ![](/findings/01-poster_files/survey.png) -->
+<center>
+![](/findings/01-poster_files/survey.png){width=80% height=80%}
+</center>
 
 * Survey 144
     + Post-war career plans of black soliders.
     + No text data.
-* Survey 190
+* Survey 195
     + Attitudes towards the Women's Army Corps (WAC): Is the army any place for a girl to be?"
     + No text data.
         
-# Methods
-
-* Topic Modeling
-* Sentiment Analysis
-* Text Networks 
-
 ## Summary Statistics
 
-* So breifly we want to give a sense of the soldiers who took Survey 32 as they constitute the population we did our text analysis on.
+* We want to give a sense of the soldiers who took Survey 32 as they constitute the population we did our text analysis on.
 
 * Overall the soldiers are on the younger side.
 
-<!-- <center> -->
-<!-- ![](/findings/01-poster_files/Age.png) -->
-<!-- </center> -->
+<center>
+![](/findings/01-poster_files/Age.png)
+</center>
 
-* The Black soldiers surveyed were not well educated in contrast with the white soldiers where most had atleast some highschool.
+* The Black soldiers surveyed were not well educated in contrast with the white soldiers where most had at least some highschool.
 
-<!-- <center> -->
-<!-- ![](/findings/01-poster_files/edu.png) -->
-<!-- </center> -->
+<center>
+![](/findings/01-poster_files/edu.png)
+</center>
 
-* White soldiers were predominately against integrating outfits while Black soldiers where mostly split or didn't care. 
+* White soldiers were predominately against integrating outfits while Black soldiers were mostly split or didn't care. 
 
-<!-- <center> -->
-<!-- ![](/findings/01-poster_files/outfits.png) -->
-<!-- </center> -->
+<center>
+![](/findings/01-poster_files/outfits.png)
+</center>
 
 
 ## Text Cleaning
@@ -316,8 +325,8 @@ _"when the war going to quit? [paragraph] will filling in these questions do any
 
 * Cleaning the text:
     + Manual cleaning of tags
-    + Stemming 
     + Spell Check 
+    + Stemming 
     + Lemmatizing 
   
 <!-- _how many words did we start with_ -->
@@ -379,7 +388,7 @@ title(main = "Sentiment Distribution of Words Used\nUniquely by Black and White 
 ```
 
 * The plot was created from the words used uniquely by each group, so the words used to evaluate sentiment for black soldiers were never used by white soldiers and vice versa. The unique words of black soldiers corresponded with more fear, disgust, anger, and sadness than those of white soldiers.
-* The wordclouds below visualize the top 20 frequently used unique words by <span class="emphasized" style="color: #e57200">black</span> and <span class="emphasized" style="color: #232d4b">white</span> soldiers, on the left and right respectively. The size of the word is proportional to number of times it appears in the text.
+* The wordclouds below visualize the top 20 frequently used unique words by <span class="emphasized" style="color: #e57200">black</span> and <span class="emphasized" style="color: #232d4b">white</span> soldiers, on the left and right respectively. The size of the word is proportional to the number of times it appears in the text.
 
 ```{r, fig.show='hold', fig.height=8, out.width="50%", echo=FALSE}
 unique_black_words %>% with(wordcloud(word, n, random.order = FALSE, colors=unique_black_words$color, max.words = 20, ordered.colors = TRUE))
@@ -393,27 +402,38 @@ unique_white_words %>% with(wordcloud(word, n, random.order = FALSE, colors = un
 ### Co-Occurence Networks
 
 * Used community detection algorithms on the co-occurence networks to identify groups of related words. 
-* Size of the nodes correspond to the degree of the node ie. it is connected to more words. 
+* The size of the nodes corresponds to the degree of the node ie. it is connected to more words. 
 
 #### Black Soldiers' Long Comment
 
-<!-- <center> -->
-<!-- ![](/findings/01-poster_files/blk_long_response_gephi.png) -->
-<!-- </center> -->
+<center>
+![](/findings/01-poster_files/blk_long_response_gephi.png)
+</center>
 
 #### White Soldiers' Long Comment
 
-<!-- <center> -->
-<!-- ![](/findings/01-poster_files/wht_long_response_gephi.png) -->
-<!-- </center> -->
+<center>
+![](/findings/01-poster_files/wht_long_response_gephi.png)
+</center>
 
 ### Topic Modeling
-* A useful method to understand what the general themes are wihtin a corpus by grouping the words which would constitute a topic
+* A useful method to understand what the general themes are within a corpus by modeling the words which constitute a topic
 * Used Biterm Topic Modeling to model the topics within each corpus of answers
 * This works better on shorter texts
 * It's a Gibbs Sampler that directly models the word-word co-occurrences patterns as opposed to word-document co-occurrences
 
 #### Topic Model Network for Black Soldiers' Long Comment
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+topic_table_n = modeln$phi %>%
+  as.data.frame() %>%
+  filter_all(any_vars(. > .01))
+colnames(topic_table_n) = c("Topic 1","Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6")
+brks <- quantile(topic_table_n, probs = seq(0, .15, .01), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+datatable(round(topic_table_n,2)) %>% formatStyle(names(topic_table_n), backgroundColor = styleInterval(brks, clrs))
+```
 
 ```{r black btm, fig.height=6, echo = F}
 num_clusters = 6
@@ -439,9 +459,22 @@ net_n_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
 net_n_btm
 ```
 
+
+
+
 #### Topic Model Network for White Soldiers' Long Comment
 <!-- _different colors for each racial group_ -->
 <!-- _use those colors to make color coded text_ -->
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+topic_table_78 = model78$phi %>%
+  as.data.frame() %>%
+  filter_all(any_vars(. > .01))
+colnames(topic_table_78) = c("Topic 1","Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6")
+brks <- quantile(topic_table_78, probs = seq(0, .15, .01), na.rm = TRUE)
+clrs <- round(seq(255, 40, length.out = length(brks) + 1), 0) %>%
+  {paste0("rgb(255,", ., ",", ., ")")}
+datatable(round(topic_table_78,2)) %>% formatStyle(names(topic_table_78), backgroundColor = styleInterval(brks, clrs))
+```
 
 ```{r 78 btm, fig.height=6, echo = F}
 edgelist_78_btm= topics_78_btm %>%
@@ -469,8 +502,8 @@ net_78_btm
 ## Gender Relations
 
 * Our particular focus is on women's gender roles during the time of 1943, especially at the intersection of race relations. Women were obviously unable to serve in the military in the same capacity as men during WW2; however, women did contribute to the war effort through the Women's Army Corps (WAC). 
-* Survey 195 is more targeted to gender relations, but we don't have transcriptions for the free form text so we select responses that discuss gender from Survey 32 using a word dictionary. 
-* A dictionary of gender words are loaded to identy which responses relate to gender topics. This dictionary was created using terms included in the the [Oxford University Press Dictionary of Gender Studies](https://www.oxfordreference.com/view/10.1093/acref/9780191834837.001.0001/acref-9780191834837?btog=chap&hide=true&pageSize=20&skipEditions=true&sort=titlesort&source=%2F10.1093%2Facref%2F9780191834837.001.0001%2Facref-9780191834837). 
+* Survey 195 is more targeted to gender relations, but we don't have transcriptions of the free form text so we select responses that discuss gender from Survey 32 using a word dictionary. 
+* A dictionary of gender words are loaded to identify which responses relate to gender topics. This dictionary was created using terms included in the [Oxford University Press Dictionary of Gender Studies](https://www.oxfordreference.com/view/10.1093/acref/9780191834837.001.0001/acref-9780191834837?btog=chap&hide=true&pageSize=20&skipEditions=true&sort=titlesort&source=%2F10.1093%2Facref%2F9780191834837.001.0001%2Facref-9780191834837). 
 * Furthermore, phrases such as "colored women" and "negro women" are collapsed and pre-stemmed/pre-lemmed to "colorwoman" and "negrowoman" in both the dictionary and the text. 
 * The purpose of this is to treat these references to women as a single entity as opposed to the text being analyzed as colored and negro being frequent adjectives for women.
 * You can view the dictionary below:
@@ -520,7 +553,7 @@ visualize_bigrams(black_long_bigrams_female, "Black Soldiers' Long Response - Fe
 ```
 
 * In the above plot, we see that black soldiers often write that "woman holler rape". 
-* Black men often were often falsely and publicly accused of sexual assault during this time period, and we can see that black soldiers are discussing that in their responses.
+* Black men often were often wrongly and publicly accused of sexual assault during this time period, and we can see that black soldiers are discussing that in their responses.
 * Black soldiers are talking about interracial marriage.
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width="100%"}
@@ -547,7 +580,7 @@ visualize_bigrams(white_long_bigrams_female, "White Soldiers' Long Response - Fe
 ```
 
 * A common word sequence used by white soldiers was "white like negro". 
-* White soliders are also discussing interracial marriage.
+* White soldiers are also discussing interracial marriage.
 
 ## Spatial Arrangement
 
@@ -710,12 +743,12 @@ S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
 ```
 
 * Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century.
-* Are themes of spatial segregation prevelant in the soldiers' responses and experiences in the military during WWII?
+* Are themes of spatial segregation prevalent in the soldiers' responses and experiences in the military during WWII?
 * We created a spatial dictionary with words such as camp, messhall, etc. to see what the soldiers were saying when they were talking about these spaces.
 * We see that there's a greater amount of commentary from black soldiers than white soldiers.
 * Black soldiers mention various military spaces and these words are paired with words such as "mix", "together", "same", "separate", and "individual."
 * The white soldiers also have commentary on the integration suggests they want separate messhalls, and to not eat or live with the Black soldiers.
-* It seems some white soldiers were okay with integration, but these bigrams maybe preceeded by negating words.
+* It seems some white soldiers were okay with integration, but these bigrams maybe preceded by negating words.
 
 ```{r, warning=FALSE, echo=FALSE, message=FALSE, fig.width=12, fig.height=8}
 
@@ -730,7 +763,7 @@ visualize_bigrams(white_long_bigrams, "White Soldiers' Long Response - Spatial A
 
 * We also looked at how white soldiers talked about spatial arrangments by sorting if they were pro integration of outfits or opposed.
 * Although some white soldiers were in favor of integrating outfits, there was still clear commentary from the soldiers should not be sharing the space in living arrangements or social space with black soldiers.
-* Also see commentary suggesting Southern and Northern soldiers be seperated.
+* Also see commentary suggesting Southern and Northern soldiers be separated.
 * Also mentions the Chinese and Filipinos. 
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE, fig.width=12, fig.height=8}
@@ -755,9 +788,9 @@ visualize_cooccur(int_short_cors, "Pro Integration Short Response - Spatial Arra
 * Novel dataset from a unique, historic collection by the U.S. Army during WW2
 * Analyze soldiers' handwritten responses by using natural language processing methods and social network analysis to dive into soldiers' attitudes about:
     + Race relations
-        - Black soldiers discussed their position with in the military and society in the context of their race more frequently than white soldiers. White soldiers more frequently discussed the war or their career plans.
+        - Black soldiers discussed their position within the military and society in the context of their race more frequently than white soldiers. White soldiers more frequently discussed the war or their career plans.
     + Gender relations
         - The majority of male soldiers did not think that women belonged or could contribute to the military. 
         - Tension due to interracial relationships. 
-    + Race and spatial arragement
+    + Race and spatial arrangement
         - While some white soldiers wanted to desegregate the military outfits, they did not view their black counterparts as equals and didn't want to live, eat or sleep alongside them.
