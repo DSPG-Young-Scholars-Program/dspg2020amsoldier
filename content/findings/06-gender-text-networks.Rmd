@@ -47,9 +47,10 @@ knitr::opts_chunk$set(fig.width=12, fig.height=8)
 
 
 ```{r functions, include = FALSE, warning=FALSE, message=FALSE}
+colors <- c("#e57200", "#232d4b") #1st is black second white
 # Visualizing Bigrams functions
 # From tidytext documentation
-visualize_bigrams <- function(bigrams, title) {
+visualize_bigrams <- function(bigrams, title, color) {
   set.seed(2020)
   a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
   
@@ -57,7 +58,7 @@ visualize_bigrams <- function(bigrams, title) {
     graph_from_data_frame() %>%
     ggraph(layout = "fr") +
     geom_edge_link(aes(edge_alpha = n), show.legend = FALSE, arrow = a) +
-    geom_node_point(color = "lightblue", size = 5) +
+    geom_node_point(color = color, size = 5) +
     geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
     theme_void() + theme(legend.position = "none",
                       plot.title = element_text(hjust = 0.5)) +
@@ -80,13 +81,13 @@ cooccur_gender <- function(data, dictionary, n=5, corr=.15){
   filter(grepl(dictionary, item1))%>%
   filter(correlation >= corr) 
 }
-visualize_cooccur <- function(data, title){
+visualize_cooccur <- function(data, title, color){
   set.seed(2020)
   data %>%
   graph_from_data_frame() %>%
   ggraph(layout = "fr") +
   geom_edge_link(aes(edge_alpha = correlation), show.legend = FALSE) +
-  geom_node_point(color = "lightblue", size = 5) +
+  geom_node_point(color = color, size = 5) +
   geom_node_text(aes(label = name), repel = TRUE) +
   theme_void() + ggtitle(title)
 }
@@ -199,7 +200,7 @@ long_bigrams_female <- S32_long %>% unnest_tokens(bigram, text, token = "ngrams"
 long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word1 == "like" & !long_bigrams_female$word2 %in% keep_female),]
 long_bigrams_female <- long_bigrams_female[!(long_bigrams_female$word2 == "like" & !long_bigrams_female$word1 %in% keep_female),]
 
-visualize_bigrams(long_bigrams_female, "Soldiers' Long Response - Female Words Bigrams")
+visualize_bigrams(long_bigrams_female, "Soldiers' Long Response - Female Words Bigrams", "light blue")
 ```
 
 We can see at the like node there is a chain of "whiteman like colorwoman." There are also instances of "whiteman" being paired with "like black men/soldiers". This is either relating the two on the basis of similarity or to the emotion of likeness between the two.
@@ -232,7 +233,7 @@ black_long_bigrams_female <- S32N_long %>% unnest_tokens(bigram, text, token = "
 black_long_bigrams_female <- black_long_bigrams_female[!(black_long_bigrams_female$word1 == "like" & !black_long_bigrams_female$word2 %in% keep_female),]
 black_long_bigrams_female <- black_long_bigrams_female[!(black_long_bigrams_female$word2 == "like" & !black_long_bigrams_female$word1 %in% keep_female),]
 
-visualize_bigrams(black_long_bigrams_female, "Black Soldiers' Long Response - Female Words Bigrams")
+visualize_bigrams(black_long_bigrams_female, "Black Soldiers' Long Response - Female Words Bigrams", colors[1])
 ```
 
 Commentary on women are racialized with explicit mention of 'colorwoman' and 'whitewoman'. We also see a bigram sequence of "whitewoman holler rape". This is in relation to black men at the time being subject to false accusations for raping or having sex with white women.
@@ -257,7 +258,7 @@ white_long_bigrams_female <- S32W_long %>% unnest_tokens(bigram, text, token = "
 white_long_bigrams_female <- white_long_bigrams_female[!(white_long_bigrams_female$word1 == "like" & !white_long_bigrams_female$word2 %in% keep_female),]
 white_long_bigrams_female <- white_long_bigrams_female[!(white_long_bigrams_female$word2 == "like" & !white_long_bigrams_female$word1 %in% keep_female),]
 
-visualize_bigrams(white_long_bigrams_female, "White Soldiers' Long Response - Female Words Bigrams")
+visualize_bigrams(white_long_bigrams_female, "White Soldiers' Long Response - Female Words Bigrams", colors[2])
 ```
 
 We see a complete lack of narrative in black women specifically. Conversations about women are mostly about their role in the family as a mother, wife or sister. Another common conversation is about working women, with pairings to WAAC, auxiliary (referring to WAAC) and worker.
@@ -278,7 +279,7 @@ long_fem_co <- cooccur_gender(S32_long, female_words$gender, n=5, corr=.12)
 long_fem_co <- long_fem_co[!(long_fem_co$item1 == "like" & !long_fem_co$item2 %in% keep_female),]
 long_fem_co <- long_fem_co[!(long_fem_co$item2 == "like" & !long_fem_co$item1 %in% keep_female),]
 
-visualize_cooccur(long_fem_co, "Female related co-occurrences for long soldier response")
+visualize_cooccur(long_fem_co, "Female related co-occurrences for long soldier response", "light blue")
 ```
 
 Themes of family are still prevelant. Negrowoman are associated with some negative words like filthy and invade. Whitewomen associations with the words intercourse, cry and molest are related to the controversy of black men having sexual realtions with whitemen. In addition, whitewomen is associated with negroman. This is shows that there is commentary of the association of black and white women which was controversial at the time. 
@@ -294,7 +295,7 @@ black_long_fem_co <- black_long_fem_co[!(black_long_fem_co$item1 == "like" & !bl
 black_long_fem_co <- black_long_fem_co[!(black_long_fem_co$item2 == "like" & !black_long_fem_co$item1 %in% keep_female),]
 black_long_fem_co <- black_long_fem_co[black_long_fem_co$item2 != "p.",]
 
-visualize_cooccur(black_long_fem_co, "Female related co-occurrences for long Black soldiers' responses")
+visualize_cooccur(black_long_fem_co, "Female related co-occurrences for long Black soldiers' responses", colors[1])
 ```
 
 One of the strongest correlations are between negrowoman and negroman as well as negroman and whitewoman. This is indicative that interracial relations are one the most heavily correlated topics to women in the Black soldiers' responses. 
@@ -308,7 +309,7 @@ white_long_fem_co <- cooccur_gender(S32W_long, female_words$gender, n=5, corr=.1
 white_long_fem_co <- white_long_fem_co[!(white_long_fem_co$item1 == "like" & !white_long_fem_co$item2 %in% keep_female),]
 white_long_fem_co <- white_long_fem_co[!(white_long_fem_co$item2 == "like" & !white_long_fem_co$item1 %in% keep_female),]
 
-visualize_cooccur(white_long_fem_co, "Female related co-occurrences for long White soldiers' responses")
+visualize_cooccur(white_long_fem_co, "Female related co-occurrences for long White soldiers' responses", colors[2])
 ```
 
 These words correlated with female words seem inherently random. This could be due to the fact that commentary about women were included in responses that talked about other various topics regarding the war and soldier life. However, we again see an absence of discussion about Black women as a whole. 
@@ -339,6 +340,22 @@ nodelist_long_cooccur_gender <- data.frame(id = c(1:length(nodes_cooccur)), word
 # fwrite(edgelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/edgelist_long_cooccur_gender.csv")
 # fwrite(nodelist_long_cooccur_gender, "~/git/dspg2020amsoldier/data/nodelist_long_cooccur_gender.csv")
 ```
+
+
+```{r include = FALSE, message = FALSE, warning = FALSE}
+#create singleplex edge lists
+#create edgelists to make this in gephi
+edgelist_black_long_bigrams_gender <- rename(black_long_bigrams_female, source=word1,target=word2, weight=n)
+edgelist_white_long_bigrams_gender <- rename(white_long_bigrams_female, source=word1,target=word2, weight=n)
+# fwrite(edgelist_black_long_bigrams_gender, "~/git/dspg2020amsoldier/data/edgelist_black_long_bigrams_gender.csv")
+# fwrite(edgelist_white_long_bigrams_gender , "~/git/dspg2020amsoldier/data/edgelist_white_long_bigrams_gender .csv")
+
+edgelist_black_long_cooccur_gender <- rename(black_long_fem_co, source=item1, target=item2, weight=correlation)
+edgelist_white_long_cooccur_gender <- rename(white_long_fem_co, source=item1, target=item2, weight=correlation)
+# fwrite(edgelist_black_long_cooccur_gender, "~/git/dspg2020amsoldier/data/edgelist_black_long_cooccur_gender.csv")
+# fwrite(edgelist_white_long_cooccur_gender, "~/git/dspg2020amsoldier/data/edgelist_white_long_cooccur_gender.csv")
+```
+
 
 <center>
 #### What are the sentiments that are associated with gender?
