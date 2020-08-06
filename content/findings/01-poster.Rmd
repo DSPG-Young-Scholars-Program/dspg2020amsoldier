@@ -425,12 +425,16 @@ unique_white_words %>% with(wordcloud(word, n, random.order = FALSE, colors = un
 #### Topic Model Network for Black Soldiers' Long Comment
 
 <span style="color: #5192c2">Topic 1: Touches on war and the chance to fight. Also suggests sort of give and take and expecting to get something better out of it in the end.</span>
-<span style="color: #bdd2ec">Topic 2: Is about segregation in different spaces within the military.</span>
-<span style="color: #ff984c">Topic 3: Is filled with optimistic words such as better, opportunity, equality, chance, free and fair. At the same time however, it speaks of Jim Crow.</span>
-<span style="color: #ffc892">Topic 4: Talks about positions within the military and potentially also having black officers.</span>
-<span style="color: #5eb35b">Topic 5: Touches upon various parts of the day to day life and seems a bit more mundane.</span>
-<span style="color: #ade5a1">Topic 6: Focuses in on race and geography specifically mentioning negro, white, north, and south, etc.</span>
 
+<span style="color: #bdd2ec">Topic 2: Is about segregation in different spaces within the military.</span>
+
+<span style="color: #ff984c">Topic 3: Is filled with optimistic words such as better, opportunity, equality, chance, free and fair. At the same time however, it speaks of Jim Crow.</span>
+
+<span style="color: #ffc892">Topic 4: Talks about positions within the military and potentially also having black officers.</span>
+
+<span style="color: #5eb35b">Topic 5: Touches upon various parts of the day to day life and seems a bit more mundane.</span>
+
+<span style="color: #ade5a1">Topic 6: Focuses in on race and geography specifically mentioning negro, white, north, and south, etc.</span>
 ```{r black btm, fig.height=6, echo = F}
 num_clusters = 6
 edgelist_n_btm= topics_n_btm %>%
@@ -455,19 +459,20 @@ net_n_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
 net_n_btm
 ```
 
-
-
-
 #### Topic Model Network for White Soldiers' Long Comment
 <!-- _different colors for each racial group_ -->
 <!-- _use those colors to make color coded text_ -->
 <span style="color: #5192c2">Topic 1: In general talks about the war/army and includes words such as give and take.</span>
-<span style="color: #bdd2ec">Topic 2: Is about about getting time to eat and getting furloughed.</span>
-<span style="color: #ff984c">Topic 3: Soldiers talk about positions in the military and also includes terms like valuable, waste, time, and money suggesting they are thinking of career prospects here.</span>
-<span style="color: #ffc892">Topic 4: Identifies the enlistment/service experience and how many of the soldiers are young.</span>
-<span style="color: #5eb35b">Topic 5: Focuses on how the questionnaire is a chance to talk about race and whether this opportunity is needed or not. </span>
-<span style="color: #ade5a1">Topic 6: Is about different branches in the military and the experience needed to transfer.</span>
 
+<span style="color: #bdd2ec">Topic 2: Is about about getting time to eat and getting furloughed.</span>
+
+<span style="color: #ff984c">Topic 3: Soldiers talk about positions in the military and also includes terms like valuable, waste, time, and money suggesting they are thinking of career prospects here.</span>
+
+<span style="color: #ffc892">Topic 4: Identifies the enlistment/service experience and how many of the soldiers are young.</span>
+
+<span style="color: #5eb35b">Topic 5: Focuses on how the questionnaire is a chance to talk about race and whether this opportunity is needed or not. </span>
+
+<span style="color: #ade5a1">Topic 6: Is about different branches in the military and the experience needed to transfer.</span>
 ```{r 78 btm, fig.height=6, echo = F}
 edgelist_78_btm= topics_78_btm %>%
   filter(weight >= .01) %>%
