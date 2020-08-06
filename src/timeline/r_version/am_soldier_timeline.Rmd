@@ -1,0 +1,18 @@
+---
+title: "American Soldier"
+author: "Chase"
+date: "8/5/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(r2d3)
+library(readr)
+```
+
+```{r, out.width="100%"}
+# load data
+dates <- read_csv("./dates.csv")
+r2d3(data = dates, script = "am_soldier_timeline.js")
+```

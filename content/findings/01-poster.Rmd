@@ -247,9 +247,9 @@ colnames(topics_n_btm) = colnames(topics_78_btm) =  c("source", "target", "weigh
 * Data set includes 65,000 pages of uncensored commentaries written by U.S. soldiers stationed around the globe during WWII.
 * This data set was transcribed by Volunteer citizen-archivists on Zooniverse.
 
-<center>
-![](/findings/01-poster_files/the_gang.png)
-</center>
+<!-- <center> -->
+<!-- ![](/findings/01-poster_files/the_gang.png) -->
+<!-- </center> -->
 
 # Project Goals
 
@@ -265,7 +265,7 @@ colnames(topics_n_btm) = colnames(topics_78_btm) =  c("source", "target", "weigh
     + Short Response (Text): Any comments on their answer to question 63 (shown above).
     + Long Response (Text): Any comments they had on any aspect of the questionnaire.
     
-![](/findings/01-poster_files/survey.png)
+<!-- ![](/findings/01-poster_files/survey.png) -->
 
 * Survey 144
     + Post-war career plans of black soliders.
@@ -286,21 +286,21 @@ colnames(topics_n_btm) = colnames(topics_78_btm) =  c("source", "target", "weigh
 
 * Overall the soldiers are on the younger side.
 
-<center>
-![](/findings/01-poster_files/Age.png)
-</center>
+<!-- <center> -->
+<!-- ![](/findings/01-poster_files/Age.png) -->
+<!-- </center> -->
 
 * The Black soldiers surveyed were not well educated in contrast with the white soldiers where most had atleast some highschool.
 
-<center>
-![](/findings/01-poster_files/edu.png)
-</center>
+<!-- <center> -->
+<!-- ![](/findings/01-poster_files/edu.png) -->
+<!-- </center> -->
 
 * White soldiers were predominately against integrating outfits while Black soldiers where mostly split or didn't care. 
 
-<center>
-![](/findings/01-poster_files/outfits.png)
-</center>
+<!-- <center> -->
+<!-- ![](/findings/01-poster_files/outfits.png) -->
+<!-- </center> -->
 
 
 ## Text Cleaning
@@ -397,15 +397,15 @@ unique_white_words %>% with(wordcloud(word, n, random.order = FALSE, colors = un
 
 #### Black Soldiers' Long Comment
 
-<center>
-![](/findings/01-poster_files/blk_long_response_gephi.png)
-</center>
+<!-- <center> -->
+<!-- ![](/findings/01-poster_files/blk_long_response_gephi.png) -->
+<!-- </center> -->
 
 #### White Soldiers' Long Comment
 
-<center>
-![](/findings/01-poster_files/wht_long_response_gephi.png)
-</center>
+<!-- <center> -->
+<!-- ![](/findings/01-poster_files/wht_long_response_gephi.png) -->
+<!-- </center> -->
 
 ### Topic Modeling
 * A useful method to understand what the general themes are wihtin a corpus by grouping the words which would constitute a topic
