@@ -174,7 +174,7 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_n_lda$weight)
 net_n_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+             Group = "group", opacity = 0.9, zoom = T, opacityNoHover = 0.1, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_n_lda
 ```
 
@@ -200,7 +200,7 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_77_lda$weight)
 net_77_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+             Group = "group", opacity = 0.9, zoom = T, opacityNoHover = 0.1, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_77_lda
 ```
 
@@ -227,7 +227,7 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_78_lda$weight)
 net_78_lda = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+             Group = "group", opacity = 0.9, zoom = T, opacityNoHover = 0.1, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_78_lda
 ```
 
@@ -302,7 +302,7 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_n_btm$weight)
 net_n_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+             Group = "group", opacity = 0.9, zoom = T, opacityNoHover = 0.1, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_n_btm
 ```
 
@@ -340,7 +340,7 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_77_btm$weight)
 net_77_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+             Group = "group", opacity = 0.9, zoom = T, opacityNoHover = 0.1, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_77_btm
 ```
 
@@ -378,6 +378,6 @@ links <- data.frame(source = match(sources, node_names) - 1,
                     value = edgelist_78_btm$weight)
 net_78_btm = forceNetwork(Links = links, Nodes = nodes, Source = "source",
              Target = "target", Value = "value", NodeID = "name",
-             Group = "group", opacity = 0.9, zoom = T, charge = -10, fontFamily = "sans-serif", fontSize = 30)
+             Group = "group", opacity = 0.9, zoom = T,opacityNoHover = 0.1, charge = -10, fontFamily = "sans-serif", fontSize = 30)
 net_78_btm
 ```

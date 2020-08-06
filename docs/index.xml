@@ -117,7 +117,7 @@ Our primary challenge was the presence of metatags within the text. Transcribers
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/overview/</guid>
-      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Project Overview Our work is part of the broader American Soldier in World War II initiative, based out of Virginia Tech, striving to make available to scholars and to the public a remarkable collection of written reflections on war and military service by American soldiers who served during the Second World War.</description>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; } #tooltip-content { max-width: 400px; word-wrap: break-word; } #tooltip { position: absolute; border: 1px solid black; padding: 10px; border-radius: 5px; background-color: white; } #tooltipTitle { font-weight: bold; }  Project Overview Our work is part of the broader American Soldier in World War II initiative, based out of Virginia Tech, striving to make available to scholars and to the public a remarkable collection of written reflections on war and military service by American soldiers who served during the Second World War.</description>
     </item>
     
     <item>
