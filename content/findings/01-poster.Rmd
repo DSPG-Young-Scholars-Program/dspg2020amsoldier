@@ -256,7 +256,7 @@ colnames(topics_n_btm) = colnames(topics_78_btm) =  c("source", "target", "weigh
 
 * Our DSPG project complements the American Soldier project which is headed by Ed Gitre (Virginia Tech Dept. of History) and is funded by the National Endowment for the Humanities as a digital history project.
 * To make widely available, for the first time since WWII, a truly unique collection of historical records, 65,000 pages of uncensored commentaries written by U.S. soldiers stationed around the globe
-* This data set was transcribed by volunteer citizen-archivists through an online, crowdsourced platform knonw as Zooniverse.
+* This data set was transcribed by volunteer citizen-archivists through an online, crowdsourced platform known as Zooniverse.
 
 # DSPG Project Goals
 
