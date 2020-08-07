@@ -525,7 +525,7 @@ DT::datatable(gender_words, rownames = FALSE)
 #### Black and White Soldiers' Long Comment Gender Network 
 
 <center>
-![](/findings/01-poster_files/amsoldier_multiplex_gender_v2.svg)
+![](/findings/01-poster_files/amsoldier_multiplex_gender_v3.svg)
 </center>
 
 * In the above plot, we see that black soldiers often write that "woman holler rape". 

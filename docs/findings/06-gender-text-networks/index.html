@@ -265,11 +265,19 @@ h1, h2, h3 {
 <p>We can see at the like node there is a chain of &quot;whiteman like colorwoman.&quot; There are also instances of &quot;whiteman&quot; being paired with &quot;like black men/soldiers&quot;. This is either relating the two on the basis of similarity or to the emotion of likeness between the two.</p>
 <p>Another interesting addition to the network with relationship words is the chain of bigrams &quot;sex intercourse with whitewoman&quot;. A controversial topic at the time was white soldiers being concerned with black soldiers having sexual relations with 'their' whitewomen. Likewise, black soldiers were aware of the tension of being falsely accused for raping or having sex with white women.</p>
 <p>Otherwise, themes of family are prevelant for women's role in the commentary of the soldiers. We can also see the different pairings with the word woman, seeming to talk about their roles as workers amongst other attributes (worker, waac, auxiliary)</p>
-<p>Lets see how these pairings differ between the white and black soldiers:</p>
-<p><img src="../../findings/06-gender-text-networks_files/figure-html/unnamed-chunk-3-1.png" width="1152" /></p>
-<p>Commentary on women are racialized with explicit mention of 'colorwoman' and 'whitewoman'. We also see a bigram sequence of &quot;whitewoman holler rape&quot;. This is in relation to black men at the time being subject to false accusations for raping or having sex with white women.</p>
-<p><img src="../../findings/06-gender-text-networks_files/figure-html/unnamed-chunk-4-1.png" width="1152" /></p>
-<p>We see a complete lack of narrative in black women specifically. Conversations about women are mostly about their role in the family as a mother, wife or sister. Another common conversation is about working women, with pairings to WAAC, auxiliary (referring to WAAC) and worker.</p>
+<center>
+</div>
+<div id="how-do-bigrams-differ-between-black-and-white-soldiers" class="section level4">
+<h4>How do bigrams differ between Black and White soldiers?</h4>
+</center>
+<p>The following network is a multiplex network of gender relating bigrams from white and Black soldiers. The arrows or edges, represent the pairings between words and are colored according to racial group. The orange arrows represent a bigram unique to Black soldiers' responses and blue corresponding to white soldiers' responses. You will notice that some arrows are an overlap of an orange and blue arrow, indicating that the bigram occurred in both groups' responses. Furthermore, the node size is determined by in degree measure which is the number of connections that node or word has.</p>
+<center>
+<img src="../../findings/amsoldier_multiplex_gender_v3.svg" alt="Gender Multiplex bigrams" width="700" />
+</center>
+<p>When looking at the unique use of female relating bigrams for Black soldiers, we can see themes of interracial relations with the bigram chain at the top right &quot;interracial marriage&quot; as well as &quot;intercourse with whitewoman&quot;. Romantic and sexual relations between white women and Black men was very controversial at the time. We also see a bigram sequence of &quot;whitewoman holler rape&quot;. This is in relation to black men at the time being subject to false accusations for raping or having sex with white women. Black soldiers were clearly concerned with this topic and expressed it in their long commentary on the survey.</p>
+<p>Another notable finding for Black soldiers' bigrams are the explicit racialization of female words with mention of 'colorwoman', 'negrowoman' and 'whitewoman'. If you look at the white soldiers bigrams in blue, you will see that mention of Black women is completely missing from their commentary. In fact, the presence of the bigram &quot;blonde woman&quot; suggests that perhaps white men by default use the word 'woman' to refer to a white woman.</p>
+<p>A topic relating to women that is unique to white soldiers is the mention of women in the workforce with words like &quot;office&quot;, &quot;worker&quot;, and &quot;qualify&quot;. We also see woman paired with &quot;auxiliary&quot; and &quot;waac&quot;. These are in reference to the Women's Army Corps. More information on soldiers' opinions of the Women's Army Corps are explored at the end of this page and in full overview at <a href="https://dspg-young-scholars-program.github.io/dspg2020amsoldier/findings/04-s195-eda/">Exploratory Data Analysis of Gender Relations Survey</a></p>
+<p>Overall, women's role in relationships within family and as wives is still prevelant amongst both soldier groups.</p>
 <center>
 </div>
 <div id="which-words-that-soldiers-use-are-correlated-with-female-relating-words" class="section level4">
@@ -278,13 +286,14 @@ h1, h2, h3 {
 <p>An alternative to the method of bigrams, Co-occurrences measure the correlation of two words appearing with one another in a body of text. Unlike bigrams, these words do not have to appear directly next to one another, and their strength of association is measured.</p>
 <p>First, we will look at which words are correlated with female words in all soldiers' long responses.</p>
 <p><img src="../../findings/06-gender-text-networks_files/figure-html/unnamed-chunk-5-1.png" width="1152" /></p>
-<p>Themes of family are still prevelant. Negrowoman are associated with some negative words like filthy and invade. Whitewomen associations with the words intercourse, cry and molest are related to the controversy of black men having sexual realtions with whitemen. In addition, whitewomen is associated with negroman. This is shows that there is commentary of the association of black and white women which was controversial at the time.</p>
-<p>Next, we will break it down by race.</p>
+<p>Themes of family are still prevelant. Negrowoman are associated with some negative words like filthy and invade. Whitewomen associations with the words intercourse, cry and molest are related to the controversy of black men having sexual realtions with whitemen. In addition, whitewomen is associated with negroman. This is shows that there is commentary of the association of black and white women which adds to the narrative of interratial relations.</p>
+</div>
+<div id="how-do-correlations-to-gendered-words-differ-between-black-and-white-soldiers" class="section level4">
+<h4>How do correlations to gendered words differ between Black and White soldiers?</h4>
 <p><img src="../../findings/06-gender-text-networks_files/figure-html/unnamed-chunk-6-1.png" width="1152" /></p>
 <p>One of the strongest correlations are between negrowoman and negroman as well as negroman and whitewoman. This is indicative that interracial relations are one the most heavily correlated topics to women in the Black soldiers' responses. In addition, mother, sister and father have some of the strongest correlations, showing that women's most prevalent role for the soldiers was in their families.</p>
 <p><img src="../../findings/06-gender-text-networks_files/figure-html/unnamed-chunk-7-1.png" width="1152" /></p>
-<p>These words correlated with female words seem inherently random. This could be due to the fact that commentary about women were included in responses that talked about other various topics regarding the war and soldier life. However, we again see an absence of discussion about Black women as a whole.</p>
-<p><em>NOTE</em> Use gephi to visualize the differences in commentary on gender by race in one network. Use community detection</p>
+<p>These words correlated with female words seem inherently random. This could be due to the fact that commentary about women were included in responses that talked about other various topics regarding the war and soldier life. However, we again see reoccurring themes of family with the popular nodes of &quot;wife&quot;, &quot;sister&quot;, and &quot;mother&quot;. There is also a small group of words at the top &quot;industry&quot;, &quot;woman&quot;, and &quot;draft&quot; which show that the word woman is correlated to words that discuss women in the workplace and in the army.</p>
 <center>
 </div>
 <div id="what-are-the-sentiments-that-are-associated-with-gender" class="section level4">
