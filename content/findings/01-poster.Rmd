@@ -503,6 +503,12 @@ net_78_btm
 ## Gender Relations
 
 * Our particular focus is on women's gender roles during the time of 1943, especially at the intersection of race relations. Women were obviously unable to serve in the military in the same capacity as men during WW2; however, women did contribute to the war effort through the Women's Army Corps (WAC). 
+
+<center>
+![](/findings/01-poster_files/girl_place_army.png){width=80% height=80%}
+</center>
+
+
 * Survey 195 is more targeted to gender relations, but we don't have transcriptions of the free form text so we select responses that discuss gender from Survey 32 using a word dictionary. 
 * A dictionary of gender words are loaded to identify which responses relate to gender topics. This dictionary was created using terms included in the [Oxford University Press Dictionary of Gender Studies](https://www.oxfordreference.com/view/10.1093/acref/9780191834837.001.0001/acref-9780191834837?btog=chap&hide=true&pageSize=20&skipEditions=true&sort=titlesort&source=%2F10.1093%2Facref%2F9780191834837.001.0001%2Facref-9780191834837). 
 * Furthermore, phrases such as "colored women" and "negro women" are collapsed and pre-stemmed/pre-lemmed to "colorwoman" and "negrowoman" in both the dictionary and the text. 
@@ -517,9 +523,11 @@ DT::datatable(gender_words, rownames = FALSE)
 ```
 
 #### Black and White Soldiers' Long Comment Gender Network 
+
 <center>
 ![](/findings/01-poster_files/amsoldier_multiplex_gender_v2.svg)
 </center>
+
 * In the above plot, we see that black soldiers often write that "woman holler rape". 
 * Black men often were often wrongly and publicly accused of sexual assault during this time period, and we can see that black soldiers are discussing that in their responses.
 * Black soldiers are talking about interracial marriage.
