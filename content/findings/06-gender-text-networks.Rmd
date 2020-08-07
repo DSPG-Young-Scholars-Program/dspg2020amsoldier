@@ -213,20 +213,20 @@ Otherwise, themes of family are prevelant for women's role in the commentary of 
 #### How do bigrams differ between Black and White soldiers? 
 </center>
 
-The following network is a multiplex network of gender relating bigrams from white and Black soldiers. The arrows or edges, represent the pairings between words and are colored according to racial group. The light blue arrows represent a bigram unique to Black soldiers' responses and light orange corresponding to white soldiers' responses. You will notice that some arrows are an overlap of a light orange and light blue arrow, indicating that the bigram occurred in both groups' responses. Furthermore, the node size is determined by in degree measure which is the number of connections that node or word has.  
+The following network is a multiplex network of gender relating bigrams from white and Black soldiers. The arrows or edges, represent the pairings between words and are colored according to racial group. The orange arrows represent a bigram unique to Black soldiers' responses and blue corresponding to white soldiers' responses. You will notice that some arrows are an overlap of an orange and blue arrow, indicating that the bigram occurred in both groups' responses. Furthermore, the node size is determined by in degree measure which is the number of connections that node or word has.  
 
 <center>
-![Gender Multiplex bigrams](/findings/white_long_bigram.svg){width=700px}
+![Gender Multiplex bigrams](/findings/amsoldier_multiplex_gender_v3.svg){width=700px}
 </center>
 
 
 When looking at the unique use of female relating bigrams for Black soldiers, we can see themes of interracial relations with the bigram chain at the top right "interracial marriage" as well as "intercourse with whitewoman". Romantic and sexual relations between white women and Black men was very controversial at the time. We also see a bigram sequence of "whitewoman holler rape". This is in relation to black men at the time being subject to false accusations for raping or having sex with white women. Black soldiers were clearly concerned with this topic and expressed it in their long commentary on the survey.
 
-Another notable finding for Black soldiers' bigrams are the explicit racialization of female words with mention of 'colorwoman', 'negrowoman' and 'whitewoman'. If you look at the white soldiers bigrams in light orange, you will see that mention of Black women is completely missing from their commentary. In fact, the presence of the bigram "blonde woman" suggests that perhaps white men by default use the word 'woman' to refer to a white woman.
+Another notable finding for Black soldiers' bigrams are the explicit racialization of female words with mention of 'colorwoman', 'negrowoman' and 'whitewoman'. If you look at the white soldiers bigrams in blue, you will see that mention of Black women is completely missing from their commentary. In fact, the presence of the bigram "blonde woman" suggests that perhaps white men by default use the word 'woman' to refer to a white woman.
 
 A topic relating to women that is unique to white soldiers is the mention of women in the workforce with words like "office", "worker", and "qualify". We also see woman paired with "auxiliary" and "waac". These are in reference to the Women's Army Corps. More information on soldiers' opinions of the Women's Army Corps are explored at the end of this page and in full overview at [Exploratory Data Analysis of Gender Relations Survey](https://dspg-young-scholars-program.github.io/dspg2020amsoldier/findings/04-s195-eda/)
 
-Overall, women's role in relationships within family and as wives is still prevelant amongst both races.
+Overall, women's role in relationships within family and as wives is still prevelant amongst both soldier groups.
 
 
 

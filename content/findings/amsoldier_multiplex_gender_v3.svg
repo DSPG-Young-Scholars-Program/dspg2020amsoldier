@@ -3,31 +3,28 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 1136 847" style="enable-background:new 0 0 1136 847;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:none;stroke:#E57200;stroke-width:5.16;stroke-opacity:0.349;}
-	.st1{fill:none;stroke:#0073EB;stroke-width:3.06;stroke-opacity:0.349;}
-	.st2{fill:none;stroke:#E57200;stroke-width:6;stroke-opacity:0.349;}
-	.st3{fill:none;stroke:#0073EB;stroke-width:2.64;stroke-opacity:0.349;}
-	.st4{fill:none;stroke:#E57200;stroke-width:3.06;stroke-opacity:0.349;}
-	.st5{fill:none;stroke:#0073EB;stroke-width:2.22;stroke-opacity:0.349;}
-	.st6{fill:none;stroke:#E57200;stroke-width:2.64;stroke-opacity:0.349;}
-	.st7{fill:none;stroke:#0073EB;stroke-width:1.8;stroke-opacity:0.349;}
-	.st8{fill:none;stroke:#E57200;stroke-width:2.22;stroke-opacity:0.349;}
-	.st9{fill:none;stroke:#E57200;stroke-width:1.8;stroke-opacity:0.349;}
-	.st10{fill:#E57200;fill-opacity:0.349;}
-	.st11{fill:#0073EB;fill-opacity:0.349;}
+	.st0{fill:none;stroke:#4987E5;stroke-width:5.16;stroke-opacity:0.349;}
+	.st1{fill:none;stroke:#E57200;stroke-width:3.06;stroke-opacity:0.349;}
+	.st2{fill:none;stroke:#4987E5;stroke-width:6;stroke-opacity:0.349;}
+	.st3{fill:none;stroke:#E57200;stroke-width:2.64;stroke-opacity:0.349;}
+	.st4{fill:none;stroke:#4987E5;stroke-width:3.06;stroke-opacity:0.349;}
+	.st5{fill:none;stroke:#E57200;stroke-width:2.22;stroke-opacity:0.349;}
+	.st6{fill:none;stroke:#4987E5;stroke-width:2.64;stroke-opacity:0.349;}
+	.st7{fill:none;stroke:#E57200;stroke-width:1.8;stroke-opacity:0.349;}
+	.st8{fill:none;stroke:#4987E5;stroke-width:2.22;stroke-opacity:0.349;}
+	.st9{fill:none;stroke:#4987E5;stroke-width:1.8;stroke-opacity:0.349;}
+	.st10{fill:#4987E5;fill-opacity:0.349;}
+	.st11{fill:#E57200;fill-opacity:0.349;}
 	.st12{fill:#FFFFFF;fill-opacity:0.8;stroke:#000000;stroke-width:0.4;stroke-opacity:0.8;}
 	.st13{font-family:'AvenirNext-Regular';}
 	.st14{font-size:30px;}
-	.st15{font-family:'AvenirNext-Bold';}
-	.st16{font-size:39px;}
+	.st15{font-family:'AvenirNext-DemiBold';}
+	.st16{font-size:42px;}
 	.st17{font-size:27px;}
-	.st18{font-size:46px;}
+	.st18{font-size:60px;}
 	.st19{font-size:33px;}
 	.st20{font-size:24px;}
-	.st21{font-size:40px;}
-	.st22{font-size:34px;}
-	.st23{font-family:'AvenirNext-DemiBold';}
-	.st24{font-size:28px;}
+	.st21{font-size:39px;}
 </style>
 <g id="edges">
 	<path class="st0" d="M341.2,512.4l2.7,43.6"/>
@@ -59,7 +56,7 @@
 	<path class="st7" d="M292.4,757.9l-4,13.2"/>
 	<path class="st7" d="M199.3,375.8l-18.4-46.2"/>
 	<path class="st7" d="M751.9,213l21.8-14.4"/>
-	<path class="st7" d="M1056.8,402.4L829,417.6"/>
+	<path class="st7" d="M1056.8,402.4l-227.8,15.2"/>
 	<path class="st7" d="M722.1,50.4L781,70.6"/>
 	<path class="st7" d="M323.6,591.3l-74-35"/>
 	<path class="st7" d="M362.1,622.9l44.9,60.4"/>
@@ -95,7 +92,7 @@
 	<path class="st7" d="M820.1,409.6l81.8-27.7"/>
 	<path class="st7" d="M814.3,441.3l60.2,49.3"/>
 	<path class="st7" d="M755.8,425l-202.1,29.2"/>
-	<path class="st7" d="M819.3,407.7L986,339.2"/>
+	<path class="st7" d="M819.3,407.7l166.7-68.5"/>
 	<path class="st7" d="M821.3,414.4L984.6,385"/>
 	<path class="st7" d="M820.8,428.4L946,460.2"/>
 	<path class="st7" d="M765.9,444.5L607.8,612.9"/>
@@ -132,7 +129,7 @@
 	<path class="st9" d="M771.6,391.8l-40.3-67.4"/>
 	<path class="st9" d="M783.8,387.4l-4.7-32.5"/>
 	<path class="st9" d="M761.1,438.8l-66.9,45"/>
-	<path class="st9" d="M765.1,396.8L721.2,353"/>
+	<path class="st9" d="M765.1,396.8l-43.9-43.8"/>
 	<path class="st9" d="M792.9,453.2l4,30.8"/>
 	<path class="st9" d="M427.7,156.2l-30.3-65.7"/>
 	<path class="st9" d="M457.5,196.8l130.7,118.8"/>
@@ -358,85 +355,89 @@
 	<circle class="st12" cx="523.3" cy="112.1" r="11.2"/>
 </g>
 <g id="node-labels">
-	<text transform="matrix(1 0 0 1 288.3999 502.3)" class="st13 st14">negro</text>
-	<text transform="matrix(1 0 0 1 313.7733 616.9198)" class="st15 st16">like</text>
-	<text transform="matrix(1 0 0 1 874.3024 290.2689)" class="st13 st17">intercourse</text>
-	<text transform="matrix(1 0 0 1 791.6998 272.7003)" class="st13 st14">with</text>
-	<text transform="matrix(1 0 0 1 737.7003 436.7983)" class="st15 st18">wife</text>
-	<text transform="matrix(1 0 0 1 645.6 720.3)" class="st13 st19">mother</text>
-	<text transform="matrix(1 0 0 1 112.3998 574.0503)" class="st13 st17">coloredsoldier</text>
-	<text transform="matrix(1 0 0 1 421.645 583.5789)" class="st13 st14">brother</text>
-	<text transform="matrix(1 0 0 1 399.724 685.3046)" class="st13 st20">colorman</text>
-	<text transform="matrix(1 0 0 1 282.42 713.7896)" class="st13 st17">white</text>
-	<text transform="matrix(1 0 0 1 382.1 402.8)" class="st15 st21">marry</text>
-	<text transform="matrix(1 0 0 1 506.4323 412.2836)" class="st13 st17">soldier</text>
-	<text transform="matrix(1 0 0 1 935.8004 452.6001)" class="st13 st17">sick</text>
-	<text transform="matrix(1 0 0 1 372.1952 189.9271)" class="st15 st22">woman</text>
-	<text transform="matrix(1 0 0 1 12.9679 363.1893)" class="st13 st20">american</text>
-	<text transform="matrix(1 0 0 1 79.1945 335.0437)" class="st13 st14">negrowoman</text>
-	<text transform="matrix(1 0 0 1 815.4495 572.0218)" class="st13 st17">baby</text>
-	<text transform="matrix(1 0 0 1 885.0844 598.8979)" class="st15 st16">girl</text>
-	<text transform="matrix(1 0 0 1 290.7001 170.4001)" class="st13 st20">bus</text>
-	<text transform="matrix(1 0 0 1 577.9011 364.6996)" class="st13 st17">child</text>
-	<text transform="matrix(1 0 0 1 304.5 266.7001)" class="st13 st20">civilian</text>
-	<text transform="matrix(1 0 0 1 816.5005 656.3003)" class="st13 st20">clean</text>
-	<text transform="matrix(1 0 0 1 903.578 681.7745)" class="st13 st20">colod</text>
-	<text transform="matrix(1 0 0 1 894.8879 353.8779)" class="st13 st20">father</text>
-	<text transform="matrix(1 0 0 1 847.5779 712.7877)" class="st13 st17">join</text>
-	<text transform="matrix(1 0 0 1 241.5403 772.0886)" class="st13 st17">girlfriend</text>
-	<text transform="matrix(1 0 0 1 242.4489 824.7361)" class="st13 st17">close</text>
-	<text transform="matrix(1 0 0 1 156.3298 424.6649)" class="st13 st20">graduate</text>
-	<text transform="matrix(1 0 0 1 700.1832 231.7998)" class="st23 st17">holler</text>
-	<text transform="matrix(1 0 0 1 770.5004 191.3998)" class="st23 st17">rape</text>
-	<text transform="matrix(1 0 0 1 1039.6758 431.7606)" class="st13 st20">intend</text>
-	<text transform="matrix(1 0 0 1 648.5004 34.5)" class="st23 st20">interracial</text>
-	<text transform="matrix(1 0 0 1 758.7002 62.8997)" class="st23 st17">marriage</text>
-	<text transform="matrix(1 0 0 1 351.3013 735.4547)" class="st23 st14">colorwoman</text>
-	<text transform="matrix(1 0 0 1 126.6952 726.8167)" class="st13 st17">negroboy</text>
-	<text transform="matrix(1 0 0 1 119.3055 646.6003)" class="st13 st17">negrosoldier</text>
-	<text transform="matrix(1 0 0 1 347.9977 304.8551)" class="st13 st17">official</text>
-	<text transform="matrix(1 0 0 1 849.2001 111.3999)" class="st13 st17">certificate</text>
-	<text transform="matrix(1 0 0 1 598.0002 191.3998)" class="st13 st20">meet</text>
-	<text transform="matrix(1 0 0 1 585.8004 267.8998)" class="st23 st24">whitewoman</text>
-	<text transform="matrix(1 0 0 1 732.7001 671.9083)" class="st13 st17">camp</text>
-	<text transform="matrix(1 0 0 1 584.9189 715.3156)" class="st13 st17">dad</text>
-	<text transform="matrix(1 0 0 1 547.5999 641.2002)" class="st13 st19">sister</text>
-	<text transform="matrix(1 0 0 1 728.7883 789.2902)" class="st13 st17">tell</text>
-	<text transform="matrix(1 0 0 1 141.0446 241.2317)" class="st13 st17">attain</text>
-	<text transform="matrix(1 0 0 1 278.3468 414.4)" class="st13 st20">punish</text>
-	<text transform="matrix(1 0 0 1 273.3466 368.5581)" class="st13 st20">sea</text>
-	<text transform="matrix(1 0 0 1 981.9998 219.4001)" class="st13 st20">sex</text>
-	<text transform="matrix(1 0 0 1 1017.4004 191.9998)" class="st13 st17">associate</text>
-	<text transform="matrix(1 0 0 1 334 357.4)" class="st13 st20">take</text>
-	<text transform="matrix(1 0 0 1 271.4744 462.6996)" class="st13 st20">transfer</text>
-	<text transform="matrix(1 0 0 1 454.3642 796.1171)" class="st23 st20">whip</text>
-	<text transform="matrix(1 0 0 1 976.035 744.6274)" class="st13 st20">whiteboy</text>
-	<text transform="matrix(1 0 0 1 368.9001 540.6996)" class="st13 st20">whiteman</text>
-	<text transform="matrix(1 0 0 1 495.7998 470.7002)" class="st13 st14">live</text>
-	<text transform="matrix(1 0 0 1 1027.7002 333.5002)" class="st13 st17">refuse</text>
-	<text transform="matrix(1 0 0 1 1027.7002 386.6)" class="st13 st17">secure</text>
-	<text transform="matrix(1 0 0 1 938.3765 547.5457)" class="st13 st17">sweetheart</text>
-	<text transform="matrix(1 0 0 1 426.5119 272.9001)" class="st13 st17">insult</text>
-	<text transform="matrix(1 0 0 1 261.3001 113.4001)" class="st13 st17">qualify</text>
-	<text transform="matrix(1 0 0 1 631.4704 800.4047)" class="st13 st20">age</text>
-	<text transform="matrix(1 0 0 1 565.718 452.1644)" class="st13 st17">army</text>
-	<text transform="matrix(1 0 0 1 513.6001 204.2999)" class="st23 st20">blonde</text>
-	<text transform="matrix(1 0 0 1 597.3306 759.8672)" class="st13 st20">boy</text>
-	<text transform="matrix(1 0 0 1 844.2997 199.7)" class="st13 st20">engage</text>
-	<text transform="matrix(1 0 0 1 1011.3148 602.8392)" class="st13 st17">walk</text>
-	<text transform="matrix(1 0 0 1 673.3499 483.5999)" class="st13 st20">kid</text>
-	<text transform="matrix(1 0 0 1 513.8046 281.5979)" class="st13 st17">office</text>
-	<text transform="matrix(1 0 0 1 1007.0434 672.908)" class="st13 st20">respect</text>
-	<text transform="matrix(1 0 0 1 439.6002 307.5)" class="st13 st20">send</text>
-	<text transform="matrix(1 0 0 1 529.5001 516.7997)" class="st13 st17">depend</text>
-	<text transform="matrix(1 0 0 1 660.5997 305.4999)" class="st13 st17">compare</text>
-	<text transform="matrix(1 0 0 1 756.6997 333.7002)" class="st13 st17">die</text>
-	<text transform="matrix(1 0 0 1 636.5005 525.293)" class="st13 st17">expect</text>
-	<text transform="matrix(1 0 0 1 782.2567 540.5409)" class="st13 st17">set</text>
-	<text transform="matrix(1 0 0 1 282.4201 70.5999)" class="st13 st17">auxiliary</text>
-	<text transform="matrix(1 0 0 1 384.1998 35.0997)" class="st13 st17">response</text>
-	<text transform="matrix(1 0 0 1 462.6999 62.8999)" class="st13 st17">waac</text>
-	<text transform="matrix(1 0 0 1 489.7999 104.7999)" class="st13 st17">worker</text>
-	<text transform="matrix(1 0 0 1 697.4002 823.3163)" class="st13 st20">far</text>
+	<text transform="matrix(1 0 0 1 299.5229 502.2902)" class="st13 st14">negro</text>
+	<text transform="matrix(1 0 0 1 314.7375 614.554)" class="st15 st16">like</text>
+	<text transform="matrix(1 0 0 1 862.4945 271.689)" class="st13 st17">intercourse</text>
+	<text transform="matrix(1 0 0 1 790.959 300.5902)" class="st13 st14">with</text>
+	<text transform="matrix(1 0 0 1 731.2879 436.9028)" class="st15 st18">wife</text>
+	<text transform="matrix(1 0 0 1 642.5498 737.5791)" class="st13 st19">mother</text>
+	<text transform="matrix(1 0 0 1 28.6951 553.4)" class="st13 st17">coloredsoldier</text>
+	<text transform="matrix(1 0 0 1 419.645 615.5789)" class="st13 st14">brother</text>
+	<text transform="matrix(1 0 0 1 410.0021 669.2196)" class="st13 st20">colorman</text>
+	<text transform="matrix(1 0 0 1 282.42 691.7202)" class="st13 st17">white</text>
+	<text transform="matrix(1 0 0 1 388.0793 402.3448)" class="st15 st21">marry</text>
+	<text transform="matrix(1 0 0 1 483.7513 334.2406)" class="st13 st17">life</text>
+	<text transform="matrix(1 0 0 1 512.0155 382.6553)" class="st13 st17">soldier</text>
+	<text transform="matrix(1 0 0 1 942.853 471.1478)" class="st13 st17">sick</text>
+	<text transform="matrix(1 0 0 1 362.9122 189.4429)" class="st15 st16">woman</text>
+	<text transform="matrix(1 0 0 1 12.9679 358.1893)" class="st13 st20">american</text>
+	<text transform="matrix(1 0 0 1 79.1946 314.4805)" class="st13 st14">negrowoman</text>
+	<text transform="matrix(1 0 0 1 815.4495 567.0218)" class="st13 st17">baby</text>
+	<text transform="matrix(1 0 0 1 885.882 599.2969)" class="st15 st21">girl</text>
+	<text transform="matrix(1 0 0 1 309.3409 168.412)" class="st13 st20">bus</text>
+	<text transform="matrix(1 0 0 1 577.9008 340.6761)" class="st13 st17">child</text>
+	<text transform="matrix(1 0 0 1 334.8276 279.5499)" class="st13 st20">civilian</text>
+	<text transform="matrix(1 0 0 1 825.2036 656.2962)" class="st13 st20">clean</text>
+	<text transform="matrix(1 0 0 1 903.578 676.7745)" class="st13 st20">colod</text>
+	<text transform="matrix(1 0 0 1 894.8879 348.8779)" class="st13 st20">father</text>
+	<text transform="matrix(1 0 0 1 847.5779 707.7877)" class="st13 st17">join</text>
+	<text transform="matrix(1 0 0 1 243.0845 753.6325)" class="st13 st17">girlfriend</text>
+	<text transform="matrix(1 0 0 1 248.1088 810.8019)" class="st13 st17">close</text>
+	<text transform="matrix(1 0 0 1 156.3298 419.6649)" class="st13 st20">graduate</text>
+	<text transform="matrix(1 0 0 1 700.9698 227.8815)" class="st15 st17">holler</text>
+	<text transform="matrix(1 0 0 1 769.5872 186.2458)" class="st15 st17">rape</text>
+	<text transform="matrix(1 0 0 1 1039.6758 426.7606)" class="st13 st20">intend</text>
+	<text transform="matrix(1 0 0 1 650.9232 70.1006)" class="st13 st20">interracial</text>
+	<text transform="matrix(1 0 0 1 750.5651 106.5701)" class="st13 st17">marriage</text>
+	<text transform="matrix(1 0 0 1 371.2772 720.8168)" class="st15 st14">colorwoman</text>
+	<text transform="matrix(1 0 0 1 69.5353 700.1763)" class="st13 st17">negroboy</text>
+	<text transform="matrix(1 0 0 1 36.3054 622.7933)" class="st13 st17">negrosoldier</text>
+	<text transform="matrix(1 0 0 1 329.9725 316.1436)" class="st13 st17">official</text>
+	<text transform="matrix(1 0 0 1 848.1331 156.2888)" class="st13 st17">certify</text>
+	<text transform="matrix(1 0 0 1 601.6409 215.6685)" class="st13 st20">meet</text>
+	<text transform="matrix(1 0 0 1 587.198 269.4242)" class="st15 st14">whitewoman</text>
+	<text transform="matrix(1 0 0 1 732.406 693.8899)" class="st13 st17">camp</text>
+	<text transform="matrix(1 0 0 1 584.9189 710.3156)" class="st13 st17">dad</text>
+	<text transform="matrix(1 0 0 1 695.1125 820.52)" class="st13 st17">far</text>
+	<text transform="matrix(1 0 0 1 551.3401 644.5651)" class="st13 st19">sister</text>
+	<text transform="matrix(1 0 0 1 722.7883 784.2902)" class="st13 st17">tell</text>
+	<text transform="matrix(1 0 0 1 141.0446 236.2317)" class="st13 st17">attain</text>
+	<text transform="matrix(1 0 0 1 284.9214 420.8506)" class="st13 st20">punish</text>
+	<text transform="matrix(1 0 0 1 273.7363 369.81)" class="st13 st20">sea</text>
+	<text transform="matrix(1 0 0 1 982.2759 235.5436)" class="st13 st20">sex</text>
+	<text transform="matrix(1 0 0 1 1017.1114 206.5065)" class="st13 st17">associate</text>
+	<text transform="matrix(1 0 0 1 269.3148 466.7442)" class="st13 st20">transfer</text>
+	<text transform="matrix(1 0 0 1 450.3947 784.0846)" class="st15 st20">whip</text>
+	<text transform="matrix(1 0 0 1 976.035 739.6274)" class="st13 st20">whiteboi</text>
+	<text transform="matrix(1 0 0 1 370.7291 562.2183)" class="st13 st20">whiteman</text>
+	<text transform="matrix(1 0 0 1 904.366 399.1812)" class="st13 st17">aint</text>
+	<text transform="matrix(1 0 0 1 862.6167 533.7193)" class="st13 st17">leave</text>
+	<text transform="matrix(1 0 0 1 502.6024 484.9269)" class="st13 st14">live</text>
+	<text transform="matrix(1 0 0 1 972.8488 355.3353)" class="st13 st17">refuse</text>
+	<text transform="matrix(1 0 0 1 977.7072 404.6221)" class="st13 st17">secur</text>
+	<text transform="matrix(1 0 0 1 938.3765 542.5457)" class="st13 st17">sweetheart</text>
+	<text transform="matrix(1 0 0 1 426.5119 267.9001)" class="st13 st17">insult</text>
+	<text transform="matrix(1 0 0 1 269.7657 126.7952)" class="st13 st17">qualify</text>
+	<text transform="matrix(1 0 0 1 744.2117 584.032)" class="st13 st20">soldier</text>
+	<text transform="matrix(1 0 0 1 633.4704 799.4047)" class="st13 st20">age</text>
+	<text transform="matrix(1 0 0 1 565.718 447.1644)" class="st13 st17">army</text>
+	<text transform="matrix(1 0 0 1 522.8139 191.405)" class="st13 st20">blonde</text>
+	<text transform="matrix(1 0 0 1 610.3306 758.8672)" class="st13 st20">boy</text>
+	<text transform="matrix(1 0 0 1 846.4447 207.5903)" class="st13 st20">engage</text>
+	<text transform="matrix(1 0 0 1 1011.3148 597.8392)" class="st13 st17">walk</text>
+	<text transform="matrix(1 0 0 1 673.3499 478.5999)" class="st13 st20">kid</text>
+	<text transform="matrix(1 0 0 1 510.0215 259.4961)" class="st13 st17">office</text>
+	<text transform="matrix(1 0 0 1 1007.0434 667.908)" class="st13 st20">respect</text>
+	<text transform="matrix(1 0 0 1 437.4327 304.4468)" class="st13 st20">send</text>
+	<text transform="matrix(1 0 0 1 536.3272 560.5817)" class="st13 st17">depend</text>
+	<text transform="matrix(1 0 0 1 661.5382 304.4466)" class="st13 st17">compare</text>
+	<text transform="matrix(1 0 0 1 757.5125 339.8174)" class="st13 st17">die</text>
+	<text transform="matrix(1 0 0 1 630.5005 525.293)" class="st13 st17">expect</text>
+	<text transform="matrix(1 0 0 1 664.3256 344.1311)" class="st13 st17">major</text>
+	<text transform="matrix(1 0 0 1 782.2567 535.5409)" class="st13 st17">set</text>
+	<text transform="matrix(1 0 0 1 335.7794 94.0023)" class="st13 st17">auxiliary</text>
+	<text transform="matrix(1 0 0 1 384.202 40.0007)" class="st13 st17">response</text>
+	<text transform="matrix(1 0 0 1 461.6161 101.1243)" class="st13 st17">waac</text>
+	<text transform="matrix(1 0 0 1 480.8627 138.3036)" class="st13 st17">worker</text>
 </g>
 </svg>
