@@ -194,10 +194,10 @@ S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
 
 
 ### Black versus White Long Question
-The size of the nodes in the bigrams are determined by in degree measure which is the number of edges or links being related to that node. 
+The following graphs are bigram networks visualized in Gephi. The colors correspond to the different topical groups which have been defined by a community detection algorithm. The size of the nodes in the bigrams are determined by in degree measure which is the number of edges or links being related to that node. 
 
 <center>
-![](/findings/08-race-and-space_files/blk_long_bigram.svg)
+![Black Soldiers' Long Response - Bigrams](/findings/08-race-and-space_files/blk_long_bigram.svg)
 </center>
 
 ```{r include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
@@ -215,7 +215,7 @@ Furthermore, spatial arrangements in which the Black soldiers talk about in rega
 
 
 <center>
-![White soldier long response bigrams](/findings/white_long_bigram.svg){width=700px}
+![White Soldiers' Long Response Bigrams](/findings/white_long_bigram.svg){width=700px}
 </center>
 
 ```{r include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
@@ -236,7 +236,7 @@ black_long_cors <- black_long_cors[!(black_long_cors$item2 == "train" & !black_l
 visualize_cooccur(black_long_cors, "Black Soldiers' Long Response - Spatial Arrangement Co-occurrences", colors[1])
 ```
    
-   
+The Co-occurrences aren't quite as informative as the bigram networks, as the themes of spatial segregation are not as prominent. However, there are still some correlations between "separate px" and "live together".  These occurrences demonstrate the conversation about spatial segregation amongst the Black soldiers' responses.    
    
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
@@ -247,6 +247,9 @@ white_long_cors <- white_long_cors[!(white_long_cors$item2 == "train" & !white_l
 #plot
 visualize_cooccur(white_long_cors, "White Soldiers' Long Response - Spatial Arrangement Co-occurrences", colors[2])
 ```
+
+In the white soldiers' co-occurrences there is seemingly a lack of conversation about spatial segregation. Rather all of the correlations to spatial words are quite topical such as "eat" and "messhall". But we can tell that the white soldiers moreso talk about the living conditions of military spaces. 
+
 
 ### Pro vs. Anti-Integration Viewpoints 
 

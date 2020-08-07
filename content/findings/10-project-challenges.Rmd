@@ -53,7 +53,7 @@ We’ve set up a text cleaning process to either remove or correct the tags usin
 6. Bracketed metags are manually cleaned    
 7. Manual spellchecking with the assistance of the hunspell package   
 8. Final processing is performed such as replacing contractions.   
-9. Clean data is stored :)
+9. Clean data is stored 
 
 ### Language unique to these time periods and military
 
@@ -67,4 +67,4 @@ In addition, we do not have transcribed responses about soldiers being in separa
 
 ### LDA Topic Modeling
 
-The popular topic modeling method of LDA did not return meaningful results due to the average length of responses being around 7-10 words. However, other topic modeling methods such as Gibbs were successful on our data. In addition co-occurrence text networks have allowed us to identify clusters of topics.
+The popular topic modeling method of Latent Dirichlet Allocation (LDA) did not return meaningful results due to the average length of responses being around 7-10 words. However, other topic modeling methods such as Biterm Topic Modeling were successful on our data. In addition co-occurrence text networks have allowed us to identify clusters of topics.
