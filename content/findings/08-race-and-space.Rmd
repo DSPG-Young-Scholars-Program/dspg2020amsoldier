@@ -197,7 +197,7 @@ S32N_long <- tibble(nrow=1:nrow(S32N_long), text = S32N_long$long)
 The size of the nodes in the bigrams are determined by in degree measure which is the number of edges or links being related to that node. 
 
 <center>
-![Black soldier long response bigrams](/findings/blk_long_bigram.svg){width=700px}
+![](/findings/08-race-and-space_files/blk_long_bigram.svg)
 </center>
 
 ```{r include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}

@@ -224,24 +224,49 @@ h1, h2, h3 {
   text-align: center;
 }
 </style>
-<div id="social-network-analysis" class="section level1">
-<h1>Social Network Analysis</h1>
-<div id="gephi-networks" class="section level2">
-<h2>Gephi Networks</h2>
+<p>In order to understand topics and words used by soldiers in their textual responses, we used bigrams and co-occurrences to create networks. Bigrams are sets of words that are used immediately next to eachother in a response. For example in the sentence &quot;I run with my dog&quot;, &quot;run with&quot; is a bigram. For co-occurrences, the words are correlated with eachother on the response level. For example, in the same sentence, &quot;run&quot; and &quot;dog&quot; are co-occurring even though they do not occur next to eachother in the sentence. We used these two separate levels of analysis to create text networks to understand the words soldiers were using and how they fit together in a larger network of verbage.</p>
+<div id="bigrams" class="section level1">
+<h1>Bigrams</h1>
+<p>We created bigrams for each group of soldiers for each set of responses. From these bigrams we can visualize words that are used in tandem with each other. This is important for understanding compound terms, and is used later on in our analysis when we unionize terms. Each graph displays terms used with arrows of different thicknesses to differentiate the direction of the two words' connection.</p>
+<p>Black soldiers' bigram network includes terms that discuss equal rights, the war, jim crow laws, and race within the military. These clusters of bigrams indicate that these words are used immediately following each other in their long commentaries.</p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unnamed-chunk-2-1.png" width="768" /></p>
+<p>White soldiers' bigram networks include terms for the army, the question about black soldiers, and white soldiers.</p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unnamed-chunk-3-1.png" width="768" /></p>
+<p>White soldiers' bigram network from their short commentaries include bigrams in relation to the question, prejudice, and race within the military.</p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
+<p>Pro-segregation white soldiers' bigram networks from their short commentaries includes their thoughts on whether or not black and white soldiers would get along in outfits.</p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
+<p>Anti-segregation white soldiers' bigram network includes terms relationships, conditions, and race in the military.</p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unnamed-chunk-6-1.png" width="768" /></p>
 </div>
-<div id="social-networks-with-unionized-terminology" class="section level2">
-<h2>Social Networks with Unionized Terminology</h2>
+<div id="gephi-networks" class="section level1">
+<h1>Gephi Networks</h1>
+<p>In order to visualize co-occurrence text networks we utilized gephi, an open-source tool developed for network visualizations. From this we can visulaize and compare words and topics discussed by black and white soldiers in their long responses.</p>
+Black soldiers commonly discussed race and quality in the as can be noted by the cerulean blue nodes. They also dicussed democracy and opportunity in the green, as well as space and location in the light orange. These communities of terms are different topics discussed by black soldiers.
+<center>
+<img src="img3.png" width="700" />
+</center>
+White soldiers commonly discussed the amount of time spent in the light yellow community, advancement through the ranks in the green-blue community, and race in the cerulean blue community. In relation to the entire white soldier sample, race is a smaller community based on node size when compared with black soldiers. This, inherently, makes sense as black soldiers were more split on integration and black soldiers were more aware of their race in the context of the military as opposed to white soldiers who were the majority.
+<center>
+<img src="img2.png" width="700" />
+</center>
+</div>
+<div id="social-networks-with-unionized-terminology" class="section level1">
+<h1>Social Networks with Unionized Terminology</h1>
 <p>Something that is important to us is soldiers' dicussions of inner-outer groups of people. A way that we decided to look at that was by unionizing biterms. For example, a naive co-occurence with &quot;black&quot; may be &quot;people&quot; but we care about the dicussion of &quot;black people&quot; rather than just the identification of &quot;people&quot; as co-occurring with the word &quot;black&quot;. To do this we complete several unionizations of biterms to create co-occurrence networks of dicussions of groups of people.</p>
-<div id="long-responses" class="section level3">
-<h3>Long Responses</h3>
-<p>We complete unionized term co-occurences and social networks using long response textual data. We separate our analysis by race and report co-occurences and co-occurence networks for both black and white soldiers.</p>
-<p><img src="../../findings/07-race-text-networks_files/figure-html/unions-1.png" width="768" /><img src="../../findings/07-race-text-networks_files/figure-html/unions-2.png" width="768" /><img src="../../findings/07-race-text-networks_files/figure-html/unions-3.png" width="768" /><img src="../../findings/07-race-text-networks_files/figure-html/unions-4.png" width="768" /></p>
+<div id="long-responses" class="section level2">
+<h2>Long Responses</h2>
+<p>We complete unionized term co-occurences and social networks using long response textual data. We separate our analysis by race and report co-occurences and co-occurence networks for both black and white soldiers. These graphs indicate networks with unionized terms as well as in-group versus out-group barplots to show which words are used at higher co-occurrences with terms for each group of soldiders. For example, black soldiers words that co-occur with terms for black men are terms used to describe in-group discussions. Their words that co-occur with terms for white men describe out-group relationships.</p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unions-1.png" width="768" /></p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unnamed-chunk-7-1.png" width="768" /></p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unnamed-chunk-8-1.png" width="768" /></p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unnamed-chunk-9-1.png" width="768" /></p>
 </div>
-<div id="short-responses" class="section level3">
-<h3>Short Responses</h3>
-<p>We complete the same unionized-analysis above but using only short-response data from white soldiers. We are unable to get enough data to create plots for the two different groups of white soldiers: pro-segregation and anti-segregation. The following analysis reflects terms used in the entire group of white soldiers.</p>
-<p><img src="../../findings/07-race-text-networks_files/figure-html/short-1.png" width="768" /><img src="../../findings/07-race-text-networks_files/figure-html/short-2.png" width="768" /></p>
-</div>
+<div id="short-responses" class="section level2">
+<h2>Short Responses</h2>
+<p>We complete the same unionized-analysis above but using only short-response data from white soldiers. We are unable to get enough data to create plots for the two different groups of white soldiers: pro-segregation and anti-segregation. The following analysis reflects terms used in the entire group of white soldiers. These graphs indicate networks with unionized terms as well as in-group versus out-group barplots to show which words are used at higher co-occurrences with terms for each group of soldiders.</p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/short-1.png" width="768" /></p>
+<p><img src="../../findings/07-race-text-networks_files/figure-html/unnamed-chunk-10-1.png" width="768" /></p>
 </div>
 </div>
 </div>
