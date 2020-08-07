@@ -64,6 +64,9 @@ library(syn)
 
 data(stop_words)
 colors <- c("#e57200", "#232d4b")
+my_cols = c("232d4b","2c4f6b","0e879c","60999a", "9bc0c0","d1e0bf", "ebf094", "d9e12b","e6ce3a","e6a01d","e57200","a35200","fdfdfd")
+my_cols = paste0('#', my_cols)
+
 collapse <- fread("/sfs/qumulo/qhome/kb7hp/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",")
 #collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",")
 collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
@@ -81,20 +84,230 @@ S32W <- filter(data, racial_group == "white")
 text77_df <- tibble(row = 1:nrow(S32W), text = S32W$outfits_comment, outfits = S32W$outfits) #Written response to "should soldiers be in separate outfits?"
 text78_df <- tibble(row = 1:nrow(S32W), text = S32W$long) #Written response on overall thoughts on the survey
 textn_df <- tibble(row = 1:nrow(S32N), text = S32N$long)
-```
 
-# Social Network Analysis
-
-## Gephi Networks
-```{r sna, echo=FALSE, message=FALSE, warning=FALSE}
+useless_responses = c("none","None","0", "12","none.","[none]","noone","[blank]","gujfujuj", "None.", "I", NA)
 
 ```
 
-## Social Networks with Unionized Terminology
+In order to understand topics and words used by soldiers in their textual responses, we used bigrams and co-occurrences to create networks. Bigrams are sets of words that are used immediately next to eachother in a response. For example in the sentence "I run with my dog", "run with" is a bigram. For co-occurrences, the words are correlated with eachother on the response level. For example, in the same sentence, "run" and "dog" are co-occurring even though they do not occur next to eachother in the sentence. We used these two separate levels of analysis to create text networks to understand the words soldiers were using and how they fit together in a larger network of verbage.
+
+# Bigrams
+We created bigrams for each group of soldiers for each set of responses. From these bigrams we can visualize words that are used in tandem with each other. This is important for understanding compound terms, and is used later on in our analysis when we unionize terms. Each graph displays terms used with arrows of different thicknesses to differentiate the direction of the two words' connection.
+
+Black soldiers' bigram network includes terms that discuss equal rights, the war, jim crow laws, and race within the military. These clusters of bigrams indicate that these words are used immediately following each other in their long commentaries.
+
+```{r}
+tidy_n_bigrams <- textn_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
+  count(bigram, sort = TRUE)
+
+bigrams_separated_n <- tidy_n_bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+
+bigrams_filtered_n <- bigrams_separated_n %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>%
+  mutate(word1= textstem::lemmatize_words(word1)) %>%
+  mutate(word2= textstem::lemmatize_words(word2)) %>%
+  mutate(word1= wordStem(word1)) %>%
+  mutate(word2= wordStem(word2))
+
+bigram_counts_n <- bigrams_filtered_n %>%
+  count(word1, word2, sort = TRUE)
+
+bigram_graph_n <- bigram_counts_n %>%
+  filter(n > 15) %>%
+  graph_from_data_frame()
+
+set.seed(2016)
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+ggraph(bigram_graph_n, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.05, 'inches')) +
+  geom_node_point(color = "#E57200", size = 3) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  ggtitle("Directional Relationships of Bigrams from Black Soldier's Long Responses") +
+  theme_void()
+```
+
+White soldiers' bigram networks include terms for the army, the question about black soldiers, and white soldiers.
+
+
+```{r}
+# white long bigrams
+
+tidy_78_bigrams <- text78_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
+  count(bigram, sort = TRUE)
+
+bigrams_separated_78 <- tidy_78_bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+
+bigrams_filtered_78 <- bigrams_separated_78 %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>%
+  mutate(word1= textstem::lemmatize_words(word1)) %>%
+  mutate(word2= textstem::lemmatize_words(word2)) %>%
+  mutate(word1= wordStem(word1)) %>%
+  mutate(word2= wordStem(word2))
+
+bigram_counts_78 <- bigrams_filtered_78 %>% 
+  count(word1, word2, sort = TRUE)
+
+bigram_graph_78 <- bigram_counts_78 %>%
+  filter(n > 10) %>%
+  graph_from_data_frame()
+
+set.seed(2016)
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+ggraph(bigram_graph_78, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.05, 'inches')) +
+  geom_node_point(color = "#2C4F6B", size = 3) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  ggtitle("Directional Relationships of Bigrams from White Soldier's Long Responses") +
+  theme_void()
+```
+
+
+White soldiers' bigram network from their short commentaries include bigrams in relation to the question, prejudice, and race within the military.
+
+
+```{r}
+row_77_words <- text77_df %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
+  count(bigram, sort = TRUE)
+
+bigrams_77_n <- row_77_words %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+
+bigrams_filtered_77 <- bigrams_77_n %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>%
+  mutate(word1= textstem::lemmatize_words(word1)) %>%
+  mutate(word2= textstem::lemmatize_words(word2)) %>%
+  mutate(word1= wordStem(word1)) %>%
+  mutate(word2= wordStem(word2))
+
+bigram_counts_77 <- bigrams_filtered_77 %>%
+  count(word1, word2, sort = TRUE)
+
+bigram_graph_77 <- bigram_counts_77 %>%
+  filter(n > 5) %>%
+  graph_from_data_frame()
+
+set.seed(2016)
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+ggraph(bigram_graph_77, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.05, 'inches')) +
+  geom_node_point(color = "#E6CE3A", size = 3) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  ggtitle("Directional Relationships of Bigrams from White Soldier's Short Responses") +
+  theme_void()
+```
+
+Pro-segregation white soldiers' bigram networks from their short commentaries includes their thoughts on whether or not black and white soldiers would get along in outfits.
+
+
+```{r}
+# white pro
+tidy_pro_bigrams <- text77_df %>%
+  filter(outfits == "['They should be in separate outfits']") %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
+  count(bigram, sort = TRUE)
+
+bigrams_separated_pro <- tidy_pro_bigrams %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+
+bigrams_filtered_pro <- bigrams_separated_pro %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>%
+  mutate(word1= textstem::lemmatize_words(word1)) %>%
+  mutate(word2= textstem::lemmatize_words(word2)) %>%
+  mutate(word1= wordStem(word1)) %>%
+  mutate(word2= wordStem(word2))
+
+bigram_counts_pro <- bigrams_separated_pro %>%
+  count(word1, word2, sort = TRUE)
+
+bigram_graph_pro <- bigram_counts_pro %>%
+  filter(n > 30) %>%
+  graph_from_data_frame()
+
+set.seed(2016)
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+ggraph(bigram_graph_pro, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.05, 'inches')) +
+  geom_node_point(color = my_cols[2], size = 3) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  ggtitle("Directional Relationships of Bigrams from Pro-Segregation White Soldier's Short Responses") +
+  theme_void()
+```
+
+Anti-segregation white soldiers' bigram network includes terms relationships, conditions, and race in the military.
+
+
+```{r}
+# white against
+row_wag_words <- text77_df %>%
+  filter(outfits == "['They should be together in the same outfits']") %>%
+  filter(!text %in% useless_responses) %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2) %>%
+  count(bigram, sort = TRUE)
+
+bigrams_wag_n <- row_wag_words %>%
+  separate(bigram, c("word1", "word2"), sep = " ")
+
+bigrams_filtered_wag <- bigrams_wag_n %>%
+  filter(!word1 %in% stop_words$word) %>%
+  filter(!word2 %in% stop_words$word) %>%
+  mutate(word1= textstem::lemmatize_words(word1)) %>%
+  mutate(word2= textstem::lemmatize_words(word2)) %>%
+  mutate(word1= wordStem(word1)) %>%
+  mutate(word2= wordStem(word2))
+
+bigram_counts_wag <- bigrams_filtered_wag %>%
+  count(word1, word2, sort = TRUE)
+
+bigram_graph_wag <- bigram_counts_wag %>%
+  filter(n > 0) %>%
+  graph_from_data_frame()
+
+set.seed(2016)
+a <- grid::arrow(type = "closed", length = unit(.15, "inches"))
+ggraph(bigram_graph_wag, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n), show.legend = FALSE,
+                 arrow = a, end_cap = circle(.05, 'inches')) +
+  geom_node_point(color = my_cols[8], size = 3) +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
+  ggtitle("Directional Relationships of Bigrams from Anti-Segregation White Soldier's Short Responses") +
+  theme_void()
+```
+
+# Gephi Networks
+In order to visualize co-occurrence text networks we utilized gephi, an open-source tool developed for network visualizations. From this we can visulaize and compare words and topics discussed by black and white soldiers in their long responses.
+
+Black soldiers commonly discussed race and quality in the as can be noted by the cerulean blue nodes. They also dicussed democracy and opportunity in the green, as well as space and location in the light orange. These communities of terms are different topics discussed by black soldiers.
+<center>
+![](img3.png){width=700px}
+</center>
+
+White soldiers commonly discussed the amount of time spent in the light yellow community, advancement through the ranks in the green-blue community, and race in the cerulean blue community. In relation to the entire white soldier sample, race is a smaller community based on node size when compared with black soldiers. This, inherently, makes sense as black soldiers were more split on integration and black soldiers were more aware of their race in the context of the military as opposed to white soldiers who were the majority.
+<center>
+![](img2.png){width=700px}
+</center>
+
+# Social Networks with Unionized Terminology
 Something that is important to us is soldiers' dicussions of inner-outer groups of people. A way that we decided to look at that was by unionizing biterms. For example, a naive co-occurence with "black" may be "people" but we care about the dicussion of "black people" rather than just the identification of "people" as co-occurring with the word "black". To do this we complete several unionizations of biterms to create co-occurrence networks of dicussions of groups of people.
 
-### Long Responses
-We complete unionized term co-occurences and social networks using long response textual data. We separate our analysis by race and report co-occurences and co-occurence networks for both black and white soldiers.
+## Long Responses
+We complete unionized term co-occurences and social networks using long response textual data. We separate our analysis by race and report co-occurences and co-occurence networks for both black and white soldiers. These graphs indicate networks with unionized terms as well as in-group versus out-group barplots to show which words are used at higher co-occurrences with terms for each group of soldiders. For example, black soldiers words that co-occur with terms for black men are terms used to describe in-group discussions. Their words that co-occur with terms for white men describe out-group relationships. 
 
 ```{r unions, echo = FALSE, message=FALSE, warning=FALSE}
 row_n_words <- textn_df %>%
@@ -141,7 +354,9 @@ word_cors_n %>%
   ggtitle("Co-Occurences with Terms for Black Males and White Males \nfrom Black Soldiers' Long Responses") +
   coord_flip() +
   theme_minimal()
+```
 
+```{r}
 set.seed(2016)
 word_cors_n %>%
   filter(correlation > .2) %>%
@@ -176,6 +391,9 @@ word_cors_78 <- row_78_words %>%
 #   simpleNetwork(fontSize = 12, zoom =T)
 
 # whiteman,
+```
+
+```{r}
 
 word_cors_78 %>%
   filter(item1 %in% c("whitemal", "blackmal")) %>%
@@ -198,6 +416,9 @@ word_cors_78 %>%
   ggtitle("Co-Occurences with Terms for Black Males and White Males \nfrom White Soldiers' Long Responses") +
   coord_flip() +
   theme_minimal()
+```
+
+```{r}
 
 set.seed(2016)
 word_cors_78 %>%
@@ -211,9 +432,9 @@ word_cors_78 %>%
   theme_void()
 ```
 
-### Short Responses
+## Short Responses
 
-We complete the same unionized-analysis above but using only short-response data from white soldiers. We are unable to get enough data to create plots for the two different groups of white soldiers: pro-segregation and anti-segregation. The following analysis reflects terms used in the entire group of white soldiers.
+We complete the same unionized-analysis above but using only short-response data from white soldiers. We are unable to get enough data to create plots for the two different groups of white soldiers: pro-segregation and anti-segregation. The following analysis reflects terms used in the entire group of white soldiers. These graphs indicate networks with unionized terms as well as in-group versus out-group barplots to show which words are used at higher co-occurrences with terms for each group of soldiders.
 
 ```{r short, echo = FALSE, message=FALSE, warning=FALSE}
 
@@ -373,6 +594,10 @@ word_cors_77 %>%
   ggtitle("Co-Occurences with 'Negro' and 'White' from White Soldier's Short Comments") +
   coord_flip()  +
   theme_minimal()
+
+```
+
+```{r}
 
 set.seed(2016)
 word_cors_77 %>%

@@ -258,3 +258,6 @@ s195b %>%
 #   scale_fill_manual(values = rev(my_cols[1:4]))
 
 ```
+
+# Conclusion 
+From each of these plots we can see that male soldiers had a negative perspective when it comes to WACs and were wary of women being members of the military. It was surpising to see that they believed women still deserved salutes, but that their jobs were less agreeable and they received ratings easier than their male counterparts.
