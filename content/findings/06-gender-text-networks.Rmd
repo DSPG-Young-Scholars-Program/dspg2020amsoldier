@@ -209,9 +209,29 @@ Another interesting addition to the network with relationship words is the chain
 
 Otherwise, themes of family are prevelant for women's role in the commentary of the soldiers. We can also see the different pairings with the word woman, seeming to talk about their roles as workers amongst other attributes  (worker, waac, auxiliary)
 
-Lets see how these pairings differ between the white and black soldiers:
+<center>
+#### How do bigrams differ between Black and White soldiers? 
+</center>
 
-```{r echo = FALSE, warning=FALSE, message=FALSE}
+The following network is a multiplex network of gender relating bigrams from white and Black soldiers. The arrows or edges, represent the pairings between words and are colored according to racial group. The light blue arrows represent a bigram unique to Black soldiers' responses and light orange corresponding to white soldiers' responses. You will notice that some arrows are an overlap of a light orange and light blue arrow, indicating that the bigram occurred in both groups' responses. Furthermore, the node size is determined by in degree measure which is the number of connections that node or word has.  
+
+<center>
+![Gender Multiplex bigrams](/findings/white_long_bigram.svg){width=700px}
+</center>
+
+
+When looking at the unique use of female relating bigrams for Black soldiers, we can see themes of interracial relations with the bigram chain at the top right "interracial marriage" as well as "intercourse with whitewoman". Romantic and sexual relations between white women and Black men was very controversial at the time. We also see a bigram sequence of "whitewoman holler rape". This is in relation to black men at the time being subject to false accusations for raping or having sex with white women. Black soldiers were clearly concerned with this topic and expressed it in their long commentary on the survey.
+
+Another notable finding for Black soldiers' bigrams are the explicit racialization of female words with mention of 'colorwoman', 'negrowoman' and 'whitewoman'. If you look at the white soldiers bigrams in light orange, you will see that mention of Black women is completely missing from their commentary. In fact, the presence of the bigram "blonde woman" suggests that perhaps white men by default use the word 'woman' to refer to a white woman.
+
+A topic relating to women that is unique to white soldiers is the mention of women in the workforce with words like "office", "worker", and "qualify". We also see woman paired with "auxiliary" and "waac". These are in reference to the Women's Army Corps. More information on soldiers' opinions of the Women's Army Corps are explored at the end of this page and in full overview at [Exploratory Data Analysis of Gender Relations Survey](https://dspg-young-scholars-program.github.io/dspg2020amsoldier/findings/04-s195-eda/)
+
+Overall, women's role in relationships within family and as wives is still prevelant amongst both races.
+
+
+
+
+```{r include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
 keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "white", "negro"))
@@ -236,9 +256,9 @@ black_long_bigrams_female <- black_long_bigrams_female[!(black_long_bigrams_fema
 visualize_bigrams(black_long_bigrams_female, "Black Soldiers' Long Response - Female Words Bigrams", colors[1])
 ```
 
-Commentary on women are racialized with explicit mention of 'colorwoman' and 'whitewoman'. We also see a bigram sequence of "whitewoman holler rape". This is in relation to black men at the time being subject to false accusations for raping or having sex with white women.
+
   
-```{r echo = FALSE, warning=FALSE, message=FALSE}
+```{r include = FALSE, echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|") #regex friendly 
 keep_female <- append(gender_words$gender, c("coloredsoldi", "negrosoldi", "white", "negro"))
@@ -261,7 +281,9 @@ white_long_bigrams_female <- white_long_bigrams_female[!(white_long_bigrams_fema
 visualize_bigrams(white_long_bigrams_female, "White Soldiers' Long Response - Female Words Bigrams", colors[2])
 ```
 
-We see a complete lack of narrative in black women specifically. Conversations about women are mostly about their role in the family as a mother, wife or sister. Another common conversation is about working women, with pairings to WAAC, auxiliary (referring to WAAC) and worker.
+
+
+
 
 <center>
 #### Which words that soldiers use are correlated with female relating words?
@@ -282,9 +304,9 @@ long_fem_co <- long_fem_co[!(long_fem_co$item2 == "like" & !long_fem_co$item1 %i
 visualize_cooccur(long_fem_co, "Female related co-occurrences for long soldier response", "light blue")
 ```
 
-Themes of family are still prevelant. Negrowoman are associated with some negative words like filthy and invade. Whitewomen associations with the words intercourse, cry and molest are related to the controversy of black men having sexual realtions with whitemen. In addition, whitewomen is associated with negroman. This is shows that there is commentary of the association of black and white women which was controversial at the time. 
+Themes of family are still prevelant. Negrowoman are associated with some negative words like filthy and invade. Whitewomen associations with the words intercourse, cry and molest are related to the controversy of black men having sexual realtions with whitemen. In addition, whitewomen is associated with negroman. This is shows that there is commentary of the association of black and white women which adds to the narrative of interratial relations.
 
-Next, we will break it down by race.   
+#### How do correlations to gendered words differ between Black and White soldiers?    
 
 ```{r echo = FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
@@ -301,6 +323,8 @@ visualize_cooccur(black_long_fem_co, "Female related co-occurrences for long Bla
 One of the strongest correlations are between negrowoman and negroman as well as negroman and whitewoman. This is indicative that interracial relations are one the most heavily correlated topics to women in the Black soldiers' responses. 
 In addition, mother, sister and father have some of the strongest correlations, showing that women's most prevalent role for the soldiers was in their families.     
 
+
+
 ```{r echo= FALSE, warning=FALSE, message=FALSE}
 female_words <- gender_words %>% filter(category == "female" | category == "relation") %>% add_row(gender = "like", category = "relation")
 #female_match <- paste(paste("\\b", female_words$gender,"\\b", sep = ""), collapse="|")
@@ -312,9 +336,9 @@ white_long_fem_co <- white_long_fem_co[!(white_long_fem_co$item2 == "like" & !wh
 visualize_cooccur(white_long_fem_co, "Female related co-occurrences for long White soldiers' responses", colors[2])
 ```
 
-These words correlated with female words seem inherently random. This could be due to the fact that commentary about women were included in responses that talked about other various topics regarding the war and soldier life. However, we again see an absence of discussion about Black women as a whole. 
+These words correlated with female words seem inherently random. This could be due to the fact that commentary about women were included in responses that talked about other various topics regarding the war and soldier life. However, we again see reoccurring themes of family with the popular nodes of "wife", "sister", and "mother". There is also a small group of words at the top "industry", "woman", and "draft" which show that the word woman is correlated to words that discuss women in the workplace and in the army.
 
-*NOTE*  Use gephi to visualize the differences in commentary on gender by race in one network. Use community detection 
+
 
 ```{r include = FALSE, message = FALSE, warning = FALSE}
 #create edgelists to make this in gephi
