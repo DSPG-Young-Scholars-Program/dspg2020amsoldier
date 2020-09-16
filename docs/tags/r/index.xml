@@ -2,84 +2,84 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on UVA Biocomplexity Institute</title>
-    <link>/tags/r/</link>
+    <link>/dspg2020amsoldier/tags/r/</link>
     <description>Recent content in R on UVA Biocomplexity Institute</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/dspg2020amsoldier/tags/r/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Text-Network Analysis of White &amp; Black Soldiers</title>
-      <link>/findings/07-race-text-networks/</link>
+      <link>/dspg2020amsoldier/findings/07-race-text-networks/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/07-race-text-networks/</guid>
+      <guid>/dspg2020amsoldier/findings/07-race-text-networks/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  In order to understand topics and words used by soldiers in their textual responses, we used bigrams and co-occurrences to create networks. Bigrams are sets of words that are used immediately next to eachother in a response. For example in the sentence &amp;quot;I run with my dog&amp;quot;, &amp;quot;run with&amp;quot; is a bigram.</description>
     </item>
     
     <item>
       <title>Demographic Analyses of White &amp; Black Soldiers</title>
-      <link>/findings/02-s32-eda/</link>
+      <link>/dspg2020amsoldier/findings/02-s32-eda/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/02-s32-eda/</guid>
+      <guid>/dspg2020amsoldier/findings/02-s32-eda/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Who Are the Soldiers? Survey 32 was given out to soldiers in 1943, approximately 5 years before the military was integrated. The survey was passed out to 7442 black soldiers and 4793 white soldiers and asked for basic demographic information, career aspirations, and more but of interests to us, Survey 32 asked the soldiers for their opinions on integration of military outfits.</description>
     </item>
     
     <item>
       <title>Demographic Analyses of Black Soldiers</title>
-      <link>/findings/03-s144-eda/</link>
+      <link>/dspg2020amsoldier/findings/03-s144-eda/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/03-s144-eda/</guid>
+      <guid>/dspg2020amsoldier/findings/03-s144-eda/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Who Are the Soldiers? Survey 144 was given out to soldiers in 1944, approximately 4 years before the military was integrated. The survey was passed out to 4,678 black soldiers and focused on post-war plans and aspirations of the soldiers. We were particularly interested in how the soldiers thought their lives would be better after the war.</description>
     </item>
     
     <item>
       <title>Exploratory Data Analysis of Gender Relations Survey</title>
-      <link>/findings/04-s195-eda/</link>
+      <link>/dspg2020amsoldier/findings/04-s195-eda/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/04-s195-eda/</guid>
+      <guid>/dspg2020amsoldier/findings/04-s195-eda/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Introduction In addition to race relations in the Army, we are also focused on perspectives on women and gender within the military. The questions and responses are mostly geared towards WACs, which are Women&#39;s Army Corps members. In addition to survey 32, which captures textual data on gender in teh Army, a survey was given out in January of 1945 to capture perspectives of male soldiers on their WAC counterparts.</description>
     </item>
     
     <item>
       <title>Sentiment Analysis of White &amp; Black Soldiers</title>
-      <link>/findings/05-sentiment-analysis/</link>
+      <link>/dspg2020amsoldier/findings/05-sentiment-analysis/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/05-sentiment-analysis/</guid>
+      <guid>/dspg2020amsoldier/findings/05-sentiment-analysis/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Sentiment Analysis Removing Racially-Biased Words Words referring to race are biased within the sentiment libraries. For example, within the NRC lexicon, &amp;quot;black&amp;quot; and &amp;quot;negro&amp;quot; are associated with the negative and sadness sentiments, while &amp;quot;white&amp;quot; is associated with the anticipation, joy, positive, and trust sentiments.
   word sentiment    black negative  black sadness  negro negative  negro sadness  white anticipation  white joy  white positive  white trust    These words are removed from the text before sentiments are analyzed to remove racial bias.</description>
     </item>
     
     <item>
       <title>Gender </title>
-      <link>/findings/06-gender-text-networks/</link>
+      <link>/dspg2020amsoldier/findings/06-gender-text-networks/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/06-gender-text-networks/</guid>
+      <guid>/dspg2020amsoldier/findings/06-gender-text-networks/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  How do Black and White soldiers talk about gender? In addition to analyzing race relations between soldiers, we want to see how gender roles were discussed amongst soldiers. Our particular focus is on women&#39;s gender roles during the time of 1943 and at the intersection of race relations.</description>
     </item>
     
     <item>
       <title>Race &amp; Space</title>
-      <link>/findings/08-race-and-space/</link>
+      <link>/dspg2020amsoldier/findings/08-race-and-space/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/08-race-and-space/</guid>
+      <guid>/dspg2020amsoldier/findings/08-race-and-space/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  An aspect of racial segregation that we want to analyze is segregation related to spatial arrangement. Spatial segregation of Black Americans was enforced in the American South with numerous local and state laws known as the Jim Crow laws from late 19th century to early 20th century.</description>
     </item>
     
     <item>
       <title>Topic Modeling with Networks</title>
-      <link>/findings/09-topic-modeling/</link>
+      <link>/dspg2020amsoldier/findings/09-topic-modeling/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/09-topic-modeling/</guid>
+      <guid>/dspg2020amsoldier/findings/09-topic-modeling/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Topic Model Networks A topic model put simply models the topics in a piece of text and the words that are associated with each topic. Naturally, words may fall in multiple topics and the model accounts for this by giving each topic a probability distribution over the words.</description>
     </item>
     

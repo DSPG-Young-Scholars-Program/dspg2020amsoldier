@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>sna on UVA Biocomplexity Institute</title>
-    <link>/tags/sna/</link>
+    <link>/dspg2020amsoldier/tags/sna/</link>
     <description>Recent content in sna on UVA Biocomplexity Institute</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="/tags/sna/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/dspg2020amsoldier/tags/sna/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Text-Network Analysis of White &amp; Black Soldiers</title>
-      <link>/findings/07-race-text-networks/</link>
+      <link>/dspg2020amsoldier/findings/07-race-text-networks/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/07-race-text-networks/</guid>
+      <guid>/dspg2020amsoldier/findings/07-race-text-networks/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  In order to understand topics and words used by soldiers in their textual responses, we used bigrams and co-occurrences to create networks. Bigrams are sets of words that are used immediately next to eachother in a response. For example in the sentence &amp;quot;I run with my dog&amp;quot;, &amp;quot;run with&amp;quot; is a bigram.</description>
     </item>
     

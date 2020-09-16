@@ -2,29 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>topic modeling on UVA Biocomplexity Institute</title>
-    <link>/tags/topic-modeling/</link>
+    <link>/dspg2020amsoldier/tags/topic-modeling/</link>
     <description>Recent content in topic modeling on UVA Biocomplexity Institute</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="/tags/topic-modeling/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/dspg2020amsoldier/tags/topic-modeling/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Topic Modeling with Networks</title>
-      <link>/findings/09-topic-modeling/</link>
+      <link>/dspg2020amsoldier/findings/09-topic-modeling/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/09-topic-modeling/</guid>
+      <guid>/dspg2020amsoldier/findings/09-topic-modeling/</guid>
       <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Topic Model Networks A topic model put simply models the topics in a piece of text and the words that are associated with each topic. Naturally, words may fall in multiple topics and the model accounts for this by giving each topic a probability distribution over the words.</description>
     </item>
     
     <item>
       <title>Challenges &amp; Limitations</title>
-      <link>/findings/10-project-challenges/</link>
+      <link>/dspg2020amsoldier/findings/10-project-challenges/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/10-project-challenges/</guid>
+      <guid>/dspg2020amsoldier/findings/10-project-challenges/</guid>
       <description>Data Quality Working with text data is never straight forward. There are always typical text mining issues such as misspellings, punctuations, abbreviations, and so on. However, our collection of soldier commentary posed unique challenges.
 Our primary challenge was the presence of metatags within the text. Transcribers on Zooniverse were able to tag attributes of the text such as unclear writing, underlining, deletions, corrections and more. The following response is an example of these tags and how they are used in the soldiers&#39; responses.</description>
     </item>

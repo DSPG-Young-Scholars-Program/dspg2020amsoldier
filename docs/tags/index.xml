@@ -2,128 +2,128 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on UVA Biocomplexity Institute</title>
-    <link>/tags/</link>
+    <link>/dspg2020amsoldier/tags/</link>
     <description>Recent content in Tags on UVA Biocomplexity Institute</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/dspg2020amsoldier/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>bigrams</title>
-      <link>/tags/bigrams/</link>
+      <link>/dspg2020amsoldier/tags/bigrams/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/bigrams/</guid>
+      <guid>/dspg2020amsoldier/tags/bigrams/</guid>
       <description></description>
     </item>
     
     <item>
       <title>EDA</title>
-      <link>/tags/eda/</link>
+      <link>/dspg2020amsoldier/tags/eda/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/eda/</guid>
+      <guid>/dspg2020amsoldier/tags/eda/</guid>
       <description></description>
     </item>
     
     <item>
       <title>gender</title>
-      <link>/tags/gender/</link>
+      <link>/dspg2020amsoldier/tags/gender/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/gender/</guid>
+      <guid>/dspg2020amsoldier/tags/gender/</guid>
       <description></description>
     </item>
     
     <item>
       <title>historicized terms</title>
-      <link>/tags/historicized-terms/</link>
+      <link>/dspg2020amsoldier/tags/historicized-terms/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/historicized-terms/</guid>
+      <guid>/dspg2020amsoldier/tags/historicized-terms/</guid>
       <description></description>
     </item>
     
     <item>
       <title>interactive text networks</title>
-      <link>/tags/interactive-text-networks/</link>
+      <link>/dspg2020amsoldier/tags/interactive-text-networks/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/interactive-text-networks/</guid>
+      <guid>/dspg2020amsoldier/tags/interactive-text-networks/</guid>
       <description></description>
     </item>
     
     <item>
       <title>messy data</title>
-      <link>/tags/messy-data/</link>
+      <link>/dspg2020amsoldier/tags/messy-data/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/messy-data/</guid>
+      <guid>/dspg2020amsoldier/tags/messy-data/</guid>
       <description></description>
     </item>
     
     <item>
       <title>R</title>
-      <link>/tags/r/</link>
+      <link>/dspg2020amsoldier/tags/r/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/r/</guid>
+      <guid>/dspg2020amsoldier/tags/r/</guid>
       <description></description>
     </item>
     
     <item>
       <title>race relations</title>
-      <link>/tags/race-relations/</link>
+      <link>/dspg2020amsoldier/tags/race-relations/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/race-relations/</guid>
+      <guid>/dspg2020amsoldier/tags/race-relations/</guid>
       <description></description>
     </item>
     
     <item>
       <title>sentiment analysis</title>
-      <link>/tags/sentiment-analysis/</link>
+      <link>/dspg2020amsoldier/tags/sentiment-analysis/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/sentiment-analysis/</guid>
+      <guid>/dspg2020amsoldier/tags/sentiment-analysis/</guid>
       <description></description>
     </item>
     
     <item>
       <title>sna</title>
-      <link>/tags/sna/</link>
+      <link>/dspg2020amsoldier/tags/sna/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/sna/</guid>
+      <guid>/dspg2020amsoldier/tags/sna/</guid>
       <description></description>
     </item>
     
     <item>
       <title>space</title>
-      <link>/tags/space/</link>
+      <link>/dspg2020amsoldier/tags/space/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/space/</guid>
+      <guid>/dspg2020amsoldier/tags/space/</guid>
       <description></description>
     </item>
     
     <item>
       <title>text networks</title>
-      <link>/tags/text-networks/</link>
+      <link>/dspg2020amsoldier/tags/text-networks/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/text-networks/</guid>
+      <guid>/dspg2020amsoldier/tags/text-networks/</guid>
       <description></description>
     </item>
     
     <item>
       <title>topic modeling</title>
-      <link>/tags/topic-modeling/</link>
+      <link>/dspg2020amsoldier/tags/topic-modeling/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/tags/topic-modeling/</guid>
+      <guid>/dspg2020amsoldier/tags/topic-modeling/</guid>
       <description></description>
     </item>
     
