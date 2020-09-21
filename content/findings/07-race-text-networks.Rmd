@@ -61,13 +61,14 @@ library(scales)
 library(fmsb)
 library(sentimentr)
 library(syn)
+library(here)
 
 data(stop_words)
 colors <- c("#e57200", "#232d4b")
 my_cols = c("232d4b","2c4f6b","0e879c","60999a", "9bc0c0","d1e0bf", "ebf094", "d9e12b","e6ce3a","e6a01d","e57200","a35200","fdfdfd")
 my_cols = paste0('#', my_cols)
 
-collapse <- fread("/sfs/qumulo/qhome/kb7hp/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",")
+collapse <- fread(paste0(here(), "/data/dictionary/collapse_words.csv"), sep = ",")
 #collapse <- fread("~/git/dspg2020amsoldier/data/dictionary/collapse_words.csv", sep = ",")
 collapse <- mutate(collapse, original = paste("\\b", original,"\\b", sep = "")) #so that stringr doesn't pick up on instances where it is part of another word
 #replace with collapsed words

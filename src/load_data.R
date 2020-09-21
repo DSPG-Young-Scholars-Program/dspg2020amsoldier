@@ -5,8 +5,10 @@ library("RPostgreSQL")
 # connect to postgresql to get data (in rivanna)
 conn <- dbConnect(drv = PostgreSQL(),
                   dbname = "sdad",
-                  host = "10.250.124.195",
-                  port = 5432,
+                  #host = "10.250.124.195",
+                  host = "localhost",
+                  #port = 5432,
+                  port = 5434,
                   user = Sys.getenv("db_userid"),
                   password = Sys.getenv("db_pwd"))
 # query the bipartite edgelist data from github data
